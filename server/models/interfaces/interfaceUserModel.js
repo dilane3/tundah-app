@@ -1,6 +1,6 @@
 class InterfaceUserModel {
   constructor() {
-    if (this.constructor === InterfaceSubscriberModel) {
+    if (this.constructor === InterfaceUserModel) {
       throw new Error('ERROR: You are not able to create object with this class')
     }
   }

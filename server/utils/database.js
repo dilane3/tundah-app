@@ -1,6 +1,7 @@
 import { config } from 'dotenv'
 import neo4j from 'neo4j-driver'
 
+// fetching data from .env file
 config()
 
 const {

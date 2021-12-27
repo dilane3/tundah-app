@@ -14,6 +14,35 @@ const {
 
 class UserModel extends InterfaceUserModel {
   /**
+   * This function get a specific user based on his id
+   * @param {string} id
+   */
+   async getUser (id) {
+    const session = dbConnect()
+
+    try {
+      const query = `
+        MATCH (user:Subscriber{id: $id})
+        RETURN user
+      `
+
+      const result = await session.run(query, {id})
+
+      if (result.records.length > 0) {
+        const userData = result.records[0].get('user').properties
+
+        return {data: userData}
+      } else {
+        return {data: null}
+      }
+    } catch(err) {
+      return {error: "Error while getting an user"}
+    } finally {
+      await session.close()
+    }
+  }
+
+  /**
    * This method create a new subscriber
    * @param {string} name 
    * @param {string} username 
@@ -31,15 +60,6 @@ class UserModel extends InterfaceUserModel {
    * @param {string} password
    */
   async signin(username, password) {
-    // to do
-  }
-
-  /**
-   * This function get a specific user based on his id number
-   * @param {Number} id 
-   * @returns User | Error message
-   */
-  async getUser (id) {
     // to do
   }
 

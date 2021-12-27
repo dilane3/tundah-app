@@ -1,13 +1,20 @@
 import express from 'express'
+import UserController from '../controllers/userController.js'
 
 const userRouter = express.Router()
 
-userRouter.get("/:id", (req, res) => {
-  res.send("hello")
-})
-userRouter.post("/signup", (req, res) => {})
-userRouter.post("/signin", (req, res) => {})
-userRouter.patch("/update", (req, res) => {})
-userRouter.delete("/delete", (req, res) => {})
+const {
+  getUser,
+  signup,
+  signin,
+  updateUser,
+  deleteUser
+} = UserController
+
+userRouter.get("/:id", getUser)
+userRouter.post("/signup", signup)
+userRouter.post("/signin", signin)
+userRouter.patch("/update", updateUser)
+userRouter.delete("/delete", deleteUser)
 
 export default userRouter
