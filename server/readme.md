@@ -1,1 +1,0 @@
-Delete me and initialize a new backend app with **nodejs/express**
