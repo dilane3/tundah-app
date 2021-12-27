@@ -1,4 +1,4 @@
-class InterfaceSubscriberModel {
+class InterfaceUserModel {
   constructor() {
     if (this.constructor === InterfaceSubscriberModel) {
       throw new Error('ERROR: You are not able to create object with this class')
@@ -11,7 +11,7 @@ class InterfaceSubscriberModel {
    * @param {string} username 
    * @param {string} email 
    * @param {string} password 
-   * @param {0 | 1} role 
+   * @param {0|1} role 
    */
   signup(name, username, email, password, role) {
     throw new Error('ERROR: You have to implement this function')
@@ -55,4 +55,4 @@ class InterfaceSubscriberModel {
   }
 }
 
-export default InterfaceSubscriberModel
+export default InterfaceUserModel

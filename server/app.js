@@ -1,6 +1,7 @@
 import {config} from 'dotenv'
 import express from 'express'
 import cors from 'cors'
+import userRouter from './routers/userRouter.js'
 
 // fetching data from .env file
 config()
@@ -21,9 +22,8 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(cors(corsOptions))
 
-app.get("/", (req, res) => {
-  res.send("hello")
-})
+// use routers
+app.use("/api/users", userRouter)
 
 // launch app
 app.listen(PORT, () => {
