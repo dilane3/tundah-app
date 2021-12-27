@@ -31,7 +31,14 @@ This folder contains some functions that are use for a specific aim, like connec
 ## How to start the project
 
 After cloned the project, open it into your favourite text editor, then move yourself into the server foler.
-Inside this folder, you have to run the following command to install all the dependancies
+Inside this folder, you have to create your branch first, the branch where you will work on, name it using your name, **omer** or **wangue** for example.
+
+the command is
+```bash
+  git branch omer
+```
+
+Then you have to run the following command to install all the dependancies
 
 ```bash
 
