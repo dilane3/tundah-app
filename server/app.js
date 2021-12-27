@@ -24,6 +24,8 @@ app.use(cors(corsOptions))
 
 // use routers
 app.use("/api/users", userRouter)
+// app.use("/api/posts", postRouter)
+// app.use("/api/comments", commetRouter)
 
 // launch app
 app.listen(PORT, () => {
