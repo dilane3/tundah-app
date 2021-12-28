@@ -14,7 +14,7 @@ const {
 userRouter.get("/:id", getUser)
 userRouter.post("/signup", signup)
 userRouter.post("/signin", signin)
-userRouter.patch("/update", updateUser)
-userRouter.delete("/delete", deleteUser)
+userRouter.patch("/:id", updateUser)
+userRouter.delete("/:id", deleteUser)
 
 export default userRouter

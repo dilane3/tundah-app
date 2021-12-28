@@ -1,6 +1,16 @@
+import { config } from "dotenv"
 import Subscriber from "../entities/Subscriber.js"
 import Expert from "../entities/Expert.js"
 import UserModel from "../models/UserModel.js"
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+
+// fetching data from .env file
+config()
+
+const {
+  SECRET_CODE_TOKEN
+} = process.env
 
 class UserController {
   static getUser = async (req, res) => {
@@ -21,8 +31,47 @@ class UserController {
     }
   }
 
-  static signup = (req, res) => {
-    // to do
+  static signup = async (req, res) => {
+    const {name, username, email, password, role} = req.body
+
+    if (name && username && email && password && [0, 1].includes(role)) {
+      // used for hashing password
+      const saltRounds = 10;
+
+      bcrypt.hash(password.toLowerCase(), saltRounds, async (err, hash) => {
+        if (err)
+          return res.sendStatus(500)
+
+        const credentials = {
+          name: name.toLowerCase(), 
+          username: username.toLowerCase(), 
+          email: email.toLowerCase(), 
+          password: hash, 
+          role
+        }
+
+        const userModel = new UserModel()
+
+        const {data, error} = await userModel.signup(credentials)
+
+        if (data) {
+          const payload = {
+            id: data.id,
+            username,
+            email,
+            role
+          }
+
+          const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: "3 min"})
+
+          return res.status(201).json({...data, token})
+        } else {
+          return res.status(500).json(error)
+        }
+      })
+    } else {
+      return res.sendStatus(500)
+    }
   }
 
   static signin = (req, res) => {

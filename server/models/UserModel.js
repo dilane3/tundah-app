@@ -50,8 +50,48 @@ class UserModel extends InterfaceUserModel {
    * @param {string} password 
    * @param {0|1} role 
    */
-  async signup(name, username, email, password, role) {
-    // to do
+  async signup({name, username, email, password, role}) {
+    const session = dbConnect()
+
+    try {
+      const query = `
+        CREATE (user:Subscriber${role ? ':Expert':''}{
+          id: $id,
+          name: $name, 
+          username: $username, 
+          email: $email, 
+          password: $password, 
+          role: $role,
+          date: $date,
+          profil: ${null}
+        })
+        RETURN user
+      `
+
+      console.log(query)
+
+      const result = await session.run(query, {
+        id: nanoid(20),
+        name, 
+        username, 
+        email, 
+        password, 
+        role,
+        date: Date.now()
+      })
+
+      if (result.records.length > 0) {
+        const userData = result.records[0].get('user').properties
+
+        return {data: userData}
+      } else {
+        return {error: "Error while creating an user"}
+      }
+    } catch(err) {
+      return {error: "Error while creating an user"}
+    } finally {
+      await session.close()
+    }
   }
 
   /**
