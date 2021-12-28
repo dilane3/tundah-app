@@ -4,6 +4,7 @@ import Expert from "../entities/Expert.js"
 import UserModel from "../models/UserModel.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import e from "express"
 
 // fetching data from .env file
 config()
@@ -18,6 +19,7 @@ class UserController {
 
     if (id) {
       const user = req.user
+      console.log(user)
 
       const {data, error} = await user.dataManager.getUser(id)
 
@@ -112,6 +114,23 @@ class UserController {
 
   static deleteUser = (req, res) => {
     // to do
+  }
+
+  static uploadProfilPhoto = async (req, res) => {
+    const user = req.user
+    const file = req.file
+
+    if (file) {
+      const {data, error} = await user.setProfil(file.filename)
+
+      if (data) {
+        return res.status(200).json(data)
+      } else {
+        return res.status(500).json(error)
+      }
+    } else {
+      return res.sendStatus(500)
+    }
   }
 }
 

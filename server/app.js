@@ -21,11 +21,18 @@ const corsOptions = {
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(cors(corsOptions))
+app.use("/static", express.static("public"))
 
 // use routers
 app.use("/api/users", userRouter)
 // app.use("/api/posts", postRouter)
 // app.use("/api/comments", commetRouter)
+
+
+app.set('view engine', 'ejs')
+app.get("/", (req, res) => {
+  res.render("index")
+})
 
 // launch app
 app.listen(PORT, () => {

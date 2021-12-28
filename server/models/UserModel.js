@@ -123,6 +123,37 @@ class UserModel extends InterfaceUserModel {
     }
   }
 
+  async updateProfil (id, profil) {
+    const session = dbConnect()
+
+    console.log({id, profil})
+
+    try {
+      const query = `
+        MATCH (user:Subscriber{id: $id})
+        SET user.profil = '${profil}'
+        RETURN user
+      `
+
+      console.log(2)
+      const result = await session.run(query, {id})
+      console.log(3)
+
+      if (result.records.length > 0) {
+        const userData = result.records[0].get("user").properties
+
+        return {data: userData}
+      } else {
+        return {error: "Error occurs while changing the profil photo of an user"}
+      }
+    } catch (err) {
+      console.log(err)
+      return {error: "Error occurs while changing the profil photo of an user"}
+    } finally {
+      await session.close()
+    }
+  }
+
   /**
    * This function update a user
    * @param {string} id 

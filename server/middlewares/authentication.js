@@ -12,9 +12,12 @@ const {
 } = process.env
 
 const authenticationMiddleware = (req, res, next) => {
+  console.log("ello")
   try {
     const authHeader = req.headers['authorization']
     const token = authHeader.split(" ")[1]
+
+    console.log(token)
 
     if (!token) {
       return res.status(401).json({message: "Not authorized"})

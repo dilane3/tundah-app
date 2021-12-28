@@ -8,6 +8,7 @@ class Subscriber {
   password;
   role;
   date;
+  profil;
   dataManager;
   posts;
 
@@ -57,6 +58,13 @@ class Subscriber {
   }
 
   /**
+   * @returns string
+   */
+  get getProfil() {
+    return this.profil
+  }
+
+  /**
    * @returns Array of Post
    */
   get getPosts() {
@@ -77,7 +85,8 @@ class Subscriber {
         email,
         password,
         date,
-        role
+        role,
+        profil
       } = data
     
       this.id = id
@@ -87,7 +96,18 @@ class Subscriber {
       this.password = password
       this.date = date
       this.role = role
+      this.profil = profil
     }
+  }
+
+  async setProfil(profil) {
+    const {data, error} = await this.dataManager.updateProfil(this.getId, profil)
+
+    if (data) {
+      this.profil = data.profil
+    }
+
+    return {data, error}
   }
 
   /**
