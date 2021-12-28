@@ -17,9 +17,9 @@ class UserController {
     const {id} = req.params
 
     if (id) {
-      const userModel = new UserModel()
+      const user = req.user
 
-      const {data, error} = await userModel.getUser(id)
+      const {data, error} = await user.dataManager.getUser(id)
 
       if (data !== undefined) {
         res.json(data)

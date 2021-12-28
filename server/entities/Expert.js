@@ -1,8 +1,8 @@
 import Subscriber from "./Subscriber.js";
 
 class Expert extends Subscriber {
-  constructor() {
-    super()
+  constructor(data) {
+    super(data)
   }
 
   /**

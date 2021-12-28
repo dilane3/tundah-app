@@ -1,6 +1,7 @@
 import UserModel from "../models/UserModel.js";
 
 class Subscriber {
+  id;
   name;
   username;
   email;
@@ -10,8 +11,14 @@ class Subscriber {
   dataManager;
   posts;
 
-  constructor() {
+  constructor(data) {
     this.dataManager = new UserModel()
+
+    this.initialization(data)
+  }
+
+  get getId() {
+    return this.id
   }
 
   /**
@@ -54,6 +61,33 @@ class Subscriber {
    */
   get getPosts() {
     return this.posts
+  }
+
+  /**
+   * 
+   * @param {Object} data
+   * @returns void 
+   */
+  initialization(data) {
+    if (data) {
+      const {
+        id,
+        name,
+        username,
+        email,
+        password,
+        date,
+        role
+      } = data
+    
+      this.id = id
+      this.name = name
+      this.username = username
+      this.email = email
+      this.password = password
+      this.date = date
+      this.role = role
+    }
   }
 
   /**

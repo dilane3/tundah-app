@@ -1,5 +1,8 @@
 import { config } from 'dotenv'
 import jwt from 'jsonwebtoken'
+import Subscriber from '../entities/Subscriber.js'
+import Expert from '../entities/Expert.js'
+import UserModel from '../models/UserModel.js'
 
 // fetching data from .env file
 config()
@@ -17,17 +20,30 @@ const authenticationMiddleware = (req, res, next) => {
       return res.status(401).json({message: "Not authorized"})
     }
 
-    jwt.verify(token, SECRET_CODE_TOKEN, (error, data) => {
+    jwt.verify(token, SECRET_CODE_TOKEN, async (error, result) => {
       if (error) {
         return res.status(401).json({message: "Not authorized"})
       }
 
-      // should be reviewed
-      req.user = data
+      const userModel = new UserModel()
 
-      // here we verify if the user exist in the database
+      const {data} = await userModel.getUser(result.id)
 
-      next()
+      if (data) {
+        let user;
+
+        if (data.role === 0) {
+          user = (new Subscriber(data))
+        } else {
+          user = (new Expert(data))
+        }
+        
+        req.user = user
+
+        next()
+      } else {
+        return res.status(401).json({message: "Not authorized"})
+      }      
     })
   } catch (err) {
     return res.status(401).json({message: "Not authorized"})
