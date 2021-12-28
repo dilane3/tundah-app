@@ -63,12 +63,10 @@ class UserModel extends InterfaceUserModel {
           password: $password, 
           role: $role,
           date: $date,
-          profil: ${null}
+          profil: ''
         })
         RETURN user
       `
-
-      console.log(query)
 
       const result = await session.run(query, {
         id: nanoid(20),
@@ -99,8 +97,30 @@ class UserModel extends InterfaceUserModel {
    * @param {string} username 
    * @param {string} password
    */
-  async signin(username, password) {
-    // to do
+  async signin(username) {
+    const session = dbConnect()
+
+    try {
+      const query = `
+        MATCH (user:Subscriber{username: $username})
+        RETURN user
+        LIMIT 1
+      `
+
+      const result = await session.run(query, {username})
+
+      if (result.records.length > 0) {
+        const userData = result.records[0].get("user").properties
+
+        return {data: userData}
+      } else {
+        return {error: "Error occurs while connecting the user"}
+      }
+    } catch (err) {
+      return {error: "Error occurs while connecting the user"}
+    } finally {
+      await session.close()
+    }
   }
 
   /**

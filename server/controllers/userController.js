@@ -74,8 +74,36 @@ class UserController {
     }
   }
 
-  static signin = (req, res) => {
-    // to do
+  static signin = async (req, res) => {
+    const {username, password} = req.body
+
+    if (username && password) {
+      const userModel = new UserModel()
+
+      const {data, error} = await userModel.signin(username)
+
+      if (data) {
+        const user = bcrypt.compareSync(password.toLowerCase(), data.password) && data
+
+        if (user) {
+          const payload = {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            role: user.role
+          }
+          const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: "3 min"})
+
+          return res.status(200).json({...user, token})
+        } else {
+          return res.status(500).json(error)
+        }
+      } else {
+        return res.status(500).json(error)
+      }
+    } else {
+      return res.sendStatus(500)
+    }
   }
 
   static updateUser = (req, res) => {
