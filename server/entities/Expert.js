@@ -17,8 +17,14 @@ class Expert extends Subscriber {
    * This method allow an user expert to add user
    * @param {string} idSubscriber 
    */
-  addExpert(idSubscriber) {
-    // to do
+  async addExpert(idSubscriber) {
+    if (idSubscriber) {
+      const {data, error} = await this.dataManager.addExpert(idSubscriber)
+
+      return {data, error}
+    } else {
+      return {error: "Error occurs while adding an expert user"}
+    }
   }
 
   /**

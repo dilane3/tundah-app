@@ -12,12 +12,9 @@ const {
 } = process.env
 
 const authenticationMiddleware = (req, res, next) => {
-  console.log("ello")
   try {
     const authHeader = req.headers['authorization']
     const token = authHeader.split(" ")[1]
-
-    console.log(token)
 
     if (!token) {
       return res.status(401).json({message: "Not authorized"})
@@ -36,9 +33,9 @@ const authenticationMiddleware = (req, res, next) => {
         let user;
 
         if (data.role === 0) {
-          user = (new Subscriber(data))
+          user = new Subscriber(data)
         } else {
-          user = (new Expert(data))
+          user = new Expert(data)
         }
         
         req.user = user

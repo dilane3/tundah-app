@@ -147,7 +147,6 @@ class UserModel extends InterfaceUserModel {
         return {error: "Error occurs while changing the profil photo of an user"}
       }
     } catch (err) {
-      console.log(err)
       return {error: "Error occurs while changing the profil photo of an user"}
     } finally {
       await session.close()
@@ -172,6 +171,39 @@ class UserModel extends InterfaceUserModel {
    */
   async deleteUser (id) {
     // to do
+  }
+
+  /**
+   * This method allow a subscriber to become an expert
+   * @param {string} idSubscriber 
+   * @returns Object
+   */
+  async addExpert (idSubscriber) {
+    const session = dbConnect()
+
+    try {
+      const query = `
+        MATCH (user:Subscriber{id: $id})
+        REMOVE user:Subscriber
+        SET user:Subscriber:Expert
+        SET user.role = $role
+        RETURN user
+      `
+
+      const result = await session.run(query, {id: idSubscriber, role: 1})
+
+      if (result.records.length > 0) {
+        const userData = result.records[0].get("user").properties
+
+        return {data: userData}
+      } else {
+        return {error: "Error occurs while adding an expert user"}
+      }
+    } catch (err) {
+      return {error: "Error occurs while adding an expert user"}
+    } finally {
+      await session.close()
+    }
   }
 }
 

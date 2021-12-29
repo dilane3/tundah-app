@@ -11,7 +11,8 @@ const {
   signin,
   updateUser,
   deleteUser,
-  uploadProfilPhoto
+  uploadProfilPhoto,
+  addExpert
 } = UserController
 
 userRouter.get("/:id", authenticationMiddleware, getUser)
@@ -20,5 +21,6 @@ userRouter.post("/signin", signin)
 userRouter.patch("/:id", updateUser)
 userRouter.delete("/:id", deleteUser)
 userRouter.post("/change_profil", authenticationMiddleware, upload.single('file'), uploadProfilPhoto)
+userRouter.post("/add_expert", authenticationMiddleware, addExpert)
 
 export default userRouter

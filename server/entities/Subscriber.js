@@ -51,6 +51,13 @@ class Subscriber {
   }
 
   /**
+   * @returns {0|1}
+   */
+  get getRole() {
+    return this.role
+  }
+
+  /**
    * @returns Number
    */
   get getDate() {
