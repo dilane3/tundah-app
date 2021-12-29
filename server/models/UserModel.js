@@ -1,7 +1,6 @@
 import { config } from "dotenv"
 import { nanoid } from "nanoid"
 import dbConnect from "../utils/database.js"
-import jwt from "jsonwebtoken"
 import InterfaceUserModel from "./interfaces/interfaceUserModel.js"
 
 // fetching data from .env file
