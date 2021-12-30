@@ -1,1 +1,0 @@
-this folder contains images linked to a post or a user (as a profil photo)

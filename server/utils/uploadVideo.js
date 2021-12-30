@@ -3,13 +3,6 @@ import multer from "multer";
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     if (
-      (file.mimetype).includes('jpeg') || 
-      (file.mimetype).includes('png') || 
-      (file.mimetype).includes('gif') ||
-      (file.mimetype).includes('bmp')
-    ) {
-      cb(null, "public/images")
-    } else if (
       (file.mimetype).includes('mp4') || 
       (file.mimetype).includes('mkv') || 
       (file.mimetype).includes('x-msvideo') ||
@@ -34,12 +27,7 @@ const storage = multer.diskStorage({
 })
 
 const fileFilter = (req, file, cb) => {
-  console.log({file})
   if(
-    (file.mimetype).includes('jpeg') || 
-    (file.mimetype).includes('png') || 
-    (file.mimetype).includes('gif') ||
-    (file.mimetype).includes('bmp') ||
     (file.mimetype).includes('mp4') || 
     (file.mimetype).includes('mkv') || 
     (file.mimetype).includes('x-msvideo') ||
@@ -52,6 +40,6 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-let upload = multer({storage: storage, fileFilter: fileFilter})
+let uploadVideo = multer({storage: storage, fileFilter: fileFilter})
 
-export default upload
+export default uploadVideo
