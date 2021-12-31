@@ -63,7 +63,7 @@ class UserController {
               role
             }
   
-            const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: "3 min"})
+            const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: "120 min"})
   
             return res.status(201).json({...data, token})
           } else {
@@ -96,7 +96,7 @@ class UserController {
             email: user.email,
             role: user.role
           }
-          const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: "3 min"})
+          const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: "120 min"})
 
           return res.status(200).json({...user, token})
         } else {

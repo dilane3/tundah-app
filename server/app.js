@@ -2,6 +2,7 @@ import {config} from 'dotenv'
 import express from 'express'
 import cors from 'cors'
 import userRouter from './routers/userRouter.js'
+import postRouter from './routers/postRouter.js'
 
 // fetching data from .env file
 config()
@@ -25,7 +26,7 @@ app.use("/static", express.static("public"))
 
 // use routers
 app.use("/api/users", userRouter)
-// app.use("/api/posts", postRouter)
+app.use("/api/posts", postRouter)
 // app.use("/api/comments", commetRouter)
 
 
