@@ -75,43 +75,22 @@ class PostController {
    * */
   static createPost = async (req, res) => {
     delete req.body._id;
-    const postData = req.body;
-    // const {files_list} = req.body.files_list
+    const {
+      content,
+      files_list,
+      region,
+      tribe
+    } = req.body;
 
     const user = req.user;
 
-    const postModel = new PostModel();
-    if (postData) {
-      if (user.getRole === 1) {
-        const { data, error } = await postModel.createPost(
-          postData.content,
-          postData.files_list,
-          true,
-          postData.region,
-          postData.tribe,
-          user.id
-        );
+    if (content && region && tribe) {
+      const {data, error} = await user.createPost(content, files_list, region, tribe)
 
-        if (data !== undefined) {
-          res.status(201).json({ message: "New post successfully created" });
-        } else {
-          res.status(400).json({ error });
-        }
+      if (data !== undefined) {
+        res.status(201).json({ message: "New post successfully created", data });
       } else {
-        const { data, error } = await postModel.createPost(
-          postData.content,
-          postData.files_list,
-          false,
-          postData.region,
-          postData.tribe,
-          user.id
-        );
-
-        if (data !== undefined) {
-          res.status(201).json({ message: "New post successfully created" });
-        } else {
-          res.status(400).json({ error });
-        }
+        res.status(500).json({ error });
       }
     } else {
       res.status(500).json({ error: "Please specify the post content" });
@@ -139,13 +118,14 @@ class PostController {
       const user = req.user;
 
       if (user.getRole === 1) {
-        const { data } = await postModel.deletePost(id, user.id);
+        const { data, error } = await postModel.deletePost(id, user.getId);
+        
         if (data !== undefined) {
           res
             .status(200)
             .json({ message: "The post has successfully been deleted" });
         } else {
-          res.status(404).json(error);
+          res.status(500).json(error);
         }
       } else {
         res
@@ -176,29 +156,38 @@ class PostController {
    */
   static updatePost = async (req, res) => {
     const { id } = req.params;
-    const postData = req.body;
+    const {
+      content,
+      files_list,
+      region,
+      tribe
+    } = req.body;
 
-    if (id) {
+    if (id && content && region && tribe) {
       const user = req.user;
 
       const postModel = new PostModel();
 
       const { data, error } = await postModel.updatePost(
         id,
-        postData.content,
-        postData.files_list,
-        true,
-        postData.region,
-        postData.tribe,
-        user.id
+        content,
+        files_list,
+        region,
+        tribe,
+        user.getId
       );
 
-      if (data !== undefined) {
+      console.log({data, error})
+
+      if (data) {
         res
           .status(200)
           .json({ message: "The post has successfully been updated" });
       } else {
-        res.status(404).json(error);
+        if (data === undefined)
+          res.status(500).json(error);
+        else if (data === null)
+          res.status(500).json({message: "Provide a good post id"})
       }
     } else {
       res

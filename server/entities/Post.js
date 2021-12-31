@@ -66,8 +66,17 @@ class Post {
    * This method allow the subscriber to propose a post
    * @param {any} datas 
    */
-  proposePost(datas) {
-    // to do
+  async proposePost(datas, userId) {
+    const {data, error} = await this.dataManager.createPost(
+      datas.content,
+      datas.files_list,
+      false,
+      datas.region,
+      datas.tribe,
+      userId
+    );
+
+    return {data, error}
   }
 
   /**
@@ -83,8 +92,17 @@ class Post {
    * This method allows the user - expert to publish a post
    * @param {any} datas 
    */
-  publishPost(datas) {
-    // to do
+  async publishPost(datas, userId) {
+    const {data, error} = await this.dataManager.createPost(
+      datas.content,
+      datas.files_list,
+      true,
+      datas.region,
+      datas.tribe,
+      userId
+    );
+
+    return {data, error}
   }
 
   /**

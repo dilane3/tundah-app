@@ -1,7 +1,7 @@
 import express from 'express'
 import PostController from '../controllers/postController.js'
 import authenticationMiddleware from '../middlewares/authentication.js'
-import upload from '../utils/upload.js'
+import uploadImage from '../utils/uploadImage.js'
 
 const postRouter = express.Router()
 

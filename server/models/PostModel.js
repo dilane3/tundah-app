@@ -52,15 +52,11 @@ class PostModel extends InterfacePostModel {
       `;
       const result = await session.run(query);
 
-      if (result.records.length > 0) {
-        const postData = result.records.map((record) => {
-          return record.get("post").properties;
-        });
+      const postData = result.records.map((record) => {
+        return record.get("post").properties;
+      });
 
-        return { data: postData };
-      } else {
-        return { data: null };
-      }
+      return { data: postData };
     } catch (err) {
       return { error: "Error while getting the posts" };
     } finally {
@@ -120,6 +116,7 @@ class PostModel extends InterfacePostModel {
         return { data: null };
       }
     } catch (err) {
+      console.log(err)
       return { error: "Error while creating the post" };
     } finally {
       await session.close();
@@ -136,19 +133,17 @@ class PostModel extends InterfacePostModel {
 
     try {
       const query = `
-        MATCH (post:Post {id: $idPost}) - [:PUBLISHED_BY] -> (user:Expert {id: $idUser})
+        MATCH (post:Post{id: $idPost}) -[:PUBLISHED_BY]-> (user:Expert{id: $idUser})
         DETACH DELETE post
-        RETURN post
       `;
 
-      const result = await session.run(query, {
-        idPost: idPost,
-        idUser: idUser,
-      });
-      const resultData = result.records.length;
+      console.log({idPost, idUser, query})
 
-      return { data: resultData };
+      await session.run(query, {idPost, idUser});
+
+      return {data: "The post has successfully been deleted"}
     } catch (err) {
+      console.log(err)
       return { error: "The post has not been found" };
     } finally {
       await session.close();
@@ -169,7 +164,6 @@ class PostModel extends InterfacePostModel {
     idPost,
     content,
     files_list,
-    published,
     region,
     tribe,
     idUser
@@ -182,21 +176,19 @@ class PostModel extends InterfacePostModel {
       SET
         post.content = $content, 
         post.modification_date = $modification_date, 
-        post.files_list = $files_list, 
-        post.published = $published, 
+        post.files_list = $files_list,
         post.region = $region,
         post.tribe = $tribe
       RETURN post
     `;
       const response = await session.run(query, {
-        idPost: idPost,
-        content: content,
+        idPost,
+        idUser,
+        content,
         modification_date: Date.now(),
-        files_list: files_list,
-        published: published,
-        region: region,
-        tribe: tribe,
-        idUser: idUser,
+        files_list,
+        region,
+        tribe
       });
 
       if (response.records.length > 0) {
