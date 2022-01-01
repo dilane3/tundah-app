@@ -42,15 +42,17 @@ class PostModel extends InterfacePostModel {
   /**
    * This method retrieves all the avalaible posts
    */
-  async getAllPosts() {
+  async getAllPosts(skip, limit) {
     const session = dbConnect();
 
     try {
       const query = `
-        MATCH (post:Post)
+        MATCH (post:Post{published: ${true}})
         RETURN post
+        SKIP $skip
+        LIMIT $limit
       `;
-      const result = await session.run(query);
+      const result = await session.run(query, {skip, limit});
 
       const postData = result.records.map((record) => {
         return record.get("post").properties;
@@ -58,6 +60,39 @@ class PostModel extends InterfacePostModel {
 
       return { data: postData };
     } catch (err) {
+      return { error: "Error while getting the posts" };
+    } finally {
+      await session.close();
+    }
+  }
+
+  async getMyPosts(idUser) {
+    const session = dbConnect();
+
+    try {
+      const query1 = `
+        MATCH (publishedPost:Post) -[:PUBLISHED_BY]-> (user:Expert{id: $idUser})
+        RETURN publishedPost
+      `
+      const query2 = `
+        MATCH (proposedPost:Post) -[:PROPOSED_BY]-> (user:Subscriber{id: $idUser})
+        RETURN proposedPost
+      `
+      const result1 = await session.run(query1, {idUser})
+      const result2 = await session.run(query2, {idUser})
+
+      let publishedPost = result1.records.map((record) => {
+        return record.get("publishedPost").properties
+      });
+      let proposedPost = result2.records.map((record) => {
+        return record.get("proposedPost").properties
+      })
+
+      const postData = [...publishedPost, ...proposedPost]
+
+      return { data: postData };
+    } catch (err) {
+      console.log(err)
       return { error: "Error while getting the posts" };
     } finally {
       await session.close();

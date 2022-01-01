@@ -18,6 +18,8 @@ class UserController {
     if (id) {
       const user = req.user
 
+      console.log(user)
+
       const {data, error} = await user.dataManager.getUser(id)
 
       if (data !== undefined) {

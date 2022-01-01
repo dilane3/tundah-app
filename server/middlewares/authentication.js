@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import Subscriber from '../entities/Subscriber.js'
 import Expert from '../entities/Expert.js'
 import UserModel from '../models/UserModel.js'
+import PostModel from '../models/PostModel.js'
 
 // fetching data from .env file
 config()
@@ -26,16 +27,20 @@ const authenticationMiddleware = (req, res, next) => {
       }
 
       const userModel = new UserModel()
+      const postModel = new PostModel()
 
       const {data} = await userModel.getUser(result.id)
 
       if (data) {
+        const postdata = (await postModel.getMyPosts(data.id, 0, 10)).data
         let user;
 
+        console.log({postdata})
+
         if (data.role === 0) {
-          user = new Subscriber(data)
+          user = new Subscriber({...data, posts: postdata})
         } else {
-          user = new Expert(data)
+          user = new Expert({...data, posts: postdata})
         }
         
         req.user = user

@@ -94,7 +94,8 @@ class Subscriber {
         password,
         date,
         role,
-        profil
+        profil,
+        posts
       } = data
     
       this.id = id
@@ -105,6 +106,7 @@ class Subscriber {
       this.date = date
       this.role = role
       this.profil = profil
+      this.posts = posts
     }
   }
 
