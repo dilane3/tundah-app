@@ -7,14 +7,17 @@ const userRouter = express.Router()
 
 const {
   getUser,
+  getCurrentUser,
   signup,
   signin,
   updateUser,
   deleteUser,
   uploadProfilPhoto,
-  addExpert
+  addExpert,
+  test
 } = UserController
 
+userRouter.get("/current", authenticationMiddleware, getCurrentUser)
 userRouter.get("/:id", authenticationMiddleware, getUser)
 userRouter.post("/signup", signup)
 userRouter.post("/signin", signin)

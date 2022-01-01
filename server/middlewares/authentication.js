@@ -35,8 +35,6 @@ const authenticationMiddleware = (req, res, next) => {
         const postdata = (await postModel.getMyPosts(data.id, 0, 10)).data
         let user;
 
-        console.log({postdata})
-
         if (data.role === 0) {
           user = new Subscriber({...data, posts: postdata})
         } else {

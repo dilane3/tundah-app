@@ -66,6 +66,11 @@ class PostModel extends InterfacePostModel {
     }
   }
 
+  /**
+   * This method returns post which are linked to a specific user
+   * @param {string} idUser 
+   * @returns 
+   */
   async getMyPosts(idUser) {
     const session = dbConnect();
 

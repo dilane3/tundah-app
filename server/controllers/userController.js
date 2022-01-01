@@ -18,8 +18,6 @@ class UserController {
     if (id) {
       const user = req.user
 
-      console.log(user)
-
       const {data, error} = await user.dataManager.getUser(id)
 
       if (data !== undefined) {
@@ -30,6 +28,19 @@ class UserController {
     } else {
       res.status(500).json({message: "You need to provide an id"})
     }
+  }
+
+  static test = (req, res) => {
+    res.send("Hello")
+  }
+
+  static getCurrentUser = async (req, res) => {
+    console.log("hello")
+    const user = req.user
+
+    console.log({user})
+
+    return res.status(200).json(user)
   }
 
   static signup = async (req, res) => {
