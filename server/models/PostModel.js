@@ -156,7 +156,7 @@ class PostModel extends InterfacePostModel {
         return { data: null };
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
       return { error: "Error while creating the post" };
     } finally {
       await session.close();
@@ -187,11 +187,11 @@ class PostModel extends InterfacePostModel {
         `;
       }
 
-      await session.run(query, {idPost, idUser});
+      await session.run(query, { idPost, idUser });
 
-      return {data: "The post has successfully been deleted"}
+      return { data: "The post has successfully been deleted" };
     } catch (err) {
-      console.log(err)
+      console.log(err);
       return { error: "The post has not been found" };
     } finally {
       await session.close();
@@ -208,14 +208,7 @@ class PostModel extends InterfacePostModel {
    * @param {string} tribe
    * @param {string} idUser
    */
-  async updatePost(
-    idPost,
-    content,
-    files_list,
-    region,
-    tribe,
-    idUser
-  ) {
+  async updatePost(idPost, content, files_list, region, tribe, idUser) {
     const session = dbConnect();
 
     try {
@@ -240,7 +233,7 @@ class PostModel extends InterfacePostModel {
         modification_date: Date.now(),
         files_list,
         region,
-        tribe
+        tribe,
       });
 
       if (response.records.length > 0) {
@@ -254,6 +247,74 @@ class PostModel extends InterfacePostModel {
       return { error: "The post has not been found" };
     } finally {
       await session.close();
+    }
+  }
+
+  /**
+   * This function updates a post based on it's id and the form data
+   * @param {string} idPost
+   * @param {string} published
+   */
+  async updatePostValidation(idPost, published) {
+    const session = dbConnect();
+
+    try {
+      const query = `
+      MATCH (post:Post {id: $idPost})
+      SET
+        post.published = $published,
+        post.modification_date = $modification_date
+      RETURN post
+    `;
+      const response = await session.run(query, {
+        idPost,
+        published,
+        modification_date: Date.now(),
+      });
+
+      if (response.records.length > 0) {
+        const postData = response.records[0].get("post").properties;
+
+        return { data: postData };
+      } else {
+        return { data: null };
+      }
+    } catch (err) {
+      return { error: "The post doesn't exist anymore!!" };
+    } finally {
+      await session.close();
+    }
+  }
+
+  /**
+   * This method permits to a Subscriber to like a post
+   * @param {string} idPost
+   * @param {string} idUser
+   */
+  async likePost(idPost, idUser) {
+    const session = dbConnect();
+
+    try {
+      const query = `
+      MATCH (post:Post {id: $idPost}), (user:Subscriber {id: $idUser})
+      CREATE (post) - [publishedPostLike:LIKED_BY] -> (user)
+      CREATE (user) - [:LIKED] -> (post)
+      RETURN publishedPostLike
+      `;
+
+      const result = await session.run(query, { idPost, idUser });
+
+      if (result.records.length > 0) {
+        const postData = result.records[0].get("publishedPostLike").properties;
+
+        return { data: postData };
+      } else {
+        return { data: null };
+      }
+    } catch (err) {
+      return { error: "The post doesn't exist anymore" };
+    } finally {
+      session.close();
     }
   }
 }

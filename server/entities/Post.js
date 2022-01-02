@@ -5,69 +5,70 @@ class Post {
   creation_date;
   modification_date;
   files_list;
-  published
+  published;
   region;
   tribe;
 
   constructor() {
-    this.dataManager = new PostModel()
+    this.dataManager = new PostModel();
   }
 
   /**
    * @returns string
    */
   get getContent() {
-    return this.content
+    return this.content;
   }
 
   /**
    * @returns number
    */
   get getCreationDate() {
-    return this.creation_date
+    return this.creation_date;
   }
 
   /**
    * @returns number
    */
   get getModificationDate() {
-    return this.modification_date
+    return this.modification_date;
   }
 
   /**
    * @returns array of strings
    */
   get getFilesList() {
-    return this.files_list
-  } 
-  
+    return this.files_list;
+  }
+
   /**
    * @returns boolean
    */
-   get getPublished() {
-    return this.published
+  get getPublished() {
+    return this.published;
   }
 
   /**
    * @returns string
    */
   get getRegion() {
-    return this.region
+    return this.region;
   }
 
   /**
    * @returns String
    */
   get getTribe() {
-    return this.tribe
+    return this.tribe;
   }
 
   /**
    * This method allow the subscriber to propose a post
-   * @param {any} datas 
+   * @param {any} datas
+   * @param {string} userId
    */
   async proposePost(datas, userId) {
-    const {data, error} = await this.dataManager.createPost(
+    const { data, error } = await this.dataManager.createPost(
       datas.content,
       datas.files_list,
       false,
@@ -76,24 +77,27 @@ class Post {
       userId
     );
 
-    return {data, error}
+    return { data, error };
   }
 
   /**
    * This method allow a user to like a post
-   * @param {string} idPost 
-   * @param {string} idUser 
+   * @param {string} idPost
+   * @param {string} idUser
    */
-  likePost(idPost) {
-    // to do
+  async likePost(idPost, idUser) {
+    const postModel = new PostModel();
+    const { data, error } = await postModel.likePost(idPost, idUser);
+
+    return { data, error };
   }
 
   /**
    * This method allows the user - expert to publish a post
-   * @param {any} datas 
+   * @param {any} datas
    */
   async publishPost(datas, userId) {
-    const {data, error} = await this.dataManager.createPost(
+    const { data, error } = await this.dataManager.createPost(
       datas.content,
       datas.files_list,
       true,
@@ -102,16 +106,23 @@ class Post {
       userId
     );
 
-    return {data, error}
+    return { data, error };
   }
 
   /**
    * This method allow a user - expert to validate a post
-   * @param {string} idPost 
-   */
-  validatePost(idPost) {
-    // to do
+   * @param {string} idPost
+   * */
+  async validatePost(idPost, published) {
+    const postModel = new PostModel();
+
+    const { data, error } = await postModel.updatePostValidation(
+      idPost,
+      published
+    );
+
+    return { data, error };
   }
 }
 
-export default Post
+export default Post;
