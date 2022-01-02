@@ -202,7 +202,7 @@ class PostController {
    * @param {*} req
    * @param {*} res
    */
-   static updatePostValidation = (req, res) => {
+   static updatePostValidation = async (req, res) => {
     const { id } = req.params;
 
     if (id) {
@@ -210,7 +210,7 @@ class PostController {
       const post = new Post();
 
       if (user.getRole === 1) {
-        const { data, error } = post.validatePost(id, true);
+        const { data, error } = await post.validatePost(id, user.getId);
 
         if (data !== undefined) {
           res
@@ -256,7 +256,7 @@ class PostController {
       if (data !== undefined) {
         res
           .status(200)
-          .json({ message: "The post has successfully been liked" });
+          .json({data});
       } else {
         res.status(404).json(error);
       }

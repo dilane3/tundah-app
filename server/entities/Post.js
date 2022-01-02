@@ -113,13 +113,10 @@ class Post {
    * This method allow a user - expert to validate a post
    * @param {string} idPost
    * */
-  async validatePost(idPost, published) {
+  async validatePost(idPost, idUser) {
     const postModel = new PostModel();
 
-    const { data, error } = await postModel.updatePostValidation(
-      idPost,
-      published
-    );
+    const { data, error } = await postModel.updatePostValidation(idPost, idUser, true);
 
     return { data, error };
   }

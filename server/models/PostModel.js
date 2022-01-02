@@ -253,21 +253,27 @@ class PostModel extends InterfacePostModel {
   /**
    * This function updates a post based on it's id and the form data
    * @param {string} idPost
-   * @param {string} published
+   * @param {string} idUser
+   * @param {boolean} published
    */
-  async updatePostValidation(idPost, published) {
+  async updatePostValidation(idPost, idUser, published) {
     const session = dbConnect();
 
     try {
       const query = `
-      MATCH (post:Post {id: $idPost})
+      MATCH 
+        (post:Post {id: $idPost}),
+        (user:Expert {id: $idUser})
       SET
         post.published = $published,
         post.modification_date = $modification_date
+      MERGE (post) -[:PUBLISHED_BY]-> (user)
+      MERGE (user) -[:PUBLISHED]-> (post)
       RETURN post
     `;
       const response = await session.run(query, {
         idPost,
+        idUser,
         published,
         modification_date: Date.now(),
       });
@@ -280,9 +286,29 @@ class PostModel extends InterfacePostModel {
         return { data: null };
       }
     } catch (err) {
+      console.log(err)
       return { error: "The post doesn't exist anymore!!" };
     } finally {
       await session.close();
+    }
+  }
+
+  async hasBeenLiked(idPost, idUser, session) {
+    try {
+      const query = `
+        MATCH (post:Post {id: $idPost}) -[likedBy:LIKED_BY]-> (user:Subscriber {id: $idUser})
+        RETURN likedBy
+      `
+
+      const result = await session.run(query, {idPost, idUser})
+
+      if (result.records.length > 0) {
+        return true
+      } else {
+        return false
+      }
+    } catch (err) {
+      return {error: "Error occurs while testing if a post has been already liked or not"}
     }
   }
 
@@ -295,21 +321,34 @@ class PostModel extends InterfacePostModel {
     const session = dbConnect();
 
     try {
-      const query = `
-      MATCH (post:Post {id: $idPost}), (user:Subscriber {id: $idUser})
-      CREATE (post) - [publishedPostLike:LIKED_BY] -> (user)
-      CREATE (user) - [:LIKED] -> (post)
-      RETURN publishedPostLike
-      `;
+      let query;
 
-      const result = await session.run(query, { idPost, idUser });
+      if ((await this.hasBeenLiked(idPost, idUser, session))) {
+        query = `
+          MATCH (post:Post {id: $idPost}), (user:Subscriber {id: $idUser})
+          MATCH (post) - [publishedPostLike:LIKED_BY] -> (user)
+          MATCH (user) - [like:LIKED] -> (post)
+          DELETE publishedPostLike, like
+        `;
 
-      if (result.records.length > 0) {
-        const postData = result.records[0].get("publishedPostLike").properties;
+        await session.run(query, { idPost, idUser });
 
-        return { data: postData };
+        return { data: "Post has succesfully been unliked" };
       } else {
-        return { data: null };
+        query = `
+          MATCH (post:Post {id: $idPost}), (user:Subscriber {id: $idUser})
+          CREATE (post) - [publishedPostLike:LIKED_BY] -> (user)
+          CREATE (user) - [like:LIKED] -> (post)
+          RETURN publishedPostLike
+        `;
+
+        const result = await session.run(query, { idPost, idUser });
+
+        if (result.records.length > 0) {
+          return { data: "Post has succesfully been liked" };
+        } else {
+          return { data: null };
+        }
       }
     } catch (err) {
       return { error: "The post doesn't exist anymore" };
@@ -317,6 +356,7 @@ class PostModel extends InterfacePostModel {
       session.close();
     }
   }
+
 }
 
 export default PostModel;
