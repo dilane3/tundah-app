@@ -207,10 +207,9 @@ class PostController {
 
     if (id) {
       const user = req.user;
-      const post = new Post();
 
       if (user.getRole === 1) {
-        const { data, error } = await post.validatePost(id, user.getId);
+        const { data, error } = await user.validatePost(id);
 
         if (data !== undefined) {
           res
@@ -251,7 +250,7 @@ class PostController {
 
       const post = new Post();
 
-      const { data, error } = await post.likePost(id, user.id);
+      const { data, error } = await user.likePost(id);
 
       if (data !== undefined) {
         res

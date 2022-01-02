@@ -136,8 +136,10 @@ class Subscriber {
    * This method allow a user to like a post
    * @param {string} idPost 
    */
-  likePost(idPost) {
-    // to do
+  async likePost(idPost) {
+    const post = new Post()
+
+    return (await post.likePost(idPost, this.getId))
   }
 
   /**
