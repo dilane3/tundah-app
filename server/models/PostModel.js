@@ -168,16 +168,24 @@ class PostModel extends InterfacePostModel {
    * @param {string} idPost
    * @param {string} idUser
    */
-  async deletePost(idPost, idUser) {
+  async deletePost(idPost, idUser, role) {
     const session = dbConnect();
 
     try {
-      const query = `
-        MATCH (post:Post{id: $idPost}) -[:PUBLISHED_BY]-> (user:Expert{id: $idUser})
-        DETACH DELETE post
-      `;
+      let query = ''
 
-      console.log({idPost, idUser, query})
+      if (role) {
+        query = `
+          MATCH (post:Post{id: $idPost}) -[:PUBLISHED_BY]-> (user:Expert{id: $idUser})
+          DETACH DELETE post
+        `;
+      } else {
+        query = `
+          MATCH (post:Post{id: $idPost}) -[:PROPOSED_BY]-> (user:Subscriber{id: $idUser})
+          WHERE post.published = ${false}
+          DETACH DELETE post
+        `;
+      }
 
       await session.run(query, {idPost, idUser});
 
@@ -212,13 +220,17 @@ class PostModel extends InterfacePostModel {
 
     try {
       const query = `
-      MATCH (post:Post {id: $idPost}) - [:PUBLISHED_BY] -> (user:Expert {id: $idUser})
+      MATCH 
+        (post:Post {id: $idPost}),
+        (user:Expert {id: $idUser})
       SET
         post.content = $content, 
         post.modification_date = $modification_date, 
         post.files_list = $files_list,
         post.region = $region,
         post.tribe = $tribe
+      MERGE (user) -[:EDITED]-> (post)
+      MERGE (post) -[:EDITED_BY]-> (user)
       RETURN post
     `;
       const response = await session.run(query, {

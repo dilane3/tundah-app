@@ -74,7 +74,6 @@ class PostController {
    * we create a new postModel Object
    * */
   static createPost = async (req, res) => {
-    delete req.body._id;
     const {
       content,
       files_list,
@@ -117,20 +116,14 @@ class PostController {
       const postModel = new PostModel();
       const user = req.user;
 
-      if (user.getRole === 1) {
-        const { data, error } = await postModel.deletePost(id, user.getId);
+      const { data, error } = await postModel.deletePost(id, user.getId, user.getRole);
         
-        if (data !== undefined) {
-          res
-            .status(200)
-            .json({ message: "The post has successfully been deleted" });
-        } else {
-          res.status(500).json(error);
-        }
-      } else {
+      if (data !== undefined) {
         res
-          .status(401)
-          .json({ message: "You are not an expert you can't delete a post" });
+          .status(200)
+          .json({ message: "The post has successfully been deleted" });
+      } else {
+        res.status(500).json(error);
       }
     } else {
       res.status(500).json({ message: "Error while deleting the post" });
@@ -168,26 +161,28 @@ class PostController {
 
       const postModel = new PostModel();
 
-      const { data, error } = await postModel.updatePost(
-        id,
-        content,
-        files_list,
-        region,
-        tribe,
-        user.getId
-      );
-
-      console.log({data, error})
-
-      if (data) {
-        res
-          .status(200)
-          .json({ message: "The post has successfully been updated" });
+      if (user.getRole === 1) {
+        const { data, error } = await postModel.updatePost(
+          id,
+          content,
+          files_list,
+          region,
+          tribe,
+          user.getId
+        );
+  
+        if (data) {
+          res
+            .status(200)
+            .json({ message: "The post has successfully been updated" });
+        } else {
+          if (data === undefined)
+            res.status(500).json(error);
+          else if (data === null)
+            res.status(500).json({message: "Provide a good post id"})
+        }
       } else {
-        if (data === undefined)
-          res.status(500).json(error);
-        else if (data === null)
-          res.status(500).json({message: "Provide a good post id"})
+        res.status(401).json({message: "Not authorized"})
       }
     } else {
       res
