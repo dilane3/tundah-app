@@ -206,7 +206,7 @@ class PostController {
    * @param {*} req
    * @param {*} res
    */
-  static updatePostValidation = (req, res) => {
+   static updatePostValidation = (req, res) => {
     const { id } = req.params;
 
     if (id) {
