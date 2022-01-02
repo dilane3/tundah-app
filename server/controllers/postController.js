@@ -75,17 +75,7 @@ class PostController {
    * we create a new postModel Object
    * */
   static createPost = async (req, res) => {
-<<<<<<< HEAD
-    const {
-      content,
-      files_list,
-      region,
-      tribe
-    } = req.body;
-=======
-    delete req.body._id;
     const { content, files_list, region, tribe } = req.body;
->>>>>>> 07f6a29405b6d44503694332da39ef384f9ec486
 
     const user = req.user;
 
@@ -129,23 +119,9 @@ class PostController {
       const postModel = new PostModel();
       const user = req.user;
 
-<<<<<<< HEAD
       const { data, error } = await postModel.deletePost(id, user.getId, user.getRole);
         
       if (data !== undefined) {
-=======
-      if (user.getRole === 1) {
-        const { data, error } = await postModel.deletePost(id, user.getId);
-
-        if (data !== undefined) {
-          res
-            .status(200)
-            .json({ message: "The post has successfully been deleted" });
-        } else {
-          res.status(500).json(error);
-        }
-      } else {
->>>>>>> 07f6a29405b6d44503694332da39ef384f9ec486
         res
           .status(200)
           .json({ message: "The post has successfully been deleted" });
@@ -183,7 +159,6 @@ class PostController {
 
       const postModel = new PostModel();
 
-<<<<<<< HEAD
       if (user.getRole === 1) {
         const { data, error } = await postModel.updatePost(
           id,
@@ -206,26 +181,6 @@ class PostController {
         }
       } else {
         res.status(401).json({message: "Not authorized"})
-=======
-      const { data, error } = await postModel.updatePost(
-        id,
-        content,
-        files_list,
-        region,
-        tribe,
-        user.getId
-      );
-
-      console.log({ data, error });
-
-      if (data) {
-        res
-          .status(200)
-          .json({ message: "The post has successfully been updated" });
-      } else {
-        if (data === undefined) res.status(500).json(error);
-        else if (data === null)
-          res.status(500).json({ message: "Provide a good post id" });
       }
     } else {
       res.status(500).json({ message: "Error during the post update" });
@@ -304,7 +259,6 @@ class PostController {
           .json({ message: "The post has successfully been liked" });
       } else {
         res.status(404).json(error);
->>>>>>> 07f6a29405b6d44503694332da39ef384f9ec486
       }
     } else {
       res
