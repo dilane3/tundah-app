@@ -4,6 +4,7 @@ import Expert from "../entities/Expert.js";
 import Post from "../entities/Post.js";
 import PostModel from "../models/PostModel.js";
 import { response } from "express";
+import { error } from "neo4j-driver";
 
 // fetching data from .env file
 config();
@@ -75,22 +76,24 @@ class PostController {
    * */
   static createPost = async (req, res) => {
     delete req.body._id;
-    const {
-      content,
-      files_list,
-      region,
-      tribe
-    } = req.body;
+    const { content, files_list, region, tribe } = req.body;
 
     const user = req.user;
 
     if (content && region && tribe) {
-      const {data, error} = await user.createPost(content, files_list, region, tribe)
+      const { data, error } = await user.createPost(
+        content,
+        files_list,
+        region,
+        tribe
+      );
 
       if (data !== undefined) {
-        res.status(201).json({ message: "New post successfully created", data });
+        res
+          .status(201)
+          .json({ message: "New post successfully created", data });
       } else {
-        res.status(500).json({ error });
+        res.status(404).json({ error });
       }
     } else {
       res.status(500).json({ error: "Please specify the post content" });
@@ -119,7 +122,7 @@ class PostController {
 
       if (user.getRole === 1) {
         const { data, error } = await postModel.deletePost(id, user.getId);
-        
+
         if (data !== undefined) {
           res
             .status(200)
@@ -156,12 +159,7 @@ class PostController {
    */
   static updatePost = async (req, res) => {
     const { id } = req.params;
-    const {
-      content,
-      files_list,
-      region,
-      tribe
-    } = req.body;
+    const { content, files_list, region, tribe } = req.body;
 
     if (id && content && region && tribe) {
       const user = req.user;
@@ -177,22 +175,99 @@ class PostController {
         user.getId
       );
 
-      console.log({data, error})
+      console.log({ data, error });
 
       if (data) {
         res
           .status(200)
           .json({ message: "The post has successfully been updated" });
       } else {
-        if (data === undefined)
-          res.status(500).json(error);
+        if (data === undefined) res.status(500).json(error);
         else if (data === null)
-          res.status(500).json({message: "Provide a good post id"})
+          res.status(500).json({ message: "Provide a good post id" });
+      }
+    } else {
+      res.status(500).json({ message: "Error during the post update" });
+    }
+  };
+
+  // Algorithm
+  /**
+   * We first retrieve the post id from the api link
+   * we then verify if the id exist
+   * if it exist
+   * * we retrieve the current user from the api req.user
+   * * we also create a new postModel object
+   * * we then verify if the user is connected and it's role to see if he is an expert
+   * * if he is an expert
+   *  * we the perform the operation and send the success response
+   *  * else we send a not authorized operation response
+   *
+   * @param {*} req
+   * @param {*} res
+   */
+  static updatePostValidation = (req, res) => {
+    const { id } = req.params;
+
+    if (id) {
+      const user = req.user;
+      const post = new Post();
+
+      if (user.getRole === 1) {
+        const { data, error } = post.validatePost(id, true);
+
+        if (data !== undefined) {
+          res
+            .status(200)
+            .json({ messsage: "The post has successfully been approved!!" });
+        } else {
+          res.status(404).json(error);
+        }
+      } else {
+        res.status(403).json({
+          message: "You are not an expert, you cannot validate a post!",
+        });
       }
     } else {
       res
         .status(500)
-        .json({ message: "Error during the post update" });
+        .json({ message: "An error occured during the operation" });
+    }
+  };
+
+  // Algorithm
+  /**
+   * * We first retrieve the id from the api requests
+   * * we then verify if the id exists
+   *  * if the id exist we execute the function and retrieve the returned value
+   *   * if the returned data is not undefined,
+   *    * then we send the success return to the api call
+   *   * else we send the error to the api call
+   *  * else we return the server error
+   * @param {*} req
+   * @param {*} res
+   */
+  static likePost = async (req, res) => {
+    const { id } = req.params;
+
+    if (id) {
+      const user = req.user;
+
+      const post = new Post();
+
+      const { data, error } = await post.likePost(id, user.id);
+
+      if (data !== undefined) {
+        res
+          .status(200)
+          .json({ message: "The post has successfully been liked" });
+      } else {
+        res.status(404).json(error);
+      }
+    } else {
+      res
+        .status(500)
+        .json({ message: "An error occured during the process!!" });
     }
   };
 }

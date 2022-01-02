@@ -9,6 +9,8 @@ const {
   getPost,
   getAllPosts,
   createPost,
+  likePost,
+  updatePostValidation,
   deletePost,
   updatePost
 } = PostController
@@ -25,6 +27,10 @@ postRouter.get("/", getAllPosts)
 // This can be performed only by connected users
 postRouter.post("/create", authenticationMiddleware, createPost)
 
+// Router for the like of a post using the post id and user id
+// This can be performed only by connected users
+postRouter.post("/like/:id", authenticationMiddleware, likePost)
+
 // Router for the delete of a post using the post id
 // This can be performed only by connected  expert users
 postRouter.delete("/delete/:id", authenticationMiddleware, deletePost)
@@ -32,5 +38,12 @@ postRouter.delete("/delete/:id", authenticationMiddleware, deletePost)
 // Router for the update of a post using the post id and user id
 // This can be performed only by connected expert users
 postRouter.patch("/update/:id", authenticationMiddleware/*, upload.fields('file')*/, updatePost)
+
+// Router for the like of a post using the post id and user id
+// This can be performed only by connected users
+postRouter.patch("/validate/:id", authenticationMiddleware, updatePostValidation)
+
+
+
 
 export default postRouter
