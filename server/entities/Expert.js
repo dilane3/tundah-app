@@ -1,32 +1,43 @@
+import Post from "./Post.js";
 import Subscriber from "./Subscriber.js";
 
 class Expert extends Subscriber {
-  constructor() {
-    super()
+  constructor(data) {
+    super(data)
   }
 
   /**
    * This method allow an user expert to create a post
    * @param {any} datas 
    */
-  createPost(datas) {
-    // to do
+  async createPost(content, files_list, region, tribe) {
+    const post = new Post()
+
+    return (await post.publishPost({content, files_list, region, tribe}, this.getId))
   }
 
   /**
    * This method allow an user expert to add user
    * @param {string} idSubscriber 
    */
-  addExpert(idSubscriber) {
-    // to do
+  async addExpert(idSubscriber) {
+    if (idSubscriber) {
+      const {data, error} = await this.dataManager.addExpert(idSubscriber)
+
+      return {data, error}
+    } else {
+      return {error: "Error occurs while adding an expert user"}
+    }
   }
 
   /**
    * This method allow an use expert to validate a post
    * @param {string} idPost 
    */
-  validatePost(idPost) {
-    // to do
+  async validatePost(idPost) {
+    const post = new Post()
+
+    return (await post.validatePost(idPost, this.getId))
   }
 }
 

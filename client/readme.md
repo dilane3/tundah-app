@@ -1,1 +1,0 @@
-Delete me and initialize a new frontend app using **create-react-app**

@@ -1,17 +1,26 @@
 import UserModel from "../models/UserModel.js";
+import Post from "./Post.js";
 
 class Subscriber {
+  id;
   name;
   username;
   email;
   password;
   role;
   date;
+  profil;
   dataManager;
   posts;
 
-  constructor() {
+  constructor(data) {
     this.dataManager = new UserModel()
+
+    this.initialization(data)
+  }
+
+  get getId() {
+    return this.id
   }
 
   /**
@@ -43,10 +52,24 @@ class Subscriber {
   }
 
   /**
+   * @returns {0|1}
+   */
+  get getRole() {
+    return this.role
+  }
+
+  /**
    * @returns Number
    */
   get getDate() {
     return this.date
+  }
+
+  /**
+   * @returns string
+   */
+  get getProfil() {
+    return this.profil
   }
 
   /**
@@ -57,19 +80,66 @@ class Subscriber {
   }
 
   /**
+   * 
+   * @param {Object} data
+   * @returns void 
+   */
+  initialization(data) {
+    if (data) {
+      const {
+        id,
+        name,
+        username,
+        email,
+        password,
+        date,
+        role,
+        profil,
+        posts
+      } = data
+    
+      this.id = id
+      this.name = name
+      this.username = username
+      this.email = email
+      this.password = password
+      this.date = date
+      this.role = role
+      this.profil = profil
+      this.posts = posts
+    }
+  }
+
+  async setProfil(profil) {
+    const {data, error} = await this.dataManager.updateProfil(this.getId, profil)
+
+    if (data) {
+      this.profil = data.profil
+    }
+
+    return {data, error}
+  }
+
+  /**
    * This method allow the subscriber to create a post
    * @param {any} datas 
    */
-  createPost(datas) {
-    // to do
+  async createPost(content, files_list, region, tribe) {
+    const post = new Post()
+
+    const {data, error} = await post.proposePost({content, files_list, region, tribe}, this.getId)
+    
+    return {data, error}
   }
 
   /**
    * This method allow a user to like a post
    * @param {string} idPost 
    */
-  likePost(idPost) {
-    // to do
+  async likePost(idPost) {
+    const post = new Post()
+
+    return (await post.likePost(idPost, this.getId))
   }
 
   /**

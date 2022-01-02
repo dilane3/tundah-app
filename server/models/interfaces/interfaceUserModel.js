@@ -53,6 +53,23 @@ class InterfaceUserModel {
   deleteUser(id) {
     throw new Error('ERROR: You have to implement this function')
   }
+
+  /**
+   * This method allow a subscriber to become an expert
+   * @param {string} idSubscriber 
+   */
+  addExpert(idSubscriber) {
+    throw new Error('ERROR: You have to implement this function')
+  }
+
+  /**
+   * This method allow a user to change his profil photo
+   * @param {string} id 
+   * @param {string} profil 
+   */
+  updateProfil (id, profil) {
+    throw new Error('ERROR: You have to implement this function')
+  }
 }
 
 export default InterfaceUserModel

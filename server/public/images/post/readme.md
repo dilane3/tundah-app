@@ -1,0 +1,1 @@
+this folder contains images linked to a post

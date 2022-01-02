@@ -35,7 +35,8 @@ Inside this folder, you have to create your branch first, the branch where you w
 
 the command is
 ```bash
-  git branch omer
+git branch omer
+git checkout omer
 ```
 
 Then you have to run the following command to install all the dependancies
@@ -51,10 +52,12 @@ Then run this command to launch the server
 
 if you use **nodemon**
 ```bash
-  npm run dev
+
+npm run dev
 ```
 
 If you don't have **nodemon** installed
 ```bash
-  npm run start
+
+npm run start
 ```
