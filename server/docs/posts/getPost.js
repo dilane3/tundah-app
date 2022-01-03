@@ -1,31 +1,32 @@
 export default {
-  post: {
-    tags: ["Comment CRUD operations"],
-    description: "Create a new comment",
-    operationId: "createComment",
-    parameters: [],
-    requestBody: {
-      content: {
-        "application/json": {
-          schema: {
-            $ref: "#/components/schemas/CommentInput",
-          },
+  get: {
+    tags: ["Post CRUD operations"],
+    description: "Get a post",
+    operationId: "GetPost",
+    parameters: [
+      {
+        name: "id",
+        in: "path",
+        description: "id of a post",
+        required: true,
+        schema: {
+          $ref: "#/components/schemas/idPost"
         },
-      },
-    },
+      }
+    ],
     responses: {
-      201: {
-        description: "Post created successfully",
+      200: {
+        description: "Post retrieved successfully",
         content: {
           "application/json": {
             schema: {
-              $ref: '#/components/schemas/Comment'
+              $ref: '#/components/schemas/Post'
             }
           }
         }
       },
-      401: {
-        description: "Not authorized",
+      404: {
+        description: "Not found",
         content: {
           "application/json": {
             schema: {

@@ -54,6 +54,23 @@ export default {
         }
       },
 
+      // user input connexion model
+      UserInputConnection: {
+        type: "object",
+        properties: {
+          username: {
+            type: "string",
+            description: "username of the user",
+            example: "johndoe"
+          },
+          password: {
+            type: "string",
+            description: "password of the user",
+            example: "john123"
+          }
+        }
+      },
+
       // post input model
       PostInput: {
         type: "object",
@@ -80,6 +97,22 @@ export default {
             type: "string",
             description: "Tribe that the post tags",
             example: "Bagangte"
+          }
+        }
+      },
+
+      PostInputGetting: {
+        type: "object",
+        properties: {
+          skip: {
+            type: "number",
+            description: "number of articles to skip",
+            example: 2
+          },
+          limit: {
+            type: "number",
+            description: "number max of article to get",
+            example: 10
           }
         }
       },
@@ -111,6 +144,16 @@ export default {
         }
       },
 
+      StringResult: {
+        type: "object",
+        properties: {
+          message: {
+            type: "string",
+            description: "Success message"
+          }
+        }
+      },
+
       // user model
       User: {
         type: "object",
@@ -119,11 +162,6 @@ export default {
             type: "number",
             description: "The creation date of the user",
             example: 16167890233
-          },
-          password: {
-            type: "string",
-            description: "The password hashed of the user",
-            example: "ajfai7y84rhoweefhk"
           },
           role: {
             type: "number",

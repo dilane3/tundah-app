@@ -21,7 +21,7 @@ class UserController {
       const {data, error} = await user.dataManager.getUser(id)
 
       if (data !== undefined) {
-        res.json(data)
+        res.json({...data, password: undefined})
       } else {
         res.json(error)
       }
@@ -30,17 +30,11 @@ class UserController {
     }
   }
 
-  static test = (req, res) => {
-    res.send("Hello")
-  }
-
   static getCurrentUser = async (req, res) => {
     console.log("hello")
     const user = req.user
 
-    console.log({user})
-
-    return res.status(200).json(user)
+    return res.status(200).json({...user, password: undefined})
   }
 
   static signup = async (req, res) => {
@@ -78,7 +72,7 @@ class UserController {
   
             const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: "480 min"})
   
-            return res.status(201).json({...data, token})
+            return res.status(201).json({...data, token, password: undefined})
           } else {
             return res.status(500).json(error)
           }
@@ -111,7 +105,7 @@ class UserController {
           }
           const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: "120 min"})
 
-          return res.status(200).json({...user, token})
+          return res.status(200).json({...user, token, password: undefined})
         } else {
           return res.status(500).json(error)
         }

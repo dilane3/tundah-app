@@ -1,21 +1,11 @@
 export default {
-  post: {
+  get: {
     tags: ["User CRUD operations"],
-    description: "Signup a new user",
-    operationId: "signup",
-    parameters: [],
-    requestBody: {
-      content: {
-        "application/json": {
-          schema: {
-            $ref: "#/components/schemas/UserInput",
-          },
-        },
-      },
-    },
+    description: "Get the current user",
+    operationId: "GetCurrentUser",
     responses: {
-      201: {
-        description: "User created successfully",
+      200: {
+        description: "User retrieved successfully",
         content: {
           "application/json": {
             schema: {
@@ -24,8 +14,8 @@ export default {
           }
         }
       },
-      500: {
-        description: "Server error",
+      401: {
+        description: "Not authorized",
         content: {
           "application/json": {
             schema: {
@@ -34,6 +24,6 @@ export default {
           }
         }
       },
-    },
+    }
   }
 }

@@ -92,15 +92,15 @@ class CommentController {
       );
 
       if (data) {
-        res.status(200).json({ message: "The comment has successfully been updated"});
+        res.status(200).json(data);
       } else {
         if (data === undefined)
           res.status(500).json(error);
         else if (data === null)
-          res.status(500).json({message: "Provide a good comment id"})
+          res.status(404).json({message: "comment doesn't exist"})
       } 
     } else {
-      res.status(404).json({ message: "Error during the comment update" });
+      res.status(400).json({ message: "Provide a good comment id"});
     }
   }
   // Algorithm

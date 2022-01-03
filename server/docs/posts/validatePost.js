@@ -1,40 +1,22 @@
 export default {
-  post: {
-    security: {
-      bearerAuth: []
-    },
+  patch: {
     tags: ["Post CRUD operations"],
-    description: "Create a new post",
-    operationId: "createPost",
+    description: "Validate a post",
+    operationId: "ValidatePost",
     parameters: [
       {
-        name: "Authorization",
-        in: "header",
-        description: "token to be passed as a header",
+        name: "id",
+        in: "path",
+        description: "id of a post",
         required: true,
         schema: {
-          type: "array",
-          items: {
-            type: "string",
-            format: "base64",
-            additionalProperties: false
-          }
+          $ref: "#/components/schemas/idPost"
         },
-        style: "simple"
       }
     ],
-    requestBody: {
-      content: {
-        "application/json": {
-          schema: {
-            $ref: "#/components/schemas/PostInput",
-          },
-        },
-      },
-    },
     responses: {
-      201: {
-        description: "Post created successfully",
+      200: {
+        description: "Post retrieved successfully",
         content: {
           "application/json": {
             schema: {
@@ -43,8 +25,18 @@ export default {
           }
         }
       },
-      401: {
-        description: "Not authorized",
+      404: {
+        description: "Not found",
+        content: {
+          "application/json": {
+            schema: {
+              $ref: '#/components/schemas/Error'
+            }
+          }
+        }
+      },
+      400: {
+        description: "Bad request",
         content: {
           "application/json": {
             schema: {

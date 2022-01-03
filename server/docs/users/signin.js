@@ -1,35 +1,25 @@
 export default {
   post: {
-    tags: ["Comment CRUD operations"],
-    description: "Create a new comment",
-    operationId: "createComment",
+    tags: ["User CRUD operations"],
+    description: "Signin a user",
+    operationId: "signin",
     parameters: [],
     requestBody: {
       content: {
         "application/json": {
           schema: {
-            $ref: "#/components/schemas/CommentInput",
+            $ref: "#/components/schemas/UserInputConnection",
           },
         },
       },
     },
     responses: {
-      201: {
-        description: "Post created successfully",
+      200: {
+        description: "User created successfully",
         content: {
           "application/json": {
             schema: {
-              $ref: '#/components/schemas/Comment'
-            }
-          }
-        }
-      },
-      401: {
-        description: "Not authorized",
-        content: {
-          "application/json": {
-            schema: {
-              $ref: '#/components/schemas/Error'
+              $ref: '#/components/schemas/User'
             }
           }
         }
@@ -44,6 +34,6 @@ export default {
           }
         }
       },
-    }
+    },
   }
 }

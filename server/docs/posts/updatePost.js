@@ -1,25 +1,38 @@
 export default {
-  post: {
-    tags: ["Comment CRUD operations"],
-    description: "Create a new comment",
-    operationId: "createComment",
-    parameters: [],
+  patch: {
+    security: {
+      bearerAuth: []
+    },
+    tags: ["Post CRUD operations"],
+    description: "Update a post",
+    operationId: "updatePost",
+    parameters: [
+      {
+        name: "id",
+        in: "path",
+        description: "id of a post",
+        required: true,
+        schema: {
+          $ref: "#/components/schemas/idPost"
+        },
+      }
+    ],
     requestBody: {
       content: {
         "application/json": {
           schema: {
-            $ref: "#/components/schemas/CommentInput",
+            $ref: "#/components/schemas/PostInput",
           },
         },
       },
     },
     responses: {
-      201: {
+      200: {
         description: "Post created successfully",
         content: {
           "application/json": {
             schema: {
-              $ref: '#/components/schemas/Comment'
+              $ref: '#/components/schemas/Post'
             }
           }
         }

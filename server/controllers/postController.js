@@ -56,7 +56,7 @@ class PostController {
    * */
   static getAllPosts = async (req, res) => {
     const postModel = new PostModel();
-    const {skip, limit} = req.body
+    const {skip, limit} = req.query
 
     if (skip, limit) {
       const { data, error } = await postModel.getAllPosts(skip, limit);
@@ -223,7 +223,7 @@ class PostController {
           res.status(404).json(error);
         }
       } else {
-        res.status(403).json({
+        res.status(401).json({
           message: "You are not an expert, you cannot validate a post!",
         });
       }

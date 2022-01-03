@@ -1,35 +1,31 @@
 export default {
   post: {
-    tags: ["Comment CRUD operations"],
-    description: "Create a new comment",
-    operationId: "createComment",
+    tags: ["User CRUD operations"],
+    description: "add a user Expert",
+    operationId: "addExpert",
     parameters: [],
     requestBody: {
       content: {
         "application/json": {
           schema: {
-            $ref: "#/components/schemas/CommentInput",
+            type: "object",
+            properties: {
+              idSubscriber: {
+                type: "string",
+                description: "Id of the subscriber"
+              }
+            }
           },
         },
       },
     },
     responses: {
-      201: {
-        description: "Post created successfully",
+      200: {
+        description: "User created successfully",
         content: {
           "application/json": {
             schema: {
-              $ref: '#/components/schemas/Comment'
-            }
-          }
-        }
-      },
-      401: {
-        description: "Not authorized",
-        content: {
-          "application/json": {
-            schema: {
-              $ref: '#/components/schemas/Error'
+              $ref: '#/components/schemas/User'
             }
           }
         }
@@ -44,6 +40,16 @@ export default {
           }
         }
       },
-    }
+      401: {
+        description: "Not authorized",
+        content: {
+          "application/json": {
+            schema: {
+              $ref: '#/components/schemas/Error'
+            }
+          }
+        }
+      },
+    },
   }
 }
