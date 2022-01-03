@@ -40,3 +40,9 @@ body{
 		transform: translate(-50%, -50%);
 	}
 }
+
+/* ICONS  */
+
+.icon{
+	@apply text-gray-600
+}
