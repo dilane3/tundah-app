@@ -14,22 +14,24 @@ const FirstConnexionPage = () => {
 		<div className="signup-block px-3 md:px-4 bg-primary w-full h-screen" >
              <Container classe="relative pb-10 md:pb-9"> 
 
-                <div className="center-signup  p-3 flex  items-center w-full lg:space-x-4 bg-white rounded-lg mt-40 sm:mt-10 md:mt-0">
-					<div className="relative hidden lg:block bg-repeat w-1/2 bg-primary rounded-lg text-white font-primary py-8 px-10" style={{backgroundImage: `url(${authSvg})`}}>
+                <div className="center-signup  p-3 flex  items-center w-full lg:space-x-4 bg-white rounded-lg mt-30 sm:mt-10 md:mt-0">
+					<div className="relative hidden lg:block bg-repeat w-1/2 bg-primary rounded-lg text-white font-primary py-8 px-20" style={{backgroundImage: `url(${authSvg})`}}>
 						<Link
 							to=""
-							className="absolute z-1 left-0  bg-white w-32 p-2 text-black flex justify-center items-center"
+							className="absolute z-1 left-0  bg-white w-32 p-2 mt-10 text-black flex justify-center items-center"
 							>
 							<span>tundah</span>
 						</Link>
 
 						<div>
-                            <H3 className="m">
+                            <div className="mt-20"> 
+                            <H3 className="">
 								Conservons les valeurs enseignees par nos 
                                 <span className="text-yellow-400"> ancetres </span>
                                 et transmettons les a notre 
                                 <span className="text-yellow-400"> progeniture</span>
 							</H3>
+                            </div>
 							<div className="flex items-center"> 
                                <Link
 									to=""

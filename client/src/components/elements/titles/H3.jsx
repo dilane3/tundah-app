@@ -10,7 +10,6 @@ const H3 = (props) => {
       font-bold 
       font-primary
       leading-snug
-      capitalize 
       ${classe}
     `}>
       {children}
