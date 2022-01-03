@@ -16,7 +16,7 @@ const Input = (props) => {
 			name={name} 
 			id={id}
 			placeholder={placeholder}
-			className={`${classe} w-full py-2 px-3 lg:py-3  text-primary text-sx md:text-sm rounded md:rounded-lg border-2 border-primary focus:outline-none focus:ring focus:ring-primary-hover`}
+			className={`${classe} w-full py-2 px-3 lg:py-3  text-primary text-sx md:text-sm rounded md:rounded-lg border-2 border-primary focus:outline-none`}
 			/>
 	)
 }
