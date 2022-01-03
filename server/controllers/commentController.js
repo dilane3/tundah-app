@@ -1,8 +1,5 @@
 import { config } from "dotenv";
 import Comment from "../entities/Comment.js"
-import Subscriber from "../entities/Subscriber.js"
-import Expert from "../entities/Expert.js"
-import Post from "../entities/Post.js"
 import CommentModel from "../models/CommentModel.js"
 
 // fetching data from .env file
@@ -20,14 +17,15 @@ class CommentController {
       const {data, error} = await commentModel.getComment(id)
 
       if (data !== undefined) {
-        res.json(data)
+        res.status(200).json(data)
       } else {
-        res.json(error)
+        res.status(404).json(error)
       }
     } else {
       res.status(400).json({message: "You need to provide an id"})
     }
   }
+
   // Algorithm
   /**
    * we first delete the id send by the form
@@ -35,33 +33,26 @@ class CommentController {
    * we create a new commentModel Object
   */
   static createComment = async (req, res) => {
-    delete req.body._id;
     const {
       content,
       idPost
     } = req.body
-    // const commentData = req.body;
 
     const user = req.user;
-    // const post = req.post;
 
     const commentModel = new CommentModel();
     if (content){
-      if(user){
-        const { data, error } = await commentModel.createComment(
-          content,
-          false,
-          user.getId,
-          idPost,
-        );
-        if (data !== undefined) {
-          res.status(201).json({ message: "New comment successfully created !" , data});
-        } else {
-          res.status(400).json({ error });
-        }
+      const { data, error } = await commentModel.createComment(
+        content,
+        false,
+        user.getId,
+        idPost,
+      );
 
+      if (data !== undefined) {
+        res.status(201).json({ message: "New comment successfully created !" , data});
       } else {
-        res.status(401).json({ message: "Somethings happened while creating a comment"})  
+        res.status(400).json({ error });
       }
     } else {
       res.status(500).json({ message: "Somethings happened while creating a comment"})  
@@ -133,36 +124,26 @@ class CommentController {
    */
   static deleteComment = async (req, res) => {
     const { id } = req.params;
+    const {idPost} = req.body
 
-    if(id){
+    if(id && idPost){
       const commentModel = new CommentModel();
       const user = req.user;
-      const {
-        content,
-        idPost
-      } = req.body
-      // const post = req.post;
       
-      if(user && idPost) {
-        const {data, error} = await commentModel.deleteComment(
-          id,
-          user.getId,
-          idPost
-        );
+      const {data, error} = await commentModel.deleteComment(
+        id,
+        user.getId,
+        idPost
+      );
 
-        if (data !== undefined) {
-          res.status(200)
-            .json({ message: "The comment has successfully been deleted" });
-        } else {
-          res.status(500).json(error);
-        }
+      if (data !== undefined) {
+        res.status(200)
+          .json({ message: "The comment has successfully been deleted" });
       } else {
-        res.status(401)
-        .json({ message: "user or id post is missing !" });
+        res.status(500).json(error);
       }
-
     } else {
-      res.status(500).json({ message: "Error while deleting the comment" });
+      res.status(500).json({ message: "id of comment or post are missing" });
     }
   }
 }

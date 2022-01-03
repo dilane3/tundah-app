@@ -1,6 +1,5 @@
 import { config } from "dotenv"
 import { nanoid } from "nanoid";
-import { error, session } from "neo4j-driver";
 
 import InterfaceCommentModel from "../models/interfaces/interfaceCommentModel.js"
 import dbConnect from "../utils/database.js"
@@ -26,7 +25,7 @@ class CommentModel extends InterfaceCommentModel {
         MATCH (comment:Comment{id: $id})
         RETURN comment
       `
-      const result = await session.run(query, {'id': id} )
+      const result = await session.run(query, {id})
 
       if (result.records.length > 0){
         const commentData = result.records[0].get('comment').properties
@@ -66,16 +65,16 @@ class CommentModel extends InterfaceCommentModel {
           }
         ) - [:COMMENTED_BY] -> (user)
         CREATE (comment) - [:BELONGS_TO] -> (post)
-        CREATE (post) - [:HAS_COMMENTS] -> (comment)
+        CREATE (post) - [:HAS_COMMENT] -> (comment)
         RETURN comment
       `
       const result = await session.run(query, {
         id: nanoid(20),
-        content: content, 
+        content, 
         creation_date: Date.now(),
-        edited: edited, 
-        idUser:idUser,
-        idPost:idPost
+        edited, 
+        idUser,
+        idPost
       })
      
       if (result.records.length > 0) {
@@ -121,7 +120,7 @@ class CommentModel extends InterfaceCommentModel {
         content,
         edited:true
       })
-      console.log(result.records[0], query)
+      console.log({result: result.records[0], query})
      
       if (result.records.length > 0){
         const commentData = result.records[0].get("comment").properties
@@ -150,20 +149,18 @@ class CommentModel extends InterfaceCommentModel {
 
     try {
       const query = `
-        MATCH (comment:Comment {id: $id}) - [:COMMENT_BY] -> (user:Susbcriber{id: $idUser})
-        MATCH (comment) - [:ABOUT_THIS] -> (post:Post{id: $idPost})
+        MATCH (comment:Comment {id: $id}) -[:COMMENTED_BY]-> (user:Subscriber{id: $idUser})
+        MATCH (comment) -[:BELONGS_TO]-> (post:Post{id: $idPost})
         DETACH DELETE comment
-        RETURN comment
       `;
 
-      const result = await session.run(query, {
-        id: id,
-        idPost: idPost,
-        idUser: idUser,
+      await session.run(query, {
+        id,
+        idPost,
+        idUser,
       });
-      const resultData = result.records.length;
-      
-      return { data: resultData };
+
+      return { data: "The comment has successfully been deleted" };
     } catch (error) {
       return { error: "The comment has not been found" };
     } finally {

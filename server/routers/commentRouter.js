@@ -11,7 +11,7 @@ const {
   deleteComment
 } = CommentController
 
-commentRouter.get("/:id", getComment)
+commentRouter.get("/:id", authenticationMiddleware, getComment)
 commentRouter.post("/create", authenticationMiddleware, createComment)
 commentRouter.patch("/update/:id", authenticationMiddleware, updateComment)
 commentRouter.delete("/delete/:id", authenticationMiddleware, deleteComment)

@@ -35,6 +35,7 @@ class Comment {
    get getEdited() {
     return this.edited
   }
+  
   /**
    * This method allow a user to write a comment
    * @param {any} datas 
