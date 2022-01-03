@@ -41,6 +41,6 @@ app.get("/", (req, res) => {
 })
 
 // launch app
-app.listen(3005, () => {
-  console.log(`Server up and running on http://localhost:${5002}`)
+app.listen(PORT, () => {
+  console.log(`Server up and running on http://localhost:${PORT}`)
 })

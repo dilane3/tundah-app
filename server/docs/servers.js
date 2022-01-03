@@ -10,7 +10,7 @@ const {
 export default {
   servers: [
     {
-      url: `http://localhost:${5500}/api`,
+      url: `http://localhost:${PORT}/api`,
       description: "Local Server"
     }
   ]

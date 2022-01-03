@@ -87,7 +87,7 @@ class UserController {
         return res.status(500).json({message: "Your email adress is in the wrong format"})
       }
     } else {
-      return res.sendStatus(500)
+      return res.status(500).json({message: "Provide all the required data"})
     }
   }
 

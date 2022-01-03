@@ -49,7 +49,7 @@ export default {
           role: {
             type: "number",
             description: "role of the user",
-            example: "0 or 1"
+            example: 0
           }
         }
       },
@@ -101,6 +101,16 @@ export default {
         }
       },
 
+      Error: {
+        type: "object",
+        properties: {
+          message: {
+            type: "string",
+            description: "Error message"
+          }
+        }
+      },
+
       // user model
       User: {
         type: "object",
@@ -108,7 +118,7 @@ export default {
           date: {
             type: "number",
             description: "The creation date of the user",
-            example: "16167890233"
+            example: 16167890233
           },
           password: {
             type: "string",
@@ -118,7 +128,7 @@ export default {
           role: {
             type: "number",
             description: "The role of the user",
-            example: "0 or 1"
+            example: 0
           },
           profil: {
             type: "string",
@@ -173,12 +183,12 @@ export default {
           modification_date: {
             type: "number",
             description: "The modification date of the post",
-            example: "16167890233"
+            example: 16167890233
           },
           creation_date: {
             type: "number",
             description: "The creation date of the post",
-            example: "16167890233"
+            example: 16167890233
           },
           published: {
             type: "boolean",
@@ -215,7 +225,7 @@ export default {
           creation_date: {
             type: "number",
             description: "The creation date of the comment",
-            example: "16167890233"
+            example: 16167890233
           },
           id: {
             type: "string",
@@ -227,6 +237,16 @@ export default {
             description: "Content of the comment",
             example: "good post"
           }
+        }
+      }
+    },
+
+    securityDefinitions: {
+      securitySchemes: {
+        bearerAuth: {
+          type: "http",
+          scheme: "bearer",
+          bearerFormat: "JWT" 
         }
       }
     }
