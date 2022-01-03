@@ -45,34 +45,39 @@ class CommentModel extends InterfaceCommentModel {
   /**
   * This method create a new comment
   * @param {string} content
+  *  @param {boolean} edited
   * @param {string} idUser
   * @param {string} idPost
   */
-  async createComment(content, idUser, idPost){
+  async createComment(content, edited, idUser, idPost){
     const session = dbConnect();
 
     try {
       const query =`
         MATCH (user: Subscriber {id: $idUser})
         MATCH (post: Post {id: $idPost})
-        CREATE(comment:comment
+        WITH user, post
+        CREATE(comment:Comment
           {
             id: $id,
             content: $content, 
             creation_date: $creation_date,
-            edited: $edited, 
+            edited: $edited 
           }
-        ) - [:COMMENT_BY] -> (user)
-        CREATE (comment) - [:ABOUT_THIS] -> (post)
+        ) - [:COMMENTED_BY] -> (user)
+        CREATE (comment) - [:BELONGS_TO] -> (post)
+        CREATE (post) - [:HAS_COMMENTS] -> (comment)
         RETURN comment
       `
       const result = await session.run(query, {
         id: nanoid(20),
-        content, 
+        content: content, 
         creation_date: Date.now(),
-        edited:false, 
+        edited: edited, 
+        idUser:idUser,
+        idPost:idPost
       })
-
+     
       if (result.records.length > 0) {
         const commentData = result.records[0].get("comment").properties;
 
@@ -82,6 +87,7 @@ class CommentModel extends InterfaceCommentModel {
       }
 
     } catch(error){
+      console.log(error)
       return { error: "Error while creating comment!"}
     } finally {
       await session.close();
@@ -90,39 +96,43 @@ class CommentModel extends InterfaceCommentModel {
 
   /**
   * This method update a comment
-  * @param {string} idComment
+  * @param {string} id
   * @param {string} idUser
+  * @param {string} idPost
   * @param {string} content
   * @param {boolean} edited
   */
-   async updateComment (idComment, idUser, content, edited) {
+   async updateComment (id, content, idUser, idPost) {
     const session = dbConnect();
 
     try {
       const query =`
-        MATCH (comment:Comment {id: $idComment}) - [:COMMENT_BY] -> (user:Susbcriber{id: $idUser})
-        MATCH (comment) - [:ABOUT_THIS] -> (post:Post{id: $idPost})
+        MATCH (comment:Comment {id: $id}) - [:COMMENTED_BY] -> (user:Subscriber{id: $idUser})
+        MATCH (comment:Comment {id: $id}) - [:BELONGS_TO] -> (post:Post{id: $idPost})
         SET
-        comment.content = $content,
-        comment.edited = $edited, 
+          comment.content = $content,
+          comment.edited = $edited 
         RETURN comment
       `
       const result = await session.run(query, {
+        id,
         idUser,
-        idUser,
+        idPost,
         content,
-        edited:true,
+        edited:true
       })
-
+      console.log(result.records[0], query)
+     
       if (result.records.length > 0){
         const commentData = result.records[0].get("comment").properties
-
+        console.log(commentData)
         return {data: commentData}
       } else {
         return {data: null}
       }
 
     } catch(error){
+      console.log(error)
       return { error: "The comment has not been found !"}
     } finally {
       await session.close();
@@ -132,27 +142,27 @@ class CommentModel extends InterfaceCommentModel {
   /**
   * This method delate a comment
   * @param {string} id 
-  * @param {string} cotent
-  * @param {boolean} edited
+  * @param {string} idUser
+  * @param {string} idPost
   */
-   async delateComment (idComment, idUser, content) {
+   async deleteComment (id, idUser, idPost) {
     const session = dbConnect();
 
     try {
       const query = `
-        MATCH (comment:Comment {id: $idComment}) - [:COMMENT_BY] -> (user:Susbcriber{id: $idUser})
+        MATCH (comment:Comment {id: $id}) - [:COMMENT_BY] -> (user:Susbcriber{id: $idUser})
         MATCH (comment) - [:ABOUT_THIS] -> (post:Post{id: $idPost})
         DETACH DELETE comment
         RETURN comment
       `;
 
       const result = await session.run(query, {
-        idComment: idComment,
+        id: id,
         idPost: idPost,
         idUser: idUser,
       });
       const resultData = result.records.length;
-
+      
       return { data: resultData };
     } catch (error) {
       return { error: "The comment has not been found" };

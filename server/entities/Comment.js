@@ -6,7 +6,7 @@ class Comment {
   creation_date;
   edited;
   dataManager;
-  //post;
+  post;
   author;
   comment;
 

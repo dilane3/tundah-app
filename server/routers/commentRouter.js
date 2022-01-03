@@ -1,5 +1,6 @@
 import express from 'express'
 import CommentController from '../controllers/commentController.js'
+import authenticationMiddleware from '../middlewares/authentication.js'
 
 const commentRouter = express.Router()
 
@@ -11,8 +12,8 @@ const {
 } = CommentController
 
 commentRouter.get("/:id", getComment)
-commentRouter.post("/create", createComment)
-commentRouter.patch("/update", updateComment)
-commentRouter.delete("/delete", deleteComment)
+commentRouter.post("/create", authenticationMiddleware, createComment)
+commentRouter.patch("/update/:id", authenticationMiddleware, updateComment)
+commentRouter.delete("/delete/:id", authenticationMiddleware, deleteComment)
 
 export default commentRouter

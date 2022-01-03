@@ -1,4 +1,5 @@
 import UserModel from "../models/UserModel.js";
+import Post from "./Post.js";
 
 class Subscriber {
   id;
@@ -121,8 +122,12 @@ class Subscriber {
    * This method allow the subscriber to create a post
    * @param {any} datas 
    */
-  createPost(datas) {
-    // to do
+  async createPost(content, files_list, region, tribe) {
+    const post = new Post()
+
+    const {data, error} = await post.proposePost({content, files_list, region, tribe}, this.getId)
+    
+    return {data, error}
   }
 
   /**

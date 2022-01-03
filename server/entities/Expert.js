@@ -1,3 +1,4 @@
+import Post from "./Post.js";
 import Subscriber from "./Subscriber.js";
 
 class Expert extends Subscriber {
@@ -9,8 +10,12 @@ class Expert extends Subscriber {
    * This method allow an user expert to create a post
    * @param {any} datas 
    */
-  createPost(datas) {
-    // to do
+  async createPost(content, files_list, region, tribe) {
+    const post = new Post()
+
+    const {data, error} = await post.publishPost({content, files_list, region, tribe}, this.getId)
+  
+    return {data, error}
   }
 
   /**

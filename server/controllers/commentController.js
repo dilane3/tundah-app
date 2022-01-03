@@ -1,7 +1,14 @@
+import { config } from "dotenv";
 import Comment from "../entities/Comment.js"
 import Subscriber from "../entities/Subscriber.js"
 import Expert from "../entities/Expert.js"
+import Post from "../entities/Post.js"
 import CommentModel from "../models/CommentModel.js"
+
+// fetching data from .env file
+config();
+
+const { SECRET_CODE_TOKEN } = process.env;
 
 class CommentController {
   static getComment = async (req, res) => {
@@ -21,20 +28,142 @@ class CommentController {
       res.status(400).json({message: "You need to provide an id"})
     }
   }
-
-  static createComment = (req, res) => {
+  // Algorithm
+  /**
+   * we first delete the id send by the form
+   * then we retrieve the infos from the form body
+   * we create a new commentModel Object
+  */
+  static createComment = async (req, res) => {
     delete req.body._id;
-    const commentData = req.body;
+    const {
+      content,
+      idPost
+    } = req.body
+    // const commentData = req.body;
 
-    const user = req.user
+    const user = req.user;
+    // const post = req.post;
+
+    const commentModel = new CommentModel();
+    if (content){
+      if(user){
+        const { data, error } = await commentModel.createComment(
+          content,
+          false,
+          user.getId,
+          idPost,
+        );
+        if (data !== undefined) {
+          res.status(201).json({ message: "New comment successfully created !" , data});
+        } else {
+          res.status(400).json({ error });
+        }
+
+      } else {
+        res.status(401).json({ message: "Somethings happened while creating a comment"})  
+      }
+    } else {
+      res.status(500).json({ message: "Somethings happened while creating a comment"})  
+    }
   }
+  
+  // Algorithm
+  /**
+   * We first retrieve the id from the request url
+   * Then we retrieve the form informations
+   * if the id and form informations exist
+   * * we retrieve the user and post object
+   * * we create a commentModel object
+   * * we call the updatecomment method and retrieve the data and error variable
+   * * if data exits
+   *   * sucess
+   * * else
+   *   * data doesn't exist
+   * else
+   *  * we got an incomplete request
+   * @param {*} req
+   * @param {*} res
+   */
 
-  static updateComment = (req, res) => {
-    // to do
+  static updateComment = async (req, res) => {
+    const { id } = req.params;
+   
+    const {
+      content,
+      idPost
+    } = req.body;
+
+    if (id && content){
+      const user = req.user;
+      // const post = req.post;
+      console.log("texte")
+      const commentModel = new CommentModel();
+      const {data, error} = await commentModel.updateComment(
+        id,
+        content,
+        user.getId,
+        idPost
+      );
+
+      if (data) {
+        res.status(200).json({ message: "The comment has successfully been updated"});
+      } else {
+        if (data === undefined)
+          res.status(500).json(error);
+        else if (data === null)
+          res.status(500).json({message: "Provide a good comment id"})
+      } 
+    } else {
+      res.status(404).json({ message: "Error during the comment update" });
+    }
   }
+  // Algorithm
+  /**
+   * We first verify if the post id was sent
+   *  * then we create a commentModel object and call it's deletecomment method on it using that id
+   *  * we return the length on array containing the removed object
+   *  * if the length is greater than 0
+   *  ** then the suppression has been successfull
+   *  ** else the post doesn;t exist anymore
+   * If the id is not sent
+   *  * then we have a bad request return or server error
+   * @param {*} req
+   * @param {*} res
+   */
+  static deleteComment = async (req, res) => {
+    const { id } = req.params;
 
-  static deleteComment = (req, res) => {
-    // to do
+    if(id){
+      const commentModel = new CommentModel();
+      const user = req.user;
+      const {
+        content,
+        idPost
+      } = req.body
+      // const post = req.post;
+      
+      if(user && idPost) {
+        const {data, error} = await commentModel.deleteComment(
+          id,
+          user.getId,
+          idPost
+        );
+
+        if (data !== undefined) {
+          res.status(200)
+            .json({ message: "The comment has successfully been deleted" });
+        } else {
+          res.status(500).json(error);
+        }
+      } else {
+        res.status(401)
+        .json({ message: "user or id post is missing !" });
+      }
+
+    } else {
+      res.status(500).json({ message: "Error while deleting the comment" });
+    }
   }
 }
 

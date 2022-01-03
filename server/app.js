@@ -4,6 +4,7 @@ import cors from 'cors'
 
 import userRouter from './routers/userRouter.js'
 import commentRouter from './routers/commentRouter.js'
+import postRouter from './routers/postRouter.js'
 
 // fetching data from .env file
 config()
@@ -25,10 +26,10 @@ app.use(express.urlencoded({extended: true}))
 app.use(cors(corsOptions))
 app.use("/static", express.static("public"))
 
-// use routers
+
 app.use("/api/users", userRouter)
-// app.use("/api/posts", postRouter)
 app.use("/api/comments", commentRouter)
+app.use("/api/posts", postRouter)
 
 
 app.set('view engine', 'ejs')

@@ -1,6 +1,6 @@
 class InterfaceCommentModel {
     constructor() {
-      if (this.constructor === InterfaceCommetModel) {
+      if (this.constructor === InterfaceCommentModel) {
         throw new Error('ERROR: You are not able to create object with this class')
       }
     }
@@ -45,7 +45,7 @@ class InterfaceCommentModel {
     * @param {string} idPost 
     * @param {string} cotent
     */
-    delateComment (idComment, idUser, content) {
+    deleteComment (idComment, idUser, content) {
       throw new Error('ERROR: You have to implement this function')
     }
   }
