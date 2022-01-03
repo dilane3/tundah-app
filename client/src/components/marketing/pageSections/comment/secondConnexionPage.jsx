@@ -1,9 +1,14 @@
-import React from "react";
+import React,{useState} from "react";
 import Input from '../../../elements/input/Input';
 import ALink from '../../../elements/a/ALink';
 import './ConnexionPage.css';
 
 const SecondConnexionPage = () =>{
+
+    const[value,setValue]= useState("");
+    const handleChange = event =>{
+        setValue(event.currentTarget.value);
+  }
 
     return(
          <div className="Content">
@@ -15,8 +20,8 @@ const SecondConnexionPage = () =>{
 								type="email"
 								name="email"
 								id="email"
-								value=""
-								placeholder="Email"
+								onChange={handleChange}
+								placeholder="Votre adresse email"
 								/>
 							</div>
 							<div className="w-full">
@@ -24,7 +29,7 @@ const SecondConnexionPage = () =>{
 								type="password"
 								name="Mot de passe"
 								id="password"
-								value=""
+								onChange={handleChange}
 								placeholder="Mot de passe"
 								/>
 							</div>
@@ -35,7 +40,7 @@ const SecondConnexionPage = () =>{
 							/>
                             <div className="flex justify-end py-3">
                                 Pas encore inscript? 
-                                <ALink link="/signup" classe="inline-block ml-2">connectez vous</ALink>
+                                <ALink link="/signup" classe="inline-block ml-2">inscrivez vous</ALink>
                             </div>
                      </div>
             </form>
