@@ -28,6 +28,13 @@ class PostModel extends InterfacePostModel {
       if (result.records.length > 0) {
         const postData = result.records[0].get("post").properties;
 
+        if (postData.published) {
+          const {commentsNumber} = await this.getCommentNumber(postData.id)
+          const {likes} = await this.getLikes(postData.id)
+
+          return {data: {...postData, comments: commentsNumber, likes}}
+        }
+
         return { data: postData };
       } else {
         return { data: null };
@@ -40,26 +47,123 @@ class PostModel extends InterfacePostModel {
   }
 
   /**
+   * This function returns the number of posts available in the database
+   * @param {Session} session 
+   */
+  async getNumberPost(session) {
+    try {
+      const query = `
+        MATCH (posts:Post{published: ${true}})
+        RETURN posts
+      `
+
+      const result = await session.run(query)
+
+      return {postNumber: result.records.length}
+    } catch (err) {
+      return {error: "Error occured while getting posts number"}
+    }
+  }
+
+  /**
+   * This function return the number of comment linked to a specific post
+   * @param {Session} session 
+   * @param {string} id
+   */
+  async getCommentNumber(id) {
+    const session = dbConnect()
+
+    try {
+      const query = `
+        MATCH (post:Post{id: $id}) -[commentsNumber:HAS_COMMENT]-> (:Comment)
+        RETURN commentsNumber
+      `
+
+      const result = await session.run(query, {id})
+
+      return {commentsNumber: result.records.length}
+    } catch (err) {
+      return {error: "Error occured while getting comment number linked to a specific post"}
+    } finally {
+      await session.close()
+    }
+  }
+
+  /**
+   * This function return the number of comment linked to a specific post
+   * @param {Session} session 
+   * @param {string} id
+   */
+   async getLikes(id) {
+    const session = dbConnect()
+
+    try {
+      const query = `
+        MATCH (posts:Post{id: $id}) -[numberLike:LIKED_BY]-> (users:Subscriber)
+        RETURN users
+      `
+
+      const result = await session.run(query, {id})
+
+      const usersId = result.records.map(record => {
+        return record.get("users").properties?.id
+      })
+
+      return {likes: usersId}
+    } catch (err) {
+      console.log(err)
+      return {error: "Error occured while getting number of like linked to a specific post"}
+    } finally {
+      await session.close()
+    }
+  }
+
+  async gettingMoreInfos(result, field) {
+    let postData = [];
+
+    for (let record of result.records) {
+      const post = record.get(field).properties
+
+      const {commentsNumber} = await this.getCommentNumber(post.id)
+      const {likes} = await this.getLikes(post.id)
+
+      postData.push({...post, likes, comments: commentsNumber})
+    }
+
+    return postData
+  }
+
+  /**
    * This method retrieves all the avalaible posts
    */
   async getAllPosts(skip, limit) {
     const session = dbConnect();
 
     try {
-      const query = `
-        MATCH (post:Post{published: ${true}})
-        RETURN post
-        SKIP $skip
-        LIMIT $limit
-      `;
-      const result = await session.run(query, {skip, limit});
+      const {postNumber, error} = await this.getNumberPost(session)
 
-      const postData = result.records.map((record) => {
-        return record.get("post").properties;
-      });
+      if (postNumber) {
+        const query = `
+          MATCH (posts:Post{published: ${true}})
+          RETURN posts
+          SKIP ${skip}
+          LIMIT ${limit}
+        `;
+  
+        const result = await session.run(query)
 
-      return { data: postData };
+        const postData = await this.gettingMoreInfos(result, "posts")
+  
+        if (postNumber > skip + limit) {
+          return {data: {data: postData, next: true, skip: skip+limit}};
+        } else {
+          return {data: {data: postData, next: false, skip}};
+        }
+      } else {
+        return {error};
+      }
     } catch (err) {
+      console.log(err)
       return { error: "Error while getting the posts" };
     } finally {
       await session.close();
@@ -86,9 +190,8 @@ class PostModel extends InterfacePostModel {
       const result1 = await session.run(query1, {idUser})
       const result2 = await session.run(query2, {idUser})
 
-      let publishedPost = result1.records.map((record) => {
-        return record.get("publishedPost").properties
-      });
+      const publishedPost = await this.gettingMoreInfos(result1, "publishedPost")
+
       let proposedPost = result2.records.map((record) => {
         return record.get("proposedPost").properties
       })
@@ -97,7 +200,6 @@ class PostModel extends InterfacePostModel {
 
       return { data: postData };
     } catch (err) {
-      console.log(err)
       return { error: "Error while getting the posts" };
     } finally {
       await session.close();
