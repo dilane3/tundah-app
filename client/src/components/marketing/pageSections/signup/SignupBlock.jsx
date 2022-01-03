@@ -8,6 +8,7 @@ import signupImg from '../../../../medias/img/signup-img.png'
 import Container from '../../../utils/Container'
 import Input from '../../../elements/input/Input'
 import Paragraphe from '../../../elements/p/Paragraphe'
+import ALink from '../../../elements/a/ALink'
 import H1 from '../../../elements/titles/H1'
 import H2 from '../../../elements/titles/H2'
 
@@ -175,6 +176,14 @@ const SignupBlock = (props) => {
 								</div>
 							</div>
 
+							<div className="flex items-center space-x-2">
+								<input 
+									type="checkbox" 
+									className="border-2 border-primary w-3 h-3 rounded-full checked:bg-blue-500" 
+								/>
+								<Paragraphe>j'accepte les <ALink link="/termsuses">conditions d'utilisations</ALink></Paragraphe>
+							</div>
+
 							<Link
 								to=""
 								className="w-full bg-primary hover:bg-primary px-2 py-2 lg:px-3 lg:py-4 text-center text-white text-base md:text-xl rounded" 
@@ -183,7 +192,7 @@ const SignupBlock = (props) => {
 							</Link>
 
 							<Paragraphe classe="flex justify-end">
-								deja inscrit? <Link to="/signin" className="text-primary inline-block ml-1">connectez vous</Link>
+								deja inscrit? <ALink link="/signin" classe="inline-block ml-2">connectez vous</ALink>
 							</Paragraphe>
 						</div>
 					</from>
