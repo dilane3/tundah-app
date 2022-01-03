@@ -48,7 +48,7 @@ class CommentModel extends InterfaceCommentModel {
   * @param {string} idUser
   * @param {string} idPost
   */
-  async createComment(content, edited, idUser, idPost){
+  async createComment(content, idUser, idPost){
     const session = dbConnect();
 
     try {
@@ -61,7 +61,7 @@ class CommentModel extends InterfaceCommentModel {
             id: $id,
             content: $content, 
             creation_date: $creation_date,
-            edited: $edited 
+            edited: ${false} 
           }
         ) - [:COMMENTED_BY] -> (user)
         CREATE (comment) - [:BELONGS_TO] -> (post)
@@ -72,7 +72,6 @@ class CommentModel extends InterfaceCommentModel {
         id: nanoid(20),
         content, 
         creation_date: Date.now(),
-        edited, 
         idUser,
         idPost
       })

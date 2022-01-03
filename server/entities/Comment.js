@@ -1,7 +1,7 @@
 import CommentModel from "../models/CommentModel.js";
-import Subscriber from "../entities/Subscriber.js"
+import InterfaceComment from './interfaces/interfaceComment.js'
 
-class Comment {
+class Comment extends InterfaceComment {
   content;
   creation_date;
   edited;
@@ -11,8 +11,9 @@ class Comment {
   comment;
 
   constructor() {
+    super()
+    
     this.dataManager = new CommentModel()
-    this.author = new Subscriber()
   };
 
   /**
@@ -35,13 +36,15 @@ class Comment {
    get getEdited() {
     return this.edited
   }
-  
+
   /**
    * This method allow a user to write a comment
    * @param {any} datas 
    */
-  writeComment(datas) {
-    // to do
+  async writeComment(datas) {
+    const {content, idUser, idPost} = datas
+
+    return (await this.dataManager.createComment(content, idUser, idPost))
   }
 
 }

@@ -1,6 +1,7 @@
 import PostModel from "../models/PostModel.js";
+import InterfacePost from './interfaces/interfacePost.js'
 
-class Post {
+class Post extends InterfacePost {
   content;
   creation_date;
   modification_date;
@@ -10,6 +11,8 @@ class Post {
   tribe;
 
   constructor() {
+    super()
+
     this.dataManager = new PostModel();
   }
 

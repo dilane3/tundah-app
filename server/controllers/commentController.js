@@ -40,14 +40,8 @@ class CommentController {
 
     const user = req.user;
 
-    const commentModel = new CommentModel();
     if (content){
-      const { data, error } = await commentModel.createComment(
-        content,
-        false,
-        user.getId,
-        idPost,
-      );
+      const { data, error } = await user.writeComment({content, idUser: user.getId, idPost});
 
       if (data !== undefined) {
         res.status(201).json({ message: "New comment successfully created !" , data});
