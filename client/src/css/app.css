@@ -35,7 +35,7 @@ body{
 @media screen and (min-width: 1027px ){
 	.center-signup{
 		position: absolute;
-		top: 45%;
+		top: 48%;
 		left: 50%;
 		transform: translate(-50%, -50%);
 	}

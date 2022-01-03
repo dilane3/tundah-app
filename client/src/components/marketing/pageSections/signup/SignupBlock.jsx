@@ -20,7 +20,7 @@ const SignupBlock = (props) => {
 		email:  "",
 		password:  "",
 		tel:  "",
-		contry: ""
+		contry: "cameroun"
 	}
 
 	// state variables
@@ -28,9 +28,10 @@ const SignupBlock = (props) => {
 	const [checkTermsUses, setCheckTermsUses] = useState(false)
 	const [error, setError] = useState("")
 
-	//handler definition
+	//handler
 	const handleChange = (event) => {
 		setUserData({...signupData, [event.target.id]:[event.target.value]})
+		setError("")
 	}
 
 	const handleCheck = (event) => {
@@ -38,7 +39,14 @@ const SignupBlock = (props) => {
 	}
 
 	const handleSubmit = (event) => {
-		/*todo*/
+		event.preventDefault()
+		console.log("soumission du formulaire....")
+		setError("Ceci est le message d'erreur si l'on essaie d'envoyer un formulaire qui n'est pas bien remplit")
+	}
+
+	//fonctions
+	const validateUserName = (name) => {
+		{/* to do*/}
 	}
 
 	const {
@@ -50,21 +58,8 @@ const SignupBlock = (props) => {
 		contry
 	} = signupData
 
-	const btnValidateForm = fullName === "" || userName === "" || email === "" || password === "" || tel === "" || contry === "" 
-	? (
-		<Link
-			to=""
-			type="submit"
-			disabled="true"
-			className="disabled:bg-gray-500 disabled:text-gray-500 disabled:border-gray-200 disabled:shadow-none
-      invalid:border-pink-500 invalid:text-pink-600
-      focus:invalid:border-pink-500 focus:invalid:ring-pink-500 w-full  px-2 py-2 lg:px-3 lg:py-4 text-center  text-base md:text-xl rounded" 
-			>
-			créer mon compte
-		</Link>) : (
-			<Paragraphe>hello</Paragraphe>
-		)
-
+	const disabled = fullName === "" || userName === "" || email === "" || password === "" || tel === "" || contry === "" || !checkTermsUses
+	const errorMsg = error && <Paragraphe classe="text-red-600 pt-5 md:pt-10 lg:pt-5">{error}</Paragraphe>
 
 	return(
 		<div className="signup-block px-3 md:px-4 bg-primary w-full h-screen">
@@ -85,6 +80,8 @@ const SignupBlock = (props) => {
 							<BsArrowRight className="font-extrabold" />
 						</p>
 				</div>
+
+				{ errorMsg }
 
 				<div className="center-signup  p-3 flex  items-center w-full lg:space-x-4 bg-white rounded-lg mt-5">
 					<div className="relative hidden lg:block bg-repeat w-1/2 bg-primary rounded-lg text-white font-primary py-8 px-10" style={{backgroundImage: `url(${authSvg})`}}>
@@ -120,7 +117,7 @@ const SignupBlock = (props) => {
 						</div>
 					</div>
 
-					<from className="w-full lg:w-1/2 ">
+					<form className="w-full lg:w-1/2 " onSubmit={handleSubmit}>
 						<H1 className="">
 							Creer<br className="hidden lg:block" /> votre compte
 						</H1>
@@ -213,19 +210,18 @@ const SignupBlock = (props) => {
 								<Paragraphe>j'accepte les <ALink link="/termsuses">conditions d'utilisations</ALink></Paragraphe>
 							</div>
 
-							<Link
-								to=""
+							<input
 								type="submit"
-								className="w-full bg-primary hover:bg-primary px-2 py-2 lg:px-3 lg:py-4 text-center text-white text-base md:text-xl rounded" 
-								>
-								créer mon compte
-							</Link>
+								disabled={disabled}
+								value="créer mon compte"
+								className="disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed w-full bg-primary hover:bg-primary-hover px-2 py-2 lg:px-3 lg:py-4 text-center text-white text-base md:text-xl rounded" 
+							/>
 
 							<Paragraphe classe="flex justify-end">
 								deja inscrit? <ALink link="/signin" classe="inline-block ml-2">connectez vous</ALink>
 							</Paragraphe>
 						</div>
-					</from>
+					</form>
 				</div>
 			</Container>
 		</div>
