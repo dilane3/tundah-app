@@ -25,11 +25,16 @@ const SignupBlock = (props) => {
 
 	// state variables
 	const [signupData, setUserData] = useState(initialSignupData)
+	const [checkTermsUses, setCheckTermsUses] = useState(false)
 	const [error, setError] = useState("")
 
 	//handler definition
 	const handleChange = (event) => {
 		setUserData({...signupData, [event.target.id]:[event.target.value]})
+	}
+
+	const handleCheck = (event) => {
+		setCheckTermsUses(!checkTermsUses)
 	}
 
 	const handleSubmit = (event) => {
@@ -44,6 +49,21 @@ const SignupBlock = (props) => {
 		tel,
 		contry
 	} = signupData
+
+	const btnValidateForm = fullName === "" || userName === "" || email === "" || password === "" || tel === "" || contry === "" 
+	? (
+		<Link
+			to=""
+			type="submit"
+			disabled="true"
+			className="disabled:bg-gray-500 disabled:text-gray-500 disabled:border-gray-200 disabled:shadow-none
+      invalid:border-pink-500 invalid:text-pink-600
+      focus:invalid:border-pink-500 focus:invalid:ring-pink-500 w-full  px-2 py-2 lg:px-3 lg:py-4 text-center  text-base md:text-xl rounded" 
+			>
+			créer mon compte
+		</Link>) : (
+			<Paragraphe>hello</Paragraphe>
+		)
 
 
 	return(
@@ -154,7 +174,7 @@ const SignupBlock = (props) => {
 								/>
 							</div>
 
-							<div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4">
+							<div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4">
 								<div className="w-full">
 									<Input
 									type="tel"
@@ -166,11 +186,17 @@ const SignupBlock = (props) => {
 									/>
 								</div>
 								<div className="w-full">
-									<select name="pets" id="pet-select" className="w-full py-2 px-3 lg:py-3 bg-white  text-primary text-sx md:text-sm rounded md:rounded-lg border-2 border-primary focus:outline-none">
-									    <option value="dog">Cameroun</option>
-									    <option value="cat">Gabon</option>
-									    <option value="hamster">Nigeria</option>
-									    <option value="parrot">Cote d'ivoire</option>
+									<select 
+										name="contry" 
+										id="contry"
+										value={contry}
+										onChange={handleChange} 
+										className="w-full py-2 px-3 lg:py-3 bg-white  text-primary text-sx md:text-sm rounded md:rounded-lg border-2 border-primary focus:outline-none"
+									>
+									    <option value="cameroun">Cameroun</option>
+									    <option value="gabon">Gabon</option>
+									    <option value="nigeria">Nigeria</option>
+									    <option value="tchad">Tchad</option>
 									</select>
 
 								</div>
@@ -178,7 +204,10 @@ const SignupBlock = (props) => {
 
 							<div className="flex items-center space-x-2">
 								<input 
-									type="checkbox" 
+									type="checkbox"
+									id="termsUses"
+									checked={checkTermsUses}
+									onChange={handleCheck}
 									className="border-2 border-primary w-3 h-3 rounded-full checked:bg-blue-500" 
 								/>
 								<Paragraphe>j'accepte les <ALink link="/termsuses">conditions d'utilisations</ALink></Paragraphe>
@@ -186,6 +215,7 @@ const SignupBlock = (props) => {
 
 							<Link
 								to=""
+								type="submit"
 								className="w-full bg-primary hover:bg-primary px-2 py-2 lg:px-3 lg:py-4 text-center text-white text-base md:text-xl rounded" 
 								>
 								créer mon compte
