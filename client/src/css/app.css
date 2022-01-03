@@ -3,3 +3,40 @@
 body{
 	/*background: red;*/
 }
+
+/* SIGNUP  */
+
+.african-women{
+	width: 400px;
+	height: 500px;
+	pointer-events: none
+}
+
+
+
+.ours-mission{
+	position: absolute;
+	top: 52%;
+	right: 60px;
+	display: block;
+}
+
+@media screen and (max-width: 1200px ){
+	.african-women{
+		width: 300px;
+		height: 350px;
+		margin-top: 60px !important;
+
+	}
+
+	
+}
+
+@media screen and (min-width: 1027px ){
+	.center-signup{
+		position: absolute;
+		top: 48%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+}
