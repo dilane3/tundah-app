@@ -94,7 +94,8 @@ class Subscriber {
         password,
         date,
         role,
-        profil
+        profil,
+        posts
       } = data
     
       this.id = id
@@ -105,6 +106,7 @@ class Subscriber {
       this.date = date
       this.role = role
       this.profil = profil
+      this.posts = posts
     }
   }
 
@@ -134,8 +136,10 @@ class Subscriber {
    * This method allow a user to like a post
    * @param {string} idPost 
    */
-  likePost(idPost) {
-    // to do
+  async likePost(idPost) {
+    const post = new Post()
+
+    return (await post.likePost(idPost, this.getId))
   }
 
   /**

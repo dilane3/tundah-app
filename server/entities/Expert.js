@@ -13,9 +13,7 @@ class Expert extends Subscriber {
   async createPost(content, files_list, region, tribe) {
     const post = new Post()
 
-    const {data, error} = await post.publishPost({content, files_list, region, tribe}, this.getId)
-  
-    return {data, error}
+    return (await post.publishPost({content, files_list, region, tribe}, this.getId))
   }
 
   /**
@@ -36,8 +34,10 @@ class Expert extends Subscriber {
    * This method allow an use expert to validate a post
    * @param {string} idPost 
    */
-  validatePost(idPost) {
-    // to do
+  async validatePost(idPost) {
+    const post = new Post()
+
+    return (await post.validatePost(idPost, this.getId))
   }
 }
 

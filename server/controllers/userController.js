@@ -30,6 +30,19 @@ class UserController {
     }
   }
 
+  static test = (req, res) => {
+    res.send("Hello")
+  }
+
+  static getCurrentUser = async (req, res) => {
+    console.log("hello")
+    const user = req.user
+
+    console.log({user})
+
+    return res.status(200).json(user)
+  }
+
   static signup = async (req, res) => {
     const {name, username, email, password, role} = req.body
 
@@ -63,7 +76,7 @@ class UserController {
               role
             }
   
-            const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: "120 min"})
+            const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: "480 min"})
   
             return res.status(201).json({...data, token})
           } else {
