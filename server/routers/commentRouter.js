@@ -13,7 +13,7 @@ const {
 } = CommentController
 
 commentRouter.get("/:id", getComment)
-commentRouter.get("/:idPost", authenticationMiddleware, getAllComments)
+commentRouter.get("/allcomments/:idPost", authenticationMiddleware,getAllComments)
 commentRouter.post("/create", authenticationMiddleware, createComment)
 commentRouter.patch("/update/:id", authenticationMiddleware, updateComment)
 commentRouter.delete("/delete/:id", authenticationMiddleware, deleteComment)

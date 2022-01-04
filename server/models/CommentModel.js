@@ -44,23 +44,27 @@ class CommentModel extends InterfaceCommentModel {
 
   /**
    * This method retrieves all the avalaible comments that belongs to a specific post
+   *  * @param {string} idPost
    */
-   async getAllComments() {
+   async getAllComments(idPost) {
     const session = dbConnect();
 
     try {
       const query = `
-        MATCH (post:Post{id: $id}) - [HAS_COMMENTS] -> (comment:Comment)
+        MATCH (post:Post{id: $idPost}) - [HAS_COMMENTS] -> (comment:Comment)
         RETURN comment
       `;
-      const result = await session.run(query);
-
+      const result = await session.run(query,{
+        idPost
+      });
+      console.log("texte")
       const commentData = result.records.map((record) => {
         return record.get("comment").properties;
       });
 
       return { data: commentData };
     } catch (err) {
+      console.log(error)
       return { error: "Error while getting the comments" };
     } finally {
       await session.close();

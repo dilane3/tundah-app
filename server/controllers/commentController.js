@@ -49,7 +49,7 @@ class CommentController {
     if (idPost) {
       const commentModel = new CommentModel();
 
-      const {data, error} = await commentModel.getAllComments();
+      const {data, error} = await commentModel.getAllComments(idPost);
 
       if (data !== undefined) {
         res.status(200).json(data)
