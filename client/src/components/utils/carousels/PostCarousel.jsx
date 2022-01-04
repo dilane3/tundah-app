@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Slider from "react-slick"
+import Slider from "slick-carousel"
 const PostCarousel = () => {
   const settings = {
     dots: true,

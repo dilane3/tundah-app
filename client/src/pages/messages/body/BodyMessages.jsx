@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import Navbar1 from '../../../components/marketing/navbar/Navbar1'
+import Navbar from '../../../components/marketing/navbar/Navbar'
 import Loader from '../../../components/utils/Loader'
 
 
@@ -16,7 +16,7 @@ const BodyMessages = () => {
 
 	return(
 		<>
-		 <Navbar1 />
+		 <Navbar />
 		 	page des messages{/* delete this line and you can import and add other page sections here */}
 		 { showLoader && <Loader /> }{/* vous pouvez aussi supprimer ce loader c'est juste la pour vous montrer qu'il est monte */}
 

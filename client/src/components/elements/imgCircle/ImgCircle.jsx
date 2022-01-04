@@ -1,15 +1,9 @@
 import React from 'react'
+import {Image} from 'react-image-progressive-loading'
+import styles from './imgCircle.module.css'
 
-const ImgCircle = (props) => {
-
-	let { 
-			src, 
-			alt,
-			size,
-			classe 
-		} = props
-
-	let dimention
+const ImgCircle = ({src, alt, size, classe}) => {
+	let dimention;
 
 	if(size === "small"){
 		dimention = "w-12 h-12"
@@ -22,11 +16,11 @@ const ImgCircle = (props) => {
 	}
 
 	return(
-		<img 
-			src={src} 
-			alt={alt}
-			className={`${classe} ${dimention} rounded-full`}
-			/>
+		<Image 
+			image={src} 
+			alt={alt} 
+			className={`${classe} ${dimention} ${styles.defaultStyle} rounded-full`}
+		/>
 	)
 }
 

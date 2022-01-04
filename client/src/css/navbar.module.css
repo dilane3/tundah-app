@@ -1,0 +1,24 @@
+/* logo section */
+.headerLogo span {
+  font-size: 34px;
+  font-weight: 800;
+}
+
+/* search engine section */
+.headerSearchEngine input{
+  width: calc(100% - 20px);
+  font-size: 16px;
+}
+
+/* icons section */
+.headerProfilIcon {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.headerProfilIcon svg {
+  margin-left: 5px;
+  font-size: 1.4rem;
+}
