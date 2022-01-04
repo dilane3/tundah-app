@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from '../../../css/navbar.module.css'
 import Input from '../../elements/input/Input'
-import {BsChevronDown} from 'react-icons/bs'
+import {BsChevronDown, BsSearch, BsJustify} from 'react-icons/bs'
 import ImgCircle from '../../elements/imgCircle/ImgCircle'
 
 const image = require("../../../medias/img/test.jpg")
@@ -11,6 +11,9 @@ const Navbar = ({className}) => {
 	return(
 		<header className={className}>
 			<div className={styles.headerLogo}>
+				<div className={styles.headerMenuIcon}>
+					<BsJustify />
+				</div>
 				<span>Tundah</span>
 			</div>
 			<div className={styles.headerSearchEngine}>
@@ -18,6 +21,10 @@ const Navbar = ({className}) => {
 					type="search"
 					placeholder="Faites une recherche..."	
 				/>
+
+				<div className={styles.headerSearchEngineIcon}>
+					<BsSearch />
+				</div>
 			</div>
 			<div className={styles.headerProfil}>
 				<div className={styles.headerProfilIcon}>

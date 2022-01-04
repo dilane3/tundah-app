@@ -14,14 +14,6 @@ body {
   background-color: #fff;
 }
 
-.header > div {
-  width: calc(100% / 3);
-  /* border: 1px solid black; */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .container {
   width: calc(100%);
   height: calc(100vh - 100px);
