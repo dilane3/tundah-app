@@ -3,6 +3,7 @@ import Navbar1 from '../../../components/marketing/navbar/Navbar1'
 import Loader from '../../../components/utils/Loader'
 import signupImg from '../../../medias/img/signup-img.png'
 import Post from '../../../components/marketing/pageSections/social/Post'
+import PostCarousel from '../../../components/utils/carousels/PostCarousel'
 
 const BodySocial = () => {
 
@@ -19,6 +20,7 @@ const BodySocial = () => {
 		<>
 		 <Navbar1 />
 		 <Post />
+		 <PostCarousel />
 		 { showLoader && <Loader /> }{/* vous pouvez aussi supprimer ce loader c'est juste la pour vous montrer qu'il est monte */}
 		 
 		</> 

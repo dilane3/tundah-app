@@ -1,9 +1,8 @@
 import React, { Fragment } from 'react'
 import { AiOutlineEdit } from "react-icons/ai"
-
 import { Menu, Transition } from '@headlessui/react'
-import { BsThreeDotsVertical } from "react-icons/bs"
-
+import { MdOutlineMailOutline } from "react-icons/md"
+import { BsThreeDotsVertical, BsArchive } from "react-icons/bs"
 
 
 const SocialPostDropdown = ({ dropElt }) => {
@@ -33,7 +32,7 @@ const SocialPostDropdown = ({ dropElt }) => {
                     active ? 'bg-gray-100 text-primary' : 'text-gray-900'
                   } group flex items-center space-x-2 w-full px-2 py-2 text-sm`}
                 >
-                  <AiOutlineEdit size="22" />
+                  <AiOutlineEdit size="25" className="icon" />
                   <span>Editer le post</span>
                 </button>
               )}
@@ -45,10 +44,10 @@ const SocialPostDropdown = ({ dropElt }) => {
                 <button
                   className={`${
                     active ? 'bg-gray-100 text-primary' : 'text-gray-900'
-                  } group flex items-center w-full px-2 py-2 text-sm`}
+                  } group flex items-center space-x-3 w-full px-2 py-2 text-sm`}
                 >
-                  
-                  Move
+                  <BsArchive size="20" className="icon" />
+                  <span>archiver</span>
                 </button>
               )}
             </Menu.Item>
@@ -59,10 +58,10 @@ const SocialPostDropdown = ({ dropElt }) => {
                 <button
                   className={`${
                     active ? 'bg-gray-100 text-primary' : 'text-gray-900'
-                  } group flex items-center w-full px-2 py-2 text-sm`}
+                  } group flex items-center space-x-2 w-full px-2 py-2 text-sm`}
                 >
-                 
-                  Delete
+                 <MdOutlineMailOutline size="25" className="icon" />
+                  <span>Message privé</span>
                 </button>
               )}
             </Menu.Item>
