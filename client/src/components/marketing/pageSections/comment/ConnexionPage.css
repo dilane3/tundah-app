@@ -1,0 +1,12 @@
+.Content{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 350px;
+    width: 50%;
+}
+h1{
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+}
