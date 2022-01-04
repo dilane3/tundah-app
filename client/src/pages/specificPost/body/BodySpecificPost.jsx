@@ -6,10 +6,9 @@ const BodySpecificPost = () => {
 
 
 	return(
-		<>
-		 <Navbar />
-			detail d'un post avec ses commentaires{/* import and add other page sections here */}
-		</> 
+		<section>
+			Specific post page
+		</section>
 	)
 }
 

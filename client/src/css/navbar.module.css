@@ -2,7 +2,8 @@
 .headerLogo {
   width: calc(100% / 3);
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-left: 100px;
   align-items: center;
 }
 
@@ -47,7 +48,8 @@
 .headerProfil {
   width: calc(100% / 3);
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
+  padding-right: 100px;
   align-items: center;
 }
 
@@ -68,6 +70,11 @@
 @media screen and (max-width: 800px) {
   .headerProfil {
     width: 150px;
+    padding-right: 20px;
+  }
+
+  .headerLogo {
+    padding-left: 20px;
   }
 
   .headerSearchEngine,
@@ -91,8 +98,6 @@
 
   div.headerProfil {
     width: 130px;
-    justify-content: flex-end;
-    padding-right: 20px;
   }
 
   .headerSearchEngine {
@@ -101,7 +106,8 @@
   }
 
   div.headerLogo {
-    justify-content: "flex-end";
+    justify-content: "flex-start";
+    padding-left: 20px;
     width: auto;
   }
 

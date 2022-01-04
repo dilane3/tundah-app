@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import Aside from '../components/marketing/aside/Aside'
 import Navbar from '../components/marketing/navbar/Navbar'
 import styles from '../css/base.module.css'
 
@@ -11,7 +12,8 @@ const Base = ({children}) => {
         <section className={styles.mainSection}>
           {children}
         </section>
-        <section className={styles.asideSection}></section>
+
+        <Aside className={styles.asideSection} />
       </section>
     </Fragment>
   )

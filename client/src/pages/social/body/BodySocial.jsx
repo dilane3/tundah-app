@@ -17,7 +17,9 @@ const BodySocial = () => {
 	}, [])
 
 	return(
-		<p>Hello world</p>
+		<section>
+			Social page
+		</section>
 	)
 }
 
