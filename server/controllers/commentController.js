@@ -44,6 +44,7 @@ class CommentController {
    * */
   static getAllComments = async (req, res) => {
     const {idPost} = req.params;
+    console.log(idPost)
     if (idPost) {
       const commentModel = new CommentModel();
 

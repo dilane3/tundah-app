@@ -8,7 +8,8 @@ import { validateEmail } from "../utils/validator.js"
 config()
 
 const {
-  SECRET_CODE_TOKEN
+  SECRET_CODE_TOKEN,
+  EXPIRE_IN
 } = process.env
 
 class UserController {
@@ -31,7 +32,6 @@ class UserController {
   }
 
   static getCurrentUser = async (req, res) => {
-    console.log("hello")
     const user = req.user
 
     return res.status(200).json({...user, password: undefined})
@@ -71,7 +71,7 @@ class UserController {
               role
             }
   
-            const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: "480 min"})
+            const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: `${EXPIRE_IN} min`})
   
             return res.status(201).json({...data, token, password: undefined})
           } else {
@@ -104,10 +104,11 @@ class UserController {
             email: user.email,
             role: user.role
           }
-          const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: "120 min"})
+          const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: `${EXPIRE_IN} min`})
 
           return res.status(200).json({...user, token, password: undefined})
         } else {
+          console.log({username, password})
           return res.status(500).json(error)
         }
       } else {
@@ -131,24 +132,40 @@ class UserController {
     console.log("Hello")
 
     if (name && username && email && password && country) {
-      const {data, error} = await user.dataManager.updateUser(
-        user.getId, 
-        name, 
-        username, 
-        email, 
-        password, 
-        country
-      )
+      // used for hashing password
+      const saltRounds = 10;
+  
+      bcrypt.hash(password.toLowerCase(), saltRounds, async (err, hash) => {
+        if (err)
+          return res.sendStatus(500)
 
-      if (data !== undefined) {
-        return res.status(200).json(data)
-      } else {
-        if (data === null) {
-          return res.status(404).json({message: "User not found"})
+        const {data, error} = await user.dataManager.updateUser(
+          user.getId, 
+          name, 
+          username, 
+          email, 
+          hash, 
+          country
+        )
+
+        if (data !== undefined) {
+          const payload = {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            role: user.role
+          }
+          const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: `${EXPIRE_IN} min`})
+
+          return res.status(200).json({...data, token, password: undefined})
+        } else {
+          if (data === null) {
+            return res.status(404).json({message: "User not found"})
+          }
+
+          return res.status(500).json(error)
         }
-
-        return res.status(500).json(error)
-      }
+      })
     } else {
       return res.status(400).json({message: "Provide all the required data"})
     }

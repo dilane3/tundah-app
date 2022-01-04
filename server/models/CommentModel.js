@@ -41,6 +41,32 @@ class CommentModel extends InterfaceCommentModel {
     }
   }
 
+  async getCommentsAuthor(result) {
+    const session = dbConnect()
+
+    try {
+      const comments = []
+
+      for (let record of result.records) {
+        const comment = record.get("comment").properties
+        let query = `
+          MATCH (comment:Comment{id: $id}) -[:COMMENTED_BY]-> (user:Subscriber)
+          RETURN user
+        `
+        const response = await session.run(query, {id: comment.id})
+
+        comments.push({...comment, idAuthor: response.records[0].get("user").properties.id})
+      }
+
+      return comments
+    } catch (err) {
+      console.log(err)
+      return null
+    } finally {
+      session.close()
+    }
+  }
+
   /**
    * This method retrieves all the avalaible comments that belongs to a specific post
    *  * @param {string} idPost
@@ -56,14 +82,19 @@ class CommentModel extends InterfaceCommentModel {
       const result = await session.run(query,{
         idPost
       });
-      console.log("texte")
-      const commentData = result.records.map((record) => {
-        return record.get("comment").properties;
-      });
+
+      let commentData = (await this.getCommentsAuthor(result))
+      console.log(commentData)
+
+      if (!commentData) {
+        commentData = result.records.map((record) => {
+          return record.get("comment").properties;
+        });
+      }
 
       return { data: commentData };
     } catch (err) {
-      console.log(error)
+      console.log(err)
       return { error: "Error while getting the comments" };
     } finally {
       await session.close();
