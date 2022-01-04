@@ -30,26 +30,36 @@ class CommentController {
   }
   // Algorithm
   /**
-   * we create a new commentModel object
-   * then we use it to retrieve all the comments with the getAllComments method
-   * we use retrieve this in data and error
-   * if data is not undefined
-   * * we return the data
+   * we get the post id from the url
+   * we verify if the id post is found
+   * *we create a new commentModel object
+   * *then we use it to retrieve all the comments with the getAllComments method
+   * *we use retrieve this in data and error
+   * *if data is not undefined
+   * * *we return the data
+   * *else
+   * * *we return the error
    * else
-   * * we return the error
+   * *we send and error message
    * @param {*} req
    * @param {*} res
    * */
-  static getAllComment = async (req, res) => {
-    const commentModel = new CommentModel();
+  static getAllComments = async (req, res) => {
+    const {idPost} = req.params;
+    if (idPost) {
+      const commentModel = new CommentModel();
 
-    const {data, error} = await commentModel.getAllComments();
+      const {data, error} = await commentModel.getAllComments();
 
-    if (data !== undefined) {
-      res.status(200).json(data)
+      if (data !== undefined) {
+        res.status(200).json(data)
+      } else {
+        res.status(404).json(error)
+      }
     } else {
-      res.status(404).json(error)
+      res.status(500).json({message: "Provide an id post"})
     }
+    
 
   }
 
