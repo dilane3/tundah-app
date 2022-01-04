@@ -30,6 +30,31 @@ class CommentController {
   }
   // Algorithm
   /**
+   * we create a new commentModel object
+   * then we use it to retrieve all the comments with the getAllComments method
+   * we use retrieve this in data and error
+   * if data is not undefined
+   * * we return the data
+   * else
+   * * we return the error
+   * @param {*} req
+   * @param {*} res
+   * */
+  static getAllComment = async (req, res) => {
+    const commentModel = new CommentModel();
+
+    const {data, error} = await commentModel.getAllComments();
+
+    if (data !== undefined) {
+      res.status(200).json(data)
+    } else {
+      res.status(404).json(error)
+    }
+
+  }
+
+  // Algorithm
+  /**
    * we first delete the id send by the form
    * then we retrieve the infos from the form body
    * we create a new commentModel Object

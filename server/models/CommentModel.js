@@ -61,7 +61,7 @@ class CommentModel extends InterfaceCommentModel {
 
       return { data: commentData };
     } catch (err) {
-      return { error: "Error while getting the posts" };
+      return { error: "Error while getting the comments" };
     } finally {
       await session.close();
     }
