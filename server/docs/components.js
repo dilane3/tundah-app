@@ -1,5 +1,13 @@
 export default {
   components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: "apiKey",
+        name: "authorization",
+        scheme: "bearer",
+        in: "header",
+      },
+    },
     schemas: {
       // user id model
       idUser: {
@@ -80,7 +88,7 @@ export default {
             description: "Content of the post",
             example: "Wedding in the west region..."
           },
-          files_type: {
+          files_list: {
             type: "array",
             items: {
               type: "string",
@@ -279,14 +287,14 @@ export default {
       }
     },
 
-    securityDefinitions: {
-      securitySchemes: {
-        bearerAuth: {
-          type: "http",
-          scheme: "bearer",
-          bearerFormat: "JWT" 
-        }
-      }
-    }
+    // securityDefinitions: {
+    //   securitySchemes: {
+    //     bearerAuth: {
+    //       type: "http",
+    //       scheme: "bearer",
+    //       bearerFormat: "JWT" 
+    //     }
+    //   }
+    // }
   }
 }

@@ -11,6 +11,14 @@ export default {
   ...servers,
   ...tags,
   ...components,
+  security: [
+    {
+      bearerAuth: {
+        type: "http",
+        scheme: "bearer",
+      },
+    }
+  ],
   paths: {
     ...users.paths,
     ...posts.paths,

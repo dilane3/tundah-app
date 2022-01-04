@@ -13,11 +13,11 @@ export default {
       ...createComment
     },
 
-    "/comments/update/:id": {
+    "/comments/update/{id}": {
       ...updateComment
     },
 
-    "/comments/delete/:id": {
+    "/comments/delete/{id}": {
       ...deleteComment
     }
   }

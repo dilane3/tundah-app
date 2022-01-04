@@ -82,6 +82,7 @@ class PostController {
     const { content, files_list, region, tribe } = req.body;
 
     const user = req.user;
+    console.log(user)
 
     if (content && region && tribe) {
       const { data, error } = await user.createPost(

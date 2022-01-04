@@ -23,7 +23,8 @@ class PostModel extends InterfacePostModel {
         MATCH (post:Post {id: $id})
         RETURN post
       `;
-      const result = await session.run(query, { id: id });
+      const result = await session.run(query, { id });
+      console.log({id})
 
       if (result.records.length > 0) {
         const postData = result.records[0].get("post").properties;
@@ -155,7 +156,7 @@ class PostModel extends InterfacePostModel {
         const postData = await this.gettingMoreInfos(result, "posts")
   
         if (postNumber > skip + limit) {
-          return {data: {data: postData, next: true, skip: skip+limit}};
+          return {data: {data: postData, next: true, skip: Number(skip+limit)}};
         } else {
           return {data: {data: postData, next: false, skip}};
         }
@@ -240,14 +241,14 @@ class PostModel extends InterfacePostModel {
 
       const result = await session.run(query, {
         id: nanoid(20),
-        content: content,
+        content,
         creation_date: Date.now(),
         modification_date: Date.now(),
-        files_list: files_list,
-        published: published,
-        region: region,
-        tribe: tribe,
-        idUser: idUser,
+        files_list,
+        published,
+        region,
+        tribe,
+        idUser,
       });
 
       if (result.records.length > 0) {

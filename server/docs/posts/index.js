@@ -8,31 +8,31 @@ import validatePost from "./validatePost.js";
 
 export default {
   paths: {
-    '/posts/': {
-      ...getAllPost
+    '/posts/{id}': {
+      ...getPost
     },
 
-    '/posts/:id': {
-      ...getPost
+    '/posts/': {
+      ...getAllPost
     },
 
     '/posts/create': {
       ...createPost
     },
 
-    '/posts/like/:id': {
+    '/posts/like/{id}': {
       ...likePost
     },
 
-    '/posts/delete/:id': {
+    '/posts/delete/{id}': {
       ...deletePost
     },
 
-    '/posts/update/:id': {
+    '/posts/update/{id}': {
       ...updatePost
     },
 
-    '/posts/validate/:id': {
+    '/posts/validate/{id}': {
       ...validatePost
     }
   }

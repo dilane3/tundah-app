@@ -109,6 +109,8 @@ class Post extends InterfacePost {
       userId
     );
 
+    console.log(datas)
+
     return { data, error };
   }
 

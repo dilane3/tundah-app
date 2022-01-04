@@ -11,7 +11,7 @@ export default {
       ...getCurrentUser
     },
 
-    '/users/:id': {
+    '/users/{id}': {
       ...getUser
     },
 
@@ -27,7 +27,7 @@ export default {
       ...updateProfilePhoto
     },
 
-    'users/add_expert': {
+    '/users/add_expert': {
       ...addExpert
     }
   }
