@@ -6,13 +6,19 @@ import './ConnexionPage.css';
 const SecondConnexionPage = () =>{
 
     const[value,setValue]= useState("");
+
     const handleChange = event =>{
         setValue(event.currentTarget.value);
   }
+    const handleSubmit = event => {
+        event.preventDefault();
+		console.log(event.target.email.value) ;
+		console.log(event.target.password.value) ;
+	}
 
     return(
          <div className="Content">
-            <form className="" onSubmit="">
+            <form className=" formulaire" onSubmit={handleSubmit}>
 					 <h1> Authentifiez vous </h1>
                      <div className="w-full flex flex-col space-y-3  mt-6 md:mt-8">
                           <div className="w-full">
@@ -27,7 +33,7 @@ const SecondConnexionPage = () =>{
 							<div className="w-full">
 								<Input
 								type="password"
-								name="Mot de passe"
+								name="password"
 								id="password"
 								onChange={handleChange}
 								placeholder="Mot de passe"
