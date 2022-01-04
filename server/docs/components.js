@@ -54,6 +54,11 @@ export default {
             description: "password of the user",
             example: "john123"
           },
+          country: {
+            type: "string",
+            description: "country of the user",
+            example: "Cameroon"
+          },
           role: {
             type: "number",
             description: "role of the user",

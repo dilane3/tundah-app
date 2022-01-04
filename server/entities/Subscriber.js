@@ -11,6 +11,7 @@ class Subscriber {
   role;
   date;
   profil;
+  country;
   dataManager;
   posts;
 
@@ -81,6 +82,13 @@ class Subscriber {
   }
 
   /**
+   * @returns string
+   */
+  get getCountry() {
+    return this.country
+  }
+
+  /**
    * 
    * @param {Object} data
    * @returns void 
@@ -96,7 +104,8 @@ class Subscriber {
         date,
         role,
         profil,
-        posts
+        posts,
+        country
       } = data
     
       this.id = id
@@ -108,6 +117,7 @@ class Subscriber {
       this.role = role
       this.profil = profil
       this.posts = posts
+      this.country = country
     }
   }
 
