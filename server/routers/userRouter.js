@@ -14,7 +14,8 @@ const {
   deleteUser,
   uploadProfilPhoto,
   addExpert,
-  test
+  uniqueEmail,
+  uniqueUsername
 } = UserController
 
 userRouter.get("/current", authenticationMiddleware, getCurrentUser)
@@ -25,5 +26,7 @@ userRouter.patch("/update", authenticationMiddleware, updateUser)
 userRouter.delete("/delete", deleteUser)
 userRouter.post("/change_profil", authenticationMiddleware, uploadImage.single('profil'), uploadProfilPhoto)
 userRouter.post("/add_expert", authenticationMiddleware, addExpert)
+userRouter.post("/check_email", uniqueEmail)
+userRouter.post("/check_username", uniqueUsername)
 
 export default userRouter

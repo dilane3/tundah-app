@@ -204,7 +204,13 @@ class UserController {
     if (email) {
       const userModel = new UserModel()
 
-      // to do
+      const {data, error} = await userModel.verifyUnicity(email, "email")
+
+      if (data !== undefined) {
+        return res.status(200).json({data})
+      } else {
+        return res.status(500).json(error)
+      }
     } else {
       return res.status(400).json({message: "Provide an email address"})
     }
@@ -216,7 +222,13 @@ class UserController {
     if (username) {
       const userModel = new UserModel()
 
-      // to do
+      const {data, error} = await userModel.verifyUnicity(username, "username")
+
+      if (data !== undefined) {
+        return res.status(200).json({data})
+      } else {
+        return res.status(500).json(error)
+      }
     } else {
       return res.status(400).json({message: "Provide an username"})
     }
