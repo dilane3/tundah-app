@@ -43,6 +43,31 @@ class CommentModel extends InterfaceCommentModel {
   }
 
   /**
+   * This method retrieves all the avalaible comments that belongs to a specific post
+   */
+   async getAllComments() {
+    const session = dbConnect();
+
+    try {
+      const query = `
+        MATCH (post:Post{id: $id}) - [HAS_COMMENTS] -> (comment:Comment)
+        RETURN comment
+      `;
+      const result = await session.run(query);
+
+      const commentData = result.records.map((record) => {
+        return record.get("comment").properties;
+      });
+
+      return { data: commentData };
+    } catch (err) {
+      return { error: "Error while getting the posts" };
+    } finally {
+      await session.close();
+    }
+  }
+
+  /**
   * This method create a new comment
   * @param {string} content
   *  @param {boolean} edited
