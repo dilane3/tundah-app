@@ -1,0 +1,36 @@
+/* mobile menu section */
+.mobileMenuSection {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 280px;
+  height: 100%;
+  background-color: #fff;
+  z-index: 20;
+  transform: translateX(-100%);
+  transition: all .5s;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+}
+
+.mobileMenuSearchEngine {
+  position: relative;
+  padding: 10px;
+}
+
+.mobileMenuSearchEngine input {
+  padding-left: 40px;
+  border-color: #747373;
+}
+
+.mobileMenuSearchEngine svg {
+  font-size: 1.4rem;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  color: #747373;
+}
+
+.mobileMenuAnimation {
+  transform: translateX(0);
+}

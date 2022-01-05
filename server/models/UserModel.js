@@ -49,7 +49,7 @@ class UserModel extends InterfaceUserModel {
    * @param {string} password 
    * @param {0|1} role 
    */
-  async signup({name, username, email, password, role}) {
+  async signup({name, username, email, password, country, role}) {
     const session = dbConnect()
 
     try {
@@ -62,7 +62,8 @@ class UserModel extends InterfaceUserModel {
           password: $password, 
           role: $role,
           date: $date,
-          profil: ''
+          country: $country,
+          profil: 'default.png'
         })
         RETURN user
       `
@@ -72,7 +73,8 @@ class UserModel extends InterfaceUserModel {
         name, 
         username, 
         email, 
-        password, 
+        password,
+        country,
         role,
         date: Date.now()
       })
@@ -159,9 +161,45 @@ class UserModel extends InterfaceUserModel {
    * @param {string} username 
    * @param {string} email 
    * @param {string} password 
+   * @param {string} country 
    */
-  async updateUser (id, name, username, email, password) {
-    // to do
+  async updateUser (id, name, username, email, password, country) {
+    const session = dbConnect()
+
+    try {
+      const query = `
+        MATCH (user:Subscriber{id: $id})
+        SET
+          user.name = $name,
+          user.username = $username,
+          user.email = $email,
+          user.password = $password,
+          user.country = $country
+        RETURN user
+      `
+
+      const result = await session.run(query, {
+        id,
+        name,
+        username,
+        email,
+        password,
+        country
+      })
+
+      if (result.records.length > 0) {
+        const userData = result.records[0].get("user").properties
+
+        return {data: userData}
+      } else {
+        return {data: null}
+      }
+    } catch(err) {
+      console.log(err)
+      return {error: "Error while updating a user"}
+    } finally {
+      await session.close()
+    }
   }
 
   /**
@@ -169,6 +207,8 @@ class UserModel extends InterfaceUserModel {
    * @param {string} id 
    */
   async deleteUser (id) {
+    const session = dbConnect()
+
     // to do
   }
 
@@ -200,6 +240,38 @@ class UserModel extends InterfaceUserModel {
       }
     } catch (err) {
       return {error: "Error occurs while adding an expert user"}
+    } finally {
+      await session.close()
+    }
+  }
+
+  async verifyUnicity(property, type) {
+    const session = dbConnect()
+
+    try {
+      let query = ''
+
+      if (type === 'email') {
+        query = `
+          MATCH (user:Subscriber{email: $property})
+          RETURN user
+        `
+      } else {
+        query = `
+          MATCH (user:Subscriber{username: $property})
+          RETURN user
+        `
+      }
+
+      const result = await session.run(query, {property})
+
+      if (result.records.length > 0) {
+        return {data: true}
+      } else {
+        return {data: false}
+      }
+    } catch (err) {
+      return {error: "Error occured while checking the unicity of the user"}
     } finally {
       await session.close()
     }

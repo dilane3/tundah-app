@@ -8,7 +8,8 @@ import { validateEmail } from "../utils/validator.js"
 config()
 
 const {
-  SECRET_CODE_TOKEN
+  SECRET_CODE_TOKEN,
+  EXPIRE_IN
 } = process.env
 
 class UserController {
@@ -21,7 +22,7 @@ class UserController {
       const {data, error} = await user.dataManager.getUser(id)
 
       if (data !== undefined) {
-        res.json(data)
+        res.json({...data, password: undefined})
       } else {
         res.json(error)
       }
@@ -30,23 +31,16 @@ class UserController {
     }
   }
 
-  static test = (req, res) => {
-    res.send("Hello")
-  }
-
   static getCurrentUser = async (req, res) => {
-    console.log("hello")
     const user = req.user
 
-    console.log({user})
-
-    return res.status(200).json(user)
+    return res.status(200).json({...user, password: undefined})
   }
 
   static signup = async (req, res) => {
-    const {name, username, email, password, role} = req.body
+    const {name, username, email, password, country, role} = req.body
 
-    if (name && username && email && password && [0, 1].includes(role)) {
+    if (name && username && email && password && [0, 1].includes(role) && country) {
 
       if (validateEmail(email)) {
         // used for hashing password
@@ -60,7 +54,8 @@ class UserController {
             name: name.toLowerCase(), 
             username: username.toLowerCase(), 
             email: email.toLowerCase(), 
-            password: hash, 
+            password: hash,
+            country,
             role
           }
   
@@ -76,9 +71,9 @@ class UserController {
               role
             }
   
-            const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: "480 min"})
+            const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: `${EXPIRE_IN} min`})
   
-            return res.status(201).json({...data, token})
+            return res.status(201).json({...data, token, password: undefined})
           } else {
             return res.status(500).json(error)
           }
@@ -87,7 +82,7 @@ class UserController {
         return res.status(500).json({message: "Your email adress is in the wrong format"})
       }
     } else {
-      return res.sendStatus(500)
+      return res.status(500).json({message: "Provide all the required data"})
     }
   }
 
@@ -109,10 +104,11 @@ class UserController {
             email: user.email,
             role: user.role
           }
-          const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: "120 min"})
+          const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: `${EXPIRE_IN} min`})
 
-          return res.status(200).json({...user, token})
+          return res.status(200).json({...user, token, password: undefined})
         } else {
+          console.log({username, password})
           return res.status(500).json(error)
         }
       } else {
@@ -123,11 +119,61 @@ class UserController {
     }
   }
 
-  static updateUser = (req, res) => {
-    // to do
+  static updateUser = async (req, res) => {
+    const user = req.user
+    const {
+      name, 
+      username, 
+      email, 
+      password, 
+      country
+    } = req.body
+
+    console.log("Hello")
+
+    if (name && username && email && password && country) {
+      // used for hashing password
+      const saltRounds = 10;
+  
+      bcrypt.hash(password.toLowerCase(), saltRounds, async (err, hash) => {
+        if (err)
+          return res.sendStatus(500)
+
+        const {data, error} = await user.dataManager.updateUser(
+          user.getId, 
+          name, 
+          username, 
+          email, 
+          hash, 
+          country
+        )
+
+        if (data !== undefined) {
+          const payload = {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            role: user.role
+          }
+          const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: `${EXPIRE_IN} min`})
+
+          return res.status(200).json({...data, token, password: undefined})
+        } else {
+          if (data === null) {
+            return res.status(404).json({message: "User not found"})
+          }
+
+          return res.status(500).json(error)
+        }
+      })
+    } else {
+      return res.status(400).json({message: "Provide all the required data"})
+    }
   }
 
   static deleteUser = (req, res) => {
+    const user = req.user
+
     // to do
   }
 
@@ -166,6 +212,42 @@ class UserController {
       }
     } else {
       return res.sendStatus(500)
+    }
+  }
+
+  static uniqueEmail = async (req, res) => {
+    const {email} = req.body 
+
+    if (email) {
+      const userModel = new UserModel()
+
+      const {data, error} = await userModel.verifyUnicity(email, "email")
+
+      if (data !== undefined) {
+        return res.status(200).json({data})
+      } else {
+        return res.status(500).json(error)
+      }
+    } else {
+      return res.status(400).json({message: "Provide an email address"})
+    }
+  }
+
+  static uniqueUsername = async (req, res) => {
+    const {username} = req.body 
+
+    if (username) {
+      const userModel = new UserModel()
+
+      const {data, error} = await userModel.verifyUnicity(username, "username")
+
+      if (data !== undefined) {
+        return res.status(200).json({data})
+      } else {
+        return res.status(500).json(error)
+      }
+    } else {
+      return res.status(400).json({message: "Provide an username"})
     }
   }
 }

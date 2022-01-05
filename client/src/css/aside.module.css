@@ -1,0 +1,164 @@
+/* profil card */
+.profilCard {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.profilCardTop {
+  width: 100%;
+  height: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-bottom: 1px solid #7f7f7f;
+}
+
+.profilCardTop > div {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.profilCardTop > span {
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.profilCardTopImage {
+  width: 70px;
+  height: 70px;
+}
+
+.profilCardInfo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 10px;
+  width: 170px;
+}
+
+.profilCardInfo span:nth-child(1) {
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.profilCardInfo span:nth-child(2) {
+  font-size: 14px;
+  color: rgb(48, 47, 47);
+  overflow: hidden;
+}
+
+.profilCardBottom {
+  width: 100%;
+  height: auto;
+  padding: 10px;
+}
+
+.profilCardStats {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  color: #575656;
+  font-size: 14px;
+}
+
+.profilCardStats div {
+  width: calc(100% - 30px);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.profilCardStats div svg {
+  color: #7f7f7f;
+}
+
+.profilCardStats div span {
+  margin-left: 5px;
+}
+
+/* Navigation section */
+.navigationSection {
+  position: sticky;
+  top: 80px;
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 5px;
+}
+
+.navigationItem {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  border-radius: 3px;
+  padding: 10px;
+  color: #3a3939;
+}
+
+.navigationItemActive {
+  color: #fff;
+  background-color: #3c6a46;
+  font-weight: bold;
+}
+
+div.navigationItemActive svg,
+div.navigationItemActive span:nth-child(1) {
+  color: #fff;
+}
+
+.navigationItem svg,
+.navigationItem span:nth-child(1) {
+  font-size: 1.4rem;
+  color: #3a3939;
+}
+
+.navigationItem span:nth-child(2) {
+  margin-left: 10px;
+  font-size: 16px;
+}
+
+/* responsive */
+@media screen and (max-width: 960px) {
+  .profilCardTopImage {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .navigationItem svg,
+  .navigationItem span:nth-child(1) {
+    font-size: 1.2rem;
+    color: #3a3939;
+  }
+
+  .navigationItem span:nth-child(2) {
+    margin-left: 10px;
+    font-size: 14px;
+  }
+
+  .profilCardTopImage {
+    width: 90px;
+    height: 90px;
+  }
+}
