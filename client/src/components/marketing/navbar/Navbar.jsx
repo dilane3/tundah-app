@@ -9,12 +9,12 @@ import NavbarProfilDropdown from '../../utils/dropdowns/NavbarProfilDropdown'
 
 const image = require("../../../medias/img/test.jpg")
 
-const Navbar = ({className}) => {
+const Navbar = ({className, onShowMobileMenu}) => {
 
 	return(
 		<header className={className}>
 			<div className={styles.headerLogo}>
-				<div className={styles.headerMenuIcon}>
+				<div className={styles.headerMenuIcon} onClick={onShowMobileMenu}>
 					<BsJustify />
 				</div>
 				<span>Tundah</span>

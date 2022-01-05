@@ -1,8 +1,6 @@
 import React, { Fragment } from 'react'
-import { AiOutlineEdit } from "react-icons/ai"
 import { Menu, Transition } from '@headlessui/react'
-import { MdOutlineMailOutline } from "react-icons/md"
-import { BsArchive, BsPerson } from "react-icons/bs"
+import { BsPerson, BsBoxArrowRight } from "react-icons/bs"
 
 
 const NavbarProfilDropdown = ({ dropElt }) => {
@@ -47,7 +45,7 @@ const NavbarProfilDropdown = ({ dropElt }) => {
                     active ? 'bg-gray-100 text-primary' : 'text-gray-900'
                   } group flex items-center space-x-2 w-full px-2 py-2 text-sm`}
                 >
-                 <MdOutlineMailOutline size="25" className="icon" />
+                 <BsBoxArrowRight size="25" className="icon" />
                   <span>Deconnexion</span>
                 </button>
               )}

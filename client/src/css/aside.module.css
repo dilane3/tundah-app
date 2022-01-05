@@ -123,12 +123,26 @@ div.navigationItemActive span:nth-child(1) {
 
 /* responsive */
 @media screen and (max-width: 960px) {
-  .profilCardInfo {
-    /* width: 120px; */
-  }
-
   .profilCardTopImage {
     width: 60px;
     height: 60px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .navigationItem svg,
+  .navigationItem span:nth-child(1) {
+    font-size: 1.2rem;
+    color: #3a3939;
+  }
+
+  .navigationItem span:nth-child(2) {
+    margin-left: 10px;
+    font-size: 14px;
+  }
+
+  .profilCardTopImage {
+    width: 90px;
+    height: 90px;
   }
 }

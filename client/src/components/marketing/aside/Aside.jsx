@@ -26,7 +26,7 @@ const ProfilCard = () => {
 
 				<div className={styles.profilCardInfo}>
 					<span>wangue fenyep</span>
-					<span>Je suis etudiant a l'unive...</span>
+					<span>Je suis etudiant a l'universite de yaounde 1 niveau 3 option GL Lorem20</span>
 				</div>
 			</div>
 			<div className={styles.profilCardBottom}>
