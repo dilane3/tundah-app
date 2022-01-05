@@ -35,6 +35,7 @@ const PostPropose = () => {
                     
                 <Image image={image} className="CardImage" />
             </div>
+            
         </div>
     )
 }

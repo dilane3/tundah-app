@@ -9,6 +9,11 @@ const AppProposalPost  = () => {
         <div className="content">
             <HeaderspecifisPost/>
             <PostPropose/>
+            <PostPropose/>
+            <PostPropose/>
+            <PostPropose/>
+            <PostPropose/>
+            <PostPropose/>
         </div>
     )
 }
