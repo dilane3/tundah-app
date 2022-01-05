@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import Paragraphe from '../../../components/elements/p/Paragraphe'
 import Loader from '../../../components/utils/Loader'
-import FirstConnexionPage from '../../../components/marketing/pageSections/comment/firstConnexionPage'
+import FirstConnexionPage from '../../../components/marketing/pageSections/signin/firstConnexionPage'
 
 
 

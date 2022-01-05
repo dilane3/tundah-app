@@ -1,0 +1,31 @@
+.Content{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-left: 350px;
+    width: 50%;
+}
+h1{
+    font-size: 30px;
+    font-weight: bold;
+    text-align: center;
+}
+
+@media screen and (max-width:1000px ) and (min-width:400px){
+	.formulaire{
+        margin-left:-340px;
+		margin-top: 60px !important;
+        height: 100%;
+	}
+
+	
+}
+
+@media screen and (min-width: 600px ){
+	.center-signup{
+		position: absolute;
+		top: 48%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+}

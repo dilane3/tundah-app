@@ -12,6 +12,7 @@ import SpecificPost from './pages/specificPost/SpecificPost'
 import About from './pages/about/About'
 import TermsUses from './pages/termsUses/TermsUses'
 import Error404 from './pages/error404/Error404'
+import ProposalPost from './pages/proposalPost/ProposalPost'
 
 const Routes = () => {
 
@@ -27,6 +28,7 @@ const Routes = () => {
       <Route  path="/about" component={About} />
       <Route  path="/termsuses" component={TermsUses} />
       <Route  path="/leDoyen/status/123" component={SpecificPost} />
+      <Route path="/proposalPost" component={ProposalPost} />
       <Route  component={Error404} />
     </Switch>
 	)
