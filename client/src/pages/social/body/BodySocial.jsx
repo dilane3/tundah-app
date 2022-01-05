@@ -5,6 +5,8 @@ import signupImg from '../../../medias/img/signup-img.png'
 import Post from '../../../components/marketing/pageSections/social/Post'
 import PostCarousel from '../../../components/utils/carousels/PostCarousel'
 
+
+
 const BodySocial = () => {
 
 	const [showLoader, setShowLoader] = useState(true)
@@ -18,7 +20,7 @@ const BodySocial = () => {
 
 	return(
 		<section>
-			Social page
+
 		</section>
 	)
 }
