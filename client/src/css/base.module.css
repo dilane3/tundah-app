@@ -1,6 +1,11 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   background-color: #e4e4e4;
-  height: calc(100vh - 100px);
+  height: 100%;
+  position: relative;
 }
 
 .header {
@@ -13,13 +18,16 @@ body {
   justify-content: space-between;
   box-shadow: 0 2px 3px #d6d6d6;
   background-color: #fff;
+  z-index: 2;
 }
 
 .container {
   width: calc(100%);
-  height: calc(100vh - 100px);
   margin-top: 100px;
   padding: 0 200px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
 .mainSection {
@@ -28,11 +36,13 @@ body {
 }
 
 .asideSection {
+  /* position: -webkit-sticky; */
+  /* position: sticky; */
   position: fixed;
   top: 100px;
   right: 200px;
   width: 290px;
-  height: auto;
+  z-index: 1;
 }
 
 @media screen and (max-width: 1200px) {

@@ -4,6 +4,9 @@ import Input from '../../elements/input/Input'
 import {BsChevronDown, BsSearch, BsJustify} from 'react-icons/bs'
 import ImgCircle from '../../elements/imgCircle/ImgCircle'
 
+
+import NavbarProfilDropdown from '../../utils/dropdowns/NavbarProfilDropdown'
+
 const image = require("../../../medias/img/test.jpg")
 
 const Navbar = ({className}) => {
@@ -30,7 +33,9 @@ const Navbar = ({className}) => {
 				<div className={styles.headerProfilIcon}>
 					<ImgCircle src={image} alt={"profil"} size="small" />
 
-					<BsChevronDown />
+					<NavbarProfilDropdown 
+				    dropElt={ <BsChevronDown size="25" className="icon" /> } 
+				  />
 				</div>
 			</div>
 		</header>
