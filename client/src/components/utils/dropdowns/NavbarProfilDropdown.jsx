@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import { Menu, Transition } from '@headlessui/react'
 import { BsPerson, BsBoxArrowRight } from "react-icons/bs"
+import { Link } from 'react-router-dom'
 
 
 const NavbarProfilDropdown = ({ dropElt }) => {
@@ -31,7 +32,8 @@ const NavbarProfilDropdown = ({ dropElt }) => {
                   } group flex items-center space-x-2 w-full px-2 py-2 text-sm`}
                 >
                   <BsPerson size="25" className="icon" />
-                  <span>Profil</span>
+                  
+                  <Link to="/profile">Profil</Link>
                 </button>
               )}
             </Menu.Item>
@@ -46,7 +48,7 @@ const NavbarProfilDropdown = ({ dropElt }) => {
                   } group flex items-center space-x-2 w-full px-2 py-2 text-sm`}
                 >
                  <BsBoxArrowRight size="25" className="icon" />
-                  <span>Deconnexion</span>
+                  <Link to="/signin">Deconnexion</Link>
                 </button>
               )}
             </Menu.Item>

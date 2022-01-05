@@ -14,9 +14,22 @@
   height: auto;
   padding: 10px;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: flex-start;
   border-bottom: 1px solid #7f7f7f;
+}
+
+.profilCardTop > div {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.profilCardTop > span {
+  font-size: 14px;
+  margin-top: 10px;
 }
 
 .profilCardTopImage {
@@ -41,7 +54,8 @@
 }
 
 .profilCardInfo span:nth-child(2) {
-  font-size: 12px;
+  font-size: 14px;
+  color: rgb(48, 47, 47);
   overflow: hidden;
 }
 
@@ -80,6 +94,8 @@
 
 /* Navigation section */
 .navigationSection {
+  position: sticky;
+  top: 80px;
   width: 100%;
   height: auto;
   margin-top: 10px;

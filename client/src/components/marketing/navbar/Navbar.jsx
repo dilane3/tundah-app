@@ -31,10 +31,10 @@ const Navbar = ({className, onShowMobileMenu}) => {
 			</div>
 			<div className={styles.headerProfil}>
 				<div className={styles.headerProfilIcon}>
-					<ImgCircle src={image} alt={"profil"} size="small" />
+					<ImgCircle src={image} alt={"profil"} />
 
 					<NavbarProfilDropdown 
-				    dropElt={ <BsChevronDown size="25" className="icon" /> } 
+				    dropElt={ <BsChevronDown className="icon" /> } 
 				  />
 				</div>
 			</div>

@@ -32,6 +32,7 @@
 .headerSearchEngine input{
   width: calc(100% - 20px);
   font-size: 16px;
+  height: 40px;
 }
 
 .headerSearchEngineIcon {
@@ -53,6 +54,11 @@
   align-items: center;
 }
 
+.headerProfil img {
+  width: 50px;
+  height: 50px;
+}
+
 .headerProfilIcon {
   display: flex;
   flex-direction: row;
@@ -61,8 +67,8 @@
 }
 
 .headerProfilIcon svg {
-  margin-left: 5px;
-  font-size: 1.4rem;
+  margin-left: 2px;
+  font-size: 1.2rem;
   cursor: pointer;
 }
 
