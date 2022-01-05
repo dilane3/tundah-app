@@ -1,7 +1,7 @@
 
 
 body{
-	/*background: red;*/
+	font-family: sans-serif;
 }
 
 /* SIGNUP  */
@@ -43,6 +43,13 @@ body{
 
 /* ICONS  */
 
-.icon{
-	@apply text-gray-600
+
+/*.slick-prev:before{
+	color: red !important;
+}*/
+
+.slick-dots{
+	background: red !important;
+	position: absolute;
+	bottom: 0px !important;
 }

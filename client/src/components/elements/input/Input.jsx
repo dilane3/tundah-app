@@ -20,7 +20,7 @@ const Input = (props) => {
 			value={value}
 			placeholder={placeholder}
 			onChange={handleChange}
-			className={`${classe} w-full py-2 px-3 lg:py-3  text-primary text-sx md:text-sm rounded md:rounded-lg border-2 border-primary focus:outline-none`}
+			className={` ${classe} w-full py-2 px-3 py-2 lg:py-3  text-primary text-sx md:text-sm rounded md:rounded-base lg:rounded-lg border-2 border-primary focus:outline-none`}
 			/>
 	)
 }

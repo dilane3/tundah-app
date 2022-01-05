@@ -72,6 +72,7 @@ module.exports = {
       '5xl': '64rem',
       '6xl': '72rem',
       '7xl': '80rem',
+      '8xl': '82rem',
     },
     spacing: {
       px: '1px',
@@ -349,7 +350,7 @@ module.exports = {
       DEFAULT: '1',
     },
     fontFamily: {
-      primary: ['Nunito'],
+      primary: ['Nunito', 'ui-sans-serif'],
 
       sans: [
         'ui-sans-serif',
