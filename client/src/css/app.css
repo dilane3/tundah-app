@@ -1,15 +1,11 @@
 
 
 body{
-<<<<<<< HEAD
-	font-family: sans-serif;
-=======
 	/*background: red;*/
 	width: 100%;
 	height: 100vh;
 	overflow-x: hidden;
 	overflow-y: scroll;
->>>>>>> f24f4a99df8e8adc6c7d6c63d250ea4a54c7d89e
 }
 
 /* SIGNUP  */

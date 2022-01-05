@@ -21,9 +21,10 @@ const BodyWiki = () => {
 
 
 	return(
-		<section>
-			Wiki page
-		</section>
+		<BigContainer>
+		 <Navbar1 />
+		 <Post />
+		</ BigContainer> 
 	)
 }
 

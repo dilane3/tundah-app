@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-<<<<<<< HEAD
 import Slider from "react-slick"
 
 const nextArrowStyle = {
@@ -41,10 +40,6 @@ const PostCarousel = (props) => {
     );
   }
 
-=======
-import Slider from "slick-carousel"
-const PostCarousel = () => {
->>>>>>> f24f4a99df8e8adc6c7d6c63d250ea4a54c7d89e
   const settings = {
     dots: true,
     infinite: true,
