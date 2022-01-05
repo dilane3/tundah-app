@@ -1,5 +1,6 @@
 import UserModel from "../models/UserModel.js";
 import Post from "./Post.js";
+import Comment from './Comment.js'
 
 class Subscriber {
   id;
@@ -10,6 +11,7 @@ class Subscriber {
   role;
   date;
   profil;
+  country;
   dataManager;
   posts;
 
@@ -80,6 +82,13 @@ class Subscriber {
   }
 
   /**
+   * @returns string
+   */
+  get getCountry() {
+    return this.country
+  }
+
+  /**
    * 
    * @param {Object} data
    * @returns void 
@@ -95,7 +104,8 @@ class Subscriber {
         date,
         role,
         profil,
-        posts
+        posts,
+        country
       } = data
     
       this.id = id
@@ -107,6 +117,7 @@ class Subscriber {
       this.role = role
       this.profil = profil
       this.posts = posts
+      this.country = country
     }
   }
 
@@ -146,8 +157,11 @@ class Subscriber {
    * This method allow a user to write a comment
    * @param {any} datas 
    */
-  writeComment(datas) {
-    // to do
+  async writeComment(datas) {
+    const {content, idUser, idPost} = datas
+    const comment = new Comment()
+
+    return (await comment.writeComment({content, idUser, idPost}))
   }
 }
 

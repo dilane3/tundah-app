@@ -14,6 +14,7 @@ const {
 
 const authenticationMiddleware = (req, res, next) => {
   try {
+    console.log(req.headers)
     const authHeader = req.headers['authorization']
     const token = authHeader.split(" ")[1]
 

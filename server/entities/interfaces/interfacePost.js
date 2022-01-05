@@ -1,5 +1,3 @@
-import { internal } from "neo4j-driver-core";
-
 class InterfacePost {
     constructor() {
       if (this.constructor === InterfacePost) {
@@ -11,14 +9,10 @@ class InterfacePost {
 
     /**
      * This method implements the post proposal functionnality
-     * @param {*} content 
-     * @param {*} files_list 
-     * @param {*} published 
-     * @param {*} region 
-     * @param {*} tribe 
-     * @param {*} idUser 
+     * @param {Object} datas
+     * @param {string} idUser 
      */
-    proposePost(content, files_list, region, tribe, idUser){
+    proposePost(datas, idUser){
         throw new Error("Error: You have to implement this function")
     }
 
@@ -34,16 +28,18 @@ class InterfacePost {
     /**
      * This method implements the post publishing functionnality
      * @param {*} datas 
+     * @param {string} idUser 
      */
-    publishPost(datas) {
+    publishPost(datas, userId) {
         throw new Error("Error you have to implement this function");
     }
 
     /**
      * This method implements the post validation functionnality
      * @param {string} idPost
+     * @param {string} idUser 
      */
-    validatePost(idPost) {
+    validatePost(idPost, idUser) {
         throw new Error("Error you have to implement this function");
     }
   }

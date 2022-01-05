@@ -1,7 +1,11 @@
 import {config} from 'dotenv'
 import express from 'express'
 import cors from 'cors'
+import swaggerUI from 'swagger-ui-express'
+import docs from './docs/index.js'
+
 import userRouter from './routers/userRouter.js'
+import commentRouter from './routers/commentRouter.js'
 import postRouter from './routers/postRouter.js'
 
 // fetching data from .env file
@@ -23,11 +27,12 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(cors(corsOptions))
 app.use("/static", express.static("public"))
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(docs))
 
-// use routers
+
 app.use("/api/users", userRouter)
+app.use("/api/comments", commentRouter)
 app.use("/api/posts", postRouter)
-// app.use("/api/comments", commetRouter)
 
 
 app.set('view engine', 'ejs')

@@ -19,7 +19,8 @@
     "jsonwebtoken": "^8.5.1",
     "multer": "^1.4.4",
     "nanoid": "^3.1.30",
-    "neo4j-driver": "^4.4.1"
+    "neo4j-driver": "^4.4.1",
+    "swagger-ui-express": "^4.3.0"
   },
   "devDependencies": {
     "ejs": "^3.1.6"

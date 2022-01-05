@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import Navbar1 from '../../../components/marketing/navbar/Navbar1'
+import Navbar from '../../../components/marketing/navbar/Navbar'
 import Loader from '../../../components/utils/Loader'
 import signupImg from '../../../medias/img/signup-img.png'
+import Post from '../../../components/marketing/pageSections/social/Post'
+import PostCarousel from '../../../components/utils/carousels/PostCarousel'
+
+
 
 const BodySocial = () => {
 
@@ -15,12 +19,9 @@ const BodySocial = () => {
 	}, [])
 
 	return(
-		<>
-		 <Navbar1 />
-		 	page actualités du réseau social{/* delete this line and you can import and add other page sections here */}
-		 { showLoader && <Loader /> }{/* vous pouvez aussi supprimer ce loader c'est juste la pour vous montrer qu'il est monte */}
-		 
-		</> 
+		<section>
+
+		</section>
 	)
 }
 
