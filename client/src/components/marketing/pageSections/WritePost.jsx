@@ -20,10 +20,10 @@ const WritePost = () => {
 				</Paragraphe>
 			</div>
 			<div className="flex justify-between items-center">
-				<ul className="flex space-x-6">
-					<li><BsEmojiHeartEyes  /></li>
-					<li><BsCardImage  /></li>
-					<li><BsCameraVideo  /></li>
+				<ul className="flex items-center space-x-6">
+					<li><BsEmojiHeartEyes size="26" color="#deeorx" className="text-gray-900" /></li>
+					<li><BsCardImage size="30" color="#deeorx" className="text-gray-900" /></li>
+					<li><BsCameraVideo size="30" color="#deeorx" className="text-gray-900" /></li>
 				</ul>
 				<Button>
 					publier
