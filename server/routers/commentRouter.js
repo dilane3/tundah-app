@@ -6,12 +6,14 @@ const commentRouter = express.Router()
 
 const {
   getComment,
+  getAllComments,
   createComment,
   updateComment,
   deleteComment
 } = CommentController
 
 commentRouter.get("/:id", authenticationMiddleware, getComment)
+commentRouter.get("/all/:idPost", authenticationMiddleware, getAllComments)
 commentRouter.post("/create", authenticationMiddleware, createComment)
 commentRouter.patch("/update/:id", authenticationMiddleware, updateComment)
 commentRouter.delete("/delete/:id", authenticationMiddleware, deleteComment)

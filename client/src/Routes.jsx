@@ -24,7 +24,7 @@ const Routes = () => {
       <Route  path="/signin" component={Signin} />
       <Route  path="/notifications" component={Notifications} />
       <Route  path="/messages" component={Messages} />
-      <Route exact path="/leDoyen" component={Profile} />
+      <Route exact path="/profile" component={Profile} />
       <Route  path="/about" component={About} />
       <Route  path="/termsuses" component={TermsUses} />
       <Route  path="/leDoyen/status/123" component={SpecificPost} />

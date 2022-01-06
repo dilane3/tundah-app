@@ -24,10 +24,16 @@ class InterfaceCommentModel {
     getComment(id) {
       throw new Error('ERROR: You have to implement this function')
     }
+
+    /**
+     * This method retrieves all the comments
+    */
+    getAllComments() {
+      throw new Error("Error you have to implemnt this function");
+    }
   
     /**
     * This method update a comment
-    * @param {string} idComment
     * @param {string} idUser
     * @param {string} idPost
     * @param {string} content
