@@ -2,7 +2,6 @@ import React from "react"
 import Container from '../../../utils/Container'
 import authSvg from '../../../../medias/svg/auth-svg.svg'
 import signinImg from '../../../../medias/img/signin-img.png'
-import Input from '../../../elements/input/Input'
 import H3 from '../../../elements/titles/H3'
 import { Link } from 'react-router-dom'
 import { BsArrowLeft } from "react-icons/bs";

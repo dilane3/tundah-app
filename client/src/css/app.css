@@ -25,6 +25,10 @@ body{
 	display: block;
 }
 
+.postImg{
+	object-fit: cover;
+}
+
 @media screen and (max-width: 1200px ){
 	.african-women{
 		width: 300px;
@@ -52,8 +56,51 @@ body{
 	color: red !important;
 }*/
 
+.slick-slide{
+	height: 510px !important;
+}
+
+.slick-slide > div{
+	height: 100% !important;
+	/*padding: 0 10px !important;*/
+	background: white !important;
+}
+
+.slick-slide > div > div{
+	height: 100% !important;
+}
+
 .slick-dots{
-	background: red !important;
+	/*background: black !important;*/
+	opacity: .6;
 	position: absolute;
 	bottom: 0px !important;
+	width: 80px !important;
+	height: 30px !important;
+	left: 50%!important;
+	transform: translateX(-50%);
+	margin-bottom: 10px !important;
+	display: flex !important;
+	justify-content: center !important;
+	align-items: center !important;
+	border-radius: 4px !important;
+}
+
+.slick-dots li{
+	width: 10 !important;
+	height: 10 !important;
+	margin: 0 !important;
+	padding: 0 !important;
+	background: black !important;
+	border-radius: 4px !important;
+}
+
+.slick-dots li button{
+	padding: 0 !important;
+	background: white !important;
+	/*color: #fff !important;*/
+}
+
+.slick-active{
+	@apply bg-primary !important;
 }

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Paragraphe from '../../../components/elements/p/Paragraphe'
 import Loader from '../../../components/utils/Loader'
-import Post from '../../../components/marketing/pageSections/social/Post'
-import BigContainer from '../../../components/utils/BigContainer'
+import ListPosts from '../../../components/marketing/pageSections/wiki/ListPosts'
+import WritePost from '../../../components/marketing/pageSections/WritePost'
 
 
 
@@ -21,10 +21,10 @@ const BodyWiki = () => {
 
 
 	return(
-		<BigContainer>
-		 <Navbar1 />
-		 <Post />
-		</ BigContainer> 
+		<>
+			<WritePost />
+		 <ListPosts />
+		</>
 	)
 }
 

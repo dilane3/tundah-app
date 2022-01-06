@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Navbar from '../../../components/marketing/navbar/Navbar'
 import Loader from '../../../components/utils/Loader'
-import Post from '../../../components/marketing/pageSections/social/Post'
 import BigContainer from '../../../components/utils/BigContainer'
 
 

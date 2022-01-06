@@ -1,10 +1,11 @@
 import React, { Component } from "react";
 import Slider from "react-slick"
+import {Image} from 'react-image-progressive-loading'
 
 const nextArrowStyle = {
   display: "block",
   position: "absolute",
-  right: "10px",
+  right: "20px",
   zIndex: "20",
   borderRadius: "20px"
 }
@@ -12,7 +13,7 @@ const nextArrowStyle = {
 const prevArrowStyle = {
   display: "block",
   position: "absolute",
-  left: "10px",
+  left: "20px",
   zIndex: "20"
 }
 
@@ -59,16 +60,31 @@ const PostCarousel = (props) => {
   } = props
   
   return (
-    <div className="bg-black mt-20">
-      <Slider {...settings} >
-        <div className="w-full h-96">
-          <img src={img1} alt={ alt1 ? alt1 : "image du post de leDoyen" } className="inline-block w-full h-full"/>
+    <div className="mt-8 mx-2">
+      <Slider {...settings}>
+        <div className="postImgBlock w-full" >
+          <Image 
+            image={img1}
+            alt={ alt1 ? alt1 : "image du post de leDoyen" }
+            className="postImg w-full h-full"
+            blur={true}
+          />
         </div>
-        <div className="w-full h-96">
-          <img src={img2} alt={ alt1 ? alt1 : "image du post de leDoyen" } className="inline-block w-full h-full"/>
+        <div className="postImgBlock w-full" >
+          <Image 
+            image={img2}
+            alt={ alt1 ? alt1 : "image du post de leDoyen" }
+            className="postImg w-full h-full"
+            blur={true}
+          />
         </div>
-        <div className="w-full h-96">
-          <img src={img3} alt={ alt1 ? alt1 : "image du post de leDoyen" } className="inline-block w-full h-full"/>
+        <div className="postImgBlock w-full" >
+          <Image 
+            image={img3}
+            alt={ alt1 ? alt1 : "image du post de leDoyen" }
+            className="postImg w-full h-full"
+            blur={true}
+          />
         </div>
       </Slider>
     </div>
