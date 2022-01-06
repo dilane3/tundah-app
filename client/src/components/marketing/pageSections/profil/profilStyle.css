@@ -81,3 +81,17 @@
   .secondFollower{
       margin-left: 25px;
   }
+  .profilPost{
+      display:flex;
+      flex-direction: row;
+      margin-top: 15px;
+  }
+  .profilCardPost {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: #575656;
+    font-size: 14px;
+  }

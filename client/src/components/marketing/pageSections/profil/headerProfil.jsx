@@ -9,14 +9,11 @@ const image = require("../../../../medias/img/test.jpg")
 const StatPostItem = ({title, number}) => {
 	return (
 		<div className="profilCardPost">
-			<div>
-				<span>{title}</span>
-			</div>
-
-			<span>({number})</span>
+				<span>{title}({number})</span>
 		</div>
 	)
 }
+
 const HeaderProfil  = () => {
 
     return(
@@ -50,10 +47,12 @@ const HeaderProfil  = () => {
                           <span> </span>
                           <span> Editer profil</span>
                       </div> 
-                 </div>
-                 <div className="profilPost">
-                      
-                 </div>
+                </div>
+                <div className="profilPost">
+				        <StatPostItem title="postes proposés" number={20} />
+				        <StatPostItem title="postes validés" number={12} />
+				        <StatPostItem title="postes archivés" number={8} />
+                </div>
             </div>
             
 
