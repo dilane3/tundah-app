@@ -49,13 +49,15 @@ const HeaderProfil  = () => {
                       </div> 
                 </div>
                 <div className="profilPost">
-				        <StatPostItem title="postes proposés" number={20} />
+                    <div className="firstChild">
+				        <StatPostItem  title="postes proposés" number={20} />
+                    </div>
 				        <StatPostItem title="postes validés" number={12} />
 				        <StatPostItem title="postes archivés" number={8} />
                 </div>
-            </div>
-            
 
+            </div>
+           
         </div>
     )
 }

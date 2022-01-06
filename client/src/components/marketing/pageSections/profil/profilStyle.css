@@ -20,7 +20,7 @@
     align-items: flex-start;
     padding-left: 10px;
     width: 170px;
-    margin-left: 10px;
+    margin-left: 6px;
   }
   .profilCardImage{
     width:120px;
@@ -85,13 +85,26 @@
       display:flex;
       flex-direction: row;
       margin-top: 15px;
+      justify-content: space-between;
+      width: 100%;
   }
   .profilCardPost {
-    width: 100%;
+
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    color: #575656;
     font-size: 14px;
+    
+  }
+   .firstChild{
+    background-color: #3c6a46;
+    color: white;
+    font-weight: bold;
+    width: auto;
+    height: 35px;
+    padding: 5px;
+    border-radius: 5px;
+    text-align: center;
+    
   }
