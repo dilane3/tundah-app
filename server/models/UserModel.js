@@ -163,9 +163,10 @@ class UserModel extends InterfaceUserModel {
    * @param {string} username 
    * @param {string} email 
    * @param {string} password 
+   *  @param {string} description
    * @param {string} country 
    */
-  async updateUser (id, name, username, email, password, country) {
+  async updateUser (id, name, username, email, password, description, country) {
     const session = dbConnect()
 
     try {

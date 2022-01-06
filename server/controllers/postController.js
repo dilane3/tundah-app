@@ -58,8 +58,12 @@ class PostController {
     const postModel = new PostModel();
     const {skip, limit} = req.query
 
+    console.log(req.query)
+
     if (skip, limit) {
       const { data, error } = await postModel.getAllPosts(skip, limit);
+
+      console.log(data)
   
       if (data !== undefined) {
         res.status(200).json(data);
