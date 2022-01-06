@@ -2,6 +2,7 @@ import PostModel from "../models/PostModel.js";
 import InterfacePost from './interfaces/interfacePost.js'
 
 class Post extends InterfacePost {
+  title;
   content;
   creation_date;
   modification_date;
@@ -15,6 +16,13 @@ class Post extends InterfacePost {
 
     this.dataManager = new PostModel();
   }
+
+  // /**
+  //  * @return string
+  //  */
+  // get getTitle() {
+  //   return this.title;
+  // }
 
   /**
    * @returns string
@@ -72,6 +80,7 @@ class Post extends InterfacePost {
    */
   async proposePost(datas, userId) {
     const { data, error } = await this.dataManager.createPost(
+      // datas.title,
       datas.content,
       datas.files_list,
       false,
@@ -101,6 +110,7 @@ class Post extends InterfacePost {
    */
   async publishPost(datas, userId) {
     const { data, error } = await this.dataManager.createPost(
+      // datas.title,
       datas.content,
       datas.files_list,
       true,
