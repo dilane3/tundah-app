@@ -17,12 +17,12 @@ class Post extends InterfacePost {
     this.dataManager = new PostModel();
   }
 
-  // /**
-  //  * @return string
-  //  */
-  // get getTitle() {
-  //   return this.title;
-  // }
+  /**
+   * @returns string
+   */
+   get getTitle() {
+    return this.title;
+  }
 
   /**
    * @returns string
