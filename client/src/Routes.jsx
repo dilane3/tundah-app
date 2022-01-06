@@ -29,6 +29,7 @@ const Routes = () => {
       <Route  path="/termsuses" component={TermsUses} />
       <Route  path="/leDoyen/status/123" component={SpecificPost} />
       <Route path="/proposalPost" component={ProposalPost} />
+      <Route path="/profil" component={Profile} />
       <Route  component={Error404} />
     </Switch>
 	)
