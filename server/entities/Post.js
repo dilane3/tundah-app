@@ -80,7 +80,7 @@ class Post extends InterfacePost {
    */
   async proposePost(datas, userId) {
     const { data, error } = await this.dataManager.createPost(
-      // datas.title,
+      datas.title,
       datas.content,
       datas.files_list,
       false,
@@ -110,7 +110,7 @@ class Post extends InterfacePost {
    */
   async publishPost(datas, userId) {
     const { data, error } = await this.dataManager.createPost(
-      // datas.title,
+      datas.title,
       datas.content,
       datas.files_list,
       true,
