@@ -79,13 +79,14 @@ class PostController {
    * we create a new postModel Object
    * */
   static createPost = async (req, res) => {
-    const { content, files_list, region, tribe } = req.body;
+    const { title, content, files_list, region, tribe } = req.body;
 
     const user = req.user;
     console.log(user)
 
-    if (content && region && tribe) {
+    if (title && content && region && tribe) {
       const { data, error } = await user.createPost(
+        title,
         content,
         files_list,
         region,
