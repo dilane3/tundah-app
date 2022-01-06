@@ -158,9 +158,9 @@ class PostController {
    */
   static updatePost = async (req, res) => {
     const { id } = req.params;
-    const { content, files_list, region, tribe } = req.body;
+    const { title, content, files_list, region, tribe } = req.body;
 
-    if (id && content && region && tribe) {
+    if (id && title && content && region && tribe) {
       const user = req.user;
 
       const postModel = new PostModel();
@@ -168,6 +168,7 @@ class PostController {
       if (user.getRole === 1) {
         const { data, error } = await postModel.updatePost(
           id,
+          title,
           content,
           files_list,
           region,
