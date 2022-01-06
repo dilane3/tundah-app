@@ -55,7 +55,7 @@ const Navigation = () => {
 			</div>
 
 			<div className={`${styles.navigationItem}`}>
-				<Link to="/proposal_post" style={{width: "100%", display: "flex", flexDirection: "row"}}>
+				<Link to="/proposal_posts" style={{width: "100%", display: "flex", flexDirection: "row"}}>
 					<BsJournals />
 					<span>Postes Proposes</span>
 				</Link>
