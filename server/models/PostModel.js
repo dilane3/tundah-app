@@ -209,6 +209,7 @@ class PostModel extends InterfacePostModel {
 
   /**
    * This method create a new post
+   * @param {string} title
    * @param {string} content
    * @param {Array} files_list
    * @param {boolean} published
@@ -216,7 +217,7 @@ class PostModel extends InterfacePostModel {
    * @param {string} tribe
    * @param {string} idUser
    */
-  async createPost(content, files_list, published, region, tribe, idUser) {
+  async createPost(title, content, files_list, published, region, tribe, idUser) {
     const session = dbConnect();
 
     try {
@@ -226,6 +227,7 @@ class PostModel extends InterfacePostModel {
         (post:Post 
           { 
             id: $id,
+            title: $title,
             content: $content, 
             creation_date: $creation_date,
             modification_date: $modification_date, 
@@ -241,6 +243,7 @@ class PostModel extends InterfacePostModel {
 
       const result = await session.run(query, {
         id: nanoid(20),
+        title,
         content,
         creation_date: Date.now(),
         modification_date: Date.now(),

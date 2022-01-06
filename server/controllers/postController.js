@@ -1,7 +1,6 @@
 import { config } from "dotenv";
 import Subscriber from "../entities/Subscriber.js";
 import Expert from "../entities/Expert.js";
-import Post from "../entities/Post.js";
 import PostModel from "../models/PostModel.js";
 import { response } from "express";
 import { error } from "neo4j-driver";
@@ -254,8 +253,6 @@ class PostController {
 
     if (id) {
       const user = req.user;
-
-      const post = new Post();
 
       const { data, error } = await user.likePost(id);
 
