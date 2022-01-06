@@ -2,6 +2,9 @@ import React from 'react'
 import ImgCircle from '../../../elements/imgCircle/ImgCircle'
 import {BsPlusCircleFill, BsJournals, BsPersonCheck, BsGear, BsThreeDotsVertical} from 'react-icons/bs'
 import {Image} from 'react-image-progressive-loading'
+import { BsGeoAlt } from 'react-icons/bs'
+import {MdContactMail} from 'react-icons/md'
+import {AiOutlineEdit} from 'react-icons/ai'
 import './profilStyle.css'
 
 const image = require("../../../../medias/img/test.jpg")
@@ -20,18 +23,20 @@ const HeaderProfil  = () => {
         <div className="profil-content">
             <div className="informationContent"> 
                <div className="header-profil">
-                    <ImgCircle src={image} alt="profil" classe="profilCardImage"/>
+                    <ImgCircle src={image} alt="profil" size="big"/>
 
                     <div className="profilInfo">
-                        <span className="name">Blondelle Kana</span>
-                        <span className="hour">@ le Doyen </span>
-                        <div className="BsJournals">
-                        <BsPlusCircleFill />
+                        <div>
+                            <div className="name">Blondelle Kana</div>
+                            <div className="username">@ le Doyen </div>
+                        </div>    
+                            <div className="BsJournals">
+                                 <BsGeoAlt/>
 				            <span className="town"> Cameroun</span>
-			            </div>
+			                </div>
                     </div>
                     <div className="iconContact">
-                          <span></span>
+                          <div className="MdContactMai" > <MdContactMail/> </div>
                           <div> contact</div>
                     </div>
                 </div>
@@ -44,8 +49,8 @@ const HeaderProfil  = () => {
                       <span> 13 followers</span>
                       <span className="secondFollower"> 50 followings</span>
                       <div className="iconEditerProfil">
-                          <span> </span>
-                          <span> Editer profil</span>
+                          <div className="AiOutlineEdit"> <AiOutlineEdit/> </div>
+                          <div> Editer profil</div>
                       </div> 
                 </div>
                 <div className="profilPost">
