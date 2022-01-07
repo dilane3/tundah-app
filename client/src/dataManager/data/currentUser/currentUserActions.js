@@ -17,7 +17,7 @@ import {
 const login = (data) => {
   return {
     type: LOGIN,
-    paylaod: data
+    payload: data
   }
 }
 
@@ -30,14 +30,14 @@ const logout = () => {
 const deletePost = (idPost) => {
   return {
     type: DELETE_POST,
-    paylaod: idPost
+    payload: idPost
   }
 }
 
 const editPost = (idPost, data) => {
   return {
     type: UPDATE_POST,
-    paylaod: {
+    payload: {
       idPost,
       data
     }
@@ -47,21 +47,21 @@ const editPost = (idPost, data) => {
 const createPost = (post) => {
   return {
     type: CREATE_POST,
-    paylaod: post
+    payload: post
   }
 }
 
 const updateProfil = (profil) => {
   return {
     type: UPDATE_PROFIL,
-    paylaod: profil
+    payload: profil
   }
 }
 
 const updateUser = (data) => {
   return {
     type: UPDATE_USER,
-    paylaod: data
+    payload: data
   }
 }
 

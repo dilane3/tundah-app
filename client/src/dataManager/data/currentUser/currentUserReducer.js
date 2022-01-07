@@ -13,15 +13,7 @@ import {
 const currentUserReducer = (state = null, action) => {
   switch (action.type) {
     case LOGIN: {
-      let user;
-
-      if (action.payload.role === 1) {
-        user = new Expert(action.payload)
-      } else {
-        user = new Subscriber(action.payload)
-      }
-
-      return user
+      return action.payload
     }
 
     case LOGOUT: {
@@ -30,11 +22,11 @@ const currentUserReducer = (state = null, action) => {
 
     case DELETE_POST: {
       if (action.payload) {
-        const user = {...state}
+        const user = new Subscriber(state)
 
         user.deletePost(action.payload)
 
-        return user
+        return user.getUserData
       }
 
       return state
@@ -42,7 +34,7 @@ const currentUserReducer = (state = null, action) => {
 
     case UPDATE_POST: {
       if (action.payload) {
-        const user = {...state}
+        const user = new Subscriber(state)
 
         const posts = user.getPosts()
 
@@ -54,7 +46,7 @@ const currentUserReducer = (state = null, action) => {
           user.setAllPost(posts)
         }
 
-        return user
+        return user.getUserData
       }
 
       return state
@@ -62,11 +54,11 @@ const currentUserReducer = (state = null, action) => {
 
     case CREATE_POST: {
       if (action.payload) {
-        const user = {...state}
+        const user = new Subscriber(state)
 
         user.createPost(action.payload)
 
-        return user
+        return user.getUserData
       }
 
       return state
@@ -74,11 +66,13 @@ const currentUserReducer = (state = null, action) => {
 
     case UPDATE_PROFIL: {
       if (action.payload) {
-        const user = {...state}
+        const user = new Subscriber(state)
 
         user.setProfil(action.payload)
 
-        return user
+        console.log({user})
+
+        return user.getUserData
       }
 
       return state
@@ -86,11 +80,11 @@ const currentUserReducer = (state = null, action) => {
 
     case UPDATE_USER: {
       if (action.payload) {
-        const user = {...state}
+        const user = new Subscriber(state)
 
         user.updateUser(action.payload)
 
-        return user
+        return user.getUserData
       }
 
       return state

@@ -108,6 +108,10 @@ class Subscriber {
     }
   }
 
+  get getUserData() {
+    return this
+  }
+
   setProfil(profil) {
     this.profil = profil
   }
@@ -119,7 +123,7 @@ class Subscriber {
       email,
       country,
       description
-    }
+    } = data
 
     this.name = name
     this.username = username

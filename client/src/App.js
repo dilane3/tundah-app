@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { BrowserRouter } from 'react-router-dom'
 import './css/app.css';
 import Routes from './Routes'
@@ -13,12 +13,14 @@ import {
   updateProfil,
   updateUser
 } from './dataManager/data/currentUser/currentUserActions'
+import currentUserReducer from './dataManager/data/currentUser/currentUserReducer';
 
 function App() {
-  const [posts, dispatchPosts] = useReducer(postsReducer, [])
+  // const [posts, dispatchPosts] = useReducer(postsReducer, [])
   const [currentUser, dispatchUser] = useReducer(currentUserReducer, null)
 
   const userLogin = (data) => {
+    // console.log(data)
     dispatchUser(login(data))
   }
 
@@ -57,13 +59,17 @@ function App() {
     updateUser: userUpdateUser
   }
 
+  // useEffect(() => {
+  //   console.log({currentUser})
+  // }, [currentUser])
+
   return (
     <currentUserContext.Provider value={currentUserContextValue}>
-      <postsContext.Provider value={posts}>
+      {/* <postsContext.Provider value={posts}> */}
         <BrowserRouter>
           <Routes />
         </BrowserRouter>
-      </postsContext.Provider>
+      {/* </postsContext.Provider> */}
     </currentUserContext.Provider>
   );
 }
