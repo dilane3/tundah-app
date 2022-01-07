@@ -1,8 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styles from '../../../css/aside.module.css'
 import ImgCircle from '../../elements/imgCircle/ImgCircle'
 import {BsPlusCircleFill, BsJournals, BsPersonCheck, BsGear} from 'react-icons/bs'
 import { Link } from 'react-router-dom'
+import currentUserContext from '../../../dataManager/context/currentUserContent'
+import Subscriber from '../../../entities/Subscriber'
 
 const image = require("../../../medias/img/test.jpg")
 
@@ -20,6 +22,10 @@ const StatPostItem = ({title, number}) => {
 }
 
 const ProfilCard = () => {
+	const {currentUser} = useContext(currentUserContext)
+
+	const user = new Subscriber(currentUser)
+
 	return (
 		<article className={styles.profilCard}>
 			<div className={styles.profilCardTop}>
@@ -27,8 +33,8 @@ const ProfilCard = () => {
 					<ImgCircle src={image} alt="profil" classe={styles.profilCardTopImage} />
 
 					<div className={styles.profilCardInfo}>
-						<span>wangue fenyep</span>
-						<span>@wangue</span>
+						<span>{user.getName}</span>
+						<span>@{user.getUsername}</span>
 					</div>
 				</div>
 				<span>
@@ -45,6 +51,10 @@ const ProfilCard = () => {
 }
 
 const Navigation = () => {
+	const {currentUser} = useContext(currentUserContext)
+
+	const user = new Subscriber(currentUser)
+
 	return (
 		<section className={styles.navigationSection}>
 			<div className={`${styles.navigationItem} ${styles.navigationItemActive}`}>
@@ -54,17 +64,23 @@ const Navigation = () => {
 				</Link>
 			</div>
 
-			<div className={`${styles.navigationItem}`}>
-				<Link to="/proposal_posts" style={{width: "100%", display: "flex", flexDirection: "row"}}>
-					<BsJournals />
-					<span>Postes Proposes</span>
-				</Link>
-			</div>
+			{
+				user.getRole === 1 ? (
+					<>
+						<div className={`${styles.navigationItem}`}>
+							<Link to="/proposal_posts" style={{width: "100%", display: "flex", flexDirection: "row"}}>
+								<BsJournals />
+								<span>Postes Proposes</span>
+							</Link>
+						</div>
 
-			<div className={`${styles.navigationItem}`}>
-				<BsPersonCheck />
-				<span>Gerer les experts</span>
-			</div>
+						<div className={`${styles.navigationItem}`}>
+							<BsPersonCheck />
+							<span>Gerer les experts</span>
+						</div>
+					</>
+				):null
+			}
 
 			<div className={`${styles.navigationItem}`}>
 				<BsGear />

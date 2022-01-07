@@ -10,10 +10,13 @@ import {
   UPDATE_USER
 } from "./type"
 
-const currentUserReducer = (state = null, action) => {
+const currentUserReducer = (state, action) => {
   switch (action.type) {
     case LOGIN: {
-      return action.payload
+      const user = (new Subscriber(action.payload)).getUserData
+
+      console.log(user)
+      return user
     }
 
     case LOGOUT: {

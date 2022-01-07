@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import ImgCircle from '../../../elements/imgCircle/ImgCircle'
 import {BsPlusCircleFill, BsJournals, BsPersonCheck, BsGear, BsThreeDotsVertical} from 'react-icons/bs'
 import {Image} from 'react-image-progressive-loading'
 import './profilStyle.css'
+import currentUserContext from '../../../../dataManager/context/currentUserContent'
 
 const image = require("../../../../medias/img/test.jpg")
 
@@ -15,6 +16,9 @@ const StatPostItem = ({title, number}) => {
 }
 
 const HeaderProfil  = () => {
+    const {currentUser} = useContext(currentUserContext)
+
+    const {name, username} = currentUser
 
     return(
         <div className="profil-content">
@@ -23,8 +27,8 @@ const HeaderProfil  = () => {
                     <ImgCircle src={image} alt="profil" classe="profilCardImage"/>
 
                     <div className="profilInfo">
-                        <span className="name">Blondelle Kana</span>
-                        <span className="hour">@ le Doyen </span>
+                        <span className="name">{name}</span>
+                        <span className="hour">@{username}</span>
                         <div className="BsJournals">
                         <BsPlusCircleFill />
 				            <span className="town"> Cameroun</span>

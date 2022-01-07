@@ -103,7 +103,7 @@ class Subscriber {
       this.date = date
       this.role = role
       this.profil = profil
-      this.posts = posts
+      this.posts = posts ? posts:[]
       this.country = country
     }
   }

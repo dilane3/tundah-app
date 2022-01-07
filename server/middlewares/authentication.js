@@ -33,7 +33,7 @@ const authenticationMiddleware = (req, res, next) => {
       const {data} = await userModel.getUser(result.id)
 
       if (data) {
-        const postdata = (await postModel.getMyPosts(data.id, 0, 10)).data
+        const postdata = (await postModel.getMyPosts(data.id)).data
         let user;
 
         if (data.role === 0) {
