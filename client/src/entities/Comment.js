@@ -1,0 +1,111 @@
+import InterfaceComment from './interfaces/interfaceComment.js'
+
+class Comment extends InterfaceComment {
+  id;
+  content;
+  creation_date;
+  edited;
+  post;
+  author;
+  comments;
+
+  constructor(data) {
+    super()
+
+    this.initialization(data)
+  };
+
+  /**
+   * 
+   * @param {Object} data
+   * @returns void 
+   */
+   initialization(data) {
+    if (data) {
+      const {
+        id, 
+        content, 
+        creation_date, 
+        edited, 
+        post, 
+        author, 
+        comments
+      } = data
+    
+      this.id = id
+      this.content = content
+      this.creation_date = creation_date
+      this.edited = edited
+      this.post = post
+      this.author = author
+      this.comments = comments
+    }
+  }
+
+  /**
+   * @returns string
+   */
+  get getId() {
+    return this.id
+  }
+
+  /**
+   * @returns string
+   */
+   get getContent() {
+    return this.content
+  }
+
+  /**
+  * @returns Number
+  */
+  get getCreationDate() {
+    return this.date
+  }
+
+  /**
+  * @returns Boolean
+  */
+   get getEdited() {
+    return this.edited
+  }
+
+  /**
+   * @returns string
+   */
+  get getAuthor() {
+    return this.author
+  }
+
+  /**
+   * @returns string
+   */
+  get getPost() {
+    return this.post
+  }
+
+  /**
+   * @returns Array of Comment
+   */
+  get getComments() {
+    return this.comments
+  }
+
+  /**
+   * Update the content of the comment
+   * @param {string} content 
+   */
+  setContent(content) {
+    this.content = content
+  }
+
+  /**
+   * Update the edited property
+   * @param {boolean} edited 
+   */
+  setEditer(edited) {
+    this.edited = edited
+  }
+}
+
+export default Comment;
