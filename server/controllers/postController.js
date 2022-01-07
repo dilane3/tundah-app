@@ -1,7 +1,6 @@
 import { config } from "dotenv";
 import Subscriber from "../entities/Subscriber.js";
 import Expert from "../entities/Expert.js";
-import Post from "../entities/Post.js";
 import PostModel from "../models/PostModel.js";
 import { response } from "express";
 import { error } from "neo4j-driver";
@@ -83,13 +82,14 @@ class PostController {
    * we create a new postModel Object
    * */
   static createPost = async (req, res) => {
-    const { content, files_list, region, tribe } = req.body;
+    const { title, content, files_list, region, tribe } = req.body;
 
     const user = req.user;
     console.log(user)
 
-    if (content && region && tribe) {
+    if (title && content && region && tribe) {
       const { data, error } = await user.createPost(
+        title,
         content,
         files_list,
         region,
@@ -161,9 +161,9 @@ class PostController {
    */
   static updatePost = async (req, res) => {
     const { id } = req.params;
-    const { content, files_list, region, tribe } = req.body;
+    const { title, content, files_list, region, tribe } = req.body;
 
-    if (id && content && region && tribe) {
+    if (id && title && content && region && tribe) {
       const user = req.user;
 
       const postModel = new PostModel();
@@ -171,6 +171,7 @@ class PostController {
       if (user.getRole === 1) {
         const { data, error } = await postModel.updatePost(
           id,
+          title,
           content,
           files_list,
           region,
@@ -256,8 +257,6 @@ class PostController {
 
     if (id) {
       const user = req.user;
-
-      const post = new Post();
 
       const { data, error } = await user.likePost(id);
 

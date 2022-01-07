@@ -10,10 +10,10 @@ class Expert extends Subscriber {
    * This method allow an user expert to create a post
    * @param {any} datas 
    */
-  async createPost(content, files_list, region, tribe) {
+  async createPost(title, content, files_list, region, tribe) {
     const post = new Post()
 
-    return (await post.publishPost({content, files_list, region, tribe}, this.getId))
+    return (await post.publishPost({title, content, files_list, region, tribe}, this.getId))
   }
 
   /**

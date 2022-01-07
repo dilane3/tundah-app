@@ -9,6 +9,7 @@ class InterfacePostModel {
 
   /**
    * This method create a new subscriber
+   * @param {string} title
    * @param {string} content
    * @param {Array} files_list
    * @param {boolean} published
@@ -16,7 +17,7 @@ class InterfacePostModel {
    * @param {string} tribe
    * @param {string} idUser
    */
-  createPost(content, files_list, published, region, tribe,  idUser) {
+  createPost(title, content, files_list, published, region, tribe,  idUser) {
     throw new Error("ERROR: You have to implement this function");
   }
 
@@ -46,6 +47,7 @@ class InterfacePostModel {
   /**
    * This method updates a post
    * @param {string} idPost
+   * @param {string} title
    * @param {string} content
    * @param {Array} files_list
    * @param {boolean} published
@@ -53,7 +55,7 @@ class InterfacePostModel {
    * @param {string} tribe
    * @param {string} idUser
    */
-  updatePost(idPost, content, files_list, published, region, tribe, idUser) {
+  updatePost(idPost, title, content, files_list, published, region, tribe, idUser) {
     throw new Error("ERROR: You have to implement this function");
   }
 }
