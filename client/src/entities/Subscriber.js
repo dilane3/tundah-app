@@ -118,12 +118,14 @@ class Subscriber {
       username,
       email,
       country,
+      description
     }
 
     this.name = name
     this.username = username
     this.email = email
     this.country = country
+    this.description = description
   }
 
   get getProposePosts() {
@@ -136,6 +138,22 @@ class Subscriber {
     return this.posts.map(post => {
       if (post.getPublished) return post
     })
+  }
+
+  deletePost (idPost) {
+    const index = this.posts.findIndex((post) => post.getId === idPost)
+
+    if (index > -1) {
+      this.posts.splice(index, 1)
+    }
+  }
+
+  setAllPost (posts) {
+    this.posts = posts
+  }
+
+  createPost (post) {
+    this.posts.push(post)
   }
 }
 

@@ -12,6 +12,7 @@ class Post extends InterfacePost {
   tribe;
   comments;
   author;
+  subAuthors;
 
   constructor(data) {
     super()
@@ -37,7 +38,8 @@ class Post extends InterfacePost {
         region, 
         tribe, 
         comments, 
-        author
+        author,
+        subAuthors
       } = data
     
       this.id = id
@@ -51,6 +53,7 @@ class Post extends InterfacePost {
       this.tribe = tribe
       this.comments = comments
       this.author = author
+      this.subAuthors = subAuthors
     }
   }
 
@@ -123,6 +126,30 @@ class Post extends InterfacePost {
 
   get getAuthor() {
     return this.author
+  }
+
+  get getSubAuthors() {
+    return this.subAuthors
+  }
+
+  updatePost(data) {
+    const {
+      title,
+      content,
+      modification_date,
+      files_list,
+      region,
+      tribe,
+      subAuthors
+    } = data
+
+    this.title = title
+    this.content = content
+    this.modification_date = modification_date
+    this.files_list = files_list
+    this.region = region
+    this.tribe = tribe
+    this.subAuthors = subAuthors
   }
 }
 

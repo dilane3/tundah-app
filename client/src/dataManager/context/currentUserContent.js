@@ -6,7 +6,9 @@ const currentUserContext = React.createContext({
   logout: () => {},
   deletePost: (idPost) => {},
   editPost: (idPost, data) => {},
-  createPost: (post) => {}
+  createPost: (post) => {},
+  updateProfil: (profil) => {},
+  updateUser: (data) => {}
 })
 
 export default currentUserContext
