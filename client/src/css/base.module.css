@@ -3,7 +3,7 @@
 }
 
 body {
-  background-color: #e4e4e4;
+  background-color: #e4e4e4 !important;
   height: 100%;
   position: relative;
 }

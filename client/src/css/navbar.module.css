@@ -72,6 +72,13 @@
   cursor: pointer;
 }
 
+.headerProfilButton {
+  background-color: #3c6a46;
+  color: #fff;
+  padding: 10px;
+  border-radius: 5px;
+}
+
 /* responsive */
 @media screen and (max-width: 800px) {
   .headerProfil {
@@ -103,7 +110,7 @@
   }
 
   div.headerProfil {
-    width: 130px;
+    width: 150px;
   }
 
   .headerSearchEngine {
@@ -119,13 +126,26 @@
 
   .headerMenuIcon {
     display: flex;
-    padding-left: 10px;
   }
 
   .headerLogo span {
     justify-content: "flex-start";
     padding-left: 20px;
     font-size: 28px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .headerProfilButton {
+    font-size: 14px;
+  }
+
+  .headerProfil {
+    padding-right: 10px;
+  }
+
+  div.headerLogo {
+    padding-left: 10px;
   }
 }
 

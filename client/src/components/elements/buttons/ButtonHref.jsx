@@ -75,7 +75,7 @@ const Button = (props) => {
 			target={target}
 			rel="noreferer"
 			className={`${classe} ${radius} ${padding} ${textSize} ${background} hover:${backgroundHover} ${textColor} font-primary font-semibold`}
-			>
+		>
 			{ children }
 		</a>
 	)

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import Paragraphe from '../../../components/elements/p/Paragraphe'
-import Loader from '../../../components/utils/Loader'
 import FirstConnexionPage from '../../../components/marketing/pageSections/signin/firstConnexionPage'
-
-
+import SecondConnexionPage from '../../../components/marketing/pageSections/signin/secondConnexionPage'
+import styles from '../../../css/signin.module.css'
 
 const BodySingnin = () => {
 
@@ -17,12 +15,11 @@ const BodySingnin = () => {
 	}, [])
 
 	return(
-		<div className=''>
-		     <FirstConnexionPage/>
-		     {/* delete this line and you can import and add other page sections here */}
-		     { showLoader && <Loader /> }{/* vous pouvez aussi supprimer ce loader c'est juste la pour vous montrer qu'il est monte */}
+		<section className={styles.signinSection}>
+		  <FirstConnexionPage/>
 
-		</div>
+			<SecondConnexionPage />
+		</section>
 	)
 }
 

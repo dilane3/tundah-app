@@ -7,8 +7,12 @@ import styles from '../css/base.module.css'
 import currentUserContext from '../dataManager/context/currentUserContent'
 import axios from 'axios'
 
+// const instance = axios.create({
+// 	baseURL: "http://localhost:5000/api",
+// })
+
 const instance = axios.create({
-  baseURL: "http://localhost:5000/api"
+	baseURL: "http://192.168.43.81:5000/api",
 })
 
 const Base = ({children}) => {
@@ -39,17 +43,18 @@ const Base = ({children}) => {
       login({...res.data, token: undefined})
 
       setLoaderClassActive(true)
-
+      setDataLoaded(true)
+    })
+    .catch(err => {
+      console.log(err)
+      // window.location.href = "/signin"
+    })
+    .finally(() => {
       let timer = setTimeout(() => {
         setShowLoaderPage(false)
 
         clearTimeout(timer)
       }, 1000)
-      setDataLoaded(true)
-    })
-    .catch(err => {
-      console.log(err)
-      window.location.href = "/signin"
     })
   }, [])
 

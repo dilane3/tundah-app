@@ -1,0 +1,223 @@
+
+body {
+  background-color: #fff;
+}
+
+.signinSection {
+  width: 1000px;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  margin: auto;
+  z-index: 4;
+  max-height: 600px;
+}
+
+/* section Right */
+.signinSectionRight {
+  width: 50%;
+  height: 100%;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.signinSectionRightForm {
+  position: relative;
+  width: calc(100% - 60px);
+  margin-left: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px 20px 20px 20px;
+  height: auto;
+}
+
+.signinSectionRightForm h1 {
+  margin-bottom: 40px;
+}
+
+.signinSectionRightLogo {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 34px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.signinSectionRightText,
+.signinSectionRightLogo {
+  display: none;
+}
+
+.signinSectionRightAlertMessage {
+  position: relative;
+  height: auto;
+  min-height: 40px;
+  width: 100%;
+  border-radius: 5px;
+  border: 1px solid #7c2932;
+  background-color: #f8d7da;
+  padding: 10px 30px 10px 10px;
+  font-size: 14px;
+  color: #7c2932;
+}
+
+.signinSectionRightAlertClose {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  color: #7c2932;
+  cursor: pointer;
+}
+
+.signinSectionRightLoader {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  width: 130px;
+  height:130px;
+  border: 5px solid yellow;
+  border-bottom-color: transparent;
+  border-radius: 100%;
+  animation: loader .7s linear infinite;
+}
+
+@keyframes loader {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* section Left */
+.signinSectionLeft {
+  width: 50%;
+  height: 100%;
+  background-color: #fff;
+}
+
+.signinSectionLeftContainer {
+  position: relative;
+  width: calc(100% - 40px);
+  height: calc(100% - 40px);
+  margin-top: 20px;
+  margin-left: 20px;
+  border-radius: 20px;
+  /* background: url("../medias/svg/auth-svg.svg") #3c6a46; */
+  background-color: #3c6a46;
+}
+
+.signinSectionLeftLogo {
+  position: absolute;
+  left: -20px;
+  top: 30px;
+  background-color: #fff;
+  border-radius: 5px;
+  width: 130px;
+  height: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.signinSectionLeftText,
+.signinSectionRightText {
+  position: absolute;
+  top: 100px;
+  width: calc(100% - 60px);
+  margin: 0 auto;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.signinSectionLeftImage {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 280px;
+  height: 420px;
+}
+
+@media screen and (max-width: 1200px) {
+  .signinSection {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .signinSectionRightText,
+  .signinSectionRightLogo {
+    display: block;
+  }
+
+  .signinSection {
+    background-color: #3c6a46;
+  }
+
+  .signinSectionLeft {
+    display: none;
+  }
+
+  .signinSectionRight {
+    width: 400px;
+    margin: 0 auto;
+    background-color: #3c6a46;
+  }
+
+  .signinSectionRightForm {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 140px;
+  }
+
+  .signinSectionRightText {
+    width: 400px;
+    top: 80px;
+  }
+}
+
+@media screen and (max-width: 440px) {
+  .signinSectionRight {
+    width: 100%;
+  }
+
+  .signinSectionRightForm {
+    position: absolute;
+    top: 200px;
+    width: 100%;
+    height: auto;
+    min-height: calc(100% - 100px);
+    margin: 0 auto;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .signinSectionRightText {
+    width: calc(100% - 20px);
+    line-height: 25px;
+    text-align: center;
+  }
+}
+
+@media screen and (max-height: 576px) {
+  .signinSection {
+    height: 576px;
+  }
+}
