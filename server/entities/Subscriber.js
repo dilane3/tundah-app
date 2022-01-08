@@ -167,10 +167,10 @@ class Subscriber {
    * @param {any} datas 
    */
   async writeComment(datas) {
-    const {content, idUser, idPost} = datas
+    const {content, idUser, idPost, idComment} = datas
     const comment = new Comment()
 
-    return (await comment.writeComment({content, idUser, idPost}))
+    return (await comment.writeComment({content, idUser, idPost, idComment}))
   }
 }
 

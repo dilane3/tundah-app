@@ -71,13 +71,15 @@ class CommentController {
   static createComment = async (req, res) => {
     const {
       content,
-      idPost
+      idPost,
+      idComment
     } = req.body
 
     const user = req.user;
+    console.log({idComment})
 
-    if (content){
-      const { data, error } = await user.writeComment({content, idUser: user.getId, idPost});
+    if (content && idPost){
+      const { data, error } = await user.writeComment({content, idUser: user.getId, idPost, idComment});
 
       if (data !== undefined) {
         res.status(201).json({ message: "New comment successfully created !" , data});
