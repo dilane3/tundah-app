@@ -8,6 +8,7 @@ const postRouter = express.Router()
 const {
   getPost,
   getAllPosts,
+  getSearchedPosts,
   createPost,
   likePost,
   updatePostValidation,
@@ -22,6 +23,10 @@ postRouter.get("/:id", getPost)
 // Router for the the retrieval of all the posts
 // This can be performed by all the users
 postRouter.get("/", getAllPosts)
+
+// Router for the the retrieval of all the posts
+// This can be performed by all the users
+postRouter.get("/search/:value", getSearchedPosts)
 
 // Router for the creation of a post using the post form info and the user id
 // This can be performed only by connected users
