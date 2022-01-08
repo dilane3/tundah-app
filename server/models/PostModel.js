@@ -47,6 +47,41 @@ class PostModel extends InterfacePostModel {
     }
   }
 
+    /**
+   * This function return the researched posts
+   * @param {string} value 
+   * @returns post(s)
+   */
+     async getSearchedPosts(value) {
+      const session = dbConnect()
+      try {
+  
+        const query = `
+        MATCH (post:Post)
+        WHERE post.title =~ '.*(${value.toLowerCase()}).*'
+        RETURN post
+        `
+        const result = await session.run(query)
+        console.log("result length: ",result.records.length)
+        if(result.records.length > 0) {
+          const postData = []
+  
+          for(let record of result.records) {
+            const post = record.get('post').properties
+            postData.push({ ...post })
+          }
+  
+          return {data: postData}
+        } else {
+          return {data: null}
+        }
+      } catch(err) {
+        return { error: "Sorry the post(s) has not been found"}
+      } finally {
+        session.close()
+      }
+    }
+
   /**
    * This function returns the number of posts available in the database
    * @param {Session} session 
