@@ -24,16 +24,16 @@ class PostModel extends InterfacePostModel {
         RETURN post
       `;
       const result = await session.run(query, { id });
-      console.log({id})
+      console.log({ id });
 
       if (result.records.length > 0) {
         const postData = result.records[0].get("post").properties;
 
         if (postData.published) {
-          const {commentsNumber} = await this.getCommentNumber(postData.id)
-          const {likes} = await this.getLikes(postData.id)
+          const { commentsNumber } = await this.getCommentNumber(postData.id);
+          const { likes } = await this.getLikes(postData.id);
 
-          return {data: {...postData, comments: commentsNumber, likes}}
+          return { data: { ...postData, comments: commentsNumber, likes } };
         }
 
         return { data: postData };
@@ -47,110 +47,115 @@ class PostModel extends InterfacePostModel {
     }
   }
 
-    /**
+  /**
    * This function return the researched posts
-   * @param {string} value 
+   * @param {string} value
    * @returns post(s)
    */
-     async getSearchedPosts(value) {
-      const session = dbConnect()
-      try {
-  
-        const query = `
+  async getSearchedPosts(value) {
+    const session = dbConnect();
+    try {
+      const query = `
         MATCH (post:Post)
         WHERE post.title =~ '.*(${value.toLowerCase()}).*'
         RETURN post
-        `
-        const result = await session.run(query)
-        console.log("result length: ",result.records.length)
-        if(result.records.length > 0) {
-          const postData = []
-  
-          for(let record of result.records) {
-            const post = record.get('post').properties
-            postData.push({ ...post })
-          }
-  
-          return {data: postData}
-        } else {
-          return {data: null}
+        `;
+      const result = await session.run(query);
+      console.log("result length: ", result.records.length);
+      if (result.records.length > 0) {
+        const postData = [];
+
+        for (let record of result.records) {
+          const post = record.get("post").properties;
+          postData.push({ ...post });
         }
-      } catch(err) {
-        return { error: "Sorry the post(s) has not been found"}
-      } finally {
-        session.close()
+
+        return { data: postData };
+      } else {
+        return { data: null };
       }
+    } catch (err) {
+      return { error: "Sorry the post(s) has not been found" };
+    } finally {
+      session.close();
     }
+  }
 
   /**
    * This function returns the number of posts available in the database
-   * @param {Session} session 
+   * @param {Session} session
    */
   async getNumberPost(session) {
     try {
       const query = `
         MATCH (posts:Post{published: ${true}})
         RETURN posts
-      `
+      `;
 
-      const result = await session.run(query)
+      const result = await session.run(query);
 
-      return {postNumber: result.records.length}
+      return { postNumber: result.records.length };
     } catch (err) {
-      return {error: "Error occured while getting posts number"}
+      return { error: "Error occured while getting posts number" };
     }
   }
 
   /**
    * This function return the number of comment linked to a specific post
-   * @param {Session} session 
+   * @param {Session} session
    * @param {string} id
    */
   async getCommentNumber(id) {
-    const session = dbConnect()
+    const session = dbConnect();
 
     try {
       const query = `
         MATCH (post:Post{id: $id}) -[commentsNumber:HAS_COMMENT]-> (:Comment)
         RETURN commentsNumber
-      `
+      `;
 
-      const result = await session.run(query, {id})
+      const result = await session.run(query, { id });
 
-      return {commentsNumber: result.records.length}
+      return { commentsNumber: result.records.length };
     } catch (err) {
-      return {error: "Error occured while getting comment number linked to a specific post"}
+      return {
+        error:
+          "Error occured while getting comment number linked to a specific post",
+      };
     } finally {
-      await session.close()
+      await session.close();
     }
   }
 
   /**
    * This function return the number of comment linked to a specific post
-   * @param {Session} session 
+   * @param {Session} session
    * @param {string} id
    */
-   async getLikes(id) {
-    const session = dbConnect()
+  async getLikes(id) {
+    const session = dbConnect();
 
     try {
       const query = `
         MATCH (posts:Post{id: $id}) -[numberLike:LIKED_BY]-> (users:Subscriber)
         RETURN users
-      `
+      `;
 
-      const result = await session.run(query, {id})
+      const result = await session.run(query, { id });
 
-      const usersId = result.records.map(record => {
-        return record.get("users").properties?.id
-      })
+      const usersId = result.records.map((record) => {
+        return record.get("users").properties?.id;
+      });
 
-      return {likes: usersId}
+      return { likes: usersId };
     } catch (err) {
-      console.log(err)
-      return {error: "Error occured while getting number of like linked to a specific post"}
+      console.log(err);
+      return {
+        error:
+          "Error occured while getting number of like linked to a specific post",
+      };
     } finally {
-      await session.close()
+      await session.close();
     }
   }
 
@@ -158,15 +163,15 @@ class PostModel extends InterfacePostModel {
     let postData = [];
 
     for (let record of result.records) {
-      const post = record.get(field).properties
+      const post = record.get(field).properties;
 
-      const {commentsNumber} = await this.getCommentNumber(post.id)
-      const {likes} = await this.getLikes(post.id)
+      const { commentsNumber } = await this.getCommentNumber(post.id);
+      const { likes } = await this.getLikes(post.id);
 
-      postData.push({...post, likes, comments: commentsNumber})
+      postData.push({ ...post, likes, comments: commentsNumber });
     }
 
-    return postData
+    return postData;
   }
 
   /**
@@ -176,7 +181,7 @@ class PostModel extends InterfacePostModel {
     const session = dbConnect();
 
     try {
-      const {postNumber, error} = await this.getNumberPost(session)
+      const { postNumber, error } = await this.getNumberPost(session);
 
       if (postNumber) {
         const query = `
@@ -185,21 +190,23 @@ class PostModel extends InterfacePostModel {
           SKIP ${skip}
           LIMIT ${limit}
         `;
-  
-        const result = await session.run(query)
 
-        const postData = await this.gettingMoreInfos(result, "posts")
-  
+        const result = await session.run(query);
+
+        const postData = await this.gettingMoreInfos(result, "posts");
+
         if (postNumber > skip + limit) {
-          return {data: {data: postData, next: true, skip: Number(skip+limit)}};
+          return {
+            data: { data: postData, next: true, skip: Number(skip + limit) },
+          };
         } else {
-          return {data: {data: postData, next: false, skip}};
+          return { data: { data: postData, next: false, skip } };
         }
       } else {
-        return {error};
+        return { error };
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
       return { error: "Error while getting the posts" };
     } finally {
       await session.close();
@@ -208,8 +215,8 @@ class PostModel extends InterfacePostModel {
 
   /**
    * This method returns post which are linked to a specific user
-   * @param {string} idUser 
-   * @returns 
+   * @param {string} idUser
+   * @returns
    */
   async getMyPosts(idUser) {
     const session = dbConnect();
@@ -218,21 +225,24 @@ class PostModel extends InterfacePostModel {
       const query1 = `
         MATCH (publishedPost:Post) -[:PUBLISHED_BY]-> (user:Expert{id: $idUser})
         RETURN publishedPost
-      `
+      `;
       const query2 = `
         MATCH (proposedPost:Post) -[:PROPOSED_BY]-> (user:Subscriber{id: $idUser})
         RETURN proposedPost
-      `
-      const result1 = await session.run(query1, {idUser})
-      const result2 = await session.run(query2, {idUser})
+      `;
+      const result1 = await session.run(query1, { idUser });
+      const result2 = await session.run(query2, { idUser });
 
-      const publishedPost = await this.gettingMoreInfos(result1, "publishedPost")
+      const publishedPost = await this.gettingMoreInfos(
+        result1,
+        "publishedPost"
+      );
 
       let proposedPost = result2.records.map((record) => {
-        return record.get("proposedPost").properties
-      })
+        return record.get("proposedPost").properties;
+      });
 
-      const postData = [...publishedPost, ...proposedPost]
+      const postData = [...publishedPost, ...proposedPost];
 
       return { data: postData };
     } catch (err) {
@@ -252,7 +262,15 @@ class PostModel extends InterfacePostModel {
    * @param {string} tribe
    * @param {string} idUser
    */
-  async createPost(title, content, files_list, published, region, tribe, idUser) {
+  async createPost(
+    title,
+    content,
+    files_list,
+    published,
+    region,
+    tribe,
+    idUser
+  ) {
     const session = dbConnect();
 
     try {
@@ -313,7 +331,7 @@ class PostModel extends InterfacePostModel {
     const session = dbConnect();
 
     try {
-      let query = ''
+      let query = "";
 
       if (role) {
         query = `
@@ -372,7 +390,7 @@ class PostModel extends InterfacePostModel {
       const response = await session.run(query, {
         idPost,
         idUser,
-        title: title.toLowerCase(), 
+        title: title.toLowerCase(),
         content,
         modification_date: Date.now(),
         files_list,
@@ -430,7 +448,7 @@ class PostModel extends InterfacePostModel {
         return { data: null };
       }
     } catch (err) {
-      console.log(err)
+      console.log(err);
       return { error: "The post doesn't exist anymore!!" };
     } finally {
       await session.close();
@@ -442,17 +460,20 @@ class PostModel extends InterfacePostModel {
       const query = `
         MATCH (post:Post {id: $idPost}) -[likedBy:LIKED_BY]-> (user:Subscriber {id: $idUser})
         RETURN likedBy
-      `
+      `;
 
-      const result = await session.run(query, {idPost, idUser})
+      const result = await session.run(query, { idPost, idUser });
 
       if (result.records.length > 0) {
-        return true
+        return true;
       } else {
-        return false
+        return false;
       }
     } catch (err) {
-      return {error: "Error occurs while testing if a post has been already liked or not"}
+      return {
+        error:
+          "Error occurs while testing if a post has been already liked or not",
+      };
     }
   }
 
@@ -467,7 +488,7 @@ class PostModel extends InterfacePostModel {
     try {
       let query;
 
-      if ((await this.hasBeenLiked(idPost, idUser, session))) {
+      if (await this.hasBeenLiked(idPost, idUser, session)) {
         query = `
           MATCH (post:Post {id: $idPost}), (user:Subscriber {id: $idUser})
           MATCH (post) - [publishedPostLike:LIKED_BY] -> (user)
@@ -500,7 +521,6 @@ class PostModel extends InterfacePostModel {
       session.close();
     }
   }
-
 }
 
 export default PostModel;
