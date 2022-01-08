@@ -3,7 +3,6 @@
     flex-direction: column;
     height: auto;
     width: 100%;
-    background-color: white;
 }
 .header-profil{
      display: flex;
@@ -122,4 +121,17 @@
     font-size:1.4rem;
     margin-right: 10px;
   }
-  
+  @media screen and (max-width: 425px) {
+    .profilPost {
+      display: block;
+    }
+  }
+  @media screen and (max-width: 425px) {
+    .firstChild{
+      height: 35px;
+      padding: 5px;
+    }
+    .profilPost{
+      width: 60%;
+    }
+  }
