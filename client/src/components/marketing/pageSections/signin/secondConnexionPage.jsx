@@ -5,28 +5,15 @@ import './ConnexionPage.css';
 import axios from 'axios';
 import styles from '../../../../css/signin.module.css'
 import { Redirect } from "react-router";
+import AlertError from "./AlertError";
 
 // const instance = axios.create({
 // 	baseURL: "http://localhost:5000/api",
 // })
 
 const instance = axios.create({
-	baseURL: "http://192.168.42.30:5000/api",
+	baseURL: "http://192.168.42.68:5000/api",
 })
-
-const AlertError = ({message, onHide}) => {
-	return (
-		<div className={styles.signinSectionRightAlertMessage}>
-			{message}
-
-			<span 
-				className={styles.signinSectionRightAlertClose}
-				onClick={onHide}
-			>&times;</span>
-		</div>
-	)
-}
-
 const SecondConnexionPage = () => {
 	// definition of the state
   const [credentials, setCredentials]= useState({

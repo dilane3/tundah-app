@@ -6,11 +6,12 @@ import ImgCircle from '../../elements/imgCircle/ImgCircle'
 import NavbarProfilDropdown from '../../utils/dropdowns/NavbarProfilDropdown'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
 import { Link } from 'react-router-dom'
-
-const image = require("../../../medias/img/test.jpg")
+import Subscriber from '../../../entities/Subscriber'
 
 const Navbar = ({className, onShowMobileMenu}) => {
 	const {currentUser} = useContext(currentUserContext)
+
+	const user = new Subscriber(currentUser)
 
 	return(
 		<header className={className}>
@@ -35,7 +36,7 @@ const Navbar = ({className, onShowMobileMenu}) => {
 					{
 						currentUser ? (
 							<>
-								<ImgCircle src={image} alt={"profil"} />
+								<ImgCircle src={user.getProfil} alt={"profil"} />
 			
 								<NavbarProfilDropdown 
 									dropElt={ <BsChevronDown className="icon" /> } 

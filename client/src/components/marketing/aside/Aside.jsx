@@ -34,7 +34,7 @@ const ProfilCard = () => {
 		<article className={styles.profilCard}>
 			<div className={styles.profilCardTop}>
 				<div>
-					<ImgCircle src={image} alt="profil" classe={styles.profilCardTopImage} />
+					<ImgCircle src={user.getProfil} alt="profil" classe={styles.profilCardTopImage} />
 
 					<div className={styles.profilCardInfo}>
 						<span>{formatName(user.getName)}</span>
@@ -42,7 +42,7 @@ const ProfilCard = () => {
 					</div>
 				</div>
 				<span>
-					Je suis etudiant a l'universite de yaounde 1 niveau 3 option GL
+					{user.getDescription}
 				</span>
 			</div>
 			<div className={styles.profilCardBottom}>

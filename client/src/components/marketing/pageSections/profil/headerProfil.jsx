@@ -34,7 +34,7 @@ const HeaderProfil  = () => {
                 <div className="informationContent"> 
                     <div className="header-profil">
                         <div className="header-profil-image-card">
-                            <ImgCircle src={image} alt="profil" size="big" classe="profilImage" />
+                            <ImgCircle src={user.getProfil} alt="profil" size="big" classe="profilImage" />
 
                             <span>
                                 <BsCameraFill />
