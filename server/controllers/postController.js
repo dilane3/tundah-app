@@ -55,24 +55,57 @@ class PostController {
    * */
   static getAllPosts = async (req, res) => {
     const postModel = new PostModel();
-    const {skip, limit} = req.query
+    const { skip, limit } = req.query;
 
-    console.log(req.query)
-
-    if (skip, limit) {
+    if (skip && limit) {
       const { data, error } = await postModel.getAllPosts(skip, limit);
 
-      console.log(data)
-  
       if (data !== undefined) {
         res.status(200).json(data);
       } else {
         res.status(404).json(error);
       }
     } else {
-      return res.status(400).json({message: "Provide both skip and limit integer values"})
+      return res
+        .status(400)
+        .json({ message: "Provide both skip and limit integer values" });
     }
+  };
 
+  // Algorithm
+  /**
+   * we first retrieve the value of the posts searched in the request
+   * we verify if that value exist
+   *  * if true we call the corresponding method from the post model using that value
+   *   * we get the data and error objects from that operation
+   *   * if there is data, we send it to the front
+   *   * else we send the error to the front
+   *  * if false we send the value demand error message to the front
+   * @param {*} req
+   * @param {*} res
+   */
+  static getSearchedPosts = async (req, res) => {
+    // Getting the value typed
+    const { value } = req.params;
+
+    if (value) {
+      const postModel = new PostModel();
+
+      const { data, error } = await postModel.getSearchedPosts(value);
+
+      if (data !== undefined) {
+        res.status(200).json(data);
+      } else {
+        res.status(404).json(error);
+      }
+    } else {
+      res
+        .status(400)
+        .json({
+          message:
+            "You need to provide a value for the search operation to take on",
+        });
+    }
   };
 
   // Algorithm
@@ -85,7 +118,7 @@ class PostController {
     const { title, content, files_list, region, tribe } = req.body;
 
     const user = req.user;
-    console.log(user)
+    console.log(user);
 
     if (title && content && region && tribe) {
       const { data, error } = await user.createPost(
@@ -128,8 +161,12 @@ class PostController {
       const postModel = new PostModel();
       const user = req.user;
 
-      const { data, error } = await postModel.deletePost(id, user.getId, user.getRole);
-        
+      const { data, error } = await postModel.deletePost(
+        id,
+        user.getId,
+        user.getRole
+      );
+
       if (data !== undefined) {
         res
           .status(200)
@@ -178,19 +215,18 @@ class PostController {
           tribe,
           user.getId
         );
-  
+
         if (data) {
           res
             .status(200)
             .json({ message: "The post has successfully been updated" });
         } else {
-          if (data === undefined)
-            res.status(500).json(error);
+          if (data === undefined) res.status(500).json(error);
           else if (data === null)
-            res.status(500).json({message: "Provide a good post id"})
+            res.status(500).json({ message: "Provide a good post id" });
         }
       } else {
-        res.status(401).json({message: "Not authorized"})
+        res.status(401).json({ message: "Not authorized" });
       }
     } else {
       res.status(500).json({ message: "Error during the post update" });
@@ -212,7 +248,7 @@ class PostController {
    * @param {*} req
    * @param {*} res
    */
-   static updatePostValidation = async (req, res) => {
+  static updatePostValidation = async (req, res) => {
     const { id } = req.params;
 
     if (id) {
@@ -261,9 +297,7 @@ class PostController {
       const { data, error } = await user.likePost(id);
 
       if (data !== undefined) {
-        res
-          .status(200)
-          .json({data});
+        res.status(200).json({ data });
       } else {
         res.status(404).json(error);
       }
