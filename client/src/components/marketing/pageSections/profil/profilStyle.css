@@ -33,6 +33,47 @@
   height: 130px;
 }
 
+.header-profil-image-card {
+  position: relative;
+  height: auto;
+  width: auto;
+  border-radius: 100%;
+}
+
+.deleteProfil {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  opacity: .9;
+  border-radius: 100%;
+}
+
+.deleteProfil svg {
+  color: #2e2828;
+  font-size: 1.2rem;
+}
+
+.header-profil-image-card span {
+  position: absolute;
+  bottom: -3px;
+  right: -3px;
+  width: 35px;
+  height: 35px;
+  border-radius: 100%;
+  background-color: #3c6a46;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 3px solid #e4e4e4;
+}
+
+.header-profil-image-card span svg {
+  color: #fff;
+}
+
 .name{
   font-weight: bold;
   font-size: 22px;
@@ -105,8 +146,13 @@
   display:flex;
   flex-direction: row;
   margin-top: 15px;
-  justify-content: space-between;
+  justify-content: flex-start;
+  align-items: center;
   width: 100%;
+}
+
+.profilPost div:nth-child(2) {
+  margin-left: 20px;
 }
 
 .profilCardPost {
@@ -117,13 +163,13 @@
   font-size: 14px;
 }
 
-.firstChild{
+.active{
   background-color: #3c6a46;
   color: white;
   font-weight: bold;
   width: auto;
-  height: 35px;
-  padding: 5px;
+  height: auto;
+  padding: 5px 7px;
   border-radius: 5px;
   text-align: center;
 }
@@ -139,6 +185,11 @@
   margin-right: 10px;
 }
 
+/* post list */
+.postsList {
+  margin-top: 20px;
+}
+
 @media screen and (max-width: 576px) {
   .profilInfo {
     width: calc(100% - 140px);
@@ -150,19 +201,19 @@
   }
 }
 
-@media screen and (max-width: 425px) {
+/* @media screen and (max-width: 425px) {
   .profilPost {
     display: block;
   }
-}
+} */
 
 @media screen and (max-width: 425px) {
   .firstChild{
-    height: 35px;
+    height: auto;
     padding: 5px;
   }
   
-  .profilPost{
-    width: 60%;
+  .profilPost div{
+    font-size: 12px;
   }
 }

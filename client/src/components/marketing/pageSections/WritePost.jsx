@@ -1,10 +1,15 @@
-import React from 'react' 
+import React, { useContext } from 'react' 
 import Paragraphe from '../../elements/p/Paragraphe'
 import Button from '../../elements/buttons/Button'
 
 import { BsEmojiHeartEyes, BsCardImage, BsCameraVideo }from 'react-icons/bs'
+import currentUserContext from '../../../dataManager/context/currentUserContent'
+import Subscriber from '../../../entities/Subscriber'
 
 const WritePost = () => {
+	const {currentUser} = useContext(currentUserContext)
+
+	const user = new Subscriber(currentUser)
 
 	return(
 		<div className="bg-white w-full flex flex-col space-y-4 mb-8 p-6 rounded">
@@ -25,9 +30,18 @@ const WritePost = () => {
 					<li><BsCardImage size="30" color="#deeorx" className="text-gray-900" /></li>
 					<li><BsCameraVideo size="30" color="#deeorx" className="text-gray-900" /></li>
 				</ul>
-				<Button>
-					publier
-				</Button>
+
+				{
+					user.getRole === 1 ? (
+						<Button>
+							Publier
+						</Button>
+					):(
+						<Button>
+							Proposer
+						</Button>
+					)
+				}
 			</div>
 		</div>
 	)

@@ -4,7 +4,7 @@ import Post from '../Post'
 const ListPosts = () => {
 
 	return(
-		<div className="w-full flex flex-col space-y-8">
+		<div className="w-full flex flex-col">
 			<Post />
 			<Post />
 			<Post />

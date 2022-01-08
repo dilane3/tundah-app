@@ -32,7 +32,7 @@ body {
 
 .mainSection {
   width: calc(100% - 310px);
-  margin-right: 300px;
+  margin-right: 20px;
   max-width: 700px;
   height: 100%;
 }
@@ -129,7 +129,7 @@ body {
 
   .mainSection {
     width: calc(100% - 250px);
-    margin-right: 260px;
+    /* margin-right: 260px; */
   }
 }
 
@@ -140,6 +140,12 @@ body {
 
   .asideSection {
     right: 10px;
+  }
+
+  .mainSection {
+    width: calc(100% - 270px);
+    margin: 0 20px;
+    /* margin-left: 10px; */
   }
 }
 

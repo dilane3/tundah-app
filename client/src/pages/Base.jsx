@@ -12,7 +12,7 @@ import axios from 'axios'
 // })
 
 const instance = axios.create({
-	baseURL: "http://192.168.43.81:5000/api",
+	baseURL: "http://192.168.42.30:5000/api",
 })
 
 const Base = ({children}) => {
@@ -44,20 +44,29 @@ const Base = ({children}) => {
       instance.get("/users/current")
       .then(res => {
         login({...res.data, token: undefined})
-  
-        setLoaderClassActive(true)
-        setDataLoaded(true)
       })
       .catch(err => {
         console.log(err)
-        // window.location.href = "/signin"
       })
-      .finally(() => {
-        let timer = setTimeout(() => {
-          setShowLoaderPage(false)
-  
-          clearTimeout(timer)
-        }, 1000)
+      .then(() => {
+
+        instance.get("/posts?skip=0&limit=10")
+        .then(res => {
+          console.log(res.data)
+
+          setLoaderClassActive(true)
+          setDataLoaded(true)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+        .then(() => {
+          let timer = setTimeout(() => {
+            setShowLoaderPage(false)
+    
+            clearTimeout(timer)
+          }, 1000)
+        })
       })
     }
   }, [])
