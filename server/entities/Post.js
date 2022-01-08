@@ -98,8 +98,7 @@ class Post extends InterfacePost {
    * @param {string} idUser
    */
   async likePost(idPost, idUser) {
-    const postModel = new PostModel();
-    const { data, error } = await postModel.likePost(idPost, idUser);
+    const { data, error } = await this.dataManager.likePost(idPost, idUser);
 
     return { data, error };
   }
@@ -129,9 +128,7 @@ class Post extends InterfacePost {
    * @param {string} idPost
    * */
   async validatePost(idPost, idUser) {
-    const postModel = new PostModel();
-
-    const { data, error } = await postModel.updatePostValidation(idPost, idUser, true);
+    const { data, error } = await this.dataManager.updatePostValidation(idPost, idUser, true);
 
     return { data, error };
   }

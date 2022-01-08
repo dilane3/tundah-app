@@ -243,7 +243,7 @@ class PostModel extends InterfacePostModel {
 
       const result = await session.run(query, {
         id: nanoid(20),
-        title,
+        title: title.toLowerCase(),
         content,
         creation_date: Date.now(),
         modification_date: Date.now(),
@@ -337,7 +337,7 @@ class PostModel extends InterfacePostModel {
       const response = await session.run(query, {
         idPost,
         idUser,
-        title, 
+        title: title.toLowerCase(), 
         content,
         modification_date: Date.now(),
         files_list,
