@@ -151,6 +151,20 @@ class Post extends InterfacePost {
     this.tribe = tribe
     this.subAuthors = subAuthors
   }
+
+  addComments (comments) {
+    this.comments = comments
+  }
+
+  addComment (comment) {
+    this.comments.push(comment)
+  }
+
+  getComment (idComment) {
+    const index = this.comments.findIndex(comment => comment.getId === idComment)
+
+    return index
+  }
 }
 
 export default Post;

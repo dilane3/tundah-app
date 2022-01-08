@@ -4,6 +4,7 @@ import {BsPlusCircleFill, BsJournals, BsPersonCheck, BsGear, BsThreeDotsVertical
 import {Image} from 'react-image-progressive-loading'
 import './profilStyle.css'
 import currentUserContext from '../../../../dataManager/context/currentUserContent'
+import Subscriber from '../../../../entities/Subscriber'
 
 const image = require("../../../../medias/img/test.jpg")
 
@@ -17,8 +18,11 @@ const StatPostItem = ({title, number}) => {
 
 const HeaderProfil  = () => {
     const {currentUser} = useContext(currentUserContext)
+    const user = new Subscriber(currentUser)
 
-    const {name, username} = currentUser
+    const formatName = (name) => {
+		return name[0].toUpperCase() + name.substr(1)
+	}
 
     return(
         <div className="profil-content">
@@ -27,11 +31,11 @@ const HeaderProfil  = () => {
                     <ImgCircle src={image} alt="profil" classe="profilCardImage"/>
 
                     <div className="profilInfo">
-                        <span className="name">{name}</span>
-                        <span className="hour">@{username}</span>
+                        <span className="name">{formatName(user.getName)}</span>
+                        <span className="hour">@{user.getUsername}</span>
                         <div className="BsJournals">
                         <BsPlusCircleFill />
-				            <span className="town"> Cameroun</span>
+				            <span className="town">{user.getCountry}</span>
 			            </div>
                     </div>
                     <div className="iconContact">
@@ -40,9 +44,7 @@ const HeaderProfil  = () => {
                     </div>
                 </div>
                 <div className="profilDescription">
-                    Etudiante en informatique a l'Universite de Yaounde 1,
-                    et Developpeuse Front-end et Back-end, je suis passionnee 
-                    du Developpement web.
+                    {user.getDescription}
                 </div>
                 <div className="profilFollower">
                       <span> 13 followers</span>

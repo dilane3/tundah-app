@@ -7,21 +7,23 @@ import styles from '../css/base.module.css'
 import currentUserContext from '../dataManager/context/currentUserContent'
 import axios from 'axios'
 
-// const instance = axios.create({
-// 	baseURL: "http://localhost:5000/api",
-// })
-
 const instance = axios.create({
-	baseURL: "http://192.168.43.81:5000/api",
+	baseURL: "http://localhost:5000/api",
 })
 
+// const instance = axios.create({
+// 	baseURL: "http://192.168.43.81:5000/api",
+// })
+
 const Base = ({children}) => {
-	const {login} = useContext(currentUserContext)
+  // getting context value
+	const {login, currentUser} = useContext(currentUserContext)
+
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [maskBackground, setMaskBackground] = useState(true)
-  const [showLoaderPage, setShowLoaderPage] = useState(true)
-  const [loaderClassActive, setLoaderClassActive] = useState(false)
-  const [dataLoaded, setDataLoaded] = useState(false)
+  const [showLoaderPage, setShowLoaderPage] = useState(!currentUser ? true:false)
+  const [loaderClassActive, setLoaderClassActive] = useState(!currentUser ? false:true)
+  const [dataLoaded, setDataLoaded] = useState(!currentUser ? false:true)
 
   useEffect(() => {
     if (showMobileMenu) {
@@ -38,24 +40,26 @@ const Base = ({children}) => {
 
     instance.defaults.headers.common['authorization'] = `Bearer ${token}`
 
-    instance.get("/users/current")
-    .then(res => {
-      login({...res.data, token: undefined})
-
-      setLoaderClassActive(true)
-      setDataLoaded(true)
-    })
-    .catch(err => {
-      console.log(err)
-      // window.location.href = "/signin"
-    })
-    .finally(() => {
-      let timer = setTimeout(() => {
-        setShowLoaderPage(false)
-
-        clearTimeout(timer)
-      }, 1000)
-    })
+    if (!currentUser) {
+      instance.get("/users/current")
+      .then(res => {
+        login({...res.data, token: undefined})
+  
+        setLoaderClassActive(true)
+        setDataLoaded(true)
+      })
+      .catch(err => {
+        console.log(err)
+        // window.location.href = "/signin"
+      })
+      .finally(() => {
+        let timer = setTimeout(() => {
+          setShowLoaderPage(false)
+  
+          clearTimeout(timer)
+        }, 1000)
+      })
+    }
   }, [])
 
   return (

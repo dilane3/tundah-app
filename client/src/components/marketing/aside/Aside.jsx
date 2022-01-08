@@ -26,6 +26,10 @@ const ProfilCard = () => {
 
 	const user = new Subscriber(currentUser)
 
+	const formatName = (name) => {
+		return name[0].toUpperCase() + name.substr(1)
+	}
+
 	return (
 		<article className={styles.profilCard}>
 			<div className={styles.profilCardTop}>
@@ -33,7 +37,7 @@ const ProfilCard = () => {
 					<ImgCircle src={image} alt="profil" classe={styles.profilCardTopImage} />
 
 					<div className={styles.profilCardInfo}>
-						<span>{user.getName}</span>
+						<span>{formatName(user.getName)}</span>
 						<span>@{user.getUsername}</span>
 					</div>
 				</div>
@@ -91,10 +95,13 @@ const Navigation = () => {
 }
 
 const Aside = ({className, location}) => {
+	const {currentUser} = useContext(currentUserContext)
 
 	return(
 		<aside className={className}>
-			<ProfilCard />
+			{
+				currentUser ? <ProfilCard /> : null
+			}
 
 			<Navigation location={location}/>
 		</aside>

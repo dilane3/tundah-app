@@ -75,7 +75,7 @@ const SignupBlock = (props) => {
 						</span>
 
 						<h3 className={styles.signupSectionLeftText}>
-							Regoinez le reseau social qui lutte pour préserver la <span className="text-yellow-400">culture africaine</span>
+							Regoinez la plateforme qui lutte pour préserver la <span className="text-yellow-400">culture africaine</span>
 						</h3>
 
 						<Image image={image} className={styles.signupSectionLeftImage} />
@@ -91,7 +91,7 @@ const SignupBlock = (props) => {
 					<span className={styles.signupSectionRightLogo}>Tundah</span>
 
 					<h3 className={styles.signupSectionRightText}>
-					Regoinez le reseau social qui lutte pour préserver la <span className="text-yellow-400">culture africaine</span>
+					Regoinez la plateforme qui lutte pour préserver la <span className="text-yellow-400">culture africaine</span>
 					</h3>
 					<form className={styles.signupSectionRightForm} onSubmit={handleSubmit}>
 						<H1 className="">

@@ -106,6 +106,22 @@ class Comment extends InterfaceComment {
   setEditer(edited) {
     this.edited = edited
   }
+
+  /**
+   * Adding a comment response
+   * @param {Comment} comment 
+   */
+  addCommentResponse (comment) {
+    this.comments.push(comment)
+  }
+
+  deleteCommentResponse (idComment) {
+    const index = this.comments.findIndex(comment => comment.getId === idComment)
+
+    if (index > -1) {
+      this.comments.splice(index, 1)
+    }
+  }
 }
 
 export default Comment;
