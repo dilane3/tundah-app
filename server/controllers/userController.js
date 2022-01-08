@@ -34,15 +34,23 @@ class UserController {
   static getCurrentUser = async (req, res) => {
     const user = req.user
 
-    return res.status(200).json({...user, password: undefined})
+    return res.status(200).json({...user, password: undefined, profil: `${req.protocol}://${req.headers.host}/static/images/profil/${user.getProfil}`})
   }
 
   static signup = async (req, res) => {
-    const {name, username, email, password, country, role} = req.body
+    let {name, username, email, password, country, role} = req.body
+
+    console.log({req: req})
 
     if (name && username && email && password && [0, 1].includes(role) && country) {
 
       if (validateEmail(email)) {
+        // removing space at the start and at the end of these string valuer
+        name = name.trim()
+        username = username.trim()
+        email = email.trim()
+        password = password.trim()
+
         // used for hashing password
         const saltRounds = 10;
   
@@ -87,10 +95,15 @@ class UserController {
   }
 
   static signin = async (req, res) => {
-    const {username, password} = req.body
+    let {username, password} = req.body
 
     if (username && password) {
       const userModel = new UserModel()
+
+
+      // removing space at the start and at the end of these string valuer
+      username = username.trim()
+      password = password.trim()
 
       const {data, error} = await userModel.signin(username)
 
@@ -126,12 +139,13 @@ class UserController {
       username, 
       email, 
       password, 
+      description,
       country
     } = req.body
 
     console.log("Hello")
 
-    if (name && username && email && password && country) {
+    if (name && username && email && password && description && country) {
       // used for hashing password
       const saltRounds = 10;
   
@@ -144,6 +158,7 @@ class UserController {
           name, 
           username, 
           email, 
+          description,
           hash, 
           country
         )
@@ -218,7 +233,7 @@ class UserController {
   static uniqueEmail = async (req, res) => {
     const {email} = req.body 
 
-    if (email) {
+    if (email && validateEmail(email)) {
       const userModel = new UserModel()
 
       const {data, error} = await userModel.verifyUnicity(email, "email")
@@ -234,7 +249,7 @@ class UserController {
   }
 
   static uniqueUsername = async (req, res) => {
-    const {username} = req.body 
+    const {username} = req.body
 
     if (username) {
       const userModel = new UserModel()

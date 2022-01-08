@@ -3,7 +3,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 280px;
+  width: 500px;
   height: 100%;
   background-color: #fff;
   z-index: 20;
@@ -33,4 +33,10 @@
 
 .mobileMenuAnimation {
   transform: translateX(0);
+}
+
+@media screen and (max-width: 576px) {
+  .mobileMenuSection {
+    width: 80%;
+  }
 }

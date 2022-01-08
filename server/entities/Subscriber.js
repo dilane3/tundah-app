@@ -8,6 +8,7 @@ class Subscriber {
   username;
   email;
   password;
+  description;
   role;
   date;
   profil;
@@ -51,6 +52,12 @@ class Subscriber {
    */
   get getPassword() {
     return this.password
+  }
+  /**
+   * @returns string
+   */
+   get getDescription() {
+    return this.description
   }
 
   /**
@@ -101,6 +108,7 @@ class Subscriber {
         username,
         email,
         password,
+        description,
         date,
         role,
         profil,
@@ -113,6 +121,7 @@ class Subscriber {
       this.username = username
       this.email = email
       this.password = password
+      this.description = description
       this.date = date
       this.role = role
       this.profil = profil
@@ -135,10 +144,10 @@ class Subscriber {
    * This method allow the subscriber to create a post
    * @param {any} datas 
    */
-  async createPost(content, files_list, region, tribe) {
+  async createPost(title, content, files_list, region, tribe) {
     const post = new Post()
 
-    const {data, error} = await post.proposePost({content, files_list, region, tribe}, this.getId)
+    const {data, error} = await post.proposePost({title, content, files_list, region, tribe}, this.getId)
     
     return {data, error}
   }
@@ -158,10 +167,10 @@ class Subscriber {
    * @param {any} datas 
    */
   async writeComment(datas) {
-    const {content, idUser, idPost} = datas
+    const {content, idUser, idPost, idComment} = datas
     const comment = new Comment()
 
-    return (await comment.writeComment({content, idUser, idPost}))
+    return (await comment.writeComment({content, idUser, idPost, idComment}))
   }
 }
 

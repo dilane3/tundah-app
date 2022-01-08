@@ -5,6 +5,11 @@ import { Link } from 'react-router-dom'
 
 
 const NavbarProfilDropdown = ({ dropElt }) => {
+  const logout = () => {
+    localStorage.setItem("tundah-token", null)
+
+    window.location.href = "/signin"
+  }
 
 	return(
 		<Menu as="div" className="relative inline-block text-left font-primary">
@@ -26,15 +31,17 @@ const NavbarProfilDropdown = ({ dropElt }) => {
           <div className="px-1 py-1 ">
             <Menu.Item>
               {({ active }) => (
-                <button
-                  className={`${
-                    active ? 'bg-gray-100 text-primary' : 'text-gray-900'
-                  } group flex items-center space-x-2 w-full px-2 py-2 text-sm`}
-                >
-                  <BsPerson size="25" className="icon" />
-                  
-                  <Link to="/profile">Profil</Link>
-                </button>
+                <Link to="/profile">
+                  <button
+                    className={`${
+                      active ? 'bg-gray-100 text-primary' : 'text-gray-900'
+                    } group flex items-center space-x-2 w-full px-2 py-2 text-sm`}
+                  >
+                    <BsPerson size="25" className="icon" />
+                    
+                    <span>Profil</span>
+                  </button>
+                  </Link>
               )}
             </Menu.Item>
           </div>
@@ -46,9 +53,12 @@ const NavbarProfilDropdown = ({ dropElt }) => {
                   className={`${
                     active ? 'bg-gray-100 text-primary' : 'text-gray-900'
                   } group flex items-center space-x-2 w-full px-2 py-2 text-sm`}
+                  onClick={logout}
                 >
-                 <BsBoxArrowRight size="25" className="icon" />
-                  <Link to="/signin">Deconnexion</Link>
+                  <BsBoxArrowRight size="25" className="icon" />
+                  <span>
+                    Deconnexion
+                  </span>
                 </button>
               )}
             </Menu.Item>

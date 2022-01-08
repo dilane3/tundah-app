@@ -1,9 +1,10 @@
 import React from 'react'
 import  './Specificpost.css'
 import ImgCircle from '../../../elements/imgCircle/ImgCircle'
-import {BsPlusCircleFill, BsJournals, BsPersonCheck, BsGear, BsThreeDotsVertical} from 'react-icons/bs'
+import { BsThreeDotsVertical } from 'react-icons/bs'
 import {Image} from 'react-image-progressive-loading'
 const image = require("../../../../medias/img/test.jpg")
+const imageMariage= require("../../../../medias/img/mariage.jpg")
 
 const PostPropose = () => {
 
@@ -33,7 +34,7 @@ const PostPropose = () => {
                       </div>
                 </div>
                     
-                <Image image={image} className="CardImage" />
+                <Image image={imageMariage} className="CardImage" />
             </div>
             
         </div>

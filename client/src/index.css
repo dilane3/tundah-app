@@ -4,3 +4,15 @@
 @tailwind components;
 @tailwind utilities;
 
+.icon{
+	@apply text-gray-600
+}
+
+/*@font-face {
+	font-family: "Nunito";
+	src: url("./fonts/Nunito/static/Nunito-Bold.ttf");
+}
+
+body {
+	font-family: "Nunito";
+}*/

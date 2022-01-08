@@ -1,24 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import Loader from '../../../components/utils/Loader'
+import React, { useContext } from 'react'
+import { Redirect } from 'react-router'
+import AppProfilPost from '../../../components/marketing/pageSections/profil/AppProfilPost'
+import currentUserContext from '../../../dataManager/context/currentUserContent'
 
-
-
-import signupImg from '../../../medias/img/signup-img.png'
 
 const BodyProfile = () => {
-
-	const [showLoader, setShowLoader] = useState(true)
-
-	useEffect(() => {
-		let timeout = setTimeout(() => setShowLoader(false), 1500)
-		return () => {
-			clearTimeout(timeout)
-		}
-	}, [])
+	const {currentUser} = useContext(currentUserContext)
 
 	return(
 		<div>
-			Profil section
+			{
+				currentUser ? <AppProfilPost/> : <Redirect to="/wiki/feed" />
+			}
 		</div>
 	)
 }
