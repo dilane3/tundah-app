@@ -6,18 +6,20 @@ import Navbar from '../components/marketing/navbar/Navbar'
 import styles from '../css/base.module.css'
 import currentUserContext from '../dataManager/context/currentUserContent'
 import axios from 'axios'
+import postsContext from '../dataManager/context/postsContext'
 
 // const instance = axios.create({
 // 	baseURL: "http://localhost:5000/api",
 // })
 
 const instance = axios.create({
-	baseURL: "http://192.168.42.30:5000/api",
+	baseURL: "http://192.168.42.68:5000/api",
 })
 
 const Base = ({children}) => {
   // getting context value
 	const {login, currentUser} = useContext(currentUserContext)
+  const {posts, addPosts} = useContext(postsContext)
 
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [maskBackground, setMaskBackground] = useState(true)
@@ -43,6 +45,7 @@ const Base = ({children}) => {
     if (!currentUser) {
       instance.get("/users/current")
       .then(res => {
+        // adding the current user in the global state
         login({...res.data, token: undefined})
       })
       .catch(err => {
@@ -52,7 +55,9 @@ const Base = ({children}) => {
 
         instance.get("/posts?skip=0&limit=10")
         .then(res => {
-          console.log(res.data)
+          // adding post to the global state
+          addPosts(res.data.data)
+          // console.log(res.data.data)
 
           setLoaderClassActive(true)
           setDataLoaded(true)

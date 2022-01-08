@@ -32,10 +32,16 @@ const postsReducer = (state = [], action) => {
     case ADD_POSTS: {
       const posts = [...state]
 
+      console.log(action.payload)
+
       if (action.payload) {
-        action.payload.foreach(post => {
+        // action.payload.foreach(post => {
+        //   posts.push((new Post(post)))
+        // })
+
+        for (let post of action.payload) {
           posts.push((new Post(post)))
-        })
+        }
       }
 
       return posts
