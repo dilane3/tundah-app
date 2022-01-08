@@ -7,13 +7,13 @@ import styles from '../css/base.module.css'
 import currentUserContext from '../dataManager/context/currentUserContent'
 import axios from 'axios'
 
-const instance = axios.create({
-	baseURL: "http://localhost:5000/api",
-})
-
 // const instance = axios.create({
-// 	baseURL: "http://192.168.43.81:5000/api",
+// 	baseURL: "http://localhost:5000/api",
 // })
+
+const instance = axios.create({
+	baseURL: "http://192.168.43.81:5000/api",
+})
 
 const Base = ({children}) => {
   // getting context value

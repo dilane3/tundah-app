@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import Loader from '../../../components/utils/Loader'
-import HeaderProfil from '../../../components/marketing/pageSections/profil/headerProfil'
-import signupImg from '../../../medias/img/signup-img.png'
+import React from 'react'
+import AppProfilPost from '../../../components/marketing/pageSections/profil/AppProfilPost'
 
 
 const BodyProfile = () => {
 	return(
 		<div>
-			<HeaderProfil/>
+			<AppProfilPost/>
 		</div>
 	)
 }

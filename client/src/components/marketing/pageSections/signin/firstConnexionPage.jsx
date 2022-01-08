@@ -1,5 +1,4 @@
 import React from "react"
-import './ConnexionPage.css';
 import styles from '../../../../css/signin.module.css'
 import {Image} from 'react-image-progressive-loading'
 

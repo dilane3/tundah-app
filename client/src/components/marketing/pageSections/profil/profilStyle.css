@@ -1,110 +1,168 @@
 .profil-content{
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    margin-top: 40px;
-    width: 100%;
-    background-color: white;
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  width: 100%;
 }
-.header-profil{
-     display: flex;
-     flex-direction: row;
-     justify-content: flex-start;
-     margin-top: 10px;
-    
-}
-.profilInfo{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding-left: 10px;
-    width: 170px;
-    margin-left: 6px;
-  }
-  .profilCardImage{
-    width:120px;
-    height:120px;
-  }
-  .name{
-      font-weight: bold;
-      font-size: 22px;
-  }
-  .town{
-      margin-left: 10px;
-      font-size: 12px;
-  }
-  .hour{
-      font-size: 20px;
-  }
-  .BsJournals{
-      display: flex;
-      flex-direction: row;
-  }
-  .iconContact{
-    margin-left:auto;
-    color: #2e2828;
-    font-size: 14px;
-    width: 100px;
-    display: flex;
-    margin-top: 45px;
-    padding-right: 15px;
-    justify-content: flex-end;
-    align-items: flex-start;
-  }
-  .profilDescription,.profilFollower{
-        font-size: 14px;
-        color: #2e2828;
-        height: auto;
-        width: 60%;
-        margin-top: 10px;
-  }
-  .informationContent{
-      display: flex;
-      flex-direction: column;
-      height: auto;
-      padding: 15px;
-  }
-  .profilFollower{
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-      margin-top: 20px;
-      font-size: 14px;
-      justify-content: space-between;
-  }
-  .iconEditerProfil{
-      display: flex;
-      flex-direction: row;
-      margin-left: auto;
-  }
-  .secondFollower{
-      margin-left: 25px;
-  }
-  .profilPost{
-      display:flex;
-      flex-direction: row;
-      margin-top: 15px;
-      justify-content: space-between;
-      width: 100%;
-  }
-  .profilCardPost {
 
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 14px;
-    
+.header-profil{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 5px;
+}
+
+.profilInfo{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 10px;
+  width: 170px;
+  margin-left: 6px;
+}
+
+.profilCardImage{
+  width:120px;
+  height:120px;
+}
+
+.profilImage {
+  width: 130px;
+  height: 130px;
+}
+
+.name{
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.town{
+  margin-left: 10px;
+  font-size: 14px;
+}
+
+.username{
+  font-size: 14px;
+  color: #575656;
+}
+
+.BsJournals{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top:15px;
+}
+
+.iconContact{
+  color: #2e2828;
+  font-size: 14px;
+  width: 100px;
+  display: flex;
+  align-self: flex-end;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.profilDescription,.profilFollower{
+  font-size: 14px;
+  color: #2e2828;
+  height: auto;
+  width: 60%;
+  margin-top: 10px;
+}
+
+.informationContent{
+  display: flex;
+  flex-direction: column;
+  height: auto;
+}
+
+.profilFollower{
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  margin-top: 20px;
+  font-size: 14px;
+  justify-content: space-between;
+}
+
+.iconEditerProfil{
+  margin-left:auto;
+  color: #2e2828;
+  font-size: 14px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.secondFollower{
+  margin-left: 25px;
+}
+
+.profilPost{
+  display:flex;
+  flex-direction: row;
+  margin-top: 15px;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.profilCardPost {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+.firstChild{
+  background-color: #3c6a46;
+  color: white;
+  font-weight: bold;
+  width: auto;
+  height: 35px;
+  padding: 5px;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.MdContactMai{
+  color: #575656;
+  font-size:1.4rem;
+  margin-right: 10px;
+}
+.AiOutlineEdit{
+  color: #575656;
+  font-size:1.4rem;
+  margin-right: 10px;
+}
+
+@media screen and (max-width: 576px) {
+  .profilInfo {
+    width: calc(100% - 140px);
   }
-   .firstChild{
-    background-color: #3c6a46;
-    color: white;
-    font-weight: bold;
-    width: auto;
+
+  .profilImage {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .profilPost {
+    display: block;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .firstChild{
     height: 35px;
     padding: 5px;
-    border-radius: 5px;
-    text-align: center;
-    
   }
+  
+  .profilPost{
+    width: 60%;
+  }
+}

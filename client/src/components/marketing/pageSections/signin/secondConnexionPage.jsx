@@ -7,13 +7,13 @@ import styles from '../../../../css/signin.module.css'
 import { Redirect } from "react-router";
 import { PulseLoader } from "react-spinners";
 
-const instance = axios.create({
-	baseURL: "http://localhost:5000/api",
-})
-
 // const instance = axios.create({
-// 	baseURL: "http://192.168.43.81:5000/api",
+// 	baseURL: "http://localhost:5000/api",
 // })
+
+const instance = axios.create({
+	baseURL: "http://192.168.43.81:5000/api",
+})
 
 const AlertError = ({message, onHide}) => {
 	return (

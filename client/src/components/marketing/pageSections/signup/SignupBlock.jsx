@@ -1,16 +1,9 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
 import { BsArrowRight } from "react-icons/bs";
-
-import authSvg from '../../../../medias/svg/auth-svg.svg'
-import signupImg from '../../../../medias/img/signup-img.png'
-
-import Container from '../../../utils/Container'
 import Input from '../../../elements/input/Input'
 import Paragraphe from '../../../elements/p/Paragraphe'
 import ALink from '../../../elements/a/ALink'
 import H1 from '../../../elements/titles/H1'
-import H2 from '../../../elements/titles/H2'
 import styles from  "../../../../css/signup.module.css"
 import {Image} from 'react-image-progressive-loading'
 
