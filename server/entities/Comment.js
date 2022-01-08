@@ -42,9 +42,18 @@ class Comment extends InterfaceComment {
    * @param {any} datas 
    */
   async writeComment(datas) {
-    const {content, idUser, idPost} = datas
+    const {content, idUser, idPost, idComment} = datas
 
-    return (await this.dataManager.createComment(content, idUser, idPost))
+    if(content && idPost && !idComment){
+      return (
+        await this.dataManager.createComment(content, idUser, idPost, idComment)
+      )
+
+    } else if(content && idPost && idComment){
+      return (
+        await this.dataManager.responseComment (content, idUser, idPost, idComment)
+      )
+    }
   }
 
 }
