@@ -13,7 +13,7 @@ import postsContext from '../dataManager/context/postsContext'
 // })
 
 const instance = axios.create({
-	baseURL: "http://192.168.42.68:5000/api",
+	baseURL: "http://192.168.43.81:5000/api",
 })
 
 const Base = ({children}) => {
@@ -50,6 +50,7 @@ const Base = ({children}) => {
       })
       .catch(err => {
         console.log(err)
+        window.location.href = '/wiki/feed'
       })
       .then(() => {
 

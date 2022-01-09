@@ -12,6 +12,8 @@ body {
   z-index: 4;
   height: 600px;
   background-color: #fff;
+  margin-top: calc((100vh - 600px)/2);
+  overflow: hidden;
 }
 
 /* section Right */
@@ -216,6 +218,7 @@ body {
     width: 100%;
     background-color: #3c6a46;
     height: 100%;
+    margin-top: 0;
   }
 
   .signupSectionLeft {
@@ -231,7 +234,7 @@ body {
   .signupSectionRightForm {
     width: 100%;
     margin-left: 0;
-    margin-top: 290px;
+    margin-top: 170px;
   }
 
   .signupSectionRightText {
@@ -270,7 +273,7 @@ body {
 @media screen and (max-height: 576px) {
   .signupSection {
     position: relative;
-    height: 576px;
-    overflow-y: scroll;
+    min-height: auto;
+    /* overflow-y: scroll; */
   }
 }

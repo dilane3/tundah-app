@@ -13,6 +13,7 @@ const {
   updateUser,
   deleteUser,
   uploadProfilPhoto,
+  deleteProfil,
   addExpert,
   uniqueEmail,
   uniqueUsername
@@ -25,6 +26,7 @@ userRouter.post("/signin", signin)
 userRouter.patch("/update", authenticationMiddleware, updateUser)
 userRouter.delete("/delete", deleteUser)
 userRouter.post("/change_profil", authenticationMiddleware, uploadImage.single('profil'), uploadProfilPhoto)
+userRouter.post("/delete_profil", authenticationMiddleware, deleteProfil)
 userRouter.post("/add_expert", authenticationMiddleware, addExpert)
 userRouter.post("/check_email", uniqueEmail)
 userRouter.post("/check_username", uniqueUsername)

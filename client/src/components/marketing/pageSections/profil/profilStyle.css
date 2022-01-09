@@ -49,11 +49,16 @@
   background-color: #fff;
   opacity: .9;
   border-radius: 100%;
+  border: 2px solid #e4e4e4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .deleteProfil svg {
   color: #2e2828;
   font-size: 1.2rem;
+  cursor: pointer;
 }
 
 .header-profil-image-card span {

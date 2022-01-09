@@ -1,32 +1,66 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import ImgCircle from '../../../elements/imgCircle/ImgCircle'
-import {BsPlusCircleFill, BsJournals, BsPersonCheck, BsGear, BsThreeDotsVertical, BsCameraFill, BsX} from 'react-icons/bs'
-import {Image} from 'react-image-progressive-loading'
+import { BsCameraFill, BsX } from 'react-icons/bs'
 import { BsGeoAlt } from 'react-icons/bs'
-import {MdContactMail} from 'react-icons/md'
-import {AiOutlineEdit} from 'react-icons/ai'
+import { MdContactMail } from 'react-icons/md'
+import { AiOutlineEdit } from 'react-icons/ai'
 import './profilStyle.css'
 import currentUserContext from '../../../../dataManager/context/currentUserContent'
 import Subscriber from '../../../../entities/Subscriber'
 import Post from '../Post'
+import axios from 'axios'
+import LoaderCircle from '../../../utils/loaders/Loader'
 
-const image = require("../../../../medias/img/test.jpg")
+const instance = axios.create({
+    baseURL: "http://localhost:5000/api"
+})
+
+// const profilUpdate
 
 const StatPostItem = ({title, number}) => {
 	return (
 		<div className="profilCardPost">
-			<span>{title}({number})</span>
+		    <span>{title}({number})</span>
 		</div>
 	)
 }
 
 const HeaderProfil  = () => {
-    const {currentUser} = useContext(currentUserContext)
-    const user = new Subscriber(currentUser)
+    // getting data from the global state
+    const {currentUser, updateProfil} = useContext(currentUserContext)
+    let user = new Subscriber(currentUser)
+
+    // setting up of the local state
+    const [deleteProfilLoader, setDeleteProfilLoader] = useState(false)
+
+    useEffect(() => {
+        const token = localStorage.getItem("tundah-token")
+        instance.defaults.headers.common["authorization"] = `Bearer ${token}`
+    }, [])
+
+    useEffect(() => {
+        user = new Subscriber(currentUser)
+    }, [currentUser.profil])
 
     const formatName = (name) => {
 		return name[0].toUpperCase() + name.substr(1)
 	}
+
+    // this function allow a user to delete his profil photo
+    const deleteProfil = () => {
+        setDeleteProfilLoader(true)
+
+        instance.post("/users/delete_profil")
+        .then(res => {
+            updateProfil(res.data.profil)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+        .then(() => {
+            setDeleteProfilLoader(false)
+        })
+    }
 
     return(
         <>
@@ -40,9 +74,14 @@ const HeaderProfil  = () => {
                                 <BsCameraFill />
                             </span>
 
-                            <div className="deleteProfil">
+                            <div className="deleteProfil" onClick={deleteProfil} title="supprimer le profil">
                                 <BsX />
                             </div>
+
+                            {
+                                deleteProfilLoader ? <LoaderCircle color="#3c6a46" size={30} /> : null
+                            }
+                            
                         </div>
 
                         <div className="profilInfo">

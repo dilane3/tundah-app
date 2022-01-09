@@ -209,6 +209,19 @@ class UserController {
     }
   }
 
+  static deleteProfil = async (req, res) => {
+    const user = req.user
+    console.log({user})
+    
+    const {data, error} = await user.dataManager.deleteProfil(user.getId)
+
+    if (data !== undefined) {
+      res.status(200).json({...data, profil: `${req.protocol}://${req.headers.host}/static/images/profil/${data.profil}`})
+    } else {
+      res.status(500).json({message: error})
+    }
+  }
+
   static addExpert = async (req, res) => {
     const user = req.user
     const {idSubscriber} = req.body
