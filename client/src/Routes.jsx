@@ -12,6 +12,7 @@ import SpecificPost from './pages/specificPost/SpecificPost'
 import About from './pages/about/About'
 import TermsUses from './pages/termsUses/TermsUses'
 import Error404 from './pages/error404/Error404'
+import ProposalPost from './pages/proposalPost/ProposalPost'
 
 const Routes = () => {
 
@@ -23,10 +24,12 @@ const Routes = () => {
       <Route  path="/signin" component={Signin} />
       <Route  path="/notifications" component={Notifications} />
       <Route  path="/messages" component={Messages} />
-      <Route exact path="/leDoyen" component={Profile} />
+      <Route exact path="/profile" component={Profile} />
       <Route  path="/about" component={About} />
       <Route  path="/termsuses" component={TermsUses} />
       <Route  path="/leDoyen/status/123" component={SpecificPost} />
+      <Route path="/proposal_posts" component={ProposalPost} />
+      {/* <Route path="/profil" component={Profile} /> */}
       <Route  component={Error404} />
     </Switch>
 	)

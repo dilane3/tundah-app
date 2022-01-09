@@ -1,0 +1,199 @@
+.content{
+  display:flex;
+  flex-direction: column;
+}
+
+.header{
+    display:flex;
+    flex-direction:row;
+    width: 100%;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+.First-child{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  height: 40px;
+  width: 110px;
+  color:white;
+  background-color: #3c6a46;
+  border-radius: 5px;
+  padding: 7px;
+}
+.First-child svg {
+  margin-left: 15px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+.navbar-section{
+   display: flex;
+   font-size: 15px;
+   width: calc(100% - 200px);
+   justify-content: flex-end;
+   align-items: center;
+   margin-left: auto;
+   padding-right: 20px;
+}
+
+.navbar-section a:not(:first-child) {
+  margin-left: 20px;
+}
+
+.navbar-section a {
+    text-decoration: none;
+    color:#383838 ;
+    border-bottom: 3px solid transparent;
+    padding-bottom: 6px;
+    text-align: center;
+}
+
+.navbar-section a:hover,
+.navbar-section a.active{
+  border-bottom: 3px solid #3c6a46;
+  color: #3c6a46;
+}
+
+.header-Postpropose{
+  width: 100%;
+  height: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.header-PostproposeInfo {
+  width: calc(100% - 100px);
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.PostPropose{
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  background-color: white;
+  margin-bottom: 20px;
+
+}
+.profilInfo{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 10px;
+  width: 170px;
+  font-size: 14px;
+}
+.profilCardImage {
+  width: 60px;
+  height: 60px;
+}
+.hour{
+  font-size: 12px;
+  color: #575656;
+}
+.header-PostproposeIcon{
+  margin-left: auto;
+  color: #575656;
+  font-size: 1.4rem;
+  width: 100px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+}
+.content-Postpropose{
+  display: flex;
+  flex-direction: row;
+  padding: 10px;
+  width: 100%;
+}
+
+.Info-content {
+  width: calc(100% - 180px);
+}
+.description{
+  font-size: 14px;
+  color: #575656;
+}
+.CardImage{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  height: 120px;
+  width: 170px;
+  overflow: hidden;
+  object-fit: cover;
+  margin-left: auto;
+}
+.title{
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  line-height: 20px;
+  display: block;
+}
+
+@media screen and (max-width: 990px) {
+  .navbar-section a {
+    /* font-size: 12px; */
+  }
+
+  .navbar-section{
+    width: calc(100% - 120px);
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .navbar-section a {
+    /* font-size: 12px; */
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .navbar-section a {
+    font-size: 14px;
+  }
+
+  .First-child{
+    width: 100px;
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .navbar-section a {
+    font-size: 12px;
+  }
+
+  .content-Postpropose{
+    flex-direction: column;
+  }
+
+  .CardImage{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    height: 300px;
+    width: 100%;
+  }
+
+  .Info-content {
+    width: 100%;
+  }
+
+  .description{
+    margin-bottom: 20px;
+  }
+
+  .profilInfo{
+    width: auto;
+  }
+
+  .header-PostproposeIcon{
+    width: 40px;
+  }
+}

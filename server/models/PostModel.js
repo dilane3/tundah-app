@@ -183,7 +183,7 @@ class PostModel extends InterfacePostModel {
     try {
       const { postNumber, error } = await this.getNumberPost(session);
 
-      if (postNumber) {
+      if (postNumber !== undefined) {
         const query = `
           MATCH (posts:Post{published: ${true}})
           RETURN posts

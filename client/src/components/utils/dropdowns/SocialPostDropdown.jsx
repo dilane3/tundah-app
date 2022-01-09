@@ -8,7 +8,7 @@ import { BsThreeDotsVertical, BsArchive } from "react-icons/bs"
 const SocialPostDropdown = ({ dropElt }) => {
 
 	return(
-		<Menu as="div" className="relative inline-block text-left font-primary">
+		<Menu as="div" className="relative z-20 inline-block text-left font-primary">
       <div>
         <Menu.Button>
           { dropElt }

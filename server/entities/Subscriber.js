@@ -8,6 +8,7 @@ class Subscriber {
   username;
   email;
   password;
+  description;
   role;
   date;
   profil;
@@ -51,6 +52,12 @@ class Subscriber {
    */
   get getPassword() {
     return this.password
+  }
+  /**
+   * @returns string
+   */
+   get getDescription() {
+    return this.description
   }
 
   /**
@@ -101,6 +108,7 @@ class Subscriber {
         username,
         email,
         password,
+        description,
         date,
         role,
         profil,
@@ -113,6 +121,7 @@ class Subscriber {
       this.username = username
       this.email = email
       this.password = password
+      this.description = description
       this.date = date
       this.role = role
       this.profil = profil
