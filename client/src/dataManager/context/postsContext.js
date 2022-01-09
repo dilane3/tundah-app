@@ -6,7 +6,8 @@ const postsContext = React.createContext({
   updatePost: (idPost, data) => {},
   addPosts: (posts) => {},
   addPost: (post) => {},
-  getComments: (idPost) => {}
+  addComments: (comments) => {},
+  addComment: (comment) => {}
 })
 
 export default postsContext

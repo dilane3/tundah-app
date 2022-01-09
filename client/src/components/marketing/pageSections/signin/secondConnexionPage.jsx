@@ -5,29 +5,15 @@ import './ConnexionPage.css';
 import axios from 'axios';
 import styles from '../../../../css/signin.module.css'
 import { Redirect } from "react-router";
-import { PulseLoader } from "react-spinners";
+import AlertError from "./AlertError";
 
 // const instance = axios.create({
 // 	baseURL: "http://localhost:5000/api",
 // })
 
 const instance = axios.create({
-	baseURL: "http://192.168.43.81:5000/api",
+	baseURL: "http://192.168.42.68:5000/api",
 })
-
-const AlertError = ({message, onHide}) => {
-	return (
-		<div className={styles.signinSectionRightAlertMessage}>
-			{message}
-
-			<span 
-				className={styles.signinSectionRightAlertClose}
-				onClick={onHide}
-			>&times;</span>
-		</div>
-	)
-}
-
 const SecondConnexionPage = () => {
 	// definition of the state
   const [credentials, setCredentials]= useState({
@@ -145,7 +131,7 @@ const SecondConnexionPage = () => {
     	</form>
 
 			{
-				redirect && <Redirect to="/" />
+				redirect && <Redirect to="/wiki/feed" />
 			}
   	</div>
   )

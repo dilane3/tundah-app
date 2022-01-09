@@ -8,11 +8,12 @@ body {
   height: 100vh;
   display: flex;
   flex-direction: row;
-  overflow-y: scroll;
+  overflow-y: hidden;
   overflow-x: hidden;
   margin: auto;
   z-index: 4;
   max-height: 600px;
+  margin-top: calc((100vh - 600px)/2);
 }
 
 /* section Right */
@@ -232,5 +233,6 @@ body {
 @media screen and (max-height: 576px) {
   .signinSection {
     height: 576px;
+    margin-top: 0;
   }
 }

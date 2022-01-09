@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react'
-import Loader from '../../../components/utils/Loader'
-import HeaderProfil from '../../../components/marketing/pageSections/profil/headerProfil'
-import signupImg from '../../../medias/img/signup-img.png'
+import React, { useContext } from 'react'
+import { Redirect } from 'react-router'
+import AppProfilPost from '../../../components/marketing/pageSections/profil/AppProfilPost'
+import currentUserContext from '../../../dataManager/context/currentUserContent'
 
 
 const BodyProfile = () => {
+	const {currentUser} = useContext(currentUserContext)
+
 	return(
 		<div>
-			<HeaderProfil/>
+			{
+				currentUser ? <AppProfilPost/> : <Redirect to="/wiki/feed" />
+			}
 		</div>
 	)
 }

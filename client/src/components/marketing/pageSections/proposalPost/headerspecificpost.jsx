@@ -15,7 +15,6 @@ const HeaderspecifisPost = () => {
           <a> recemment ajoute </a>
         </nav>
       </div>
-    
     )
 }
 export default HeaderspecifisPost;

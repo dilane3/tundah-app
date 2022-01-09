@@ -159,6 +159,85 @@ class PostModel extends InterfacePostModel {
     }
   }
 
+  async getAuthorOfPost(id) {
+    const session = dbConnect()
+
+    try {
+      let editors = []
+      let author = null
+
+      // query for retrieving the user who has proposed the post
+      const query1 = `
+        MATCH (:Post{id: $id}) -[proposed_by:PROPOSED_BY]-> (user:Subscriber)
+        RETURN proposed_by, user
+        LIMIT 1
+      `
+      const result1 = await session.run(query1, {id})
+
+      if (result1.records.length > 0) {
+        // getting author who has proposed the post
+        author = result1.records[0].get("user").properties
+
+        // query for retrieving all the experts who have edited the post
+        const query3 = `
+          MATCH (post:Post{id: $id}) -[:EDITED_BY]-> (users:Expert)
+          RETURN users
+        `
+        const result3 = await session.run(query3, {id})
+
+        if (result3.records.length > 0) {
+          // getting editors
+          for (let expert of result3.records) {
+            editors.push(expert.get("users").properties)
+          }
+        }
+
+        const query4 = `
+          MATCH (:Post{id: $id}) -[:PUBLISHED_BY]-> (user:Expert)
+          RETURN user
+          LIMIT 1
+        `
+        const result4 = await session.run(query4, {id})
+
+        if (result4.records.length > 0) {
+          editors.push(result4.records[0].get("user").properties)
+        }
+      } else {
+        const query2 = `
+          MATCH (:Post{id: $id}) -[:PUBLISHED_BY]-> (user:Expert)
+          RETURN user
+          LIMIT 1
+        `
+        const result2 = await session.run(query2, {id})
+
+        if (result2.records.length > 0) {
+          // getting author who has published the post
+          author = result2.records[0].get("user").properties
+        }
+
+        // query for retrieving all the experts who have edited the post
+        const query4 = `
+          MATCH (:Post{id: $id}) -[:EDITED_BY]-> (users:Expert)
+          RETURN users
+        `
+        const result4 = await session.run(query4, {id})
+
+        if (result4.records.length > 0) {
+          // getting editors
+          for (let expert of result4.records) {
+            editors.push(expert.get("users").properties)
+          }
+        }
+      }
+
+      return {editors, author}
+    } catch(err) {
+      return {editors: [], author: null}
+    } finally {
+      await session.close()
+    }
+  }
+
   async gettingMoreInfos(result, field) {
     let postData = [];
 
@@ -167,8 +246,9 @@ class PostModel extends InterfacePostModel {
 
       const { commentsNumber } = await this.getCommentNumber(post.id);
       const { likes } = await this.getLikes(post.id);
+      const { editors, author } = await this.getAuthorOfPost(post.id)
 
-      postData.push({ ...post, likes, comments: commentsNumber });
+      postData.push({ ...post, likes, comments: commentsNumber, author, subAuthors: editors });
     }
 
     return postData;
