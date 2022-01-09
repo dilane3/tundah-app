@@ -12,8 +12,12 @@ import axios from 'axios'
 import LoaderCircle from '../../../utils/loaders/Loader'
 import AddProfilPhotoModal from '../../../utils/modals/AddProfilPhotoModal'
 
+// const instance = axios.create({
+//     baseURL: "http://localhost:5000/api"
+// })
+
 const instance = axios.create({
-    baseURL: "http://localhost:5000/api"
+	baseURL: "http://192.168.43.81:5000/api",
 })
 
 // const profilUpdate
@@ -35,6 +39,8 @@ const HeaderProfil  = () => {
     const [deleteProfilLoader, setDeleteProfilLoader] = useState(false)
     const [displayProfilUpload, setDisplayProfilUpload] = useState(false)
     const [profilData, setProfilData] = useState("")
+    const [percentageUploadProfil, setPercentageUploadProfil] = useState(0)
+    const [uploading, setUploading] = useState(false)
 
     // use ref
     const updloadProfilRef = useRef()
@@ -43,6 +49,12 @@ const HeaderProfil  = () => {
         const token = localStorage.getItem("tundah-token")
         instance.defaults.headers.common["authorization"] = `Bearer ${token}`
     }, [])
+
+    useEffect(() => {
+        if (percentageUploadProfil === 100) {
+            setUploading(false)
+        }
+    }, [percentageUploadProfil])
 
     const formatName = (name) => {
 		return name[0].toUpperCase() + name.substr(1)
@@ -61,6 +73,41 @@ const HeaderProfil  = () => {
         })
         .then(() => {
             setDeleteProfilLoader(false)
+        })
+    }
+
+    // this function allow a user to upload his profil photo
+    const uploadProfil = () => {
+        const formData = new FormData()
+        const fileImg = updloadProfilRef.current.files[0]
+
+        formData.append("profil", fileImg)
+
+        // progressive loading
+        const uploadOption = {
+            onUploadProgress: (progressEvent) => {
+                const {loaded, total} = progressEvent
+
+                const percentage = Math.floor((loaded * 100)/total)
+
+                console.log(`${loaded}B on ${total}B | percentage = ${percentage}`)
+
+                setPercentageUploadProfil(percentage)
+            }
+        }
+
+        // display the progress bar for uploading photo
+        setUploading(true)
+
+        instance.post("/users/change_profil", formData, uploadOption)
+        .then(res => {
+            setPercentageUploadProfil(0)
+            updateProfil(res.data.profil)
+
+            setDisplayProfilUpload(false)
+        })
+        .catch(err => {
+            console.log(err)
         })
     }
 
@@ -87,6 +134,9 @@ const HeaderProfil  = () => {
                             onHide={() => setDisplayProfilUpload(false)} 
                             image={profilData}
                             onChangeProfil={handleClickProfilPhotoUpload}
+                            onUploadProfil={uploadProfil}
+                            percentage={percentageUploadProfil}
+                            uploading={uploading}
                         />
                     ) : null
                 }

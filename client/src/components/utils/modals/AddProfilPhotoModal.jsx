@@ -3,9 +3,21 @@ import { BsFillCameraFill, BsFillCloudArrowUpFill, BsFillCloudUploadFill, BsX } 
 import { FaUpload } from 'react-icons/fa'
 import styles from './profilPhotoModal.module.css'
 
-// const image = require("../../../medias/img/mariage.jpg")
+const UploadFileProgress = ({percentage}) => {
+  percentage = percentage ? percentage:0
 
-const AddProfilPhotoModal = ({image, onHide, onChangeProfil}) => {
+  return (
+    <article className={styles.uploadFileProgressSection}>
+      <span>Telechargement de la photo...</span>
+      <span className={styles.uploadFileProgressBar}>
+        <span className={styles.uploadFileProgressPercentage} style={{width: `${percentage}%`}}></span>
+      </span>
+      <span className={styles.uploadFileProgressPercentageText}>{percentage}%</span>
+    </article>
+  )
+}
+
+const AddProfilPhotoModal = ({image, onHide, onChangeProfil, onUploadProfil, percentage, uploading}) => {
   return (
     <section className={styles.profilPhotoModalSection}>
       <article className={styles.profilPhotoModalPreview}>
@@ -17,18 +29,27 @@ const AddProfilPhotoModal = ({image, onHide, onChangeProfil}) => {
           <img src={image} className={styles.profilPhotoModalImageItem} />
         </div>
 
-        <div className={styles.profilPhotoModalControl}>
-          <div>
-            <div onClick={onChangeProfil}>
-              <BsFillCameraFill />
-              Changer
+        {
+          !uploading ? (
+            <div className={styles.profilPhotoModalControl}>
+              <div>
+                <div onClick={onChangeProfil}>
+                  <BsFillCameraFill />
+                  Changer
+                </div>
+                <div onClick={onUploadProfil}>
+                  <FaUpload />
+                  Sauver
+                </div>
+              </div>
             </div>
-            <div>
-              <FaUpload />
-              Sauver
-            </div>
-          </div>
-        </div>
+          ):null
+        }
+
+
+        {
+          uploading ? <UploadFileProgress percentage={percentage} /> : null
+        }
       </article>
     </section>
   )

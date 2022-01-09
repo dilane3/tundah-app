@@ -200,7 +200,7 @@ class UserController {
       const {data, error} = await user.setProfil(file.filename)
 
       if (data) {
-        return res.status(200).json(data)
+        return res.status(200).json({...data, profil: `${req.protocol}://${req.headers.host}/static/images/profil/${data.profil}`})
       } else {
         return res.status(500).json(error)
       }
