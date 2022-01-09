@@ -4,7 +4,8 @@ import {
   ADD_POSTS,
   ADD_POST,
   ADD_COMMENT,
-  ADD_COMMENTS
+  ADD_COMMENTS,
+  LIKE_POST
 } from "./type"
 import Post from '../../../entities/Post'
 import Comment from "../../../entities/Comment"
@@ -89,12 +90,28 @@ const postsReducer = (state = [], action) => {
       const posts = [...state]
       const {idPost, comments} = action.payload
 
-      if (idPost, comments) {
+      if (idPost && comments) {
         const index = posts.findIndex(post => post.getId === idPost)
 
         // we verify if we have a post
         if (index > -1) {
           posts[index].addComments(comments)
+        }
+      }
+
+      return posts
+    }
+
+    case LIKE_POST: {
+      const posts = [...state]
+      const {idPost, idUser} = action.payload
+
+      if (idPost && idUser) {
+        const index = posts.findIndex(post => post.getId === idPost)
+
+        // we verify if we have a post
+        if (index > -1) {
+          posts[index].likePost(idUser)
         }
       }
 
