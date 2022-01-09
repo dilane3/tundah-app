@@ -33,6 +33,12 @@
   height: 130px;
 }
 
+.profilImage img {
+  object-fit: cover;
+  object-position: center;
+  height: 100% !important;
+}
+
 .header-profil-image-card {
   position: relative;
   height: auto;

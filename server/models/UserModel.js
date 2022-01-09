@@ -138,7 +138,7 @@ class UserModel extends InterfaceUserModel {
         RETURN user
       `
 
-      console.log(2)
+      console.log({id})
       const result = await session.run(query, {id})
       console.log(3)
 
@@ -150,6 +150,7 @@ class UserModel extends InterfaceUserModel {
         return {error: "Error occurs while changing the profil photo of an user"}
       }
     } catch (err) {
+      console.log({err})
       return {error: "Error occurs while changing the profil photo of an user"}
     } finally {
       await session.close()
