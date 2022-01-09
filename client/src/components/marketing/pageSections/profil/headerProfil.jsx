@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import ImgCircle from '../../../elements/imgCircle/ImgCircle'
 import { BsCameraFill, BsX } from 'react-icons/bs'
 import { BsGeoAlt } from 'react-icons/bs'
@@ -10,6 +10,7 @@ import Subscriber from '../../../../entities/Subscriber'
 import Post from '../Post'
 import axios from 'axios'
 import LoaderCircle from '../../../utils/loaders/Loader'
+import AddProfilPhotoModal from '../../../utils/modals/AddProfilPhotoModal'
 
 const instance = axios.create({
     baseURL: "http://localhost:5000/api"
@@ -32,15 +33,16 @@ const HeaderProfil  = () => {
 
     // setting up of the local state
     const [deleteProfilLoader, setDeleteProfilLoader] = useState(false)
+    const [displayProfilUpload, setDisplayProfilUpload] = useState(false)
+    const [profilData, setProfilData] = useState("")
+
+    // use ref
+    const updloadProfilRef = useRef()
 
     useEffect(() => {
         const token = localStorage.getItem("tundah-token")
         instance.defaults.headers.common["authorization"] = `Bearer ${token}`
     }, [])
-
-    useEffect(() => {
-        user = new Subscriber(currentUser)
-    }, [currentUser.profil])
 
     const formatName = (name) => {
 		return name[0].toUpperCase() + name.substr(1)
@@ -62,15 +64,46 @@ const HeaderProfil  = () => {
         })
     }
 
+    const handleClickProfilPhotoUpload = () => {
+        updloadProfilRef.current.click()
+    }
+
+    const handleChangeProfilPhotoUploadData = (event) => {
+        const file = event.target.files[0]
+
+        const preview = URL.createObjectURL(file)
+
+        setProfilData(preview)
+        setDisplayProfilUpload(true)
+    }
+
     return(
         <>
             <div className="profil-content">
+
+                {
+                    displayProfilUpload ? (
+                        <AddProfilPhotoModal 
+                            onHide={() => setDisplayProfilUpload(false)} 
+                            image={profilData}
+                            onChangeProfil={handleClickProfilPhotoUpload}
+                        />
+                    ) : null
+                }
+
                 <div className="informationContent"> 
                     <div className="header-profil">
                         <div className="header-profil-image-card">
                             <ImgCircle src={user.getProfil} alt="profil" size="big" classe="profilImage" />
+                            <input 
+                                ref={updloadProfilRef} 
+                                type="file" 
+                                hidden 
+                                accept="image/*"
+                                onChange={handleChangeProfilPhotoUploadData}
+                            />
 
-                            <span>
+                            <span onClick={handleClickProfilPhotoUpload}>
                                 <BsCameraFill />
                             </span>
 

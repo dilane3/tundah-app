@@ -50,7 +50,6 @@ const Base = ({children}) => {
       })
       .catch(err => {
         console.log(err)
-        window.location.href = '/wiki/feed'
       })
       .then(() => {
 
