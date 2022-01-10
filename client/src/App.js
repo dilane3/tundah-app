@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useState, useReducer } from 'react';
 import { BrowserRouter } from 'react-router-dom'
 import './css/app.css';
 import Routes from './Routes'
@@ -23,10 +23,12 @@ import {
 } from './dataManager/data/posts/postsActions'
 import currentUserReducer from './dataManager/data/currentUser/currentUserReducer';
 import postsReducer from './dataManager/data/posts/postsReducer';
+import navigationContext from './dataManager/context/navigationContext';
 
 function App() {
   const [posts, dispatchPosts] = useReducer(postsReducer, [])
   const [currentUser, dispatchUser] = useReducer(currentUserReducer, null)
+  const [navigation, setNavigation] = useState("")
 
   // current User actions
   const userLogin = (data) => {
@@ -83,6 +85,11 @@ function App() {
     dispatchPosts(addComments(idPost, comments))
   }
 
+  // navigation action
+  const navigateTo = (target) => {
+    setNavigation(target)
+  }
+
   // data of current user context
   const currentUserContextValue = {
     currentUser,
@@ -106,12 +113,20 @@ function App() {
     addComment: postsAddComment
   }
 
+  // data of navigation
+  const navigationContextValue = {
+    navigation,
+    navigateTo
+  }
+
   return (
     <currentUserContext.Provider value={currentUserContextValue}>
       <postsContext.Provider value={postsContextValue}>
-        <BrowserRouter>
-          <Routes />
-        </BrowserRouter>
+        <navigationContext.Provider value={navigationContextValue}>
+          <BrowserRouter>
+            <Routes />
+          </BrowserRouter>
+        </navigationContext.Provider>
       </postsContext.Provider>
     </currentUserContext.Provider>
   );

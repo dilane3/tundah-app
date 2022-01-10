@@ -118,6 +118,7 @@
   border-radius: 3px;
   padding: 10px;
   color: #3a3939;
+  cursor: pointer;
 }
 
 .navigationItemActive {
