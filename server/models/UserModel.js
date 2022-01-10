@@ -138,7 +138,7 @@ class UserModel extends InterfaceUserModel {
         RETURN user
       `
 
-      console.log(2)
+      console.log({id})
       const result = await session.run(query, {id})
       console.log(3)
 
@@ -150,8 +150,41 @@ class UserModel extends InterfaceUserModel {
         return {error: "Error occurs while changing the profil photo of an user"}
       }
     } catch (err) {
+      console.log({err})
       return {error: "Error occurs while changing the profil photo of an user"}
     } finally {
+      await session.close()
+    }
+  }
+
+  async deleteProfil (id) {
+    const session = dbConnect()
+
+    try {
+      const query = `
+        MATCH (user:Subscriber{id: $id})
+        SET user.profil = 'default.png'
+        RETURN user
+      `
+
+      const result = await session.run(query, {id})
+      console.log("hello")
+
+      if (result.records.length > 0) {
+        const user = result.records[0].get('user').properties
+
+        if (user.profil === "default.png") {
+          console.log(user)
+          return {data: user}
+        } else {
+          return {error: "Something went wrong while deleting a profil photo"}
+        }
+      } else {
+        return {error: "Something went wrong while deleting a profil photo"}
+      }
+    } catch (err) {
+      return {error: "Something went wrong while deleting a profil photo"}
+    } finally{
       await session.close()
     }
   }

@@ -5,6 +5,7 @@ import {BsPlusCircleFill, BsJournals, BsPersonCheck, BsGear} from 'react-icons/b
 import { Link } from 'react-router-dom'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
 import Subscriber from '../../../entities/Subscriber'
+import navigationContext from '../../../dataManager/context/navigationContext'
 
 const image = require("../../../medias/img/test.jpg")
 
@@ -42,7 +43,7 @@ const ProfilCard = () => {
 					</div>
 				</div>
 				<span>
-					{user.getDescription}
+					{user.getDescription ? user.getDescription : "--"}
 				</span>
 			</div>
 			<div className={styles.profilCardBottom}>
@@ -56,12 +57,16 @@ const ProfilCard = () => {
 
 const Navigation = () => {
 	const {currentUser} = useContext(currentUserContext)
+	const {navigation, navigateTo} = useContext(navigationContext)
 
 	const user = new Subscriber(currentUser)
 
 	return (
 		<section className={styles.navigationSection}>
-			<div className={`${styles.navigationItem} ${styles.navigationItemActive}`}>
+			<div 
+				className={`${styles.navigationItem} ${navigation === "wiki" ? styles.navigationItemActive:""}`}
+				onClick={() => {navigateTo("wiki")}}
+			>
 				<Link to="/wiki/feed" style={{width: "100%"}}>
 					<span>W</span>
 					<span>Wiki</span>
@@ -71,7 +76,10 @@ const Navigation = () => {
 			{
 				user.getRole === 1 ? (
 					<>
-						<div className={`${styles.navigationItem}`}>
+						<div 
+							className={`${styles.navigationItem} ${navigation === "proposal_posts" ? styles.navigationItemActive:""}`}
+							onClick={() => {navigateTo("proposal_posts")}}
+						>
 							<Link to="/proposal_posts" style={{width: "100%", display: "flex", flexDirection: "row"}}>
 								<BsJournals />
 								<span>Postes Proposes</span>

@@ -8,12 +8,14 @@ import currentUserContext from '../dataManager/context/currentUserContent'
 import axios from 'axios'
 import postsContext from '../dataManager/context/postsContext'
 
+const logo = require("../medias/logo/Tundah-large.png")
+
 // const instance = axios.create({
 // 	baseURL: "http://localhost:5000/api",
 // })
 
 const instance = axios.create({
-	baseURL: "http://192.168.42.68:5000/api",
+	baseURL: "http://192.168.43.81:5000/api",
 })
 
 const Base = ({children}) => {
@@ -66,6 +68,10 @@ const Base = ({children}) => {
           console.log(err)
         })
         .then(() => {
+          // to remove
+          // setDataLoaded(true)
+
+
           let timer = setTimeout(() => {
             setShowLoaderPage(false)
     
@@ -108,7 +114,7 @@ const Base = ({children}) => {
       {
         showLoaderPage && (
           <div className={`${styles.loaderPage} ${loaderClassActive ? styles.loaderPageAnimation:""}`}>
-            <span>Tundah</span>
+            <img src={logo} alt="logo" />
             <Loader color="#3c6a46" size="30" />
           </div>
         )

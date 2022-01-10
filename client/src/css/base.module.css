@@ -16,7 +16,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  box-shadow: 0 2px 3px #d6d6d6;
+  box-shadow: 0 1px 5px #b1b1b1;
   background-color: #fff;
   z-index: 15;
 }
@@ -27,7 +27,7 @@ body {
   margin: 110px auto 0 auto;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
 .mainSection {
@@ -90,6 +90,11 @@ body {
   color: #3c6a46;
 }
 
+.loaderPage img {
+  width: 200px;
+  height: auto;
+}
+
 @media screen and (max-width: 1500px) {
   .container {
     width: 100%;
@@ -128,7 +133,7 @@ body {
   }
 
   .mainSection {
-    width: calc(100% - 250px);
+    width: calc(100% - 270px);
     /* margin-right: 260px; */
   }
 }
@@ -144,7 +149,7 @@ body {
 
   .mainSection {
     width: calc(100% - 270px);
-    margin: 0 20px;
+    margin: 0 auto 0 0;
     /* margin-left: 10px; */
   }
 }

@@ -11,19 +11,25 @@ const storage = multer.diskStorage({
     ) {
       if (file.fieldname === "profil") {
         cb(null, "public/images/profil")
-      } else if (file.fieldname === "post") {
+      } else if (file.fieldname === "images") {
         cb(null, "public/images/post")
       }
     }
   },
   filename: function (req, file, cb) {
     let originalname = file.originalname.trim()
+    console.log({file})
 
     originalname = (Array.from(originalname).map(letter => {
-      if (letter !== " ")
-        return letter
-      else
+      if (letter === " ") {
         return "_"
+      } else if (letter === "'") {
+        return "_"
+      } else if (letter === "-") {
+        return "_"
+      } else {
+        return letter
+      }
     })).join("")
 
     cb(null, Date.now() + "--" + originalname)

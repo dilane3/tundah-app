@@ -12,7 +12,7 @@ const WritePost = () => {
 	const user = new Subscriber(currentUser)
 
 	return(
-		<div className="bg-white w-full flex flex-col space-y-4 mb-8 p-6 rounded">
+		<div className="bg-white w-full flex flex-col space-y-4 mb-8 p-6 rounded" style={{border: "1px solid rgb(206, 206, 206)"}}>
 			<div>
 				<div>
 					<span className="font-primary font-medium text-sm md:text-xl">

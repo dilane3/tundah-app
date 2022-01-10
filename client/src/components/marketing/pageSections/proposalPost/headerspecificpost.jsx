@@ -11,7 +11,7 @@ const HeaderspecifisPost = () => {
           <BsChevronDown />
         </div>  
         <nav className="navbar-section">
-          <a className="active"> Tous les posts </a>
+          <a className="proposalPost-active"> Tous les posts </a>
           <a> recemment ajoute </a>
         </nav>
       </div>

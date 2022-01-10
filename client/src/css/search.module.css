@@ -1,0 +1,24 @@
+.researchResultSection {
+  width: 100%;
+  height: auto;
+}
+
+.researchResultSection > .container {
+  width: 100%;
+}
+
+.researchResultBar {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: flex-start;
+  border: 1px solid rgb(206, 206, 206);
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  background-color: #fff;
+}
+
+.researchResultBar b {
+  margin-left: 5px;
+}
