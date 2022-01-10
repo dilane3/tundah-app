@@ -33,6 +33,12 @@
   height: 130px;
 }
 
+.profilImage img {
+  object-fit: cover;
+  object-position: center;
+  height: 100% !important;
+}
+
 .header-profil-image-card {
   position: relative;
   height: auto;
@@ -49,29 +55,36 @@
   background-color: #fff;
   opacity: .9;
   border-radius: 100%;
+  border: 2px solid #e4e4e4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .deleteProfil svg {
   color: #2e2828;
-  font-size: 1.2rem;
+  font-size: 2rem;
+  cursor: pointer;
 }
 
 .header-profil-image-card span {
   position: absolute;
   bottom: -3px;
-  right: -3px;
-  width: 35px;
-  height: 35px;
+  right: -5px;
+  width: 50px;
+  height: 50px;
   border-radius: 100%;
   background-color: #3c6a46;
   display: flex;
   justify-content: center;
   align-items: center;
   border: 3px solid #e4e4e4;
+  cursor: pointer;
 }
 
 .header-profil-image-card span svg {
   color: #fff;
+  font-size: 1.5rem;
 }
 
 .name{
@@ -196,23 +209,12 @@
   }
 
   .profilImage {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
   }
 }
 
-/* @media screen and (max-width: 425px) {
-  .profilPost {
-    display: block;
-  }
-} */
-
 @media screen and (max-width: 425px) {
-  .firstChild{
-    height: auto;
-    padding: 5px;
-  }
-  
   .profilPost div{
     font-size: 12px;
   }

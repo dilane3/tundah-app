@@ -27,7 +27,7 @@ body {
   margin: 110px auto 0 auto;
   display: flex;
   flex-direction: row;
-  justify-content: flex-end;
+  justify-content: flex-start;
 }
 
 .mainSection {
@@ -128,7 +128,7 @@ body {
   }
 
   .mainSection {
-    width: calc(100% - 250px);
+    width: calc(100% - 270px);
     /* margin-right: 260px; */
   }
 }
@@ -144,7 +144,7 @@ body {
 
   .mainSection {
     width: calc(100% - 270px);
-    margin: 0 20px;
+    margin: 0 auto 0 0;
     /* margin-left: 10px; */
   }
 }

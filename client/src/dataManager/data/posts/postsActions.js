@@ -4,7 +4,8 @@ import {
   ADD_POSTS,
   ADD_POST,
   ADD_COMMENT,
-  ADD_COMMENTS
+  ADD_COMMENTS,
+  LIKE_POST
 } from "./type"
 
 const deletePost = (idPost) => {
@@ -59,11 +60,22 @@ const addComments = (idPost, comments) => {
   }
 }
 
+const likePost = (idPost, idUser) => {
+  return {
+    type: LIKE_POST,
+    payload: {
+      idPost,
+      idUser
+    }
+  }
+}
+
 export {
   deletePost,
   updatePost,
   addPosts,
   addPost,
   addComment,
-  addComments
+  addComments,
+  likePost
 }
