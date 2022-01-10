@@ -50,7 +50,7 @@
 }
 
 .navbar-section a:hover,
-.navbar-section a.active{
+.navbar-section a.proposalPost-active{
   border-bottom: 3px solid #3c6a46;
   color: #3c6a46;
 }

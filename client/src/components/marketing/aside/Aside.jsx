@@ -42,7 +42,7 @@ const ProfilCard = () => {
 					</div>
 				</div>
 				<span>
-					{user.getDescription}
+					{user.getDescription ? user.getDescription : "--"}
 				</span>
 			</div>
 			<div className={styles.profilCardBottom}>

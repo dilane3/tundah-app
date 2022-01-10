@@ -2,6 +2,7 @@ import multer from "multer";
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
+    console.log(file)
     if (
       (file.mimetype).includes('mp4') || 
       (file.mimetype).includes('mkv') || 
@@ -16,10 +17,15 @@ const storage = multer.diskStorage({
     let originalname = file.originalname.trim()
 
     originalname = (Array.from(originalname).map(letter => {
-      if (letter !== " ")
-        return letter
-      else
+      if (letter === " ") {
         return "_"
+      } else if (letter === "'") {
+        return "_"
+      } else if (letter === "-") {
+        return "_"
+      } else {
+        return letter
+      }
     })).join("")
 
     cb(null, Date.now() + "--" + originalname)
@@ -27,6 +33,7 @@ const storage = multer.diskStorage({
 })
 
 const fileFilter = (req, file, cb) => {
+  console.log(file)
   if(
     (file.mimetype).includes('mp4') || 
     (file.mimetype).includes('mkv') || 

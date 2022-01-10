@@ -8,13 +8,13 @@ import currentUserContext from '../dataManager/context/currentUserContent'
 import axios from 'axios'
 import postsContext from '../dataManager/context/postsContext'
 
-// const instance = axios.create({
-// 	baseURL: "http://localhost:5000/api",
-// })
-
 const instance = axios.create({
-	baseURL: "http://192.168.43.81:5000/api",
+	baseURL: "http://localhost:5000/api",
 })
+
+// const instance = axios.create({
+// 	baseURL: "http://192.168.43.81:5000/api",
+// })
 
 const Base = ({children}) => {
   // getting context value
@@ -66,6 +66,10 @@ const Base = ({children}) => {
           console.log(err)
         })
         .then(() => {
+          // to remove
+          // setDataLoaded(true)
+
+
           let timer = setTimeout(() => {
             setShowLoaderPage(false)
     

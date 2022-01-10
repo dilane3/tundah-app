@@ -12,13 +12,13 @@ import axios from 'axios'
 import LoaderCircle from '../../../utils/loaders/Loader'
 import AddProfilPhotoModal from '../../../utils/modals/AddProfilPhotoModal'
 
-// const instance = axios.create({
-//     baseURL: "http://localhost:5000/api"
-// })
-
 const instance = axios.create({
-	baseURL: "http://192.168.43.81:5000/api",
+    baseURL: "http://localhost:5000/api"
 })
+
+// const instance = axios.create({
+// 	baseURL: "http://192.168.43.81:5000/api",
+// })
 
 // const profilUpdate
 
@@ -153,7 +153,7 @@ const HeaderProfil  = () => {
                                 onChange={handleChangeProfilPhotoUploadData}
                             />
 
-                            <span onClick={handleClickProfilPhotoUpload}>
+                            <span onClick={handleClickProfilPhotoUpload} title="changer de photo">
                                 <BsCameraFill />
                             </span>
 

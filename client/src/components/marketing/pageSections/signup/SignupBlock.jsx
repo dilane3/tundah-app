@@ -11,13 +11,13 @@ import AlertError from '../signin/AlertError';
 
 const image = require("../../../../medias/img/signup-img.png")
 
-// const instance = axios.create({
-// 	baseURL: "http://localhost:5000/api",
-// })
-
 const instance = axios.create({
-	baseURL: "http://192.168.43.81:5000/api",
+	baseURL: "http://localhost:5000/api",
 })
+
+// const instance = axios.create({
+// 	baseURL: "http://192.168.43.81:5000/api",
+// })
 
 const SignupBlock = (props) => {
 	const initialSignupData = {
