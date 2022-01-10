@@ -14,7 +14,7 @@ import PostImg from '../../elements/imgCircle/ImgCircle'
 import PostCarousel from '../../utils/carousels/PostCarousel'
 import Paragraphe from '../../elements/p/Paragraphe'
 
-const Post = (props) => {
+const Post = ({title, content}) => {
 /*
 	const  { 
 			authorInfo, 
@@ -26,8 +26,8 @@ const Post = (props) => {
 
 		const { imgAuthor, nameAuthor } = authorInfo*/
 
-	return(
-		<article className="bg-white w-full font-primary pb-2 mx-auto rounded-sm">
+	return (
+		<article className="bg-white w-full font-primary pb-2 mx-auto rounded-sm mb-2">
 			<header className="flex justify-between items-center pb-3 px-2 pt-2">
 				<div className="flex items-center space-x-1 lg:space-x-2 ">
 					<PostImg
@@ -43,24 +43,27 @@ const Post = (props) => {
 				
 
 				<div>
-			      <SocialPostDropdown 
-			      	dropElt={ <BsThreeDotsVertical size="25" className="icon" /> } 
-			      />
-			    </div>
+			    <SocialPostDropdown 
+			      dropElt={ <BsThreeDotsVertical size="25" className="icon" /> } 
+			    />
+			  </div>
 			</header>
 			<main className="">
+				<div className="post-title">
+					Title
+				</div>
 				<div className="px-2">
 					<Paragraphe>
 						voici comment faire pour epouser une ewondo
 					</Paragraphe>
 					<Paragraphe classe="mt-4">
 						Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-Lorem Ipsum has been the industry's standard
+						Lorem Ipsum has been the industry's standard
 					</Paragraphe>
 					<Paragraphe classe="mt-4">
 						Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
-It has survived not only five centurie
+						Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+						It has survived not only five centurie
 					</Paragraphe>
 				</div>
 				{/*<div className="pt-2">
@@ -76,7 +79,7 @@ It has survived not only five centurie
 					img3 = {person}
 				/>
 			</main>
-			<footer className="mt-1 px-2 md:mt-3 flex items-center space-x-6">
+			<footer className="mt-3 px-2 md:mt-3 flex items-center space-x-6">
 				<div className="flex items-center space-x-1">
 					<AiOutlineLike size="25" className="icon" />
 					<span className="text-xs md:text-sm">213k</span>

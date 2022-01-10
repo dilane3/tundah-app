@@ -17,30 +17,31 @@ const prevArrowStyle = {
   zIndex: "20"
 }
 
+function SampleNextArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+    <div
+      className={className}
+      style={{ ...style, ...nextArrowStyle }}
+      onClick={onClick}
+    />
+  );
+}
+
+function SamplePrevArrow(props) {
+  const { className, style, onClick } = props;
+
+  console.log('hello')
+  return (
+    <div
+      className={className}
+      style={{ ...style, ...prevArrowStyle }}
+      onClick={onClick}
+    />
+  );
+}
+
 const PostCarousel = (props) => {
-
-  function SampleNextArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{ ...style, ...nextArrowStyle }}
-        onClick={onClick}
-      />
-    );
-  }
-
-  function SamplePrevArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-      <div
-        className={className}
-        style={{ ...style, ...prevArrowStyle }}
-        onClick={onClick}
-      />
-    );
-  }
-
   const settings = {
     dots: true,
     infinite: true,
@@ -60,13 +61,13 @@ const PostCarousel = (props) => {
   } = props
   
   return (
-    <div className="mt-8 mx-2">
+    <div className="mt-8">
       <Slider {...settings}>
         <div className="postImgBlock w-full" >
           <Image 
             image={img1}
             alt={ alt1 ? alt1 : "image du post de leDoyen" }
-            className="postImg w-full h-full"
+            className="postImg"
             blur={true}
           />
         </div>
@@ -74,7 +75,7 @@ const PostCarousel = (props) => {
           <Image 
             image={img2}
             alt={ alt1 ? alt1 : "image du post de leDoyen" }
-            className="postImg w-full h-full"
+            className="postImg"
             blur={true}
           />
         </div>
@@ -82,13 +83,13 @@ const PostCarousel = (props) => {
           <Image 
             image={img3}
             alt={ alt1 ? alt1 : "image du post de leDoyen" }
-            className="postImg w-full h-full"
+            className="postImg"
             blur={true}
           />
         </div>
       </Slider>
     </div>
-  );
+  )
 }
 
 export default PostCarousel

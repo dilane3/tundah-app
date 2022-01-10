@@ -60,6 +60,7 @@ class UserModel extends InterfaceUserModel {
           username: $username, 
           email: $email, 
           password: $password, 
+          description: $description,
           role: $role,
           date: $date,
           country: $country,
@@ -74,6 +75,7 @@ class UserModel extends InterfaceUserModel {
         username, 
         email, 
         password,
+        description: "",
         country,
         role,
         date: Date.now()
@@ -161,9 +163,10 @@ class UserModel extends InterfaceUserModel {
    * @param {string} username 
    * @param {string} email 
    * @param {string} password 
+   *  @param {string} description
    * @param {string} country 
    */
-  async updateUser (id, name, username, email, password, country) {
+  async updateUser (id, name, username, email, password, description, country) {
     const session = dbConnect()
 
     try {
@@ -174,6 +177,7 @@ class UserModel extends InterfaceUserModel {
           user.username = $username,
           user.email = $email,
           user.password = $password,
+          user.description = $description,
           user.country = $country
         RETURN user
       `
@@ -184,6 +188,7 @@ class UserModel extends InterfaceUserModel {
         username,
         email,
         password,
+        description,
         country
       })
 

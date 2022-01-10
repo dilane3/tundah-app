@@ -2,6 +2,7 @@ import PostModel from "../models/PostModel.js";
 import InterfacePost from './interfaces/interfacePost.js'
 
 class Post extends InterfacePost {
+  title;
   content;
   creation_date;
   modification_date;
@@ -14,6 +15,13 @@ class Post extends InterfacePost {
     super()
 
     this.dataManager = new PostModel();
+  }
+
+  /**
+   * @returns string
+   */
+   get getTitle() {
+    return this.title;
   }
 
   /**
@@ -72,6 +80,7 @@ class Post extends InterfacePost {
    */
   async proposePost(datas, userId) {
     const { data, error } = await this.dataManager.createPost(
+      datas.title,
       datas.content,
       datas.files_list,
       false,
@@ -89,8 +98,7 @@ class Post extends InterfacePost {
    * @param {string} idUser
    */
   async likePost(idPost, idUser) {
-    const postModel = new PostModel();
-    const { data, error } = await postModel.likePost(idPost, idUser);
+    const { data, error } = await this.dataManager.likePost(idPost, idUser);
 
     return { data, error };
   }
@@ -101,6 +109,7 @@ class Post extends InterfacePost {
    */
   async publishPost(datas, userId) {
     const { data, error } = await this.dataManager.createPost(
+      datas.title,
       datas.content,
       datas.files_list,
       true,
@@ -119,9 +128,7 @@ class Post extends InterfacePost {
    * @param {string} idPost
    * */
   async validatePost(idPost, idUser) {
-    const postModel = new PostModel();
-
-    const { data, error } = await postModel.updatePostValidation(idPost, idUser, true);
+    const { data, error } = await this.dataManager.updatePostValidation(idPost, idUser, true);
 
     return { data, error };
   }

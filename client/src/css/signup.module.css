@@ -1,0 +1,276 @@
+
+body {
+  background-color: #fff;
+}
+
+.signupSection {
+  position: relative;
+  width: 1000px;
+  display: flex;
+  flex-direction: row;
+  margin: auto;
+  z-index: 4;
+  height: 600px;
+  background-color: #fff;
+}
+
+/* section Right */
+.signupSectionRight {
+  width: 50%;
+  height: 100%;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.signupSectionRightForm {
+  position: relative;
+  width: calc(100% - 150px);
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 30px 20px 20px 20px;
+  height: auto;
+}
+
+.signupSectionRightForm h1 {
+  font-size: 30px;
+}
+
+.signupSectionRight input:not([type="submit"]) {
+  height: 40px;
+}
+
+.signupSectionRightLogo {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 34px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.signupSectionRightText,
+.signupSectionRightLogo {
+  display: none;
+}
+
+.signupSectionRightText {
+  position: absolute;
+  top: 100px;
+  width: calc(100% - 60px);
+  margin: 0 auto;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.formItem {
+  position: relative;
+}
+
+.checkIcons {
+  position: absolute;
+  top: 50%;
+  right: 5px;
+  transform: translateY(-50%);
+}
+
+.checkIconsCheck {
+  color: #3c6a46;
+  font-size: 1.8rem;
+}
+
+.checkIconsX {
+  color: rgb(190, 43, 43);
+  font-size: 1.8rem;
+}
+
+.signupSectionRightLoader {
+  position: absolute;
+  top: 50%;
+  right: -10px;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  width: 25px;
+  height: 25px;
+  border: 2px solid #3c6a46;
+  border-bottom-color: transparent;
+  border-radius: 100%;
+  animation: loader .5s linear infinite;
+}
+
+.signupSectionRightLoaderSending {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  width: 130px;
+  height: 130px;
+  border: 5px solid #3c6a46;
+  border-bottom-color: transparent;
+  border-radius: 100%;
+  animation: loader .5s linear infinite;
+}
+
+@keyframes loader {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* section Left */
+.signupSectionLeft {
+  width: 50%;
+  height: 100%;
+}
+
+.signupSectionLeftContainer {
+  position: relative;
+  width: calc(100% - 40px);
+  height: calc(100% - 40px);
+  margin-top: 20px;
+  margin-left: 20px;
+  border-radius: 20px;
+  /* background: url("../medias/svg/auth-svg.svg") #3c6a46; */
+  background-color: #3c6a46;
+}
+
+.signupSectionLeftLogo {
+  position: absolute;
+  left: -20px;
+  top: 30px;
+  background-color: #fff;
+  border-radius: 5px;
+  width: 130px;
+  height: 40px;
+  font-size: 20px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding-left: 10px;
+}
+
+.signupSectionLeftText {
+  position: absolute;
+  bottom: 50px;
+  width: calc(100% - 100px);
+  margin: 0 auto;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  font-weight: 800;
+  color: #fff;
+}
+
+.signupSectionLeftImage {
+  position: absolute;
+  top: 70px;
+  left: 0;
+  width: 280px;
+  height: 420px;
+}
+
+.signupSectionLeftIndication {
+  position: absolute;
+  bottom: 250px;
+  right: 60px;
+  color: yellow;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+@media screen and (max-width: 1200px) {
+  .signupSection {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 933px) {
+  .signupSectionLeftText {
+    bottom: 25px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .signupSectionRightText,
+  .signupSectionRightLogo {
+    display: block;
+  }
+
+  .signupSection {
+    width: 100%;
+    background-color: #3c6a46;
+    height: 100%;
+  }
+
+  .signupSectionLeft {
+    display: none;
+  }
+
+  .signupSectionRight {
+    width: 400px;
+    margin: 0 auto;
+    background-color: #3c6a46;
+  }
+
+  .signupSectionRightForm {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 290px;
+  }
+
+  .signupSectionRightText {
+    width: 400px;
+    top: 80px;
+  }
+}
+
+@media screen and (max-width: 440px) {
+  .signupSectionRight {
+    width: 100%;
+  }
+
+  .signupSectionRightForm {
+    position: absolute;
+    top: 160px;
+    width: 100%;
+    height: auto;
+    min-height: calc(100% - 100px);
+    margin: 0 auto;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .signupSectionRightText {
+    width: calc(100% - 20px);
+    line-height: 25px;
+    text-align: center;
+  }
+
+  .signupSection {
+    position: relative;
+    height: 100vh;
+  }
+}
+
+@media screen and (max-height: 576px) {
+  .signupSection {
+    position: relative;
+    height: 576px;
+    overflow-y: scroll;
+  }
+}

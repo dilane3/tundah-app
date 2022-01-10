@@ -5,19 +5,16 @@ import  './Specificpost.css'
 const HeaderspecifisPost = () => {
 
     return(
-       <div className="header">
-             <div className="First-child">
-                  <a href="/">trier par</a>
-                  <BsChevronDown />
-             </div>  
-             <nav className="navbar-section">
-                  <a href="/"> Tous les articles </a>
-                  <a href="/"> recemment ajoute </a>
-                  <a href="/"> Trier par </a>
-             </nav>
-               
-       </div>
-    
+      <div className="header">
+        <div className="First-child">
+          <a> Trier par </a>
+          <BsChevronDown />
+        </div>  
+        <nav className="navbar-section">
+          <a className="active"> Tous les posts </a>
+          <a> recemment ajoute </a>
+        </nav>
+      </div>
     )
 }
 export default HeaderspecifisPost;

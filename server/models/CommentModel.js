@@ -103,12 +103,13 @@ class CommentModel extends InterfaceCommentModel {
 
   /**
   * This method create a new comment
+  *  @param {string} idComment
   * @param {string} content
   *  @param {boolean} edited
   * @param {string} idUser
   * @param {string} idPost
   */
-  async createComment(content, idUser, idPost){
+  async createComment(content, idUser, idPost, idComment){
     const session = dbConnect();
 
     try {
@@ -128,17 +129,21 @@ class CommentModel extends InterfaceCommentModel {
         CREATE (post) - [:HAS_COMMENT] -> (comment)
         RETURN comment
       `
+      console.log("text")
+      console.log({idComment, query})
       const result = await session.run(query, {
         id: nanoid(20),
         content, 
         creation_date: Date.now(),
         idUser,
-        idPost
+        idPost,
+        idComment
       })
-     
+      
       if (result.records.length > 0) {
-        const commentData = result.records[0].get("comment").properties;
+        let commentData = result.records[0].get("comment").properties;
 
+        console.log("text")
         return { data: commentData };
       } else {
         return { data: null };
@@ -147,6 +152,63 @@ class CommentModel extends InterfaceCommentModel {
     } catch(error){
       console.log(error)
       return { error: "Error while creating comment!"}
+    } finally {
+      await session.close();
+    }
+  }
+
+  /**
+  * This method response to an existing comment
+  *  @param {string} idComment
+  * @param {string} content
+  *  @param {boolean} edited
+  * @param {string} idUser
+  * @param {string} idPost
+  */
+   async responseComment(content, idUser, idPost, idComment){
+    const session = dbConnect();
+
+    try {
+      const query =`
+        MATCH (user: Subscriber {id: $idUser})
+        MATCH (post: Post {id: $idPost})
+        MATCH (commenthost: Comment{id: $idComment})
+        WITH user, post, commenthost
+        CREATE(comment:Comment
+          {
+            id: $id,
+            content: $content, 
+            creation_date: $creation_date,
+            edited: ${false} 
+          }
+        ) - [:COMMENTED_BY] -> (user)
+        CREATE (comment) - [:BELONGS_TO] -> (post)
+        CREATE (post) - [:HAS_COMMENT] -> (comment)
+        CREATE (commenthost) - [:HAS_RESPONSE] -> (comment)
+        RETURN comment
+      `
+      
+      const result = await session.run(query, {
+        id: nanoid(20),
+        content, 
+        creation_date: Date.now(),
+        idUser,
+        idPost,
+        idComment
+      })
+      
+      if (result.records.length > 0) {
+        let commentData = result.records[0].get("comment").properties;
+
+        console.log("text")
+        return { data: commentData };
+      } else {
+        return { data: null };
+      }
+
+    } catch(error){
+      console.log(error)
+      return { error: "Error while answering comment!"}
     } finally {
       await session.close();
     }

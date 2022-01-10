@@ -25,6 +25,15 @@ body{
 
 .postImg{
 	object-fit: cover;
+	height: 300px;
+	width: 100%;
+}
+
+.post-title {
+	font-size: 18px;
+	font-weight: 800;
+	width: calc(100% - 10px);
+	margin: 10px auto;
 }
 
 @media screen and (max-width: 1200px ){
@@ -55,18 +64,18 @@ body{
 }*/
 
 .slick-slide{
-	height: 510px !important;
+	height: 400px !important;
 }
 
 .slick-slide > div{
 	height: 100% !important;
-	/*padding: 0 10px !important;*/
+	padding: 0 10px !important;
 	background: white !important;
 }
 
-.slick-slide > div > div{
+/* .slick-slide > div > div{
 	height: 100% !important;
-}
+} */
 
 .slick-dots{
 	/*background: black !important;*/
@@ -101,4 +110,16 @@ body{
 
 .slick-active{
 	@apply bg-primary !important;
+}
+
+@media screen and (max-width: 576px) {
+	.slick-slide{
+		height: 300px !important;
+	}
+}
+
+@media screen and (max-width: 400px) {
+	.slick-slide{
+		height: 200px !important;
+	}
 }

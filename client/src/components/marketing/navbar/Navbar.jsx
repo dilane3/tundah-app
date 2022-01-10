@@ -1,15 +1,17 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import styles from '../../../css/navbar.module.css'
 import Input from '../../elements/input/Input'
 import {BsChevronDown, BsSearch, BsJustify} from 'react-icons/bs'
 import ImgCircle from '../../elements/imgCircle/ImgCircle'
-
-
 import NavbarProfilDropdown from '../../utils/dropdowns/NavbarProfilDropdown'
-
-const image = require("../../../medias/img/test.jpg")
+import currentUserContext from '../../../dataManager/context/currentUserContent'
+import { Link } from 'react-router-dom'
+import Subscriber from '../../../entities/Subscriber'
 
 const Navbar = ({className, onShowMobileMenu}) => {
+	const {currentUser} = useContext(currentUserContext)
+
+	const user = new Subscriber(currentUser)
 
 	return(
 		<header className={className}>
@@ -31,11 +33,21 @@ const Navbar = ({className, onShowMobileMenu}) => {
 			</div>
 			<div className={styles.headerProfil}>
 				<div className={styles.headerProfilIcon}>
-					<ImgCircle src={image} alt={"profil"} />
-
-					<NavbarProfilDropdown 
-				    dropElt={ <BsChevronDown className="icon" /> } 
-				  />
+					{
+						currentUser ? (
+							<>
+								<ImgCircle src={user.getProfil} alt={"profil"} />
+			
+								<NavbarProfilDropdown 
+									dropElt={ <BsChevronDown className="icon" /> } 
+								/>
+							</>
+						):(
+							<Link to="/signin">
+								<button className={styles.headerProfilButton}>se connecter</button>
+							</Link>
+						)
+					}
 				</div>
 			</div>
 		</header>
