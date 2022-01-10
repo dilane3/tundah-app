@@ -20,10 +20,15 @@ const storage = multer.diskStorage({
     let originalname = file.originalname.trim()
 
     originalname = (Array.from(originalname).map(letter => {
-      if (letter !== " ")
-        return letter
-      else
+      if (letter === " ") {
         return "_"
+      } else if (letter === "'") {
+        return "_"
+      } else if (letter === "-") {
+        return "_"
+      } else {
+        return letter
+      }
     })).join("")
 
     cb(null, Date.now() + "--" + originalname)

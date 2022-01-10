@@ -37,6 +37,11 @@
   height: 70px;
 }
 
+.profilCardTopImage img {
+  height: 100% !important;
+  object-fit: cover;
+}
+
 .profilCardInfo {
   display: flex;
   flex-direction: column;

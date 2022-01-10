@@ -8,7 +8,7 @@ const NavbarProfilDropdown = ({ dropElt }) => {
   const logout = () => {
     localStorage.setItem("tundah-token", null)
 
-    window.location.href = "/signin"
+    window.location.href = "/wiki/feed"
   }
 
 	return(

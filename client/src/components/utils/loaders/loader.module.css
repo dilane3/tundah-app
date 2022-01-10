@@ -1,0 +1,23 @@
+.loaderCircle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  justify-content: center;
+  width: 130px;
+  height:130px;
+  border-width: 5px;
+  border-radius: 100%;
+  animation: loader .7s linear infinite;
+}
+
+@keyframes loader {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

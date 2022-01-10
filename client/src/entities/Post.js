@@ -11,6 +11,7 @@ class Post extends InterfacePost {
   region;
   tribe;
   comments;
+  likes;
   author;
   subAuthors;
 
@@ -39,7 +40,8 @@ class Post extends InterfacePost {
         tribe, 
         comments, 
         author,
-        subAuthors
+        subAuthors,
+        likes
       } = data
     
       this.id = id
@@ -54,6 +56,7 @@ class Post extends InterfacePost {
       this.comments = comments
       this.author = author
       this.subAuthors = subAuthors
+      this.likes = likes
     }
   }
 
@@ -120,16 +123,32 @@ class Post extends InterfacePost {
     return this.tribe;
   }
 
+  /**
+   * @returns number
+   */
   get getComments() {
     return this.comments
   }
 
+  /**
+   * @returns User
+   */
   get getAuthor() {
     return this.author
   }
 
+  /**
+   * @returns Array of User
+   */
   get getSubAuthors() {
     return this.subAuthors
+  }
+
+  /**
+   * @returns Array of Userid
+   */
+  get getLikes() {
+    return this.likes
   }
 
   updatePost(data) {
@@ -164,6 +183,16 @@ class Post extends InterfacePost {
     const index = this.comments.findIndex(comment => comment.getId === idComment)
 
     return index
+  }
+
+  likePost (idUser) {
+    if (!this.likes.contains(idUser)) {
+      this.likes.push(idUser)
+    } else {
+      const index = this.likes.findIndex(like => like === idUser)
+
+      this.likes.splice(index, 1)
+    }
   }
 }
 
