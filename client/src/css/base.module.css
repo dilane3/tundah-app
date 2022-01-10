@@ -16,7 +16,7 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  box-shadow: 0 2px 3px #d6d6d6;
+  box-shadow: 0 1px 5px #b1b1b1;
   background-color: #fff;
   z-index: 15;
 }
@@ -88,6 +88,11 @@ body {
   font-size: 40px;
   font-weight: 800;
   color: #3c6a46;
+}
+
+.loaderPage img {
+  width: 200px;
+  height: auto;
 }
 
 @media screen and (max-width: 1500px) {

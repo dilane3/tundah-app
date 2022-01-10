@@ -12,6 +12,11 @@
   font-weight: 800;
 }
 
+.headerLogo img {
+  width: 200px;
+  height: auto;
+}
+
 .headerMenuIcon {
   display: none;
 }
@@ -81,6 +86,13 @@
 }
 
 /* responsive */
+@media screen and (max-width: 1200px) {
+  .headerLogo img {
+    width: 150px;
+    height: auto;
+  }
+}
+
 @media screen and (max-width: 800px) {
   .headerProfil {
     width: 150px;
