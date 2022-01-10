@@ -28,6 +28,7 @@
 
 /* search engine section */
 .headerSearchEngine {
+  position: relative;
   width: calc(100% / 3);
   display: flex;
   justify-content: center;
@@ -38,10 +39,18 @@
   width: calc(100% - 20px);
   font-size: 16px;
   height: 40px;
+  padding-left: 40px;
+  border: 0;
+  background-color: #e9ffed;
+  color: rgb(44, 44, 44);
 }
 
 .headerSearchEngineIcon {
-  display: none;
+  /* display: none; */
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .headerSearchEngineIcon svg {
@@ -114,7 +123,7 @@
     display: flex;
   }
 
-  .headerSearchEngine input {
+  .headerSearchEngine {
     display: none;
   }
 

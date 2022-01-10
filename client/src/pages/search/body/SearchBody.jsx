@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import PostPropose from '../../../components/marketing/pageSections/proposalPost/PostPropose'
 import styles from "../../../css/search.module.css"
+import researchContext from '../../../dataManager/context/researchContext'
 
 const ResearchResultBar = () => {
   return (
@@ -11,14 +12,21 @@ const ResearchResultBar = () => {
 }
 
 const BodySearch = () => {
+  const {changeQuery} = useContext(researchContext)
+
+  // test
+  useEffect(() => {
+    changeQuery("polygamie")
+  })
+
   return (
     <section className={styles.researchResultSection}>
       <ResearchResultBar />
 
       <div className="container">
-        <PostPropose />
-        <PostPropose />
-        <PostPropose />
+        <PostPropose type="result" />
+        <PostPropose type="result" />
+        <PostPropose type="result" />
       </div>
     </section>
   )

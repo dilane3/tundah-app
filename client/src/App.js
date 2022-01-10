@@ -24,11 +24,17 @@ import {
 import currentUserReducer from './dataManager/data/currentUser/currentUserReducer';
 import postsReducer from './dataManager/data/posts/postsReducer';
 import navigationContext from './dataManager/context/navigationContext';
+import Post from './entities/Post';
+import researchContext from './dataManager/context/researchContext';
 
 function App() {
   const [posts, dispatchPosts] = useReducer(postsReducer, [])
   const [currentUser, dispatchUser] = useReducer(currentUserReducer, null)
   const [navigation, setNavigation] = useState("")
+  const [research, setReseach] = useState({
+    postsResults: [],
+    query: ""
+  })
 
   // current User actions
   const userLogin = (data) => {
@@ -90,6 +96,24 @@ function App() {
     setNavigation(target)
   }
 
+  // research actions
+  const addResults = (posts) => {
+    const researchClone = {...research}
+    const postsResults = posts.map(post => new Post(post))
+
+    researchClone.postsResults = postsResults
+
+    setReseach(researchClone)
+  }
+
+  const changeQuery = (query) => {
+    const researchClone = {...research}
+
+    researchClone.query = query
+
+    setReseach(researchClone)
+  }
+
   // data of current user context
   const currentUserContextValue = {
     currentUser,
@@ -119,13 +143,22 @@ function App() {
     navigateTo
   }
 
+  // data of research
+  const researchContextValue = {
+    ...research,
+    addResults,
+    changeQuery
+  }
+
   return (
     <currentUserContext.Provider value={currentUserContextValue}>
       <postsContext.Provider value={postsContextValue}>
         <navigationContext.Provider value={navigationContextValue}>
-          <BrowserRouter>
-            <Routes />
-          </BrowserRouter>
+          <researchContext.Provider value={researchContextValue}>
+            <BrowserRouter>
+              <Routes />
+            </BrowserRouter>
+          </researchContext.Provider>
         </navigationContext.Provider>
       </postsContext.Provider>
     </currentUserContext.Provider>

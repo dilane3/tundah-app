@@ -8,7 +8,7 @@ const Wiki = () => {
 	return(
 		<div className="">
 			<Seo
-				title="(10) Fil d'actualité|wiki|tundah"
+				title="wiki | tundah"
 				description="tundah est un réseau social qui met en avant la culture africaine pour la transmettre à la génération futur"
 			/>
 			<Base>
