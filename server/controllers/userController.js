@@ -34,15 +34,23 @@ class UserController {
   static getCurrentUser = async (req, res) => {
     const user = req.user
 
-    return res.status(200).json({...user, password: undefined})
+    return res.status(200).json({...user, password: undefined, profil: `${req.protocol}://${req.headers.host}/static/images/profil/${user.getProfil}`})
   }
 
   static signup = async (req, res) => {
-    const {name, username, email, password, country, role} = req.body
+    let {name, username, email, password, country, role} = req.body
+
+    console.log({req: req})
 
     if (name && username && email && password && [0, 1].includes(role) && country) {
 
       if (validateEmail(email)) {
+        // removing space at the start and at the end of these string valuer
+        name = name.trim()
+        username = username.trim()
+        email = email.trim()
+        password = password.trim()
+
         // used for hashing password
         const saltRounds = 10;
   
@@ -87,10 +95,15 @@ class UserController {
   }
 
   static signin = async (req, res) => {
-    const {username, password} = req.body
+    let {username, password} = req.body
 
     if (username && password) {
       const userModel = new UserModel()
+
+
+      // removing space at the start and at the end of these string valuer
+      username = username.trim()
+      password = password.trim()
 
       const {data, error} = await userModel.signin(username)
 
@@ -187,12 +200,25 @@ class UserController {
       const {data, error} = await user.setProfil(file.filename)
 
       if (data) {
-        return res.status(200).json(data)
+        return res.status(200).json({...data, profil: `${req.protocol}://${req.headers.host}/static/images/profil/${data.profil}`})
       } else {
         return res.status(500).json(error)
       }
     } else {
       return res.sendStatus(500)
+    }
+  }
+
+  static deleteProfil = async (req, res) => {
+    const user = req.user
+    console.log({user})
+    
+    const {data, error} = await user.dataManager.deleteProfil(user.getId)
+
+    if (data !== undefined) {
+      res.status(200).json({...data, profil: `${req.protocol}://${req.headers.host}/static/images/profil/${data.profil}`})
+    } else {
+      res.status(500).json({message: error})
     }
   }
 
@@ -220,7 +246,7 @@ class UserController {
   static uniqueEmail = async (req, res) => {
     const {email} = req.body 
 
-    if (email) {
+    if (email && validateEmail(email)) {
       const userModel = new UserModel()
 
       const {data, error} = await userModel.verifyUnicity(email, "email")
@@ -236,7 +262,7 @@ class UserController {
   }
 
   static uniqueUsername = async (req, res) => {
-    const {username} = req.body 
+    const {username} = req.body
 
     if (username) {
       const userModel = new UserModel()

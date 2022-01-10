@@ -1,30 +1,19 @@
-import React, { useState, useEffect } from 'react'
-import Paragraphe from '../../../components/elements/p/Paragraphe'
-import Loader from '../../../components/utils/Loader'
-import Post from '../../../components/marketing/pageSections/social/Post'
-import BigContainer from '../../../components/utils/BigContainer'
-
-
-
-import signupImg from '../../../medias/img/signup-img.png'
+import React, { useState, useEffect, useContext } from 'react'
+import { Redirect } from 'react-router'
+import ListPosts from '../../../components/marketing/pageSections/wiki/ListPosts'
+import WritePost from '../../../components/marketing/pageSections/WritePost'
+import currentUserContext from '../../../dataManager/context/currentUserContent'
 
 const BodyWiki = () => {
-
-	const [showLoader, setShowLoader] = useState(true)
-
-	useEffect(() => {
-		let timeout = setTimeout(() => setShowLoader(false), 1500)
-		return () => {
-			clearTimeout(timeout)
-		}
-	}, [])
-
+	const {currentUser} = useContext(currentUserContext)
 
 	return(
-		// <BigContainer>
-			// <Post />
-		// </ BigContainer> 
-		<p>Hello</p>
+		<>
+			{
+				currentUser ? <WritePost /> : null
+			}
+		 	<ListPosts />
+		</>
 	)
 }
 

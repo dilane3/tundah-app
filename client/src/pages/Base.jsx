@@ -6,6 +6,7 @@ import Navbar from '../components/marketing/navbar/Navbar'
 import styles from '../css/base.module.css'
 import currentUserContext from '../dataManager/context/currentUserContent'
 import axios from 'axios'
+import postsContext from '../dataManager/context/postsContext'
 
 // const instance = axios.create({
 // 	baseURL: "http://localhost:5000/api",
@@ -16,12 +17,15 @@ const instance = axios.create({
 })
 
 const Base = ({children}) => {
-	const {login} = useContext(currentUserContext)
+  // getting context value
+	const {login, currentUser} = useContext(currentUserContext)
+  const {posts, addPosts} = useContext(postsContext)
+
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [maskBackground, setMaskBackground] = useState(true)
-  const [showLoaderPage, setShowLoaderPage] = useState(true)
-  const [loaderClassActive, setLoaderClassActive] = useState(false)
-  const [dataLoaded, setDataLoaded] = useState(false)
+  const [showLoaderPage, setShowLoaderPage] = useState(!currentUser ? true:false)
+  const [loaderClassActive, setLoaderClassActive] = useState(!currentUser ? false:true)
+  const [dataLoaded, setDataLoaded] = useState(!currentUser ? false:true)
 
   useEffect(() => {
     if (showMobileMenu) {
@@ -38,24 +42,38 @@ const Base = ({children}) => {
 
     instance.defaults.headers.common['authorization'] = `Bearer ${token}`
 
-    instance.get("/users/current")
-    .then(res => {
-      login({...res.data, token: undefined})
+    if (!currentUser) {
+      instance.get("/users/current")
+      .then(res => {
+        // adding the current user in the global state
+        login({...res.data, token: undefined})
+      })
+      .catch(err => {
+        console.log(err)
+      })
+      .then(() => {
 
-      setLoaderClassActive(true)
-      setDataLoaded(true)
-    })
-    .catch(err => {
-      console.log(err)
-      // window.location.href = "/signin"
-    })
-    .finally(() => {
-      let timer = setTimeout(() => {
-        setShowLoaderPage(false)
+        instance.get("/posts?skip=0&limit=10")
+        .then(res => {
+          // adding post to the global state
+          addPosts(res.data.data)
+          // console.log(res.data.data)
 
-        clearTimeout(timer)
-      }, 1000)
-    })
+          setLoaderClassActive(true)
+          setDataLoaded(true)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+        .then(() => {
+          let timer = setTimeout(() => {
+            setShowLoaderPage(false)
+    
+            clearTimeout(timer)
+          }, 1000)
+        })
+      })
+    }
   }, [])
 
   return (

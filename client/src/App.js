@@ -13,15 +13,23 @@ import {
   updateProfil,
   updateUser
 } from './dataManager/data/currentUser/currentUserActions'
+import {
+  deletePost as postDelete,
+  updatePost,
+  addPosts,
+  addPost,
+  addComment,
+  addComments
+} from './dataManager/data/posts/postsActions'
 import currentUserReducer from './dataManager/data/currentUser/currentUserReducer';
+import postsReducer from './dataManager/data/posts/postsReducer';
 
 function App() {
-  // const [posts, dispatchPosts] = useReducer(postsReducer, [])
-  const curUser = (useContext(currentUserContext)).currentUser
+  const [posts, dispatchPosts] = useReducer(postsReducer, [])
   const [currentUser, dispatchUser] = useReducer(currentUserReducer, null)
 
+  // current User actions
   const userLogin = (data) => {
-    // console.log(data)
     dispatchUser(login(data))
   }
 
@@ -49,6 +57,33 @@ function App() {
     dispatchUser(updateUser(data))
   }
 
+  // Posts actions
+
+  const postsDeletePost = (idPost) => {
+    dispatchPosts(postDelete(idPost))
+  }
+  
+  const postsUpdatePost = (idPost, data) => {
+    dispatchPosts(updatePost(idPost, data))
+  }
+  
+  const postsAddPosts = (posts) => {
+    dispatchPosts(addPosts(posts))
+  }
+  
+  const postsAddPost = (post) => {
+    dispatchPosts(addPost(post))
+  }
+  
+  const postsAddComment = (idPost, comment, responseTo = null) => {
+    dispatchPosts(addComment(idPost, comment, responseTo))
+  }
+  
+  const postsAddComments = (idPost, comments) => {
+    dispatchPosts(addComments(idPost, comments))
+  }
+
+  // data of current user context
   const currentUserContextValue = {
     currentUser,
     login: userLogin,
@@ -60,17 +95,24 @@ function App() {
     updateUser: userUpdateUser
   }
 
-  useEffect(() => {
-    console.log({curUser})
-  }, [currentUser])
+  // data of posts context
+  const postsContextValue = {
+    posts,
+    deletePost: postsDeletePost,
+    updatePost: postsUpdatePost,
+    addPosts: postsAddPosts,
+    addPost: postsAddPost,
+    addComments: postsAddComments,
+    addComment: postsAddComment
+  }
 
   return (
     <currentUserContext.Provider value={currentUserContextValue}>
-      {/* <postsContext.Provider value={posts}> */}
+      <postsContext.Provider value={postsContextValue}>
         <BrowserRouter>
           <Routes />
         </BrowserRouter>
-      {/* </postsContext.Provider> */}
+      </postsContext.Provider>
     </currentUserContext.Provider>
   );
 }

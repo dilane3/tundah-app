@@ -5,16 +5,16 @@ import { AiOutlineLike } from "react-icons/ai"
 import { BiMessageRounded } from "react-icons/bi"
 import { RiShareForwardLine } from "react-icons/ri"
 //medias
-import person from '../../../../medias/img/test.jpg'
-import mariage from '../../../../medias/img/mariage.jpg'
-import signinImg from '../../../../medias/img/signin-img.png'
-import signupImg from '../../../../medias/img/signup-img.png'
+import person from '../../../medias/img/test.jpg'
+import mariage from '../../../medias/img/mariage.jpg'
+import chinoise from '../../../medias/img/chinoise.jpg'
 //composans
-import SocialPostDropdown from '../../../utils/dropdowns/SocialPostDropdown'
-import PostImg from '../../../elements/imgCircle/ImgCircle'
-import PostCarousel from '../../../utils/carousels/PostCarousel'
+import SocialPostDropdown from '../../utils/dropdowns/SocialPostDropdown'
+import PostImg from '../../elements/imgCircle/ImgCircle'
+import PostCarousel from '../../utils/carousels/PostCarousel'
+import Paragraphe from '../../elements/p/Paragraphe'
 
-const Post = (props) => {
+const Post = ({title, content}) => {
 /*
 	const  { 
 			authorInfo, 
@@ -26,8 +26,8 @@ const Post = (props) => {
 
 		const { imgAuthor, nameAuthor } = authorInfo*/
 
-	return(
-		<article className="bg-white w-96 font-primary pb-2 mx-auto rounded-sm">
+	return (
+		<article className="bg-white w-full font-primary pb-2 mx-auto rounded-sm mb-2">
 			<header className="flex justify-between items-center pb-3 px-2 pt-2">
 				<div className="flex items-center space-x-1 lg:space-x-2 ">
 					<PostImg
@@ -43,19 +43,29 @@ const Post = (props) => {
 				
 
 				<div>
-			      <SocialPostDropdown 
-			      	dropElt={ <BsThreeDotsVertical size="25" className="icon" /> } 
-			      />
-			    </div>
+			    <SocialPostDropdown 
+			      dropElt={ <BsThreeDotsVertical size="25" className="icon" /> } 
+			    />
+			  </div>
 			</header>
 			<main className="">
-				<pre className="px-2 pt-2 font-primary">
-					hey
-
-					je suis cass hein
-
-					tu suit
-				</pre>
+				<div className="post-title">
+					Title
+				</div>
+				<div className="px-2">
+					<Paragraphe>
+						voici comment faire pour epouser une ewondo
+					</Paragraphe>
+					<Paragraphe classe="mt-4">
+						Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+						Lorem Ipsum has been the industry's standard
+					</Paragraphe>
+					<Paragraphe classe="mt-4">
+						Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+						Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, 
+						It has survived not only five centurie
+					</Paragraphe>
+				</div>
 				{/*<div className="pt-2">
 					<img 
 						src={mariage} 
@@ -65,11 +75,11 @@ const Post = (props) => {
 
 				<PostCarousel
 					img1 = {mariage}
-					img2 = {signinImg}
+					img2 = {chinoise}
 					img3 = {person}
 				/>
 			</main>
-			<footer className="mt-1 md:mt-2 flex items-center space-x-4">
+			<footer className="mt-3 px-2 md:mt-3 flex items-center space-x-6">
 				<div className="flex items-center space-x-1">
 					<AiOutlineLike size="25" className="icon" />
 					<span className="text-xs md:text-sm">213k</span>
@@ -80,10 +90,10 @@ const Post = (props) => {
 					<span className="text-xs md:text-sm">102</span>
 				</div>
 
-				<div className="flex items-center space-x-1">
+				{/*<div className="flex items-center space-x-1">
 					<RiShareForwardLine size="25" className="icon" />
-					<span className="text-xs md:text-sm">06</span>
-				</div>
+					<span className="text-xs md:text-sm">10</span>
+				</div>*/}
 			</footer>
 		</article>
 	)

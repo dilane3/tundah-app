@@ -37,6 +37,11 @@
   height: 70px;
 }
 
+.profilCardTopImage img {
+  height: 100% !important;
+  object-fit: cover;
+}
+
 .profilCardInfo {
   display: flex;
   flex-direction: column;
@@ -95,7 +100,7 @@
 /* Navigation section */
 .navigationSection {
   position: sticky;
-  top: 80px;
+  top: 110px;
   width: 100%;
   height: auto;
   margin-top: 10px;
@@ -135,6 +140,12 @@ div.navigationItemActive span:nth-child(1) {
 .navigationItem span:nth-child(2) {
   margin-left: 10px;
   font-size: 16px;
+}
+
+@media screen and (max-width: 1200px) {
+  .navigationSection {
+    top: 80px;
+  }
 }
 
 /* responsive */

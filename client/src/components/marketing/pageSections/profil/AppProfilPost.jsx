@@ -5,7 +5,7 @@ const AppProfilPost  = () => {
 
     return(
         <div className="content">
-            <HeaderProfil/>
+            <HeaderProfil />
         </div>
     )
 }

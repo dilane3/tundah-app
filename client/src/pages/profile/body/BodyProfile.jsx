@@ -1,14 +1,26 @@
-import React, { useState, useEffect } from 'react'
-import Loader from '../../../components/utils/Loader'
+import React, { useContext } from 'react'
+import { Redirect } from 'react-router'
 import AppProfilPost from '../../../components/marketing/pageSections/profil/AppProfilPost'
-import HeaderProfil from '../../../components/marketing/pageSections/profil/headerProfil'
-import signupImg from '../../../medias/img/signup-img.png'
+import Seo from '../../../components/utils/seo/Seo'
+import currentUserContext from '../../../dataManager/context/currentUserContent'
 
 
 const BodyProfile = () => {
+	const {currentUser} = useContext(currentUserContext)
+
 	return(
 		<div>
-			<AppProfilPost/>
+			{
+				currentUser ? (
+					<>
+						<Seo
+							title={`${currentUser.name}(@${currentUser.username})`}
+							description="tundah est un réseau social qui met en avant la culture africaine pour la transmettre à la génération futur"
+						/>
+						<AppProfilPost/> 
+					</>
+				): <Redirect to="/wiki/feed" />
+			}
 		</div>
 	)
 }
