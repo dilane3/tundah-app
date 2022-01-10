@@ -1,32 +1,74 @@
 import React, { Component } from "react";
 import Slider from "slick-carousel"
-const PostCarousel = () => {
+
+const nextArrowStyle = {
+  display: "block",
+  position: "absolute",
+  right: "10px",
+  zIndex: "20",
+  borderRadius: "20px"
+}
+
+const prevArrowStyle = {
+  display: "block",
+  position: "absolute",
+  left: "10px",
+  zIndex: "20"
+}
+
+const PostCarousel = (props) => {
+
+  function SampleNextArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, ...nextArrowStyle }}
+        onClick={onClick}
+      />
+    );
+  }
+
+  function SamplePrevArrow(props) {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, ...prevArrowStyle }}
+        onClick={onClick}
+      />
+    );
+  }
+
   const settings = {
     dots: true,
     infinite: true,
-    speed: 500,
+    speed: 600,
     slidesToShow: 1,
-    slidesToScroll: 1
+    slidesToScroll: 1,
+    nextArrow: <SampleNextArrow />,
+    prevArrow: <SamplePrevArrow />
   };
+
+  const {
+    img1,
+    alt1,
+    img2,
+    alt2,
+    img3
+  } = props
   
   return (
-    <div>
-      <h2> Single Item</h2>
-      <Slider {...settings}>
-        <div className="h-82 bg-green-500 flex items-center justify-center text-xl text-white font-primary ">
-          <h3>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially</h3>
+    <div className="bg-black mt-20">
+      <Slider {...settings} >
+        <div className="w-full h-96">
+          <img src={img1} alt={ alt1 ? alt1 : "image du post de leDoyen" } className="inline-block w-full h-full"/>
         </div>
-        <div className="h-82 bg-blue-500 flex items-center justify-center text-xl text-white font-primary ">
-          <h3>2 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially</h3>
+        <div className="w-full h-96">
+          <img src={img2} alt={ alt1 ? alt1 : "image du post de leDoyen" } className="inline-block w-full h-full"/>
         </div>
-        <div className="h-82 bg-orange-500 flex items-center justify-center text-xl text-white font-primary ">
-          <h3>3 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially</h3>
-        </div>
-        <div className="h-82 bg-gray-500 flex items-center justify-center text-xl text-white font-primary ">
-          <h3>4 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially</h3>
-        </div>
-        <div className="h-82 bg-yellow-500 flex items-center justify-center text-xl text-white font-primary ">
-          <h3>5 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially</h3>
+        <div className="w-full h-96">
+          <img src={img3} alt={ alt1 ? alt1 : "image du post de leDoyen" } className="inline-block w-full h-full"/>
         </div>
       </Slider>
     </div>

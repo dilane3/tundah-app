@@ -126,12 +126,13 @@ class UserController {
       username, 
       email, 
       password, 
+      description,
       country
     } = req.body
 
     console.log("Hello")
 
-    if (name && username && email && password && country) {
+    if (name && username && email && password && description && country) {
       // used for hashing password
       const saltRounds = 10;
   
@@ -144,6 +145,7 @@ class UserController {
           name, 
           username, 
           email, 
+          description,
           hash, 
           country
         )

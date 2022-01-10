@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import ImgCircle from '../../../elements/imgCircle/ImgCircle'
 import {BsPlusCircleFill, BsJournals, BsPersonCheck, BsGear, BsThreeDotsVertical} from 'react-icons/bs'
 import {Image} from 'react-image-progressive-loading'
@@ -6,6 +6,7 @@ import { BsGeoAlt } from 'react-icons/bs'
 import {MdContactMail} from 'react-icons/md'
 import {AiOutlineEdit} from 'react-icons/ai'
 import './profilStyle.css'
+import currentUserContext from '../../../../dataManager/context/currentUserContent'
 
 const image = require("../../../../medias/img/test.jpg")
 
@@ -18,6 +19,9 @@ const StatPostItem = ({title, number}) => {
 }
 
 const HeaderProfil  = () => {
+    const {currentUser} = useContext(currentUserContext)
+
+    const {name, username} = currentUser
 
     return(
         <div className="profil-content">

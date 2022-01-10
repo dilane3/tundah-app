@@ -3,7 +3,7 @@
 }
 
 body {
-  background-color: #e4e4e4;
+  background-color: #e4e4e4 !important;
   height: 100%;
   position: relative;
 }
@@ -59,6 +59,33 @@ body {
 
 .backgroundBlackAnimation {
   opacity: 0;
+}
+
+.loaderPage {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  /* background-color: #e4e4e4; */
+  background-color: #fff;
+  opacity: 1;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 1s;
+}
+
+.loaderPageAnimation {
+  opacity: 0;
+}
+
+.loaderPage span {
+  font-size: 40px;
+  font-weight: 800;
+  color: #3c6a46;
 }
 
 @media screen and (max-width: 1200px) {

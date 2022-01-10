@@ -1,4 +1,3 @@
-import UserModel from "../models/UserModel.js";
 import Post from "./Post.js";
 import Comment from './Comment.js'
 
@@ -7,18 +6,14 @@ class Subscriber {
   name;
   username;
   email;
-  password;
   description;
   role;
   date;
   profil;
   country;
-  dataManager;
   posts;
 
   constructor(data) {
-    this.dataManager = new UserModel()
-
     this.initialization(data)
   }
 
@@ -45,19 +40,6 @@ class Subscriber {
    */
   get getEmail() {
     return this.email
-  }
-
-  /**
-   * @returns string
-   */
-  get getPassword() {
-    return this.password
-  }
-  /**
-   * @returns string
-   */
-   get getDescription() {
-    return this.description
   }
 
   /**
@@ -107,8 +89,6 @@ class Subscriber {
         name,
         username,
         email,
-        password,
-        description,
         date,
         role,
         profil,
@@ -120,57 +100,64 @@ class Subscriber {
       this.name = name
       this.username = username
       this.email = email
-      this.password = password
-      this.description = description
       this.date = date
       this.role = role
       this.profil = profil
-      this.posts = posts
+      this.posts = posts ? posts:[]
       this.country = country
     }
   }
 
-  async setProfil(profil) {
-    const {data, error} = await this.dataManager.updateProfil(this.getId, profil)
+  get getUserData() {
+    return this
+  }
 
-    if (data) {
-      this.profil = data.profil
+  setProfil(profil) {
+    this.profil = profil
+  }
+
+  updateUser(data) {
+    const {
+      name,
+      username,
+      email,
+      country,
+      description
+    } = data
+
+    this.name = name
+    this.username = username
+    this.email = email
+    this.country = country
+    this.description = description
+  }
+
+  get getProposePosts() {
+    return this.posts.map(post => {
+      if (!post.getPublished) return post
+    })
+  }
+
+  get getPublishedPosts() {
+    return this.posts.map(post => {
+      if (post.getPublished) return post
+    })
+  }
+
+  deletePost (idPost) {
+    const index = this.posts.findIndex((post) => post.getId === idPost)
+
+    if (index > -1) {
+      this.posts.splice(index, 1)
     }
-
-    return {data, error}
   }
 
-  /**
-   * This method allow the subscriber to create a post
-   * @param {any} datas 
-   */
-  async createPost(title, content, files_list, region, tribe) {
-    const post = new Post()
-
-    const {data, error} = await post.proposePost({title, content, files_list, region, tribe}, this.getId)
-    
-    return {data, error}
+  setAllPost (posts) {
+    this.posts = posts
   }
 
-  /**
-   * This method allow a user to like a post
-   * @param {string} idPost 
-   */
-  async likePost(idPost) {
-    const post = new Post()
-
-    return (await post.likePost(idPost, this.getId))
-  }
-
-  /**
-   * This method allow a user to write a comment
-   * @param {any} datas 
-   */
-  async writeComment(datas) {
-    const {content, idUser, idPost} = datas
-    const comment = new Comment()
-
-    return (await comment.writeComment({content, idUser, idPost}))
+  createPost (post) {
+    this.posts.push(post)
   }
 }
 

@@ -11,6 +11,11 @@ import Paragraphe from '../../../elements/p/Paragraphe'
 import ALink from '../../../elements/a/ALink'
 import H1 from '../../../elements/titles/H1'
 import H2 from '../../../elements/titles/H2'
+import styles from  "../../../../css/signup.module.css"
+import {Image} from 'react-image-progressive-loading'
+
+const image = require("../../../../medias/img/signup-img.png")
+
 
 const SignupBlock = (props) => {
 
@@ -58,68 +63,39 @@ const SignupBlock = (props) => {
 		contry
 	} = signupData
 
-	const disabled = fullName === "" || userName === "" || email === "" || password === "" || tel === "" || contry === "" || !checkTermsUses
+	const disabled = fullName === "" || userName === "" || email === "" || password === "" || contry === "" || !checkTermsUses
 	const errorMsg = error && <Paragraphe classe="text-red-600 pt-5 md:pt-10 lg:pt-5">{error}</Paragraphe>
 
 	return(
-		<div className="signup-block px-3 md:px-4 bg-primary w-full h-screen">
-			<Container classe="relative pb-10 md:pb-0">
-				<div className="lg:hidden flex flex-col space-y-4">
-						<Link
-								to=""
-								className="bg-white w-32 p-5 text-black flex justify-center font-semibold items-center"
-								>
-								<span>tundah</span>
-						</Link>
-						<H2 className="">
-								Regoinez le reseau social qui lutte pour préserver la <span className="text-yellow-400">culture africaine</span>
-						</H2>
+		<div className={styles.signupSection}>
+				<section className={styles.signupSectionLeft}>
+					<div className={styles.signupSectionLeftContainer}>
+						<span className={styles.signupSectionLeftLogo}>
+							Tundah
+						</span>
 
-						<p className=" flex space-x-2 justify-center items-center inline-block text-sm md:text-bases lg:text-xl font-bold text-yellow-400">
+						<h3 className={styles.signupSectionLeftText}>
+							Regoinez le reseau social qui lutte pour préserver la <span className="text-yellow-400">culture africaine</span>
+						</h3>
+
+						<Image image={image} className={styles.signupSectionLeftImage} />
+
+						<p className={styles.signupSectionLeftIndication}>
 							<span>notre mission </span> 
 							<BsArrowRight className="font-extrabold" />
 						</p>
-				</div>
-
-				{ errorMsg }
-
-				<div className="center-signup  p-3 flex  items-center w-full lg:space-x-4 bg-white rounded-lg mt-5">
-					<div className="relative hidden lg:block bg-repeat w-1/2 bg-primary rounded-lg text-white font-primary py-8 px-10" style={{backgroundImage: `url(${authSvg})`}}>
-						<div
-							className="absolute z-1 left-0 bg-white w-32 p-5 text-black flex justify-center items-center"
-							>
-							<span className="font-bold">tundah</span>
-						</div>
-
-						<div>
-							<div className="flex items-center">
-								<img 
-									src={signupImg} 
-									alt="Une femme africaine en tenue traditionelle"
-									className="african-women relative right-8 z-10 inline-block mt-4 lg:w-auto lg:h-auto md:w-96 md:h-96" 
-								/>
-								<Link
-									to=""
-									className="ours-mission absolute z-20"
-									>
-									<Link
-										to="/about"
-										className=" flex space-x-2 items-center justify-center inline-block right-5 top-82 text-2xl font-bold text-yellow-400"
-										>
-										<span>notre mission </span> 
-										<BsArrowRight className="font-extrabold" />
-									</Link>
-								</Link>
-							</div>
-							<H2 className="">
-								Regoinez le reseau social qui lutte pour préserver la <span className="text-yellow-400">culture africaine</span>
-							</H2>
-						</div>
 					</div>
+				</section>
 
-					<form className="w-full lg:w-1/2 " onSubmit={handleSubmit}>
+				<section className={styles.signupSectionRight}>
+					<span className={styles.signupSectionRightLogo}>Tundah</span>
+
+					<h3 className={styles.signupSectionRightText}>
+					Regoinez le reseau social qui lutte pour préserver la <span className="text-yellow-400">culture africaine</span>
+					</h3>
+					<form className={styles.signupSectionRightForm} onSubmit={handleSubmit}>
 						<H1 className="">
-							Creer<br className="hidden lg:block" /> votre compte
+							Creer votre compte
 						</H1>
 
 						<div className="w-full flex flex-col space-y-4  mt-5 md:mt-8">
@@ -173,16 +149,6 @@ const SignupBlock = (props) => {
 
 							<div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-4">
 								<div className="w-full">
-									<Input
-									type="tel"
-									name="tel"
-									id="tel"
-									value={tel}
-									placeholder="Telephone"
-									handleChange={handleChange}
-									/>
-								</div>
-								<div className="w-full">
 									<select 
 										name="contry" 
 										id="contry"
@@ -190,12 +156,11 @@ const SignupBlock = (props) => {
 										onChange={handleChange} 
 										className="w-full py-2 px-3 lg:py-3 bg-white  text-primary text-sx md:text-sm rounded md:rounded-lg border-2 border-primary focus:outline-none"
 									>
-									    <option value="cameroun">Cameroun</option>
-									    <option value="gabon">Gabon</option>
-									    <option value="nigeria">Nigeria</option>
-									    <option value="tchad">Tchad</option>
+									  <option value="cameroun">Cameroun</option>
+									  <option value="gabon">Gabon</option>
+									  <option value="nigeria">Nigeria</option>
+									  <option value="tchad">Tchad</option>
 									</select>
-
 								</div>
 							</div>
 
@@ -222,8 +187,7 @@ const SignupBlock = (props) => {
 							</Paragraphe>
 						</div>
 					</form>
-				</div>
-			</Container>
+				</section>
 		</div>
 	)
 }

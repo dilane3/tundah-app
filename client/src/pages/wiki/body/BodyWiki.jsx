@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import Paragraphe from '../../../components/elements/p/Paragraphe'
 import Loader from '../../../components/utils/Loader'
+import Post from '../../../components/marketing/pageSections/social/Post'
+import BigContainer from '../../../components/utils/BigContainer'
 
 
 
@@ -19,9 +21,10 @@ const BodyWiki = () => {
 
 
 	return(
-		<section>
-			Wiki page
-		</section>
+		// <BigContainer>
+			// <Post />
+		// </ BigContainer> 
+		<p>Hello</p>
 	)
 }
 
