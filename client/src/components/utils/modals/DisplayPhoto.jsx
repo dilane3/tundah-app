@@ -5,8 +5,8 @@ import Slider from "react-slick";
 
 const video = require("../../../medias/img/profil.mp4")
 
-const CarouselPhoto = ({files, type}) => {
-  const [fileIndex, setFileIndex] = useState(0)
+const CarouselPhoto = ({files, type, index}) => {
+  const [fileIndex, setFileIndex] = useState(index)
 
   const navigate = (action) => {
     const filesClone = [...files]
@@ -71,7 +71,9 @@ const CarouselPhoto = ({files, type}) => {
   )
 }
 
-const DisplayPhoto = ({files, type, onHide}) => {
+const DisplayPhoto = ({files, type, indexFile, onHide}) => {
+  const index = indexFile ? indexFile:0
+
   return (
     <section className={styles.displayPhotoSection}>
       <span className={styles.displayPhotoClose} onClick={onHide}>
@@ -83,7 +85,7 @@ const DisplayPhoto = ({files, type, onHide}) => {
           <div className={styles.displayPhotoPreview}>
             <img src={files[0]} />
           </div>
-        ):<CarouselPhoto files={files} type={type} />
+        ):<CarouselPhoto files={files} type={type} index={index} />
       }
     </section>
   )

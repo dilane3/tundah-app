@@ -42,7 +42,6 @@ const HeaderProfil  = () => {
     let user = new Subscriber(currentUser)
 
     const {username} = useParams()
-    console.log(username)
 
     // setting up of the local state
     const [deleteProfilLoader, setDeleteProfilLoader] = useState(false)
@@ -160,8 +159,6 @@ const HeaderProfil  = () => {
                         />
                     ):null
                 }
-
-                
 
                 <div className="informationContent"> 
                     <div className="header-profil">
