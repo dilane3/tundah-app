@@ -115,30 +115,53 @@ class PostController {
    * we create a new postModel Object
    * */
   static createPost = async (req, res) => {
-    const { title, content, files_list, region, tribe } = req.body;
+    const { title, content, region, tribe, fileType } = req.body;
+    let files_list
 
-    const user = req.user;
-    console.log(user);
+    if (fileType === "image") {
+      const files = req.files
 
-    if (title && content && region && tribe) {
-      const { data, error } = await user.createPost(
-        title,
-        content,
-        files_list,
-        region,
-        tribe
-      );
-
-      if (data !== undefined) {
-        res
-          .status(201)
-          .json({ message: "New post successfully created", data });
+      if (files !== undefined) {
+        files_list = req.files.map(file => file.filename)
       } else {
-        res.status(404).json({ error });
+        files_list = []
       }
     } else {
-      res.status(500).json({ error: "Please specify the post content" });
+      const file = req.file
+
+      if (file) {
+        files_list = [file.filename]
+      } else {
+        files_list = []
+      }
     }
+
+    console.log(files_list)
+
+    res.sendStatus(200)
+
+    // const user = req.user;
+    // console.log(user);
+
+    // if (title && content && region && tribe) {
+    //   const { data, error } = await user.createPost(
+    //     title,
+    //     content,
+    //     files_list,
+    //     region,
+    //     tribe
+    //   );
+
+    //   if (data !== undefined) {
+    //     res
+    //       .status(201)
+    //       .json({ message: "New post successfully created", data });
+    //   } else {
+    //     res.status(404).json({ error });
+    //   }
+    // } else {
+    //   res.status(500).json({ error: "Please specify the post content" });
+    // }
   };
 
   // Algorithm

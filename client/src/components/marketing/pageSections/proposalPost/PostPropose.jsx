@@ -6,7 +6,8 @@ import {Image} from 'react-image-progressive-loading'
 const image = require("../../../../medias/img/test.jpg")
 const imageMariage= require("../../../../medias/img/mariage.jpg")
 
-const PostPropose = () => {
+const PostPropose = ({type}) => {
+    type = type ? type:"proposal_post"
 
     return(
         <div className="PostPropose"> 
@@ -20,9 +21,14 @@ const PostPropose = () => {
                     </div>
                 </div>
 
-                <div className="header-PostproposeIcon">
-                    <BsThreeDotsVertical />
-                </div>
+                {
+                    type !== "result" ? (
+                        <div className="header-PostproposeIcon">
+                            <BsThreeDotsVertical />
+                        </div>
+                    ):null
+                }
+                
             </div>
             <div className="content-Postpropose">
                 <div className="Info-content">

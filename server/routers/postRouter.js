@@ -2,6 +2,7 @@ import express from "express";
 import PostController from "../controllers/postController.js";
 import authenticationMiddleware from "../middlewares/authentication.js";
 import uploadImage from "../utils/uploadImage.js";
+import uploadVideo from '../utils/uploadVideo.js';
 
 const postRouter = express.Router();
 
@@ -30,7 +31,21 @@ postRouter.get("/search/:value", getSearchedPosts);
 
 // Router for the creation of a post using the post form info and the user id
 // This can be performed only by connected users
-postRouter.post("/create", authenticationMiddleware, createPost);
+postRouter.post(
+  "/create/video", 
+  authenticationMiddleware, 
+  uploadVideo.single("video"),
+  createPost
+);
+
+// Router for the creation of a post using the post form info and the user id with images
+// This can be performed only by connected users
+postRouter.post(
+  "/create/images", 
+  authenticationMiddleware, 
+  uploadImage.array("images", 10),
+  createPost
+)
 
 // Router for the like of a post using the post id and user id
 // This can be performed only by connected users
@@ -44,7 +59,7 @@ postRouter.delete("/delete/:id", authenticationMiddleware, deletePost);
 // This can be performed only by connected expert users
 postRouter.patch(
   "/update/:id",
-  authenticationMiddleware /*, upload.fields('file')*/,
+  authenticationMiddleware,
   updatePost
 );
 

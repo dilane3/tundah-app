@@ -20,7 +20,9 @@
 
 .mobileMenuSearchEngine input {
   padding-left: 40px;
-  border-color: #747373;
+  border: 0;
+  background-color: #e9ffed;
+  color: rgb(44, 44, 44);
 }
 
 .mobileMenuSearchEngine svg {
