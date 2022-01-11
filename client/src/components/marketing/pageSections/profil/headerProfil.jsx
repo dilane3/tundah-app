@@ -50,6 +50,7 @@ const HeaderProfil  = () => {
     const [profilData, setProfilData] = useState("")
     const [percentageUploadProfil, setPercentageUploadProfil] = useState(0)
     const [uploading, setUploading] = useState(false)
+    const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
 
     // use ref
     const updloadProfilRef = useRef()
@@ -150,7 +151,7 @@ const HeaderProfil  = () => {
                     ) : null
                 }
 
-                <DisplayPhoto images={[user.getProfil, image1, image2, image3]} />
+                <DisplayPhoto files={[user.getProfil]} type="profil" />
 
                 <div className="informationContent"> 
                     <div className="header-profil">

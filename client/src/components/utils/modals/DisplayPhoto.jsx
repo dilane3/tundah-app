@@ -3,56 +3,88 @@ import { BsArrowLeft, BsArrowRight, BsX } from 'react-icons/bs'
 import styles from '../../../css/displayPhoto.module.css'
 import Slider from "react-slick";
 
-const CarouselPhoto = ({images}) => {
-  const [imageIndex, setImageIndex] = useState(0)
+const video = require("../../../medias/img/profil.mp4")
+
+const CarouselPhoto = ({files, type}) => {
+  const [fileIndex, setFileIndex] = useState(0)
 
   const navigate = (action) => {
-    const imagesClone = [...images]
+    const filesClone = [...files]
 
     if (action === "next") {
-      if (imageIndex === imagesClone.length-1) {
-        setImageIndex(0)
+      if (fileIndex === filesClone.length-1) {
+        setFileIndex(0)
       } else {
-        setImageIndex(state => state + 1)
+        setFileIndex(state => state + 1)
       }
     } else {
-      if (imageIndex === 0) {
-        setImageIndex(imagesClone.length-1)
+      if (fileIndex === 0) {
+        setFileIndex(filesClone.length-1)
       } else {
-        setImageIndex(state => state - 1)
+        setFileIndex(state => state - 1)
       }
     }
   }
 
   return (
     <div className={styles.displayPhotoPreview}>
-      <img src={images[imageIndex]} />
+      {
+        type === "images" ? (
+          <>
+            <img src={files[fileIndex]} />
 
-      <span onClick={() => navigate("next")}>
-        <BsArrowRight />
-      </span>
+            <span onClick={() => navigate("next")}>
+              <BsArrowRight />
+            </span>
 
-      <span onClick={() => navigate("prev")}>
-        <BsArrowLeft />
-      </span>
+            <span onClick={() => navigate("prev")}>
+              <BsArrowLeft />
+            </span>
+          </>
+        ):(
+          <video src={video} autoPlay controls></video>
+        )
+      }
 
-      <div className={styles.displayPhotoTracker}></div>
+      {
+        type === "images" ? (
+          <div className={styles.displayPhotoTracker}>
+            {
+             files.map((file, index) => {
+                const current = fileIndex === index ? true:false
+
+                return (
+                  <div 
+                    key={index}
+                    className={`${styles.displayPhotoTrackerItem} ${current ? styles.displayPhotoTrackerItemActive:""}`}
+                    onClick={() => setFileIndex(index)}  
+                  >
+                    <img src={file} />
+                  </div>
+                )
+              })
+            }     
+          </div>
+        ):null
+      }
     </div>
   )
 }
 
-const DisplayPhoto = ({images, onHide}) => {
+const DisplayPhoto = ({files, type, onHide}) => {
   return (
     <section className={styles.displayPhotoSection}>
       <span className={styles.displayPhotoClose} onClick={onHide}>
         <BsX />
       </span>
 
-      {/* <div className={styles.displayPhotoPreview}> */}
-        {/* <img src={images[0]} /> */}
-
-        <CarouselPhoto images={images} />
-      {/* </div> */}
+      {
+        type === "profil" ? (
+          <div className={styles.displayPhotoPreview}>
+            <img src={files[0]} />
+          </div>
+        ):<CarouselPhoto files={files} type={type} />
+      }
     </section>
   )
 }
