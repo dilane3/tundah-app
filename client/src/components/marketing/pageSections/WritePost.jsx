@@ -16,7 +16,7 @@ const WritePost = () => {
 			<div>
 				<div>
 					<span className="font-primary font-medium text-sm md:text-xl">
-						Ecrire un article
+						Rédiger un post
 					</span>
 					<span className="block h-0.5 w-3/5 bg-black opacity-60 mt-1.5"></span>
 				</div>

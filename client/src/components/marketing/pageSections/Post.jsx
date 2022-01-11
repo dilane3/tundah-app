@@ -14,6 +14,8 @@ import PostImg from '../../elements/imgCircle/ImgCircle'
 import PostCarousel from '../../utils/carousels/PostCarousel'
 import Paragraphe from '../../elements/p/Paragraphe'
 
+import "../../../css/post.css"
+
 const Post = ({title, content}) => {
 /*
 	const  { 

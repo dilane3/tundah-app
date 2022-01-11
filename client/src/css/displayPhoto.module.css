@@ -1,0 +1,78 @@
+.displayPhotoSection {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 25;
+  background-color: rgb(39, 38, 38);
+  color: #fff;
+}
+
+.displayPhotoClose {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 60px;
+  height: 60px;
+  border-radius: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(36, 36, 36);
+  opacity: .8;
+}
+
+.displayPhotoClose svg {
+  font-size: 2.5rem;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* preview section */
+.displayPhotoPreview {
+  width: calc(100% - 100px);
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+}
+
+.displayPhotoPreview > span {
+  position: fixed;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  background-color: black;
+  opacity: .7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+.displayPhotoPreview span:nth-child(2) {
+  left: inherit;
+  right: 10px;
+}
+
+.displayPhotoPreview span svg {
+  color: #fff;
+  font-size: 1.7rem;
+}
+
+.displayPhotoPreview img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+@media screen and (max-width: 576px) {
+  /* preview section */
+  .displayPhotoPreview {
+    width: 100%;
+  }
+}

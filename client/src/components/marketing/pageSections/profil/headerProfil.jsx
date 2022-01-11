@@ -11,6 +11,12 @@ import Post from '../Post'
 import axios from 'axios'
 import LoaderCircle from '../../../utils/loaders/Loader'
 import AddProfilPhotoModal from '../../../utils/modals/AddProfilPhotoModal'
+import DisplayPhoto from '../../../utils/modals/DisplayPhoto'
+import { useParams } from 'react-router-dom'
+
+const image1 = require("../../../../medias/img/chinoise.jpg")
+const image2 = require("../../../../medias/img/mariage.jpg")
+const image3 = require("../../../../medias/img/test.jpg")
 
 const instance = axios.create({
     baseURL: "http://localhost:5000/api"
@@ -34,6 +40,9 @@ const HeaderProfil  = () => {
     // getting data from the global state
     const {currentUser, updateProfil} = useContext(currentUserContext)
     let user = new Subscriber(currentUser)
+
+    const {username} = useParams()
+    console.log(username)
 
     // setting up of the local state
     const [deleteProfilLoader, setDeleteProfilLoader] = useState(false)
@@ -140,6 +149,8 @@ const HeaderProfil  = () => {
                         />
                     ) : null
                 }
+
+                <DisplayPhoto images={[user.getProfil, image1, image2, image3]} />
 
                 <div className="informationContent"> 
                     <div className="header-profil">
