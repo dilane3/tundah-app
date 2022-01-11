@@ -151,12 +151,28 @@ const HeaderProfil  = () => {
                     ) : null
                 }
 
-                <DisplayPhoto files={[user.getProfil]} type="profil" />
+                {
+                    showDisplayPhotoModal ? (
+                        <DisplayPhoto 
+                            files={[user.getProfil]} 
+                            type="profil"
+                            onHide={() => setShowDisplayPhotoModal(false)}
+                        />
+                    ):null
+                }
+
+                
 
                 <div className="informationContent"> 
                     <div className="header-profil">
                         <div className="header-profil-image-card">
-                            <ImgCircle src={user.getProfil} alt="profil" size="big" classe="profilImage" />
+                            <div className="profilImage">
+                                <img 
+                                    src={user.getProfil} 
+                                    alt="profil"
+                                    onClick={() => setShowDisplayPhotoModal(true)} 
+                                />
+                            </div>
                             <input 
                                 ref={updloadProfilRef} 
                                 type="file" 

@@ -37,6 +37,7 @@
   object-fit: cover;
   object-position: center;
   height: 100% !important;
+  border-radius: 100%;
 }
 
 .header-profil-image-card {
