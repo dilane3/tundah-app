@@ -18,6 +18,8 @@ class Post extends InterfacePost {
   constructor(data) {
     super()
 
+    console.log(data)
+
     this.initialization(data)
   }
 
@@ -45,10 +47,10 @@ class Post extends InterfacePost {
       } = data
     
       this.id = id
-      this.title = title
+      this.title = title ? title:"hello"
       this.content = content
-      this.creation_date = creation_date
-      this.modification_date = modification_date
+      this.creation_date = Number(creation_date)
+      this.modification_date = Number(modification_date)
       this.files_list = files_list
       this.published = published
       this.region = region

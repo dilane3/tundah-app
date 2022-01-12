@@ -18,20 +18,20 @@ const image1 = require("../../../../medias/img/chinoise.jpg")
 const image2 = require("../../../../medias/img/mariage.jpg")
 const image3 = require("../../../../medias/img/test.jpg")
 
-const instance = axios.create({
-    baseURL: "http://localhost:5000/api"
-})
-
 // const instance = axios.create({
-// 	baseURL: "http://192.168.43.81:5000/api",
+//     baseURL: "http://localhost:5000/api"
 // })
+
+const instance = axios.create({
+	baseURL: "http://192.168.43.81:5000/api",
+})
 
 // const profilUpdate
 
 const StatPostItem = ({title, number}) => {
 	return (
 		<div className="profilCardPost">
-		    <span>{title}({number})</span>
+		    <span>{title} ({number})</span>
 		</div>
 	)
 }
@@ -215,22 +215,26 @@ const HeaderProfil  = () => {
                         </div> 
                     </div>
                     <div className="profilPost">
-                        <div className="active">
-                            <StatPostItem  title="postes proposés" number={20} />
-                        </div>
+                        {
+                            !user.getRole ? (
+                                <div className="active">
+                                    <StatPostItem  title="postes proposés" number={user.getProposePosts.length} />
+                                </div>
+                            ):null
+                        }
                         <div>
-                            <StatPostItem title="postes validés" number={12} />
+                            <StatPostItem title="postes publiés" number={user.getPublishedPosts.length} />
                         </div>
                     </div>
                 </div>
             </div>
 
             <section className="postsList">
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
+                {
+                    user.getPublishedPosts.map(post => {
+                        return <Post postData={post}/>
+                    })
+                }
             </section>
         </>
     )

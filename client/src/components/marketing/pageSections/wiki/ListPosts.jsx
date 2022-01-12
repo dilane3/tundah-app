@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import postsContext from '../../../../dataManager/context/postsContext'
 import Post from '../Post'
 
 const ListPosts = () => {
+	const {posts} = useContext(postsContext)
+	console.log(posts)
 
 	return(
 		<div className="w-full flex flex-col">
-			<Post />
-			<Post />
-			<Post />
-			<Post />
+			{
+				posts.map(post => {
+					return <Post postData={post} />
+				})
+			}
 		</div>
 	)
 }

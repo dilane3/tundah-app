@@ -136,32 +136,28 @@ class PostController {
       }
     }
 
-    console.log(files_list)
+    const user = req.user;
+    console.log(user);
 
-    res.sendStatus(200)
+    if (title && content && region && tribe) {
+      const { data, error } = await user.createPost(
+        title,
+        content,
+        files_list,
+        region,
+        tribe
+      );
 
-    // const user = req.user;
-    // console.log(user);
-
-    // if (title && content && region && tribe) {
-    //   const { data, error } = await user.createPost(
-    //     title,
-    //     content,
-    //     files_list,
-    //     region,
-    //     tribe
-    //   );
-
-    //   if (data !== undefined) {
-    //     res
-    //       .status(201)
-    //       .json({ message: "New post successfully created", data });
-    //   } else {
-    //     res.status(404).json({ error });
-    //   }
-    // } else {
-    //   res.status(500).json({ error: "Please specify the post content" });
-    // }
+      if (data !== undefined) {
+        res
+          .status(201)
+          .json({ message: "New post successfully created", data });
+      } else {
+        res.status(404).json({ error });
+      }
+    } else {
+      res.status(500).json({ error: "Please specify the post content" });
+    }
   };
 
   // Algorithm

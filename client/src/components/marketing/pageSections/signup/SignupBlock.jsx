@@ -8,6 +8,7 @@ import styles from  "../../../../css/signup.module.css"
 import {Image} from 'react-image-progressive-loading'
 import axios from 'axios';
 import AlertError from '../signin/AlertError';
+import { PAYS } from '../../../../utils/Allcountries';
 
 const image = require("../../../../medias/img/signup-img.png")
 
@@ -150,6 +151,22 @@ const SignupBlock = (props) => {
 		}
 	}
 
+	// getting country names in french
+	const getCountryName = () => {
+		const countries = []
+		const others = []
+
+		for (let country of PAYS) {
+			let countryName = country["translations"]["fr"]
+
+			if (countryName) countries.push(countryName)
+			else others.push(country["translations"])
+		}
+
+		console.log(others)
+		return countries.sort()
+	}
+
 	//fonctions
 	const validateUserName = (name) => {
 		{/* to do*/}
@@ -275,14 +292,16 @@ const SignupBlock = (props) => {
 									<select 
 										name="country" 
 										id="country"
+										defaultValue="cameroun"
 										value={country}
 										onChange={handleChange} 
 										className="w-full py-2 px-3 lg:py-3 bg-white  text-primary text-sx md:text-sm rounded md:rounded-lg border-2 border-primary focus:outline-none"
 									>
-									  <option value="cameroun">Cameroun</option>
-									  <option value="gabon">Gabon</option>
-									  <option value="nigeria">Nigeria</option>
-									  <option value="tchad">Tchad</option>
+										{
+											getCountryName().map(country => {
+												return <option value={country.toLowerCase()}>{country[0].toUpperCase() + country.substr(1)}</option>
+											})
+										}
 									</select>
 								</div>
 							</div>

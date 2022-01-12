@@ -47,9 +47,12 @@ const ProfilCard = () => {
 				</span>
 			</div>
 			<div className={styles.profilCardBottom}>
-				<StatPostItem title="postes proposés" number={20} />
-				<StatPostItem title="postes validés" number={12} />
-				<StatPostItem title="postes archivés" number={8} />
+				{
+					!user.getRole ? (
+						<StatPostItem title="postes proposés" number={user.getProposePosts.length} />
+					):null
+				}
+				<StatPostItem title="postes publiés" number={user.getPublishedPosts.length} />
 			</div>
 		</article>
 	)
