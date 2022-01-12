@@ -25,10 +25,10 @@ const Routes = () => {
       <Route  path="/signin" component={Signin} />
       {/* <Route  path="/notifications" component={Notifications} /> */}
       {/* <Route  path="/messages" component={Messages} /> */}
-      <Route exact path="/profile" component={Profile} />
+      <Route exact path="/profile/:username" component={Profile} />
       {/* <Route  path="/about" component={About} /> */}
       {/* <Route  path="/termsuses" component={TermsUses} /> */}
-      <Route  path="/leDoyen/status/123" component={SpecificPost} />
+      <Route  path="/posts/:id" component={SpecificPost} />
       <Route path="/proposal_posts" component={ProposalPost} />
       <Route path="/search" component={Search} />
       <Route  component={Error404} />

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 //packages
 import { BsThreeDotsVertical } from "react-icons/bs"
 import { AiOutlineLike } from "react-icons/ai"
@@ -14,7 +14,18 @@ import PostImg from '../../elements/imgCircle/ImgCircle'
 import PostCarousel from '../../utils/carousels/PostCarousel'
 import Paragraphe from '../../elements/p/Paragraphe'
 
+import "../../../css/post.css"
+import DisplayPhoto from '../../utils/modals/DisplayPhoto'
+
 const Post = ({title, content}) => {
+	const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
+	const [indexFile, setIndexFile] = useState(0)
+
+	const handleDisplayPhoto = (index) => {
+		setIndexFile(index)
+
+		setShowDisplayPhotoModal(true)
+	}
 /*
 	const  { 
 			authorInfo, 
@@ -74,9 +85,8 @@ const Post = ({title, content}) => {
 				</div>*/}
 
 				<PostCarousel
-					img1 = {mariage}
-					img2 = {chinoise}
-					img3 = {person}
+					files={[mariage, chinoise, person]}
+					onDisplayPhoto={(index) => handleDisplayPhoto(index)}
 				/>
 			</main>
 			<footer className="mt-3 px-2 md:mt-3 flex items-center space-x-6">
@@ -95,6 +105,17 @@ const Post = ({title, content}) => {
 					<span className="text-xs md:text-sm">10</span>
 				</div>*/}
 			</footer>
+
+			{
+				showDisplayPhotoModal ? (
+					<DisplayPhoto 
+						files={[mariage, chinoise, person]}
+						indexFile={indexFile} 
+						type="images" 
+						onHide={() => setShowDisplayPhotoModal(false)}	
+					/>
+				):null
+			}
 		</article>
 	)
 }

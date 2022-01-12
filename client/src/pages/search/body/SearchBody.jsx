@@ -17,7 +17,7 @@ const BodySearch = () => {
   // test
   useEffect(() => {
     changeQuery("polygamie")
-  })
+  }, [])
 
   return (
     <section className={styles.researchResultSection}>

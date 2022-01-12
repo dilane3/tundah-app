@@ -10,17 +10,13 @@ import postsContext from '../dataManager/context/postsContext'
 
 const logo = require("../medias/logo/Tundah-large.png")
 
-// const instance = axios.create({
-// 	baseURL: "http://localhost:5000/api",
-// })
-
 const instance = axios.create({
 	baseURL: "http://localhost:5000/api",
 })
 
-//const instance = axios.create({
-//	baseURL: "http://192.168.43.81:5000/api",
-//})
+// const instance = axios.create({
+// 	baseURL: "http://192.168.43.81:5000/api",
+// })
 
 const Base = ({children}) => {
   // getting context value

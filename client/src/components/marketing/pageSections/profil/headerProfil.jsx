@@ -11,6 +11,12 @@ import Post from '../Post'
 import axios from 'axios'
 import LoaderCircle from '../../../utils/loaders/Loader'
 import AddProfilPhotoModal from '../../../utils/modals/AddProfilPhotoModal'
+import DisplayPhoto from '../../../utils/modals/DisplayPhoto'
+import { useParams } from 'react-router-dom'
+
+const image1 = require("../../../../medias/img/chinoise.jpg")
+const image2 = require("../../../../medias/img/mariage.jpg")
+const image3 = require("../../../../medias/img/test.jpg")
 
 const instance = axios.create({
     baseURL: "http://localhost:5000/api"
@@ -35,12 +41,15 @@ const HeaderProfil  = () => {
     const {currentUser, updateProfil} = useContext(currentUserContext)
     let user = new Subscriber(currentUser)
 
+    const {username} = useParams()
+
     // setting up of the local state
     const [deleteProfilLoader, setDeleteProfilLoader] = useState(false)
     const [displayProfilUpload, setDisplayProfilUpload] = useState(false)
     const [profilData, setProfilData] = useState("")
     const [percentageUploadProfil, setPercentageUploadProfil] = useState(0)
     const [uploading, setUploading] = useState(false)
+    const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
 
     // use ref
     const updloadProfilRef = useRef()
@@ -141,10 +150,26 @@ const HeaderProfil  = () => {
                     ) : null
                 }
 
+                {
+                    showDisplayPhotoModal ? (
+                        <DisplayPhoto 
+                            files={[user.getProfil]} 
+                            type="profil"
+                            onHide={() => setShowDisplayPhotoModal(false)}
+                        />
+                    ):null
+                }
+
                 <div className="informationContent"> 
                     <div className="header-profil">
                         <div className="header-profil-image-card">
-                            <ImgCircle src={user.getProfil} alt="profil" size="big" classe="profilImage" />
+                            <div className="profilImage">
+                                <img 
+                                    src={user.getProfil} 
+                                    alt="profil"
+                                    onClick={() => setShowDisplayPhotoModal(true)} 
+                                />
+                            </div>
                             <input 
                                 ref={updloadProfilRef} 
                                 type="file" 
