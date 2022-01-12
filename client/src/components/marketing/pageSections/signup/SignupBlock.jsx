@@ -59,6 +59,7 @@ const SignupBlock = (props) => {
 				}
 			})
 			.catch(err => {
+				console.log(err)
 				setUniqueUsernameCheck(false)
 			})
 			.then(() => {

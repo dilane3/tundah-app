@@ -62,16 +62,13 @@ const Base = ({children}) => {
           // console.log(res.data.data)
 
           setLoaderClassActive(true)
-          setDataLoaded(true)
+          
         })
         .catch(err => {
           console.log(err)
         })
         .then(() => {
-          // to remove
-          // setDataLoaded(true)
-
-
+          setDataLoaded(true)
           let timer = setTimeout(() => {
             setShowLoaderPage(false)
     
