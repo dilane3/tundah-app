@@ -57,7 +57,7 @@ class PostModel extends InterfacePostModel {
     try {
       const query = `
         MATCH (post:Post)
-        WHERE post.title =~ '.*(${value.toLowerCase()}).*'
+        WHERE post.title =~ '.*?(${value.toLowerCase()}).*'
         RETURN post
         `;
       const result = await session.run(query);
