@@ -12,7 +12,7 @@ const Comment  = () => {
     return(
         <div className="CommentContent">
              <div className="header-PostproposeInfo">
-                <ImgCircle src={image} alt="profil" classe="profilCardImage"/>
+                <ImgCircle src={image} alt="profil" size="small"/>
                 <div className="Info-Comment">
                    <div className="Info-User">
                         <span className="Username">Kana Blondelle</span>
@@ -26,17 +26,18 @@ const Comment  = () => {
                      </div>
                 </div>  
              </div>
-             <footer className="IconComment">
+             <div className="IconComment">
 				<div className="AiOutlineLike">
 					<AiOutlineLike size="25" className="icon" />
-					<span className=" ">213k</span>
+					<span className=" NumberL">300k</span>
 				</div>
 
 				<div className="BiMessageRounded ">
 					<BiMessageRounded size="25" className="icon" />
-					<span className="">102</span>
+					<span className="NumberL">115</span>
 				</div>
-			</footer>
+                <span className="dateComment">Il ya 2h </span>
+			</div>
         </div>
     )
 }

@@ -10,7 +10,7 @@ const WriteComment  = () => {
             <div className="HeartEyesIcon">
                < BsEmojiHeartEyes size="25" className="icon" />
             </div> 
-            <div className="FormComment">
+            <form className="FormComment">
                 <div className="Input-space">
                     <input type="text" 
                    placeholder="Votre commentaire..."/>
@@ -18,8 +18,7 @@ const WriteComment  = () => {
                 <Button size="meduim">
                     publier
                 </Button>
-            </div>
-            
+           </form>
         </div>
     )
 }
