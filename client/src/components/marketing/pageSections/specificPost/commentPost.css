@@ -1,0 +1,97 @@
+.content{
+   display: flex;
+   flex-direction: column;
+}
+.WriteCommentContent{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    background-color: white;
+    font-size: 12px;
+    border-bottom: 1px solid #7f7f7f;
+    padding-left: 15px;
+    padding-top: 10px;
+}
+.FormComment{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: 15px;
+}
+.HeartEyesIcon{
+    margin-top: 15px;
+}
+input{
+    width: auto;
+    margin-left: 15px;
+    height: 30px;
+    padding: 15px;
+    background-color:  #d4caca;
+    border-radius: 5px;
+    color: gray
+}
+.CommentContent{
+    display:flex;
+    flex-direction: column;
+    font-size: 14px;
+    width: 100%;
+    background-color: white;
+    padding:15px;
+    align-items: flex-start;
+}
+
+.Info-Comment{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left:5px;
+    width: 100%;
+    font-size: 14px;
+}
+
+.profilCardImag{
+    width: 60px;
+    height: 60px;
+}
+.header-PostproposeInfo{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.Info-User{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 16px;
+    padding-left: 15px;
+    width: 100%;
+}
+.Username{
+    font-weight: bold;
+}
+.BsThreeDotIcon{
+  color: #575656;
+  font-size: 1.8rem;
+  width: 120px;
+  display: flex;
+  justify-content: flex-end;
+}
+.TextComment{
+    height: auto;
+    border: 1px solid rgb(68, 66, 66);
+    padding: 10px;
+    margin-left: 15px;
+}
+.IconComment{
+    display: flex;
+    flex-direction: row;
+    margin-left: 72px;
+    margin-top: 5px;
+}
+.AiOutlineLike{
+    display: flex;
+    flex-direction: row;
+}
