@@ -31,7 +31,7 @@ const CarouselPhoto = ({files, type, index}) => {
       {
         type === "images" ? (
           <>
-            <img src={files[fileIndex]} />
+            <img src={`http://localhost:5000/static/images/post/${files[fileIndex]}`} />
 
             <span onClick={() => navigate("next")}>
               <BsArrowRight />
@@ -59,7 +59,7 @@ const CarouselPhoto = ({files, type, index}) => {
                     className={`${styles.displayPhotoTrackerItem} ${current ? styles.displayPhotoTrackerItemActive:""}`}
                     onClick={() => setFileIndex(index)}  
                   >
-                    <img src={file} />
+                    <img src={`http://localhost:5000/static/images/post/${file}`} />
                   </div>
                 )
               })

@@ -338,14 +338,13 @@ class PostModel extends InterfacePostModel {
       const result1 = await session.run(query1, { idUser });
       const result2 = await session.run(query2, { idUser });
 
-      const publishedPost = await this.gettingMoreInfos(
-        result1,
-        "publishedPost"
-      );
+      const publishedPost = await this.gettingMoreInfos(result1, "publishedPost");
 
-      let proposedPost = result2.records.map((record) => {
-        return record.get("proposedPost").properties;
-      });
+      let proposedPost = await this.gettingMoreInfos(result2, "proposedPost")
+
+      // let proposedPost = result2.records.map((record) => {
+      //   return record.get("proposedPost").properties;
+      // });
 
       const postData = [...publishedPost, ...proposedPost];
 

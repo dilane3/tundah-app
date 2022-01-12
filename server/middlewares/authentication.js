@@ -41,6 +41,8 @@ const authenticationMiddleware = (req, res, next) => {
         } else {
           user = new Expert({...data, posts: postdata})
         }
+
+        console.log(user)
         
         req.user = user
 

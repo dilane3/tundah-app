@@ -139,7 +139,7 @@ const PostComponent = ({postData}) => {
 			{
 				showDisplayPhotoModal ? (
 					<DisplayPhoto 
-						files={[mariage, chinoise, person]}
+						files={post.getFilesList}
 						indexFile={indexFile} 
 						type="images" 
 						onHide={() => setShowDisplayPhotoModal(false)}	

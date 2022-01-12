@@ -49,7 +49,7 @@ const ProfilCard = () => {
 			<div className={styles.profilCardBottom}>
 				{
 					!user.getRole ? (
-						<StatPostItem title="postes proposés" number={user.getProposePosts.length} />
+						<StatPostItem title="postes proposés" number={user.getProposedPosts.length} />
 					):null
 				}
 				<StatPostItem title="postes publiés" number={user.getPublishedPosts.length} />

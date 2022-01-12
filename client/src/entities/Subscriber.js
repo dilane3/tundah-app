@@ -95,6 +95,8 @@ class Subscriber {
         posts,
         country
       } = data
+
+      const postData = posts ? posts.map(post => new Post(post)):[]
     
       this.id = id
       this.name = name
@@ -103,7 +105,7 @@ class Subscriber {
       this.date = date
       this.role = role
       this.profil = profil
-      this.posts = posts ? posts:[]
+      this.posts = postData
       this.country = country
     }
   }
@@ -132,7 +134,7 @@ class Subscriber {
     this.description = description
   }
 
-  get getProposePosts() {
+  get getProposedPosts() {
     return this.posts.map(post => {
       if (!post.getPublished) return post
     })

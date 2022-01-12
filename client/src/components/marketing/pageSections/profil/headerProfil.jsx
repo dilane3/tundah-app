@@ -50,6 +50,7 @@ const HeaderProfil  = () => {
     const [percentageUploadProfil, setPercentageUploadProfil] = useState(0)
     const [uploading, setUploading] = useState(false)
     const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
+    const [postTypeToShow, setPostTypeToShow] = useState("published")
 
     // use ref
     const updloadProfilRef = useRef()
@@ -217,12 +218,18 @@ const HeaderProfil  = () => {
                     <div className="profilPost">
                         {
                             !user.getRole ? (
-                                <div className="active">
-                                    <StatPostItem  title="postes proposés" number={user.getProposePosts.length} />
+                                <div 
+                                    className={`${postTypeToShow === "proposed" ? "active":""}`}
+                                    onClick={() => setPostTypeToShow("proposed")}
+                                >
+                                    <StatPostItem  title="postes proposés" number={user.getProposedPosts.length} />
                                 </div>
                             ):null
                         }
-                        <div>
+                        <div 
+                            className={`${postTypeToShow === "published" ? "active":""}`}
+                            onClick={() => setPostTypeToShow("published")}
+                        >
                             <StatPostItem title="postes publiés" number={user.getPublishedPosts.length} />
                         </div>
                     </div>
@@ -231,9 +238,15 @@ const HeaderProfil  = () => {
 
             <section className="postsList">
                 {
-                    user.getPublishedPosts.map(post => {
-                        return <Post postData={post}/>
-                    })
+                    postTypeToShow === "published" ? (
+                        user.getPublishedPosts.map(post => {
+                            return <Post postData={post}/>
+                        })
+                    ):(
+                        user.getProposedPosts.map(post => {
+                            return <Post postData={post}/>
+                        })
+                    )
                 }
             </section>
         </>

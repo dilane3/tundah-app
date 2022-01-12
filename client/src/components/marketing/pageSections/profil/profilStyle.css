@@ -164,6 +164,10 @@
   width: 100%;
 }
 
+.profilPost > div {
+  cursor: pointer;
+}
+
 .profilPost div:nth-child(2) {
   margin-left: 20px;
 }

@@ -59,7 +59,7 @@ const Base = ({children}) => {
         .then(res => {
           // adding post to the global state
           addPosts(res.data.data)
-          console.log(res.data.data)
+          console.log(res.data)
 
           setLoaderClassActive(true)
           setDataLoaded(true)
