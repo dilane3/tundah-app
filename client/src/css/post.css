@@ -51,6 +51,11 @@
 	@apply bg-primary !important;
 }
 
+/* Post */
+.post-footer svg {
+	cursor: pointer;
+}
+
 @media screen and (max-width: 576px) {
 	.slick-slide{
 		height: 300px !important;

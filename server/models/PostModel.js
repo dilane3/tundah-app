@@ -61,19 +61,23 @@ class PostModel extends InterfacePostModel {
         RETURN post
         `;
       const result = await session.run(query);
-      console.log("result length: ", result.records.length);
-      if (result.records.length > 0) {
-        const postData = [];
 
-        for (let record of result.records) {
-          const post = record.get("post").properties;
-          postData.push({ ...post });
-        }
+      const postData = await this.gettingMoreInfos(result, "post")
 
-        return { data: postData };
-      } else {
-        return { data: null };
-      }
+      return {data: postData}
+
+      // if (result.records.length > 0) {
+      //   const postData = [];
+
+      //   for (let record of result.records) {
+      //     const post = record.get("post").properties;
+      //     postData.push({ ...post });
+      //   }
+
+      //   return { data: postData };
+      // } else {
+      //   return { data: null };
+      // }
     } catch (err) {
       return { error: "Sorry the post(s) has not been found" };
     } finally {

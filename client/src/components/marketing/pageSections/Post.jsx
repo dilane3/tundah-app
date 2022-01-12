@@ -1,34 +1,40 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 //packages
-import { BsThreeDotsVertical } from "react-icons/bs"
-import { AiOutlineLike } from "react-icons/ai"
+import { BsHandThumbsUp, BsHandThumbsUpFill, BsThreeDotsVertical } from "react-icons/bs"
 import { BiMessageRounded } from "react-icons/bi"
-import { RiShareForwardLine } from "react-icons/ri"
-//medias
-import person from '../../../medias/img/test.jpg'
-import mariage from '../../../medias/img/mariage.jpg'
-import chinoise from '../../../medias/img/chinoise.jpg'
 //composans
 import SocialPostDropdown from '../../utils/dropdowns/SocialPostDropdown'
 import PostImg from '../../elements/imgCircle/ImgCircle'
 import PostCarousel from '../../utils/carousels/PostCarousel'
-import Paragraphe from '../../elements/p/Paragraphe'
 import Post from '../../../entities/Post'
 
 import "../../../css/post.css"
 import DisplayPhoto from '../../utils/modals/DisplayPhoto'
 import Subscriber from '../../../entities/Subscriber'
+import currentUserContext from '../../../dataManager/context/currentUserContent'
+import postsContext from '../../../dataManager/context/postsContext'
 
-const PostComponent = ({postData}) => {
+
+const PostComponent = ({postData, onLikePost}) => {
+	// getting data from the global state
+	const {currentUser} = useContext(currentUserContext)
+
+	// definition of the local state
 	const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
 	const [indexFile, setIndexFile] = useState(0)
 
 	// getting props values
-	const post = new Post(postData)
+	let post = new Post(postData)
 
 	const author = new Subscriber(post.getAuthor)
-	console.log(post)
 
+	useEffect(() => {
+		post = new Post(postData)
+		console.log("post")
+	}, [postData])
+
+
+	// some actions methods
 	const handleDisplayPhoto = (index) => {
 		setIndexFile(index)
 
@@ -124,17 +130,28 @@ const PostComponent = ({postData}) => {
 				}
 
 			</main>
-			<footer className="mt-3 px-2 md:mt-3 flex items-center space-x-6">
-				<div className="flex items-center space-x-1">
-					<AiOutlineLike size="25" className="icon" />
-					<span className="text-xs md:text-sm">{formatLikesOrComment(post.getLikes.length)}</span>
-				</div>
 
-				<div className="flex items-center space-x-1">
-					<BiMessageRounded size="25" className="icon" />
-					<span className="text-xs md:text-sm">{formatLikesOrComment(post.getComments)}</span>
-				</div>
-			</footer>
+			{
+				currentUser ? (
+					<footer className="post-footer mt-3 px-2 md:mt-3 flex items-center space-x-6">
+						<div className="flex items-center space-x-1" onClick={() => onLikePost(post.getId)}>
+							{
+								post.getLikes.includes(currentUser.id) ? (
+									<BsHandThumbsUpFill size="25" className="icon" color="#3e4bff" />
+								):(
+									<BsHandThumbsUp size="25" className="icon" />
+								)
+							}
+							<span className="text-xs md:text-sm">{formatLikesOrComment(post.getLikes.length)}</span>
+						</div>
+
+						<div className="flex items-center space-x-1">
+							<BiMessageRounded size="25" className="icon" />
+							<span className="text-xs md:text-sm">{formatLikesOrComment(post.getComments)}</span>
+						</div>
+					</footer>
+				):null
+			}
 
 			{
 				showDisplayPhotoModal ? (

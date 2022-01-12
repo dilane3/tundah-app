@@ -19,7 +19,8 @@ import {
   addPosts,
   addPost,
   addComment,
-  addComments
+  addComments,
+  likePost
 } from './dataManager/data/posts/postsActions'
 import currentUserReducer from './dataManager/data/currentUser/currentUserReducer';
 import postsReducer from './dataManager/data/posts/postsReducer';
@@ -91,6 +92,10 @@ function App() {
     dispatchPosts(addComments(idPost, comments))
   }
 
+  const postsLikePost = (idPost, idUser) => {
+    dispatchPosts(likePost(idPost, idUser))
+  }
+
   // navigation action
   const navigateTo = (target) => {
     setNavigation(target)
@@ -134,7 +139,8 @@ function App() {
     addPosts: postsAddPosts,
     addPost: postsAddPost,
     addComments: postsAddComments,
-    addComment: postsAddComment
+    addComment: postsAddComment,
+    likePost: postsLikePost
   }
 
   // data of navigation

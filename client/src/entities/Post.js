@@ -18,8 +18,6 @@ class Post extends InterfacePost {
   constructor(data) {
     super()
 
-    console.log(data)
-
     this.initialization(data)
   }
 
@@ -153,6 +151,10 @@ class Post extends InterfacePost {
     return this.likes
   }
 
+  get getData() {
+    return this
+  }
+
   updatePost(data) {
     const {
       title,
@@ -188,12 +190,14 @@ class Post extends InterfacePost {
   }
 
   likePost (idUser) {
-    if (!this.likes.contains(idUser)) {
-      this.likes.push(idUser)
+    if (!this.likes.includes(idUser)) {
+      return {...this, likes: [...this.likes, idUser]}
     } else {
-      const index = this.likes.findIndex(like => like === idUser)
+      const newLikes = this.getLikes.filter(like => like !== idUser)
+      // this.likes = newLikes
+      console.log({likes: this.likes, moi: this})
 
-      this.likes.splice(index, 1)
+      return {...this, likes: [...newLikes]}
     }
   }
 }
