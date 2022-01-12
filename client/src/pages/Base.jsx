@@ -69,7 +69,7 @@ const Base = ({children}) => {
         })
         .then(() => {
           // to remove
-          // setDataLoaded(true)
+          setDataLoaded(true)
 
 
           let timer = setTimeout(() => {
