@@ -8,6 +8,8 @@ import currentUserContext from '../../../dataManager/context/currentUserContent'
 import { Link } from 'react-router-dom'
 import Subscriber from '../../../entities/Subscriber'
 
+const logo = require("../../../medias/logo/Tundah-large.png")
+
 const Navbar = ({className, onShowMobileMenu}) => {
 	const {currentUser} = useContext(currentUserContext)
 
@@ -19,7 +21,7 @@ const Navbar = ({className, onShowMobileMenu}) => {
 				<div className={styles.headerMenuIcon} onClick={onShowMobileMenu}>
 					<BsJustify />
 				</div>
-				<span>Tundah</span>
+				<img src={logo} alt="logo" />
 			</div>
 			<div className={styles.headerSearchEngine}>
 				<Input 

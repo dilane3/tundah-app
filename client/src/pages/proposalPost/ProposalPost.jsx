@@ -8,7 +8,7 @@ const ProposalPost = () => {
 	return(
 		<div className="">
 			<Seo
-				title="page introuvable | tundah"
+				title="proposition posts | tundah"
 				description="tundah est un réseau social qui met en avant la culture africaine pour la transmettre à la génération futur"
 			/>
 			<Base>

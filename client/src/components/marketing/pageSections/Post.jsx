@@ -27,7 +27,7 @@ const Post = ({title, content}) => {
 		const { imgAuthor, nameAuthor } = authorInfo*/
 
 	return (
-		<article className="bg-white w-full font-primary pb-2 mx-auto rounded-sm mb-2">
+		<article className="bg-white w-full font-primary pb-2 mx-auto rounded-sm mb-2" style={{border: "1px solid rgb(206, 206, 206)"}}>
 			<header className="flex justify-between items-center pb-3 px-2 pt-2">
 				<div className="flex items-center space-x-1 lg:space-x-2 ">
 					<PostImg

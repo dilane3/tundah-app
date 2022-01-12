@@ -153,7 +153,7 @@ const HeaderProfil  = () => {
                                 onChange={handleChangeProfilPhotoUploadData}
                             />
 
-                            <span onClick={handleClickProfilPhotoUpload}>
+                            <span onClick={handleClickProfilPhotoUpload} title="changer de photo">
                                 <BsCameraFill />
                             </span>
 
