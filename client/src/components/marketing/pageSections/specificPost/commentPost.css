@@ -1,6 +1,18 @@
-.content{
+.contentCommentPage{
    display: flex;
    flex-direction: column;
+   width: 100%;
+   background-color: white;
+}
+section{
+    width: 100%;
+}
+.firstElement{
+    width: 100%;
+}
+.secondElement{
+    width: calc(100% - 50px);
+    margin-left: auto;
 }
 .WriteCommentContent{
     display: flex;
@@ -85,6 +97,7 @@ input{
     border: 1px solid rgb(68, 66, 66);
     padding: 10px;
     margin-left: 10px;
+    border-radius: 5px;
 }
 .IconComment{
     display: flex;
@@ -93,16 +106,16 @@ input{
     margin-top: 5px;
     width: 70%;
 }
-.AiOutlineLike{
-    display: flex;
-    flex-direction: row;
-}
 .BiMessageRounded{
     display: flex;
     flex-direction: row;
-    margin-left: 15px;
 }
-.dateComment{
+.Answer{
+    margin-left: 25px;
+    font-size: 16px;
+    font-weight: bold;
+}
+.DateComment{
     margin-left: 190px;
     color: gray;
     font-size: 12px;

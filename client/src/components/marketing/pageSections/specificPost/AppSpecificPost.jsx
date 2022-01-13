@@ -7,12 +7,16 @@ import './commentPost.css'
 const AppSpecifificPost  = () => {
 
     return(
-        <section className="content">
+        <section className="contentCommentPage">
             <Post/>
             <WriteComment/>
             <section>
                 <div className="firstElement">
                     <Comment/>
+                    <div className="secondElement">
+                        <Comment/>
+                        <Comment/>
+                    </div>
                 </div>
             </section>
         </section>
