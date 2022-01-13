@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import { WriteComment, WriteResponseComment } from './writeComment';
 import Post from '../Post';
 import Comment from './comment';
@@ -9,16 +9,21 @@ const CommentBlock = () => {
     const [response, setResponse] = useState("")
     const [showResponseInput, setShowResponseInput] = useState(false)
 
+    // defining reference of element
+    const commentBlockRef = useRef()
+
     const handleActivateResponse = () => {
         setShowResponseInput(true)
+
+        commentBlockRef.current.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"})
     }
 
     return (
-        <div className="firstElement">
-            <Comment/>
+        <div ref={commentBlockRef} className="firstElement">
+            <Comment onResponse={handleActivateResponse} />
             <div className="secondElement">
-                <Comment/>
-                <Comment/>
+                <Comment onResponse={handleActivateResponse} />
+                <Comment onResponse={handleActivateResponse} />
             </div>
                     
             {

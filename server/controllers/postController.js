@@ -57,7 +57,9 @@ class PostController {
     const postModel = new PostModel();
     const { skip, limit } = req.query;
 
-    if ((skip, limit)) {
+    console.log({skip, limit})
+
+    if (skip !== undefined && limit !== undefined) {
       const { data, error } = await postModel.getAllPosts(skip, limit);
 
       if (data !== undefined) {

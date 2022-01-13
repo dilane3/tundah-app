@@ -5,7 +5,7 @@ import './commentPost.css'
 
 const image = require("../../../../medias/img/test.jpg")
 
-const Comment  = () => {
+const Comment = ({onResponse}) => {
 
     return(
         <div className="CommentContent">
@@ -30,7 +30,7 @@ const Comment  = () => {
 					<span className="NumberL">115</span>
 				</div>
 
-				<div className="Answer ">
+				<div className="Answer" onClick={onResponse}>
 					Répondre
 				</div>
                 <span className="DateComment">Il ya 2h </span>

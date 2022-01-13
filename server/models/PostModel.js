@@ -274,6 +274,7 @@ class PostModel extends InterfacePostModel {
       const { postNumber, error } = await this.getNumberPost(session);
 
       if (postNumber !== undefined) {
+        console.log(postNumber)
         const query = `
           MATCH (posts:Post{published: ${true}})
           RETURN posts
@@ -286,28 +287,7 @@ class PostModel extends InterfacePostModel {
 
         const postData = await this.gettingMoreInfos(result, "posts");
 
-        if (postNumber > skip + limit) {ser = req.user;
-          console.log(user);
-      
-          if (title && content && region && tribe) {
-            const { data, error } = await user.createPost(
-              title,
-              content,
-              files_list,
-              region,
-              tribe
-            );
-      
-            if (data !== undefined) {
-              res
-                .status(201)
-                .json({ message: "New post successfully created", data });
-            } else {
-              res.status(404).json({ error });
-            }
-          } else {
-            res.status(500).json({ error: "Please specify the post content" });
-          }
+        if (postNumber > skip + limit) {
           return {
             data: { data: postData, next: true, skip: Number(skip + limit) },
           };
