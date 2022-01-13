@@ -54,23 +54,30 @@ class PostModel extends InterfacePostModel {
    */
   async getSearchedPosts(value) {
     const session = dbConnect();
+    
+    // const regex = new RegExp(value.toLowerCase(), 'gi')
+    // console.log(regex)
+    // const solution = { "regex" : regex}
+
     try {
       const query = `
         MATCH (post:Post)
-        WHERE post.title =~ '.*?(${value.toLowerCase()}).*'
+        WHERE post.title =~ '.*(${value.toLowerCase()}).*'
         RETURN post
         `;
+      // const query = `
+      //   MATCH (post:Post)
+      //   WHERE post.title =~ '$solution'
+      //   RETURN post
+      // `;
+
       const result = await session.run(query);
-      console.log("result length: ", result.records.length);
-      if (result.records.length > 0) {
-        const postData = [];
 
-        for (let record of result.records) {
-          const post = record.get("post").properties;
-          postData.push({ ...post });
-        }
+      const moreInfosData = await this.gettingMoreInfos(result, "post");
 
-        return { data: postData };
+      if (moreInfosData.length > 0) {
+      
+         return { data : moreInfosData }
       } else {
         return { data: null };
       }
