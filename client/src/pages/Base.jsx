@@ -51,16 +51,17 @@ const Base = ({children}) => {
         .then(res => {
           // adding post to the global state
           addPosts(res.data.data)
+          setDataLoaded(true)
 
           setLoaderClassActive(true)
-          setDataLoaded(true)
+          
         })
         .catch(err => {
           console.log(err)
         })
         .then(() => {
           // to remove
-          setDataLoaded(true)
+          // setDataLoaded(true)
 
 
           let timer = setTimeout(() => {

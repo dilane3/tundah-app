@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 //packages
-import { BsHeartFill, BsHeart, BsThreeDotsVertical } from "react-icons/bs"
+import { BsHeartFill, BsHeart, BsThreeDotsVertical, BsChat } from "react-icons/bs"
 import { BiMessageRounded } from "react-icons/bi"
 //composans
 import SocialPostDropdown from '../../utils/dropdowns/SocialPostDropdown'
@@ -91,7 +91,7 @@ const PostComponent = ({postData, onLikePost}) => {
 	}
 
 	return (
-		<article className="bg-white w-full font-primary pb-2 mx-auto rounded-sm mb-2" style={{border: "1px solid rgb(206, 206, 206)"}}>
+		<article className="bg-white w-full font-primary pb-2 mx-auto rounded-sm" style={{border: "1px solid rgb(206, 206, 206)"}}>
 			<header className="flex justify-between items-center pb-3 px-2 pt-2">
 				<div className="flex items-center space-x-1 lg:space-x-2 ">
 					<PostImg
@@ -139,14 +139,14 @@ const PostComponent = ({postData, onLikePost}) => {
 								post.getLikes.includes(currentUser.id) ? (
 									<BsHeartFill size="20" className="icon" color="rgb(218, 18, 18)" />
 								):(
-									<BsHeart size="20" className="lightgrey" />
+									<BsHeart size="20" className="icon" />
 								)
 							}
 							<span className="text-xs md:text-sm">{formatLikesOrComment(post.getLikes.length)}</span>
 						</div>
 
 						<div className="flex items-center space-x-1">
-							<BiMessageRounded size="25" className="icon" />
+							<BsChat size="20" className="icon" />
 							<span className="text-xs md:text-sm">{formatLikesOrComment(post.getComments)}</span>
 						</div>
 					</footer>

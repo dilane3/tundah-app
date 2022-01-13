@@ -56,6 +56,10 @@
 	cursor: pointer;
 }
 
+.listPost article {
+	margin-bottom: 10px;
+}
+
 @media screen and (max-width: 576px) {
 	.slick-slide{
 		height: 300px !important;

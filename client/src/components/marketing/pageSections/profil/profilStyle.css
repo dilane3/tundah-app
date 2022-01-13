@@ -37,6 +37,7 @@
   object-fit: cover;
   object-position: center;
   height: 100% !important;
+  width: 100%;
   border-radius: 100%;
 }
 
@@ -213,6 +214,10 @@
 /* post list */
 .postsList {
   margin-top: 20px;
+}
+
+.postsList article {
+  margin-bottom: 10px;
 }
 
 @media screen and (max-width: 576px) {

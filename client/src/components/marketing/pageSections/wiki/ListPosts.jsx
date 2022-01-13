@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useMemo } from 'react'
 import currentUserContext from '../../../../dataManager/context/currentUserContent'
 import postsContext from '../../../../dataManager/context/postsContext'
 import Post from '../Post'
+import '../../../../css/post.css'
 import { instance } from '../../../../utils/url'
 
 const ListPosts = () => {
@@ -39,7 +40,7 @@ const ListPosts = () => {
 	}
 
 	return(
-		<div className="w-full flex flex-col">
+		<div className={`w-full flex flex-col listPost`}>
 			{
 				postsData.map(post => {
 					return <Post key={post.id} postData={post} onLikePost={handleLikePost} />
