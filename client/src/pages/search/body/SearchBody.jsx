@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 import PostPropose from '../../../components/marketing/pageSections/proposalPost/PostPropose'
 import styles from "../../../css/search.module.css"
 import researchContext from '../../../dataManager/context/researchContext'
+import axios from 'axios'
 
 const ResearchResultBar = () => {
   
@@ -29,7 +30,7 @@ const ResearchResultBar = () => {
 
   return (
     <div className={styles.researchResultBar}>
-      {postsResults.length === 0 || postsResults.length === 33 ? "0" : postsResults.length} {postsResults < 2 ? "Resultat": "Resultats"} pour <b>"{query}"</b>
+      {postsResults.length === 0 ? "0" : postsResults.length} {postsResults.length < 2 ? "Resultat": "Resultats"} pour <b>"{query}"</b>
     </div>
   )
 }
