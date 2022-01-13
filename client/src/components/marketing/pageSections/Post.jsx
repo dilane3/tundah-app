@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 //packages
-import { BsHandThumbsUp, BsHandThumbsUpFill, BsThreeDotsVertical } from "react-icons/bs"
+import { BsHeartFill, BsHeart, BsThreeDotsVertical } from "react-icons/bs"
 import { BiMessageRounded } from "react-icons/bi"
 //composans
 import SocialPostDropdown from '../../utils/dropdowns/SocialPostDropdown'
@@ -137,9 +137,9 @@ const PostComponent = ({postData, onLikePost}) => {
 						<div className="flex items-center space-x-1" onClick={() => onLikePost(post.getId)}>
 							{
 								post.getLikes.includes(currentUser.id) ? (
-									<BsHandThumbsUpFill size="25" className="icon" color="#3e4bff" />
+									<BsHeartFill size="20" className="icon" color="rgb(218, 18, 18)" />
 								):(
-									<BsHandThumbsUp size="25" className="icon" />
+									<BsHeart size="20" className="lightgrey" />
 								)
 							}
 							<span className="text-xs md:text-sm">{formatLikesOrComment(post.getLikes.length)}</span>

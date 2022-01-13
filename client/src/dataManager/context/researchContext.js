@@ -3,7 +3,7 @@ import React from 'react'
 const researchContext = React.createContext({
   postsResults: [],
   query: "",
-  addResults: (posts) => {},
+  addResults: (postsResults) => {},
   changeQuery: (query) => {}
 })
 

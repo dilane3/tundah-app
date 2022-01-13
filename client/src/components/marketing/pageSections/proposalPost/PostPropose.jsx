@@ -7,11 +7,11 @@ import DisplayPhoto from '../../../utils/modals/DisplayPhoto'
 const image = require("../../../../medias/img/test.jpg")
 const imageMariage= require("../../../../medias/img/mariage.jpg")
 
-const PostPropose = ({type}) => {
+const PostPropose = ({type, post}) => {
     type = type ? type:"proposal_post"
 
-    // difining local state
-    const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
+    // getting the time in hours
+    const postDateHour = Math.round((0.27777777777778*0.000001)*(Date.now() - post["modification_date"]))
 
     return(
         <div className="PostPropose"> 
@@ -20,8 +20,11 @@ const PostPropose = ({type}) => {
                     <ImgCircle src={image} alt="profil" classe="profilCardImage"/>
 
                     <div className="profilInfo">
-                        <span>Kana</span>
-                        <span className="hour">Il ya 2h </span>
+                        <span>{post["author"]["name"]}</span>
+                        <span className="hour">Il y a {postDateHour > 24 ? Math.round((postDateHour/24)).toString() + "jr" : (postDateHour).toString() + "hr"} 
+                        {postDateHour < 1 ? Math.round((postDateHour/24)/60).toString() + "min" : (postDateHour).toString() + "hr"}
+                        {(postDateHour/24)/60 < 1 ? Math.round(((postDateHour/24)/60)/60).toString() + "s" : Math.round((postDateHour/24)/60).toString() + "min"}
+                        </span>
                     </div>
                 </div>
 
@@ -36,26 +39,24 @@ const PostPropose = ({type}) => {
             </div>
             <div className="content-Postpropose">
                 <div className="Info-content">
-                      <span className="title">Toutes les coutumes camerounaises encouragent la polygamie </span>
+                      <span className="title">{(post["title"]).toUpperCase()} </span>
                       <div className="description"> 
-                        Durant les cérémonies de mariages, nous assistons souvent à des litiges
-                        opposant...
-                      
+                        {post["content"]}
                       </div>
                 </div>
                     
-                <div onClick={() => setShowDisplayPhotoModal(true)}>
+                {/* <div onClick={() => setShowDisplayPhotoModal(true)}> */}
                     <Image image={imageMariage} className="CardImage" />
-                </div>
+                {/* </div> */}
 
                 {
-                    showDisplayPhotoModal ? (
+                    // showDisplayPhotoModal ? (
                         <DisplayPhoto
                             files={[imageMariage]}
                             type="profil"
-                            onHide={() => setShowDisplayPhotoModal(false)}
+                            // onHide={() => setShowDisplayPhotoModal(false)}
                         />
-                    ):null
+                    // ):null
                 }
             </div>
             

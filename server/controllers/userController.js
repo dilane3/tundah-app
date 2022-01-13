@@ -88,7 +88,7 @@ class UserController {
               role
             }
   
-            const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: `${EXPIRE_IN} min`})
+            const token = jwt.sign({payload}, SECRET_CODE_TOKEN, {expiresIn: `${EXPIRE_IN} min`})
   
             return res.status(201).json({...data, token, password: undefined})
           } else {
