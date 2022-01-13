@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import  './Specificpost.css'
 import ImgCircle from '../../../elements/imgCircle/ImgCircle'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import {Image} from 'react-image-progressive-loading'
+import DisplayPhoto from '../../../utils/modals/DisplayPhoto'
 const image = require("../../../../medias/img/test.jpg")
 const imageMariage= require("../../../../medias/img/mariage.jpg")
 
@@ -44,7 +45,19 @@ const PostPropose = ({type, post}) => {
                       </div>
                 </div>
                     
-                <Image image={imageMariage} className="CardImage" />
+                <div onClick={() => setShowDisplayPhotoModal(true)}>
+                    <Image image={imageMariage} className="CardImage" />
+                </div>
+
+                {
+                    showDisplayPhotoModal ? (
+                        <DisplayPhoto
+                            files={[imageMariage]}
+                            type="profil"
+                            onHide={() => setShowDisplayPhotoModal(false)}
+                        />
+                    ):null
+                }
             </div>
             
         </div>
