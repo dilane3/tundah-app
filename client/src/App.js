@@ -11,7 +11,8 @@ import {
   editPost,
   createPost,
   updateProfil,
-  updateUser
+  updateUser,
+  likeUserPost
 } from './dataManager/data/currentUser/currentUserActions'
 import {
   deletePost as postDelete,
@@ -60,6 +61,10 @@ function App() {
 
   const userUpdateProfil = (profil) => {
     dispatchUser(updateProfil(profil))
+  }
+
+  const userLikeUserPost = (idPost) => {
+    dispatchUser(likeUserPost(idPost))
   }
 
   const userUpdateUser = (data) => {
@@ -128,7 +133,8 @@ function App() {
     editPost: userEditPost,
     createPost: userCreatePost,
     updateProfil: userUpdateProfil,
-    updateUser: userUpdateUser
+    updateUser: userUpdateUser,
+    likeUserPost: userLikeUserPost
   }
 
   // data of posts context

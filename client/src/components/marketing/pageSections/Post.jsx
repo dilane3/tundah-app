@@ -84,9 +84,9 @@ const PostComponent = ({postData, onLikePost}) => {
 		} else if (diffDate >= 86400 && diffDate < 86400*2) {
 			return "Hier"
 		} else {
-			const exactDate = new Date()
+			const exactDate = new Date(date)
 			
-			return `${exactDate.getDay()} ${months[exactDate.getMonth()]} ${exactDate.getFullYear()}`
+			return `${exactDate.getDay() + 1} ${months[exactDate.getMonth()]} ${exactDate.getFullYear()}`
 		}
 	}
 

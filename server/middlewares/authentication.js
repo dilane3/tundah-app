@@ -14,7 +14,6 @@ const {
 
 const authenticationMiddleware = (req, res, next) => {
   try {
-    console.log(req.headers)
     const authHeader = req.headers['authorization']
     const token = authHeader.split(" ")[1]
 
@@ -27,10 +26,12 @@ const authenticationMiddleware = (req, res, next) => {
         return res.status(401).json({message: "Not authorized"})
       }
 
+      console.log(result)
+
       const userModel = new UserModel()
       const postModel = new PostModel()
 
-      const {data} = await userModel.getUser(result.id)
+      const {data} = await userModel.getUser(result.username)
 
       if (data) {
         const postdata = (await postModel.getMyPosts(data.id)).data
@@ -52,6 +53,7 @@ const authenticationMiddleware = (req, res, next) => {
       }      
     })
   } catch (err) {
+    console.log(err)
     return res.status(401).json({message: "Not authorized"})
   }
 }

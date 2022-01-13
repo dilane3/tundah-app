@@ -4,17 +4,17 @@ import postsContext from '../../../../dataManager/context/postsContext'
 import Post from '../Post'
 import axios from 'axios'
 
-// const instance = axios.create({
-// 	baseURL: "http://localhost:5000/api",
-// })
-
 const instance = axios.create({
-	baseURL: "http://192.168.43.81:5000/api",
+	baseURL: "http://localhost:5000/api",
 })
+
+// const instance = axios.create({
+// 	baseURL: "http://192.168.43.81:5000/api",
+// })
 
 const ListPosts = () => {
 	const {posts, likePost} = useContext(postsContext)
-	const {currentUser} = useContext(currentUserContext)
+	const {currentUser, likeUserPost} = useContext(currentUserContext)
 
 	const postsData = useMemo(() => {
 		return posts
@@ -42,6 +42,7 @@ const ListPosts = () => {
 		})
 		.then(() => {
 			likePost(id, currentUser.id)
+			likeUserPost(id)
 		})
 	}
 

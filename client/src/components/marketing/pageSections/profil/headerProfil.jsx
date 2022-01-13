@@ -13,18 +13,19 @@ import LoaderCircle from '../../../utils/loaders/Loader'
 import AddProfilPhotoModal from '../../../utils/modals/AddProfilPhotoModal'
 import DisplayPhoto from '../../../utils/modals/DisplayPhoto'
 import { useParams } from 'react-router-dom'
+import postsContext from '../../../../dataManager/context/postsContext'
 
 const image1 = require("../../../../medias/img/chinoise.jpg")
 const image2 = require("../../../../medias/img/mariage.jpg")
 const image3 = require("../../../../medias/img/test.jpg")
 
-// const instance = axios.create({
-//     baseURL: "http://localhost:5000/api"
-// })
-
 const instance = axios.create({
-	baseURL: "http://192.168.43.81:5000/api",
+    baseURL: "http://localhost:5000/api"
 })
+
+// const instance = axios.create({
+// 	baseURL: "http://192.168.43.81:5000/api",
+// })
 
 // const profilUpdate
 
@@ -38,7 +39,8 @@ const StatPostItem = ({title, number}) => {
 
 const HeaderProfil  = () => {
     // getting data from the global state
-    const {currentUser, updateProfil} = useContext(currentUserContext)
+    const {currentUser, updateProfil, likeUserPost} = useContext(currentUserContext)
+    const {likePost} = useContext(postsContext)
     let user = new Subscriber(currentUser)
 
     const {username} = useParams()
@@ -132,6 +134,20 @@ const HeaderProfil  = () => {
 
         setProfilData(preview)
         setDisplayProfilUpload(true)
+    }
+
+    const handleLikePost = (idPost) => {
+        instance.post(`/posts/like/${idPost}`)
+		.then((res) => {
+			console.log(res.data)
+		})
+		.catch(err => {
+			console.log(err)
+		})
+		.then(() => {
+            likeUserPost(idPost)
+			likePost(idPost, currentUser.id)
+		})
     }
 
     return(
@@ -240,11 +256,11 @@ const HeaderProfil  = () => {
                 {
                     postTypeToShow === "published" ? (
                         user.getPublishedPosts.map(post => {
-                            return <Post postData={post}/>
+                            return <Post postData={post} onLikePost={handleLikePost}/>
                         })
                     ):(
                         user.getProposedPosts.map(post => {
-                            return <Post postData={post}/>
+                            return <Post postData={post} onLikePost={handleLikePost}/>
                         })
                     )
                 }

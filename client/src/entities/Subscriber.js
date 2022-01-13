@@ -161,6 +161,24 @@ class Subscriber {
   createPost (post) {
     this.posts.push(post)
   }
+
+  likePost (idPost) {
+    const posts = [...this.posts]
+
+    const index = posts.findIndex(post => post.id === idPost)
+
+    if (index > -1) {
+      let post = new Post(posts[index])
+      console.log({post})
+
+      post = post.likePost(this.id)
+      console.log({post})
+
+      posts[index] = post
+
+      this.posts = posts
+    }
+  }
 }
 
 export default Subscriber

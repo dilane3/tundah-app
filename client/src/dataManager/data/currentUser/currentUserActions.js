@@ -5,7 +5,8 @@ import {
   UPDATE_POST,
   CREATE_POST,
   UPDATE_PROFIL,
-  UPDATE_USER
+  UPDATE_USER,
+  LIKE_POST
 } from "./type"
 
 /**
@@ -65,6 +66,13 @@ const updateUser = (data) => {
   }
 }
 
+const likeUserPost = (idPost) => {
+  return {
+    type: LIKE_POST,
+    payload: idPost
+  }
+}
+
 export {
   login,
   logout,
@@ -72,5 +80,6 @@ export {
   editPost,
   createPost,
   updateProfil,
-  updateUser
+  updateUser,
+  likeUserPost
 }
