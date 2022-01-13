@@ -55,36 +55,38 @@ const ListPosts = () => {
 
 	useEffect(() => {
 		window.onscroll = (event) => {
-			const wrapperHeight = window.scrollY
-			const contentHeight = listPostRef.current.offsetHeight - 500
-			const space = contentHeight - wrapperHeight
-
-			if (next) {
-				setLoadingMorePosts(true)
-
-				if (space < 0) {
-					instance.get(`/posts/?skip=${skip}&limit=2`)
-					.then(res => {
-						const postData = res.data.data
-						let nextValue = res.data.next
-						let skipValue = res.data.skip
+			if (listPostRef.current) {
+				const wrapperHeight = window.scrollY
+				const contentHeight = listPostRef.current.offsetHeight - 500
+				const space = contentHeight - wrapperHeight
 	
-						// adding posts
-						addPosts(postData)
+				if (next) {
+					setLoadingMorePosts(true)
 	
-						// setting posts arguments
-						setMorePostArgs(nextValue, skipValue)
-					})
-					.catch(err => {
-						console.log(err)
-					})
-					.then(() => {
-						setLoadingMorePosts(false)
-					})
+					if (space < 0) {
+						instance.get(`/posts/?skip=${skip}&limit=2`)
+						.then(res => {
+							const postData = res.data.data
+							let nextValue = res.data.next
+							let skipValue = res.data.skip
+		
+							// adding posts
+							addPosts(postData)
+		
+							// setting posts arguments
+							setMorePostArgs(nextValue, skipValue)
+						})
+						.catch(err => {
+							console.log(err)
+						})
+						.then(() => {
+							setLoadingMorePosts(false)
+						})
+					}
 				}
 			}
 		}
-	})
+	}, [])
 
 	return(
 		<div ref={listPostRef} className={`w-full flex flex-col listPost`}>

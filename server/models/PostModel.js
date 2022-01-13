@@ -274,7 +274,6 @@ class PostModel extends InterfacePostModel {
       const { postNumber, error } = await this.getNumberPost(session);
 
       if (postNumber !== undefined) {
-        console.log(postNumber)
         const query = `
           MATCH (posts:Post{published: ${true}})
           RETURN posts
@@ -287,12 +286,12 @@ class PostModel extends InterfacePostModel {
 
         const postData = await this.gettingMoreInfos(result, "posts");
 
-        if (postNumber > skip + limit) {
+        if (postNumber > skip) {
           return {
-            data: { data: postData, next: true, skip: Number(skip + limit) },
+            data: { data: postData, next: true, skip: Number(skip) + Number(limit) },
           };
         } else {
-          return { data: { data: postData, next: false, skip } };
+          return { data: { data: postData, next: false, skip: Number(skip) } };
         }
       } else {
         return { error };

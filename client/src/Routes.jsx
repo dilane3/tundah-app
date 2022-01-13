@@ -31,7 +31,7 @@ const Routes = () => {
       <Route  path="/posts/:id" component={SpecificPost} />
       <Route path="/proposal_posts" component={ProposalPost} />
       <Route path="/search" component={Search} />
-      <Route path="/specificPost" component={SpecificPost} />
+      <Route path="/post/:id" component={SpecificPost} />
       {/* <Route path="/profil" component={Profile} /> */}
       <Route  component={Error404} />
     </Switch>

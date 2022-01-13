@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 //packages
 import { BsHeartFill, BsHeart, BsThreeDotsVertical, BsChat } from "react-icons/bs"
-import { BiMessageRounded } from "react-icons/bi"
 //composans
 import SocialPostDropdown from '../../utils/dropdowns/SocialPostDropdown'
 import PostImg from '../../elements/imgCircle/ImgCircle'
@@ -13,6 +12,7 @@ import DisplayPhoto from '../../utils/modals/DisplayPhoto'
 import Subscriber from '../../../entities/Subscriber'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
 import postsContext from '../../../dataManager/context/postsContext'
+import { Link } from 'react-router-dom'
 
 
 const PostComponent = ({postData, onLikePost}) => {
@@ -117,7 +117,9 @@ const PostComponent = ({postData, onLikePost}) => {
 					{post.getTitle[0].toUpperCase() + post.getTitle.substr(1).toLowerCase()}
 				</div>
 				<div className="px-2">
-					{post.getContent}
+					<Link to={`/post/${post.getId}`}>
+						{post.getContent}
+					</Link>
 				</div>
 
 				{
@@ -146,7 +148,9 @@ const PostComponent = ({postData, onLikePost}) => {
 						</div>
 
 						<div className="flex items-center space-x-1">
-							<BsChat size="20" className="icon" />
+							<Link to={`/post/${post.getId}`}>
+								<BsChat size="20" className="icon" />
+							</Link>
 							<span className="text-xs md:text-sm">{formatLikesOrComment(post.getComments)}</span>
 						</div>
 					</footer>
