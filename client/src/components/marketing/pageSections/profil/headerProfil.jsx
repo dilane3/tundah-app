@@ -8,7 +8,7 @@ import './profilStyle.css'
 import currentUserContext from '../../../../dataManager/context/currentUserContent'
 import Subscriber from '../../../../entities/Subscriber'
 import Post from '../Post'
-import axios from 'axios'
+import { instance } from '../../../../utils/url'
 import LoaderCircle from '../../../utils/loaders/Loader'
 import AddProfilPhotoModal from '../../../utils/modals/AddProfilPhotoModal'
 import DisplayPhoto from '../../../utils/modals/DisplayPhoto'
@@ -18,14 +18,6 @@ import postsContext from '../../../../dataManager/context/postsContext'
 const image1 = require("../../../../medias/img/chinoise.jpg")
 const image2 = require("../../../../medias/img/mariage.jpg")
 const image3 = require("../../../../medias/img/test.jpg")
-
-const instance = axios.create({
-    baseURL: "http://localhost:5000/api"
-})
-
-// const instance = axios.create({
-// 	baseURL: "http://192.168.43.81:5000/api",
-// })
 
 // const profilUpdate
 

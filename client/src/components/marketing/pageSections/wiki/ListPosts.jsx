@@ -2,15 +2,7 @@ import React, { useContext, useEffect, useMemo } from 'react'
 import currentUserContext from '../../../../dataManager/context/currentUserContent'
 import postsContext from '../../../../dataManager/context/postsContext'
 import Post from '../Post'
-import axios from 'axios'
-
-const instance = axios.create({
-	baseURL: "http://localhost:5000/api",
-})
-
-// const instance = axios.create({
-// 	baseURL: "http://192.168.43.81:5000/api",
-// })
+import { instance } from '../../../../utils/url'
 
 const ListPosts = () => {
 	const {posts, likePost} = useContext(postsContext)

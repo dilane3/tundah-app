@@ -6,19 +6,11 @@ import ALink from '../../../elements/a/ALink'
 import H1 from '../../../elements/titles/H1'
 import styles from  "../../../../css/signup.module.css"
 import {Image} from 'react-image-progressive-loading'
-import axios from 'axios';
+import { instance } from '../../../../utils/url';
 import AlertError from '../signin/AlertError';
 import { PAYS } from '../../../../utils/Allcountries';
 
 const image = require("../../../../medias/img/signup-img.png")
-
-const instance = axios.create({
-	baseURL: "http://localhost:5000/api",
-})
-
-// const instance = axios.create({
-// 	baseURL: "http://192.168.43.81:5000/api",
-// })
 
 const SignupBlock = (props) => {
 	const initialSignupData = {
