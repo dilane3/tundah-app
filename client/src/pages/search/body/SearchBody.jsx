@@ -18,16 +18,22 @@ const ResearchResultBar = () => {
   const {researchQuery} = location.state
 
   useEffect(() => {  
-    instance.get(`/search/${researchQuery}`).then(res => {
+      instance.get(`/search/${researchQuery}`).then(res => {  
       addResults([...res.data])
     }).catch(() => {
+      console.log("lol ok")
       addResults([])
     })
-  })
+  }, [researchQuery])
+
+  useEffect(() => {
+    changeQuery(researchQuery)
+    console.log("This are the post results ", postsResults)
+  }, [postsResults])
 
   return (
     <div className={styles.researchResultBar}>
-      {postsResults.length === 0 || postsResults.length === 33 ? "0" : postsResults.length} Resultats pour <b>"{researchQuery}"</b>
+      {postsResults.length === 0 || postsResults.length === 33 ? "0" : postsResults.length} {postsResults < 2 ? "Resultat": "Resultats"} pour <b>"{query}"</b>
     </div>
   )
 }
@@ -40,14 +46,23 @@ const BodySearch = () => {
   //   changeQuery("polygamie")
   // }, [])
 
+  const {postsResults, query, addResults, changeQuery} = useContext(researchContext)
+
+  const location = useLocation()
+
+  const {researchQuery} = location.state
+
   return (
     <section className={styles.researchResultSection}>
-      <ResearchResultBar />
-
+      <ResearchResultBar/>
+      
       <div className="container">
+        {postsResults.map((post) => (
+          <PostPropose type="result" post={post}/>
+        ))}
+        {/* <PostPropose type="result"  />
         <PostPropose type="result" />
-        <PostPropose type="result" />
-        <PostPropose type="result" />
+        <PostPropose type="result" /> */}
       </div>
     </section>
   )
