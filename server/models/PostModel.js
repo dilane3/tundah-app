@@ -78,7 +78,7 @@ class PostModel extends InterfacePostModel {
       if (moreInfosData.length > 0) {
          return { data : moreInfosData }
       } else {
-        return { data: null };
+        return { data: [] };
       }
     } catch (err) {
       return { error: "Sorry the post(s) has not been found" };
