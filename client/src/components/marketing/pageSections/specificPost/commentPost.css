@@ -116,10 +116,24 @@ input{
     font-weight: bold;
 }
 .DateComment{
-    margin-left: 190px;
+    margin-left: auto;
     color: gray;
     font-size: 12px;
 }
 .NumberL{
     margin-left:5px;
+}
+@media screen and (max-width: 1200px) {
+    .DateComment{
+     margin-left: auto;    }
+  }
+  
+  @media screen and (max-width: 950px) {
+    .DateComment{
+      display: block;
+      margin-left: auto;
+    }
+    input{
+        width:350px ;
+    }
 }
