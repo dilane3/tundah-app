@@ -76,7 +76,6 @@ class PostModel extends InterfacePostModel {
       const moreInfosData = await this.gettingMoreInfos(result, "post");
 
       if (moreInfosData.length > 0) {
-      
          return { data : moreInfosData }
       } else {
         return { data: null };
