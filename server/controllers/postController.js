@@ -91,37 +91,47 @@ class PostController {
     if (value) {
       const postModel = new PostModel();
 
-      var dataArray = []
-      var errorArray = []
+      var dataArray = [];
+      var errorArray = [];
 
-      var search = value.split(" ")
-      console.log(search)
+      var search = value.split(" ");
+      console.log(search);
 
       for (let result of search) {
-          const { data, error } = await postModel.getSearchedPosts(result);
-          dataArray.push(...data) 
-          errorArray.push({...error}) 
+        const { data, error } = await postModel.getSearchedPosts(result);
+
+        if (search.length > 0 && search.length < 2) {
+          dataArray.push(...data);
+          errorArray.push({ ...error });
+        } else {
+          // Le problème ici est que à l'entrée de la requête es vide et donc on ne peut pas map dessus
+          dataArray.map((result) => {
+            if (result.id !== data.id) {
+              dataArray.push(...data);
+            } else {
+              errorArray.push({ ...error });
+            }
+          });
+        }
       }
 
-      console.log("Next to this is the data array")
-      console.log(dataArray)
+      console.log("Next to this is the data array");
+      console.log(dataArray);
 
-      console.log("Next to this is the data array length")
-      console.log(dataArray.length)
+      console.log("Next to this is the data array length");
+      console.log(dataArray.length);
 
       if (dataArray.length !== 0) {
-        console.log("passed again")
+        console.log("passed again");
         res.status(200).json(dataArray);
       } else {
         res.status(404).json(errorArray);
       }
     } else {
-      res
-        .status(400)
-        .json({
-          message:
-            "You need to provide a value for the search operation to take on",
-        });
+      res.status(400).json({
+        message:
+          "You need to provide a value for the search operation to take on",
+      });
     }
   };
 
@@ -133,23 +143,23 @@ class PostController {
    * */
   static createPost = async (req, res) => {
     const { title, content, region, tribe, fileType } = req.body;
-    let files_list
+    let files_list;
 
     if (fileType === "image") {
-      const files = req.files
+      const files = req.files;
 
       if (files !== undefined) {
-        files_list = req.files.map(file => file.filename)
+        files_list = req.files.map((file) => file.filename);
       } else {
-        files_list = []
+        files_list = [];
       }
     } else {
-      const file = req.file
+      const file = req.file;
 
       if (file) {
-        files_list = [file.filename]
+        files_list = [file.filename];
       } else {
-        files_list = []
+        files_list = [];
       }
     }
 
