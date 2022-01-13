@@ -91,12 +91,29 @@ class PostController {
     if (value) {
       const postModel = new PostModel();
 
-      const { data, error } = await postModel.getSearchedPosts(value);
+      var dataArray = []
+      var errorArray = []
 
-      if (data !== undefined) {
-        res.status(200).json(data);
+      var search = value.split(" ")
+      console.log(search)
+
+      for (let result of search) {
+          const { data, error } = await postModel.getSearchedPosts(result);
+          dataArray.push(...data) 
+          errorArray.push({...error}) 
+      }
+
+      console.log("Next to this is the data array")
+      console.log(dataArray)
+
+      console.log("Next to this is the data array length")
+      console.log(dataArray.length)
+
+      if (dataArray.length !== 0) {
+        console.log("passed again")
+        res.status(200).json(dataArray);
       } else {
-        res.status(404).json(error);
+        res.status(404).json(errorArray);
       }
     } else {
       res
