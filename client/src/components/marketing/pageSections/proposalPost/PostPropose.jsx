@@ -40,6 +40,7 @@ const PostPropose = ({type, post}) => {
             <div className="content-Postpropose">
                 <div className="Info-content">
                       <span className="title">{(post["title"]).toUpperCase()} </span>
+                      <span className="title">{post["id"]} </span>
                       <div className="description"> 
                         {post["content"]}
                       </div>
@@ -49,7 +50,9 @@ const PostPropose = ({type, post}) => {
                     <Image image={imageMariage} className="CardImage" />
                 {/* </div> */}
 
-                {
+
+                {/* J'ai personnellement commenté ce module parce-qu'il m'empéchait d'acceder à l'ui de la page de recherche des posts */}
+                {/* {
                     // showDisplayPhotoModal ? (
                         <DisplayPhoto
                             files={[imageMariage]}
@@ -57,7 +60,7 @@ const PostPropose = ({type, post}) => {
                             // onHide={() => setShowDisplayPhotoModal(false)}
                         />
                     // ):null
-                }
+                } */}
             </div>
             
         </div>
