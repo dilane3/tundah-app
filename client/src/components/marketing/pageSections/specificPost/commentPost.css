@@ -1,0 +1,139 @@
+.contentCommentPage{
+   display: flex;
+   flex-direction: column;
+   width: 100%;
+   background-color: white;
+}
+section{
+    width: 100%;
+}
+.firstElement{
+    width: 100%;
+}
+.secondElement{
+    width: calc(100% - 50px);
+    margin-left: auto;
+}
+.WriteCommentContent{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    background-color: white;
+    font-size: 12px;
+    border-bottom: 2px solid #d1c8c8;
+    padding-bottom: 10px;
+    padding-left: 15px;
+    padding-top: 10px;
+    align-items: center;
+}
+.FormComment{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 15px;
+}
+
+input{
+    width:400px;
+    margin-left: 5px;
+    height: 40px;
+    padding: 15px;
+    background-color:  #ddd0d0;
+    border-radius: 5px;
+    color: gray
+}
+.CommentContent{
+    display:flex;
+    flex-direction: column;
+    font-size: 14px;
+    width: 100%;
+    background-color: white;
+    padding:15px;
+    align-items: flex-start;
+}
+
+.Info-Comment{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 100%;
+    font-size: 14px;
+}
+
+.profilCardImag{
+    width: 60px;
+    height: 60px;
+}
+.header-PostproposeInfo{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+.Info-User{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 16px;
+    padding-left: 10px;
+    width: 100%;
+}
+.Username{
+    font-weight: bold;
+}
+.BsThreeDotIcon{
+  color: #575656;
+  font-size: 1.8rem;
+  width: 120px;
+  display: flex;
+  justify-content: flex-end;
+}
+.TextComment{
+    height: auto;
+    border: 1px solid rgb(68, 66, 66);
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+}
+.IconComment{
+    display: flex;
+    flex-direction: row;
+    margin-left:50px;
+    margin-top: 5px;
+    width: 70%;
+}
+.BiMessageRounded{
+    display: flex;
+    flex-direction: row;
+}
+.Answer{
+    margin-left: 25px;
+    font-size: 16px;
+    font-weight: bold;
+}
+.DateComment{
+    margin-left: auto;
+    color: gray;
+    font-size: 12px;
+}
+.NumberL{
+    margin-left:5px;
+}
+@media screen and (max-width: 1200px) {
+    .DateComment{
+     margin-left: auto;    }
+  }
+  
+  @media screen and (max-width: 950px) {
+    .DateComment{
+      display: block;
+      margin-left: auto;
+    }
+    input{
+        width:350px ;
+    }
+}
