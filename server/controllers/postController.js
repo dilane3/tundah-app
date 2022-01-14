@@ -74,13 +74,44 @@ class PostController {
 
   // Algorithm
   /**
+   * we verify if the for each element of the dataArray if \
+   * there is at least one occurrence of the entering post
+   * if true we send true
+   * else we send false
+   * @param {Array} dataArray
+   * @param {Post} post
+   */
+  static verifyPostExistence = async (dataArray, post) => {
+    dataArray.forEach((result) => {
+      if (post.id == result.id) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  };
+
+  // Algorithm
+  /**
    * we first retrieve the value of the posts searched in the request
    * we verify if that value exist
-   *  * if true we call the corresponding method from the post model using that value
-   *   * we get the data and error objects from that operation
-   *   * if there is data, we send it to the front
-   *   * else we send the error to the front
-   *  * if false we send the value demand error message to the front
+   *  * if true we create a postModel Object
+   *   * we create dataArray and errorArray which will contain our results and errors respectively
+   *   * we split the research Query
+   *   * if the search array length is equal to one
+   *    * we execute the corresponding operations
+   *   * else
+   *    * we first execute the operations
+   *    * then we map over the search array from the second element to the end
+   *    * we retrieve the data and error and affect the data to the newly created newDataArray
+   *    * then we map true the newDataArray and verify if the post exist already in the dataArray
+   *    * if false 
+   *     * we push the data inside the dataArray
+   *    * else
+   *     * we push the error insde the errorArray
+   *    * if the length of the data array is different of 0
+   *     * we return the data array
+   *    * else we return an empty array
    * @param {*} req
    * @param {*} res
    */
@@ -97,17 +128,23 @@ class PostController {
       var search = value.split(" ");
       console.log(search);
 
-      for (let result of search) {
-        const { data, error } = await postModel.getSearchedPosts(result);
+      if (search.length > 0 && search.length < 2) {
+        const { data, error } = await postModel.getSearchedPosts(search[0]);
 
-        if (search.length > 0 && search.length < 2) {
-          dataArray.push(...data);
-          errorArray.push({ ...error });
-        } else {
-          // Le problème ici est que à l'entrée de la requête es vide et donc on ne peut pas map dessus
-          dataArray.map((result) => {
-            if (result.id !== data.id) {
-              dataArray.push(...data);
+        dataArray.push(...data);
+        errorArray.push({ ...error });
+      } else {
+        const { data, error } = await postModel.getSearchedPosts(search[0]);
+
+        dataArray.push(...data);
+        errorArray.push({ ...error });
+        for (let i = 1; i < search.length; i++) {
+          const { data, error } = await postModel.getSearchedPosts(search[i]);
+          const newDataArray = [...data];
+
+          newDataArray.forEach((result) => {
+            if (!this.verifyPostExistence(dataArray, result)) {
+              dataArray.push(result);
             } else {
               errorArray.push({ ...error });
             }
