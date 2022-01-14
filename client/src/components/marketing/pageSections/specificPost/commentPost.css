@@ -24,7 +24,7 @@
     padding: 15px;
 }
 
-input{
+/*input{
     width:400px;
     margin-left: 5px;
     height: 40px;
@@ -32,7 +32,7 @@ input{
     background-color:  #ddd0d0;
     border-radius: 5px;
     color: gray
-}
+}*/
 .CommentContent{
     display:flex;
     flex-direction: column;
