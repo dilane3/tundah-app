@@ -277,7 +277,7 @@ class PostModel extends InterfacePostModel {
         const query = `
           MATCH (posts:Post{published: ${true}})
           RETURN posts
-          ORDER BY posts.creation_date
+          ORDER BY posts.creation_date DESC
           SKIP ${skip}
           LIMIT ${limit}
         `;
@@ -286,7 +286,10 @@ class PostModel extends InterfacePostModel {
 
         const postData = await this.gettingMoreInfos(result, "posts");
 
-        if (postNumber > skip) {
+        console.log({postNumber, skip})
+        console.log({postData})
+
+        if (postNumber > Number(skip)) {
           return {
             data: { data: postData, next: true, skip: Number(skip) + Number(limit) },
           };

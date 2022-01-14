@@ -13,6 +13,7 @@ import Subscriber from '../../../entities/Subscriber'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
 import postsContext from '../../../dataManager/context/postsContext'
 import { Link } from 'react-router-dom'
+import {  ressourcesUrl } from "../../../utils/url"
 
 
 const PostComponent = ({postData, onLikePost}) => {
@@ -86,7 +87,7 @@ const PostComponent = ({postData, onLikePost}) => {
 		} else {
 			const exactDate = new Date(date)
 			
-			return `${exactDate.getDay() + 1} ${months[exactDate.getMonth()]} ${exactDate.getFullYear()}`
+			return `${exactDate.getDate() + 1} ${months[exactDate.getMonth()]} ${exactDate.getFullYear()}`
 		}
 	}
 
