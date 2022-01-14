@@ -195,7 +195,7 @@ class PostModel extends InterfacePostModel {
           // getting editors
           for (let expert of result3.records) {
             const editor = expert.get("users").properties
-            editors.push({...editor, profil: `http://localhost:5000/static/images/profil/${editor.profil}`})
+            editors.push(editor)
           }
         }
 
@@ -208,7 +208,7 @@ class PostModel extends InterfacePostModel {
 
         if (result4.records.length > 0) {
           const editor = result4.records[0].get("user").properties
-          editors.push({...editor, profil: `http://localhost:5000/static/images/profil/${editor.profil}`})
+          editors.push(editor)
         }
       } else {
         const query2 = `
@@ -234,12 +234,12 @@ class PostModel extends InterfacePostModel {
           // getting editors
           for (let expert of result4.records) {
             const editor = expert.get("users").properties
-            editors.push({...editor, profil: `http://localhost:5000/static/images/profil/${editor.profil}`})
+            editors.push({...editor})
           }
         }
       }
 
-      return {editors, author: {...author, profil: `http://localhost:5000/static/images/profil/${author.profil}`}}
+      return {editors, author}
     } catch(err) {
       return {editors: [], author: null}
     } finally {

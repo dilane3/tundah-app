@@ -73,6 +73,20 @@
 	border-bottom-color: transparent;
 }
 
+.author-info {
+	line-height: 3px;
+}
+
+div.author-info span:nth-child(3) {
+	margin-top: 30px;
+}
+
+.author-post-username {
+	font-size: 14px;
+	color: rgb(163, 163, 163);
+	margin: 0;
+}
+
 @media screen and (max-width: 576px) {
 	.slick-slide{
 		height: 300px !important;

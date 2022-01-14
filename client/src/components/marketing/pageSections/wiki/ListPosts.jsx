@@ -34,10 +34,6 @@ const ListPosts = () => {
 
 		instance.defaults.headers.common["authorization"] = `Bearer ${token}`
 	}, [])
-	
-	useEffect(() => {
-		console.log(posts)
-	}, [posts])
 
 	const handleLikePost = (id) => {
 		instance.post(`/posts/like/${id}`)
@@ -62,6 +58,7 @@ const ListPosts = () => {
 	
 				if (next) {
 					setLoadingMorePosts(true)
+					console.log("hello")
 	
 					if (space < 0) {
 						instance.get(`/posts/?skip=${skip}&limit=2`)
@@ -82,6 +79,7 @@ const ListPosts = () => {
 							console.log(err)
 						})
 						.finally(() => {
+							console.log("hello")
 							setLoadingMorePosts(false)
 						})
 					}

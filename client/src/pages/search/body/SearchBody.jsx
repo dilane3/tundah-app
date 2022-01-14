@@ -15,7 +15,9 @@ const ResearchResultBar = () => {
   const {researchQuery} = location.state
 
   useEffect(() => {  
-      instance.get(`/search/${researchQuery}`).then(res => {  
+    instance.get(`/posts/search/${researchQuery}`)
+    .then(res => { 
+      console.log(res.data)
       addResults([...res.data])
     }).catch(() => {
       console.log("lol ok")

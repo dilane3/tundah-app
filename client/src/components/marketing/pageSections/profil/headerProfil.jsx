@@ -8,7 +8,7 @@ import './profilStyle.css'
 import currentUserContext from '../../../../dataManager/context/currentUserContent'
 import Subscriber from '../../../../entities/Subscriber'
 import Post from '../Post'
-import { instance } from '../../../../utils/url'
+import { instance, ressourcesUrl } from '../../../../utils/url'
 import LoaderCircle from '../../../utils/loaders/Loader'
 import AddProfilPhotoModal from '../../../utils/modals/AddProfilPhotoModal'
 import DisplayPhoto from '../../../utils/modals/DisplayPhoto'
@@ -168,7 +168,7 @@ const HeaderProfil  = () => {
                         <div className="header-profil-image-card">
                             <div className="profilImage">
                                 <img 
-                                    src={user.getProfil} 
+                                    src={`${ressourcesUrl.profil}/${user.getProfil}`} 
                                     alt="profil"
                                     onClick={() => setShowDisplayPhotoModal(true)} 
                                 />

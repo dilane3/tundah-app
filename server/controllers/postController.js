@@ -133,6 +133,8 @@ class PostController {
       if (search.length > 0 && search.length < 2) {
         const { data, error } = await postModel.getSearchedPosts(search[0]);
 
+        console.log({data})
+
         dataArray.push(...data);
         errorArray.push({ ...error });
       } else {
