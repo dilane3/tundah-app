@@ -5,23 +5,18 @@ import MobileMenu from '../components/marketing/navbar/MobileMenu'
 import Navbar from '../components/marketing/navbar/Navbar'
 import styles from '../css/base.module.css'
 import currentUserContext from '../dataManager/context/currentUserContent'
-import axios from 'axios'
+import { instance } from '../utils/url'
 import postsContext from '../dataManager/context/postsContext'
 
 const logo = require("../medias/logo/Tundah-large.png")
 
-const instance = axios.create({
-	baseURL: "http://localhost:5000/api",
-})
-
-// const instance = axios.create({
-// 	baseURL: "http://192.168.43.81:5000/api",
-// })
-
 const Base = ({children}) => {
   // getting context value
 	const {login, currentUser} = useContext(currentUserContext)
-  const {posts, addPosts} = useContext(postsContext)
+  const {
+    addPosts,
+    setMorePostArgs
+  } = useContext(postsContext)
 
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [maskBackground, setMaskBackground] = useState(true)
@@ -55,12 +50,24 @@ const Base = ({children}) => {
       })
       .then(() => {
 
-        instance.get("/posts?skip=0&limit=10")
+        instance.get("/posts?skip=0&limit=2")
         .then(res => {
-          // adding post to the global state
-          addPosts(res.data.data)
-          // console.log(res.data.data)
+          const postData = res.data.data
+          let nextValue = res.data.next
+          let skipValue = res.data.skip
 
+          console.log({nextValue, skipValue})
+
+          // adding posts
+          addPosts(postData)
+
+          // setting posts arguments
+          setMorePostArgs(nextValue, skipValue)
+
+          // stopping the loader for loading posts
+          setDataLoaded(true)
+
+          // hidden the loading page
           setLoaderClassActive(true)
           
         })
@@ -68,7 +75,14 @@ const Base = ({children}) => {
           console.log(err)
         })
         .then(() => {
+<<<<<<< HEAD
           setDataLoaded(true)
+=======
+          // to remove
+          // setDataLoaded(true)
+
+
+>>>>>>> 83c7cdc1673965c402eda25849674044cc27d155
           let timer = setTimeout(() => {
             setShowLoaderPage(false)
     

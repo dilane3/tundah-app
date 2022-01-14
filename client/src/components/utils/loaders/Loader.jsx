@@ -5,7 +5,7 @@ const LoaderCircle = ({color, size}) => {
   return (
     <div 
       className={styles.loaderCircle} 
-      style={{borderColor: color, borderBottomColor: 'transparent', width: `${size}px`, height: `${size}px`}}
+      style={{borderColor: color, width: `${size}px`, height: `${size}px`}}
     ></div>
   )
 }

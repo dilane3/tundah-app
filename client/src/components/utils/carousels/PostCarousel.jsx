@@ -64,7 +64,7 @@ const PostCarousel = (props) => {
             return (
               <div className="postImgBlock w-full" onClick={() => onDisplayPhoto(index)}>
                 <Image 
-                  image={file}
+                  image={`http://localhost:5000/static/images/post/${file}`}
                   alt={"image du post de leDoyen"}
                   className="postImg"
                   blur={true}

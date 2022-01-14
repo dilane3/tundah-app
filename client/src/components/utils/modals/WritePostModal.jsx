@@ -10,7 +10,9 @@ import currentUserContext from '../../../dataManager/context/currentUserContent'
 import Subscriber from '../../../entities/Subscriber'
 import navigationContext from '../../../dataManager/context/navigationContext'
 
-const WritePostModal = ({ show, closeModal}) => {
+const WritePostModal = (props) => {
+
+	const { show, closeModal, showPreMessage, setShowPreMessage} = props
 
 	//constant
 	const initialPostState = {
@@ -44,12 +46,12 @@ const WritePostModal = ({ show, closeModal}) => {
 	//function
 	function selectTribu(region){
 		let someTribu = []
-		switch(region){
-			case "Nord":
+		switch(region.toLowerCase()){
+			case "nord":
 				someTribu = ["Toupouri", "Mousgoum", "Foufouldé"]
 				setTribu(someTribu)
 				break
-			case "Ouest":
+			case "ouest":
 				someTribu = ["Dschang", "Mbouda", "Bagante", "Bafang", "Balengou"]
 				setTribu(someTribu)
 				break
@@ -178,15 +180,27 @@ const WritePostModal = ({ show, closeModal}) => {
 		                  	</select>
 		                  </div>
 
-		                  <textarea 
-		                  		name="post-content" 
-		                  		id="post-content"
-		                  		value={ content }
-		                  		onChange={handleChange}
-		                  		className="my-10 w-full"
+		                  <div
+		                  	id="content"
+		                  	contentEditable="true"
+		                  	className="block focus:border-0 border-none w-full my-14 w-full text-gray-800"
+		                  	value={content}
+		                  	onChange={handleChange}
+		                  	onClick={() => setShowPreMessage(false)}
 		                  >
-		                  		
-		                  </textarea>
+		                  	{
+		                  		showPreMessage && <span className="text-xs md:text-lg text-gray-400">Développez votre idée</span> 
+		                  	}
+		                  </div>
+
+		                 {/* <div className="">
+		                  	images.map((src, index) => {
+		                  		<img 
+		                  			src={src ? src : null}
+		                  			alt={ `${user.getUsername}-image-${user.getId}` }
+		                  		/>
+		                  	})
+		                  </div>*/}
 
 		                  <div className="flex justify-between items-center">
 												<ul className="flex items-center space-x-6">

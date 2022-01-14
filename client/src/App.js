@@ -11,7 +11,8 @@ import {
   editPost,
   createPost,
   updateProfil,
-  updateUser
+  updateUser,
+  likeUserPost
 } from './dataManager/data/currentUser/currentUserActions'
 import {
   deletePost as postDelete,
@@ -19,7 +20,8 @@ import {
   addPosts,
   addPost,
   addComment,
-  addComments
+  addComments,
+  likePost
 } from './dataManager/data/posts/postsActions'
 import currentUserReducer from './dataManager/data/currentUser/currentUserReducer';
 import postsReducer from './dataManager/data/posts/postsReducer';
@@ -34,6 +36,10 @@ function App() {
   const [research, setReseach] = useState({
     postsResults: [],
     query: ""
+  })
+  const [postsArgs, setPostsArgs] = useState({
+    next: false,
+    skip: 0
   })
 
   // current User actions
@@ -59,6 +65,10 @@ function App() {
 
   const userUpdateProfil = (profil) => {
     dispatchUser(updateProfil(profil))
+  }
+
+  const userLikeUserPost = (idPost) => {
+    dispatchUser(likeUserPost(idPost))
   }
 
   const userUpdateUser = (data) => {
@@ -89,6 +99,14 @@ function App() {
   
   const postsAddComments = (idPost, comments) => {
     dispatchPosts(addComments(idPost, comments))
+  }
+
+  const postsLikePost = (idPost, idUser) => {
+    dispatchPosts(likePost(idPost, idUser))
+  }
+
+  const setMorePostArgs = (next, skip) => {
+    setPostsArgs(state => ({...state, next, skip}))
   }
 
   // navigation action
@@ -123,18 +141,22 @@ function App() {
     editPost: userEditPost,
     createPost: userCreatePost,
     updateProfil: userUpdateProfil,
-    updateUser: userUpdateUser
+    updateUser: userUpdateUser,
+    likeUserPost: userLikeUserPost
   }
 
   // data of posts context
   const postsContextValue = {
     posts,
+    ...postsArgs,
     deletePost: postsDeletePost,
     updatePost: postsUpdatePost,
     addPosts: postsAddPosts,
     addPost: postsAddPost,
     addComments: postsAddComments,
-    addComment: postsAddComment
+    addComment: postsAddComment,
+    likePost: postsLikePost,
+    setMorePostArgs
   }
 
   // data of navigation

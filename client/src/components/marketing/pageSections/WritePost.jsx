@@ -9,7 +9,18 @@ import Subscriber from '../../../entities/Subscriber'
 
 const WritePost = () => {
 	const {currentUser} = useContext(currentUserContext)
+
+	//state
 	const [openPostModal, setOpenPostModal] = useState(false)
+	const [showPreMessage, setShowPreMessage] = useState(true)
+
+	//hamdler
+	const handleCloseModal = () => {
+		setOpenPostModal(false)
+		
+		let timer = setTimeout(setShowPreMessage(true), 5000)
+		clearTimeout(timer)
+	}
 
 	const user = new Subscriber(currentUser)
 
@@ -19,7 +30,7 @@ const WritePost = () => {
 				<div>
 					<div>
 						<span className="font-primary font-medium text-sm md:text-xl">
-							Rédiger un post
+							Rédiger un article
 						</span>
 						<span className="block h-0.5 w-3/5 bg-black opacity-60 mt-1.5"></span>
 					</div>
@@ -73,7 +84,9 @@ const WritePost = () => {
 			</div>
         <WritePostModal
         	show={openPostModal}
-        	closeModal={() => setOpenPostModal(false)} 
+        	closeModal={() => handleCloseModal()}
+        	showPreMessage={showPreMessage}
+        	setShowPreMessage={setShowPreMessage}
         />
 		</>
 	)

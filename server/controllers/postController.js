@@ -57,7 +57,9 @@ class PostController {
     const postModel = new PostModel();
     const { skip, limit } = req.query;
 
-    if (skip && limit) {
+    console.log({skip, limit})
+
+    if (skip !== undefined && limit !== undefined) {
       const { data, error } = await postModel.getAllPosts(skip, limit);
 
       if (data !== undefined) {
@@ -91,12 +93,29 @@ class PostController {
     if (value) {
       const postModel = new PostModel();
 
-      const { data, error } = await postModel.getSearchedPosts(value);
+      var dataArray = []
+      var errorArray = []
 
-      if (data !== undefined) {
-        res.status(200).json(data);
+      var search = value.split(" ")
+      console.log(search)
+
+      for (let result of search) {
+          const { data, error } = await postModel.getSearchedPosts(result);
+          dataArray.push(...data) 
+          errorArray.push({...error}) 
+      }
+
+      console.log("Next to this is the data array")
+      console.log(dataArray)
+
+      console.log("Next to this is the data array length")
+      console.log(dataArray.length)
+
+      if (dataArray.length !== 0) {
+        console.log("passed again")
+        res.status(200).json(dataArray);
       } else {
-        res.status(404).json(error);
+        res.status(404).json(errorArray);
       }
     } else {
       res
@@ -136,32 +155,28 @@ class PostController {
       }
     }
 
-    console.log(files_list)
+    const user = req.user;
+    console.log(user);
 
-    res.sendStatus(200)
+    if (title && content && region && tribe) {
+      const { data, error } = await user.createPost(
+        title,
+        content,
+        files_list,
+        region,
+        tribe
+      );
 
-    // const user = req.user;
-    // console.log(user);
-
-    // if (title && content && region && tribe) {
-    //   const { data, error } = await user.createPost(
-    //     title,
-    //     content,
-    //     files_list,
-    //     region,
-    //     tribe
-    //   );
-
-    //   if (data !== undefined) {
-    //     res
-    //       .status(201)
-    //       .json({ message: "New post successfully created", data });
-    //   } else {
-    //     res.status(404).json({ error });
-    //   }
-    // } else {
-    //   res.status(500).json({ error: "Please specify the post content" });
-    // }
+      if (data !== undefined) {
+        res
+          .status(201)
+          .json({ message: "New post successfully created", data });
+      } else {
+        res.status(404).json({ error });
+      }
+    } else {
+      res.status(500).json({ error: "Please specify the post content" });
+    }
   };
 
   // Algorithm

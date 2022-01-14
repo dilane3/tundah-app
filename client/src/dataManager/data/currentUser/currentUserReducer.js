@@ -7,7 +7,8 @@ import {
   UPDATE_POST,
   CREATE_POST,
   UPDATE_PROFIL,
-  UPDATE_USER
+  UPDATE_USER,
+  LIKE_POST
 } from "./type"
 
 const currentUserReducer = (state, action) => {
@@ -86,6 +87,20 @@ const currentUserReducer = (state, action) => {
         const user = new Subscriber(state)
 
         user.updateUser(action.payload)
+
+        return user.getUserData
+      }
+
+      return state
+    }
+
+    case LIKE_POST: {
+      const idPost = action.payload 
+
+      if (idPost) {
+        const user = new Subscriber(state)
+
+        user.likePost(idPost)
 
         return user.getUserData
       }

@@ -8,37 +8,25 @@ import './profilStyle.css'
 import currentUserContext from '../../../../dataManager/context/currentUserContent'
 import Subscriber from '../../../../entities/Subscriber'
 import Post from '../Post'
-import axios from 'axios'
+import { instance } from '../../../../utils/url'
 import LoaderCircle from '../../../utils/loaders/Loader'
 import AddProfilPhotoModal from '../../../utils/modals/AddProfilPhotoModal'
 import DisplayPhoto from '../../../utils/modals/DisplayPhoto'
 import { useParams } from 'react-router-dom'
-
-const image1 = require("../../../../medias/img/chinoise.jpg")
-const image2 = require("../../../../medias/img/mariage.jpg")
-const image3 = require("../../../../medias/img/test.jpg")
-
-const instance = axios.create({
-    baseURL: "http://localhost:5000/api"
-})
-
-// const instance = axios.create({
-// 	baseURL: "http://192.168.43.81:5000/api",
-// })
-
-// const profilUpdate
+import postsContext from '../../../../dataManager/context/postsContext'
 
 const StatPostItem = ({title, number}) => {
 	return (
 		<div className="profilCardPost">
-		    <span>{title}({number})</span>
+		    <span>{title} ({number})</span>
 		</div>
 	)
 }
 
 const HeaderProfil  = () => {
     // getting data from the global state
-    const {currentUser, updateProfil} = useContext(currentUserContext)
+    const {currentUser, updateProfil, likeUserPost} = useContext(currentUserContext)
+    const {likePost} = useContext(postsContext)
     let user = new Subscriber(currentUser)
 
     const {username} = useParams()
@@ -50,6 +38,7 @@ const HeaderProfil  = () => {
     const [percentageUploadProfil, setPercentageUploadProfil] = useState(0)
     const [uploading, setUploading] = useState(false)
     const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
+    const [postTypeToShow, setPostTypeToShow] = useState("published")
 
     // use ref
     const updloadProfilRef = useRef()
@@ -131,6 +120,20 @@ const HeaderProfil  = () => {
 
         setProfilData(preview)
         setDisplayProfilUpload(true)
+    }
+
+    const handleLikePost = (idPost) => {
+        instance.post(`/posts/like/${idPost}`)
+		.then((res) => {
+			console.log(res.data)
+		})
+		.catch(err => {
+			console.log(err)
+		})
+		.then(() => {
+            likeUserPost(idPost)
+			likePost(idPost, currentUser.id)
+		})
     }
 
     return(
@@ -215,22 +218,38 @@ const HeaderProfil  = () => {
                         </div> 
                     </div>
                     <div className="profilPost">
-                        <div className="active">
-                            <StatPostItem  title="postes proposés" number={20} />
-                        </div>
-                        <div>
-                            <StatPostItem title="postes validés" number={12} />
+                        {
+                            !user.getRole ? (
+                                <div 
+                                    className={`${postTypeToShow === "proposed" ? "active":""}`}
+                                    onClick={() => setPostTypeToShow("proposed")}
+                                >
+                                    <StatPostItem  title="postes proposés" number={user.getProposedPosts.length} />
+                                </div>
+                            ):null
+                        }
+                        <div 
+                            className={`${postTypeToShow === "published" ? "active":""}`}
+                            onClick={() => setPostTypeToShow("published")}
+                        >
+                            <StatPostItem title="postes publiés" number={user.getPublishedPosts.length} />
                         </div>
                     </div>
                 </div>
             </div>
 
             <section className="postsList">
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
+                {
+                    postTypeToShow === "published" ? (
+                        user.getPublishedPosts.map(post => {
+                            return <Post postData={post} onLikePost={handleLikePost}/>
+                        })
+                    ):(
+                        user.getProposedPosts.map(post => {
+                            return <Post postData={post} onLikePost={handleLikePost}/>
+                        })
+                    )
+                }
             </section>
         </>
     )

@@ -1,4 +1,4 @@
-.loaderCircle {
+div.loaderCircle {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -9,6 +9,7 @@
   height:130px;
   border-width: 5px;
   border-radius: 100%;
+  border-bottom-color: transparent !important;
   animation: loader .7s linear infinite;
 }
 

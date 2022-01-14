@@ -36,12 +36,11 @@ const postsReducer = (state = [], action) => {
       console.log(action.payload)
 
       if (action.payload) {
-        // action.payload.foreach(post => {
-        //   posts.push((new Post(post)))
-        // })
-
         for (let post of action.payload) {
-          posts.push((new Post(post)))
+          const p = posts.find(ps => ps.id === post.id)
+
+          if (!p)
+            posts.push(post)
         }
       }
 
@@ -52,7 +51,7 @@ const postsReducer = (state = [], action) => {
       const posts = [...state]
 
       if (action.payload) {
-        posts.push((new Post(action.payload)))
+        posts.push(action.payload)
       }
 
       return posts
@@ -105,13 +104,17 @@ const postsReducer = (state = [], action) => {
     case LIKE_POST: {
       const posts = [...state]
       const {idPost, idUser} = action.payload
-
+      
       if (idPost && idUser) {
-        const index = posts.findIndex(post => post.getId === idPost)
+        const index = posts.findIndex(post => post.id === idPost)
 
         // we verify if we have a post
         if (index > -1) {
-          posts[index].likePost(idUser)
+          let post = new Post(posts[index])
+
+          post = post.likePost(idUser)
+
+          posts[index] = post
         }
       }
 

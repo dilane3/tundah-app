@@ -2,18 +2,10 @@ import React, {useEffect, useState} from "react";
 import Input from '../../../elements/input/Input';
 import ALink from '../../../elements/a/ALink';
 import './ConnexionPage.css';
-import axios from 'axios';
+import { instance } from "../../../../utils/url";
 import styles from '../../../../css/signin.module.css'
 import { Redirect } from "react-router";
 import AlertError from "./AlertError";
-
-const instance = axios.create({
-	baseURL: "http://localhost:5000/api",
-})
-
-// const instance = axios.create({
-// 	baseURL: "http://192.168.43.81:5000/api",
-// })
 
 const SecondConnexionPage = () => {
 	// definition of the state
