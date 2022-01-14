@@ -49,7 +49,9 @@ const PostPropose = ({type, post}) => {
                     <Image image={imageMariage} className="CardImage" />
                 {/* </div> */}
 
-                {
+
+                {/* J'ai personnellement commenté ce module parce-qu'il m'empéchait d'acceder à l'ui de la page de recherche des posts */}
+                {/* {
                     // showDisplayPhotoModal ? (
                         <DisplayPhoto
                             files={[imageMariage]}
@@ -57,7 +59,7 @@ const PostPropose = ({type, post}) => {
                             // onHide={() => setShowDisplayPhotoModal(false)}
                         />
                     // ):null
-                }
+                } */}
             </div>
             
         </div>

@@ -75,14 +75,11 @@ const Base = ({children}) => {
           console.log(err)
         })
         .then(() => {
-<<<<<<< HEAD
           setDataLoaded(true)
-=======
           // to remove
           // setDataLoaded(true)
 
 
->>>>>>> 83c7cdc1673965c402eda25849674044cc27d155
           let timer = setTimeout(() => {
             setShowLoaderPage(false)
     
