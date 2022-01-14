@@ -4,48 +4,13 @@ import ImgCircle from '../../../elements/imgCircle/ImgCircle'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import {Image} from 'react-image-progressive-loading'
 import DisplayPhoto from '../../../utils/modals/DisplayPhoto'
+import { getRelativeDate } from '../../../../utils/dateOperations'
+
 const image = require("../../../../medias/img/test.jpg")
 const imageMariage= require("../../../../medias/img/mariage.jpg")
 
 const PostPropose = ({type, post}) => {
     type = type ? type:"proposal_post"
-
-    // This function display the relative date
-	const getRelativeDate = (date) => {
-		const currentDate = new Date().getTime()
-		let diffDate = Math.floor((currentDate - Number(date)) / 1000)
-
-		const months = [
-			"janvier",
-			"fevrier",
-			"mars",
-			"avril",
-			"mai",
-			"juin",
-			"juillet",
-			"aout",
-			"septembre",
-			"octobre",
-			"novembre",
-			"decembre"
-		]
-
-		console.log({diffDate})
-
-		if (diffDate < 60) {
-			return "A l'instant"
-		} else if (diffDate < 3600) {
-			return `Il y a ${Math.floor(diffDate/60)}min`
-		} else if (diffDate < 86400) {
-			return `Il y a ${Math.floor(diffDate/3600)}h`
-		} else if (diffDate >= 86400 && diffDate < 86400*2) {
-			return "Hier"
-		} else {
-			const exactDate = new Date(date)
-			
-			return `${exactDate.getDay() + 1} ${months[exactDate.getMonth()]} ${exactDate.getFullYear()}`
-		}
-	}
 
     return(
         <div className="PostPropose"> 
@@ -56,7 +21,7 @@ const PostPropose = ({type, post}) => {
                     <div className="profilInfo">
                         <span>{post["author"]["name"]}</span>
                         <span className="hour">
-                            {getRelativeDate(post["modification_date"])}
+                            {getRelativeDate(post["modification_date"]/1000)}
                         </span>
                     </div>
                 </div>
