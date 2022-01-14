@@ -31,7 +31,6 @@ function SampleNextArrow(props) {
 function SamplePrevArrow(props) {
   const { className, style, onClick } = props;
 
-  console.log('hello')
   return (
     <div
       className={className}
@@ -53,40 +52,27 @@ const PostCarousel = (props) => {
   };
 
   const {
-    img1,
-    alt1,
-    img2,
-    alt2,
-    img3
+    files,
+    onDisplayPhoto
   } = props
   
   return (
     <div className="mt-8">
       <Slider {...settings}>
-        <div className="postImgBlock w-full" >
-          <Image 
-            image={img1}
-            alt={ alt1 ? alt1 : "image du post de leDoyen" }
-            className="postImg"
-            blur={true}
-          />
-        </div>
-        <div className="postImgBlock w-full" >
-          <Image 
-            image={img2}
-            alt={ alt1 ? alt1 : "image du post de leDoyen" }
-            className="postImg"
-            blur={true}
-          />
-        </div>
-        <div className="postImgBlock w-full" >
-          <Image 
-            image={img3}
-            alt={ alt1 ? alt1 : "image du post de leDoyen" }
-            className="postImg"
-            blur={true}
-          />
-        </div>
+        {
+          files.map((file, index) => {
+            return (
+              <div className="postImgBlock w-full" onClick={() => onDisplayPhoto(index)}>
+                <Image 
+                  image={`http://localhost:5000/static/images/post/${file}`}
+                  alt={"image du post de leDoyen"}
+                  className="postImg"
+                  blur={true}
+                />
+              </div>
+            )
+          })
+        }
       </Slider>
     </div>
   )

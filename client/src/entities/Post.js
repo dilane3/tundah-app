@@ -45,10 +45,10 @@ class Post extends InterfacePost {
       } = data
     
       this.id = id
-      this.title = title
+      this.title = title ? title:"hello"
       this.content = content
-      this.creation_date = creation_date
-      this.modification_date = modification_date
+      this.creation_date = Number(creation_date)
+      this.modification_date = Number(modification_date)
       this.files_list = files_list
       this.published = published
       this.region = region
@@ -151,6 +151,10 @@ class Post extends InterfacePost {
     return this.likes
   }
 
+  get getData() {
+    return this
+  }
+
   updatePost(data) {
     const {
       title,
@@ -186,12 +190,14 @@ class Post extends InterfacePost {
   }
 
   likePost (idUser) {
-    if (!this.likes.contains(idUser)) {
-      this.likes.push(idUser)
+    if (!this.likes.includes(idUser)) {
+      return {...this, likes: [...this.likes, idUser]}
     } else {
-      const index = this.likes.findIndex(like => like === idUser)
+      const newLikes = this.getLikes.filter(like => like !== idUser)
+      // this.likes = newLikes
+      console.log({likes: this.likes, moi: this})
 
-      this.likes.splice(index, 1)
+      return {...this, likes: [...newLikes]}
     }
   }
 }

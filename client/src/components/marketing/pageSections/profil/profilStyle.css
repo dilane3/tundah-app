@@ -37,6 +37,7 @@
   object-fit: cover;
   object-position: center;
   height: 100% !important;
+  border-radius: 100%;
 }
 
 .header-profil-image-card {
@@ -154,6 +155,14 @@
   margin-left: 25px;
 }
 
+/* loader */
+.loaderProfil {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(calc(-50% - 100px), -50%);
+}
+
 .profilPost{
   display:flex;
   flex-direction: row;
@@ -161,6 +170,10 @@
   justify-content: flex-start;
   align-items: center;
   width: 100%;
+}
+
+.profilPost > div {
+  cursor: pointer;
 }
 
 .profilPost div:nth-child(2) {

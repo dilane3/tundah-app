@@ -5,22 +5,10 @@ import MobileMenu from '../components/marketing/navbar/MobileMenu'
 import Navbar from '../components/marketing/navbar/Navbar'
 import styles from '../css/base.module.css'
 import currentUserContext from '../dataManager/context/currentUserContent'
-import axios from 'axios'
+import { instance } from '../utils/url'
 import postsContext from '../dataManager/context/postsContext'
 
 const logo = require("../medias/logo/Tundah-large.png")
-
-// const instance = axios.create({
-// 	baseURL: "http://localhost:5000/api",
-// })
-
-const instance = axios.create({
-	baseURL: "http://localhost:5000/api",
-})
-
-// const instance = axios.create({
-// 	baseURL: "http://192.168.43.81:5000/api",
-// })
 
 const Base = ({children}) => {
   // getting context value
@@ -63,7 +51,6 @@ const Base = ({children}) => {
         .then(res => {
           // adding post to the global state
           addPosts(res.data.data)
-          // console.log(res.data.data)
 
           setLoaderClassActive(true)
           
@@ -73,7 +60,7 @@ const Base = ({children}) => {
         })
         .then(() => {
           // to remove
-          // setDataLoaded(true)
+          setDataLoaded(true)
 
 
           let timer = setTimeout(() => {

@@ -4,6 +4,7 @@ import { AiOutlineLike } from "react-icons/ai"
 import { BiMessageRounded } from "react-icons/bi"
 import ImgCircle from '../../../elements/imgCircle/ImgCircle'
 import './commentPost.css'
+import {instance} from '../../../../utils/url'
 
 const image = require("../../../../medias/img/test.jpg")
 

@@ -8,32 +8,34 @@ import './profilStyle.css'
 import currentUserContext from '../../../../dataManager/context/currentUserContent'
 import Subscriber from '../../../../entities/Subscriber'
 import Post from '../Post'
-import axios from 'axios'
+import { instance } from '../../../../utils/url'
 import LoaderCircle from '../../../utils/loaders/Loader'
 import AddProfilPhotoModal from '../../../utils/modals/AddProfilPhotoModal'
+import DisplayPhoto from '../../../utils/modals/DisplayPhoto'
+import { useParams } from 'react-router-dom'
+import postsContext from '../../../../dataManager/context/postsContext'
 
-const instance = axios.create({
-    baseURL: "http://localhost:5000/api"
-})
-
-// const instance = axios.create({
-// 	baseURL: "http://192.168.43.81:5000/api",
-// })
+const image1 = require("../../../../medias/img/chinoise.jpg")
+const image2 = require("../../../../medias/img/mariage.jpg")
+const image3 = require("../../../../medias/img/test.jpg")
 
 // const profilUpdate
 
 const StatPostItem = ({title, number}) => {
 	return (
 		<div className="profilCardPost">
-		    <span>{title}({number})</span>
+		    <span>{title} ({number})</span>
 		</div>
 	)
 }
 
 const HeaderProfil  = () => {
     // getting data from the global state
-    const {currentUser, updateProfil} = useContext(currentUserContext)
+    const {currentUser, updateProfil, likeUserPost} = useContext(currentUserContext)
+    const {likePost} = useContext(postsContext)
     let user = new Subscriber(currentUser)
+
+    const {username} = useParams()
 
     // setting up of the local state
     const [deleteProfilLoader, setDeleteProfilLoader] = useState(false)
@@ -41,6 +43,8 @@ const HeaderProfil  = () => {
     const [profilData, setProfilData] = useState("")
     const [percentageUploadProfil, setPercentageUploadProfil] = useState(0)
     const [uploading, setUploading] = useState(false)
+    const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
+    const [postTypeToShow, setPostTypeToShow] = useState("published")
 
     // use ref
     const updloadProfilRef = useRef()
@@ -124,6 +128,20 @@ const HeaderProfil  = () => {
         setDisplayProfilUpload(true)
     }
 
+    const handleLikePost = (idPost) => {
+        instance.post(`/posts/like/${idPost}`)
+		.then((res) => {
+			console.log(res.data)
+		})
+		.catch(err => {
+			console.log(err)
+		})
+		.then(() => {
+            likeUserPost(idPost)
+			likePost(idPost, currentUser.id)
+		})
+    }
+
     return(
         <>
             <div className="profil-content">
@@ -141,10 +159,26 @@ const HeaderProfil  = () => {
                     ) : null
                 }
 
+                {
+                    showDisplayPhotoModal ? (
+                        <DisplayPhoto 
+                            files={[user.getProfil]} 
+                            type="profil"
+                            onHide={() => setShowDisplayPhotoModal(false)}
+                        />
+                    ):null
+                }
+
                 <div className="informationContent"> 
                     <div className="header-profil">
                         <div className="header-profil-image-card">
-                            <ImgCircle src={user.getProfil} alt="profil" size="big" classe="profilImage" />
+                            <div className="profilImage">
+                                <img 
+                                    src={user.getProfil} 
+                                    alt="profil"
+                                    onClick={() => setShowDisplayPhotoModal(true)} 
+                                />
+                            </div>
                             <input 
                                 ref={updloadProfilRef} 
                                 type="file" 
@@ -190,22 +224,38 @@ const HeaderProfil  = () => {
                         </div> 
                     </div>
                     <div className="profilPost">
-                        <div className="active">
-                            <StatPostItem  title="postes proposés" number={20} />
-                        </div>
-                        <div>
-                            <StatPostItem title="postes validés" number={12} />
+                        {
+                            !user.getRole ? (
+                                <div 
+                                    className={`${postTypeToShow === "proposed" ? "active":""}`}
+                                    onClick={() => setPostTypeToShow("proposed")}
+                                >
+                                    <StatPostItem  title="postes proposés" number={user.getProposedPosts.length} />
+                                </div>
+                            ):null
+                        }
+                        <div 
+                            className={`${postTypeToShow === "published" ? "active":""}`}
+                            onClick={() => setPostTypeToShow("published")}
+                        >
+                            <StatPostItem title="postes publiés" number={user.getPublishedPosts.length} />
                         </div>
                     </div>
                 </div>
             </div>
 
             <section className="postsList">
-                <Post />
-                <Post />
-                <Post />
-                <Post />
-                <Post />
+                {
+                    postTypeToShow === "published" ? (
+                        user.getPublishedPosts.map(post => {
+                            return <Post postData={post} onLikePost={handleLikePost}/>
+                        })
+                    ):(
+                        user.getProposedPosts.map(post => {
+                            return <Post postData={post} onLikePost={handleLikePost}/>
+                        })
+                    )
+                }
             </section>
         </>
     )

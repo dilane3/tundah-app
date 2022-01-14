@@ -54,23 +54,30 @@ class PostModel extends InterfacePostModel {
    */
   async getSearchedPosts(value) {
     const session = dbConnect();
+    
+    // const regex = new RegExp(value.toLowerCase(), 'gi')
+    // console.log(regex)
+    // const solution = { "regex" : regex}
+
     try {
       const query = `
         MATCH (post:Post)
         WHERE post.title =~ '.*(${value.toLowerCase()}).*'
         RETURN post
         `;
+      // const query = `
+      //   MATCH (post:Post)
+      //   WHERE post.title =~ '$solution'
+      //   RETURN post
+      // `;
+
       const result = await session.run(query);
-      console.log("result length: ", result.records.length);
-      if (result.records.length > 0) {
-        const postData = [];
 
-        for (let record of result.records) {
-          const post = record.get("post").properties;
-          postData.push({ ...post });
-        }
+      const moreInfosData = await this.gettingMoreInfos(result, "post");
 
-        return { data: postData };
+      if (moreInfosData.length > 0) {
+      
+         return { data : moreInfosData }
       } else {
         return { data: null };
       }
@@ -188,7 +195,8 @@ class PostModel extends InterfacePostModel {
         if (result3.records.length > 0) {
           // getting editors
           for (let expert of result3.records) {
-            editors.push(expert.get("users").properties)
+            const editor = expert.get("users").properties
+            editors.push({...editor, profil: `http://localhost:5000/static/images/profil/${editor.profil}`})
           }
         }
 
@@ -200,7 +208,8 @@ class PostModel extends InterfacePostModel {
         const result4 = await session.run(query4, {id})
 
         if (result4.records.length > 0) {
-          editors.push(result4.records[0].get("user").properties)
+          const editor = result4.records[0].get("user").properties
+          editors.push({...editor, profil: `http://localhost:5000/static/images/profil/${editor.profil}`})
         }
       } else {
         const query2 = `
@@ -225,12 +234,13 @@ class PostModel extends InterfacePostModel {
         if (result4.records.length > 0) {
           // getting editors
           for (let expert of result4.records) {
-            editors.push(expert.get("users").properties)
+            const editor = expert.get("users").properties
+            editors.push({...editor, profil: `http://localhost:5000/static/images/profil/${editor.profil}`})
           }
         }
       }
 
-      return {editors, author}
+      return {editors, author: {...author, profil: `http://localhost:5000/static/images/profil/${author.profil}`}}
     } catch(err) {
       return {editors: [], author: null}
     } finally {
@@ -267,6 +277,7 @@ class PostModel extends InterfacePostModel {
         const query = `
           MATCH (posts:Post{published: ${true}})
           RETURN posts
+          ORDER BY posts.creation_date
           SKIP ${skip}
           LIMIT ${limit}
         `;
@@ -275,7 +286,28 @@ class PostModel extends InterfacePostModel {
 
         const postData = await this.gettingMoreInfos(result, "posts");
 
-        if (postNumber > skip + limit) {
+        if (postNumber > skip + limit) {ser = req.user;
+          console.log(user);
+      
+          if (title && content && region && tribe) {
+            const { data, error } = await user.createPost(
+              title,
+              content,
+              files_list,
+              region,
+              tribe
+            );
+      
+            if (data !== undefined) {
+              res
+                .status(201)
+                .json({ message: "New post successfully created", data });
+            } else {
+              res.status(404).json({ error });
+            }
+          } else {
+            res.status(500).json({ error: "Please specify the post content" });
+          }
           return {
             data: { data: postData, next: true, skip: Number(skip + limit) },
           };
@@ -313,14 +345,13 @@ class PostModel extends InterfacePostModel {
       const result1 = await session.run(query1, { idUser });
       const result2 = await session.run(query2, { idUser });
 
-      const publishedPost = await this.gettingMoreInfos(
-        result1,
-        "publishedPost"
-      );
+      const publishedPost = await this.gettingMoreInfos(result1, "publishedPost");
 
-      let proposedPost = result2.records.map((record) => {
-        return record.get("proposedPost").properties;
-      });
+      let proposedPost = await this.gettingMoreInfos(result2, "proposedPost")
+
+      // let proposedPost = result2.records.map((record) => {
+      //   return record.get("proposedPost").properties;
+      // });
 
       const postData = [...publishedPost, ...proposedPost];
 
