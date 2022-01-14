@@ -40,7 +40,6 @@ const PostPropose = ({type, post}) => {
             <div className="content-Postpropose">
                 <div className="Info-content">
                       <span className="title">{(post["title"]).toUpperCase()} </span>
-                      <span className="title">{post["id"]} </span>
                       <div className="description"> 
                         {post["content"]}
                       </div>
