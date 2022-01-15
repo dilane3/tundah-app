@@ -1,14 +1,15 @@
 import React from 'react'
 
-const postsContext = React.createContext({
-  posts: [],
+const proposedPostsContext = React.createContext({
+  proposedPosts: [],
   next: false,
   skip: 0,
   deletePost: (idPost) => {},
   updatePost: (idPost, data) => {},
   addPosts: (posts) => {},
   addPost: (post) => {},
-  setMorePostArgs: (next, skip) => {}
+  setMorePostArgs: (next, skip) => {},
+  validatePost: (idPost) => {}
 })
 
-export default postsContext
+export default proposedPostsContext

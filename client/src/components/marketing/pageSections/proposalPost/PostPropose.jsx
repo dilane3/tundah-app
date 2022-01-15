@@ -56,9 +56,13 @@ const PostPropose = ({type, postData}) => {
                       </div>
                 </div>
                     
-                <div onClick={() => setShowDisplayPhotoModal(true)}>
-                    <Image image={imageMariage} className="CardImage" />
-                </div>
+                {
+                    post.getFilesList.length > 0 ? (
+                        <div onClick={() => setShowDisplayPhotoModal(true)} className="proposePost-img">
+                            <Image image={imageMariage} className="CardImage" />
+                        </div>
+                    ):null
+                }
 
 
                 {

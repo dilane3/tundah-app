@@ -55,38 +55,46 @@ const ListPosts = () => {
 				const wrapperHeight = window.scrollY
 				const contentHeight = listPostRef.current.offsetHeight - 500
 				const space = contentHeight - wrapperHeight
-	
-				if (next) {
-					setLoadingMorePosts(true)
-					console.log("hello")
-	
-					if (space < 0) {
-						instance.get(`/posts/?skip=${skip}&limit=2`)
-						.then(res => {
-							const postData = res.data.data
-							let nextValue = res.data.next
-							let skipValue = res.data.skip
 
-							console.log(postData)
-		
-							// adding posts
-							addPosts(postData)
-		
-							// setting posts arguments
-							setMorePostArgs(nextValue, skipValue)
-						})
-						.catch(err => {
-							console.log(err)
-						})
-						.finally(() => {
-							console.log("hello")
-							setLoadingMorePosts(false)
-						})
+				if (next) {
+					if (space < 150) {
+						setLoadingMorePosts(true)
 					}
 				}
 			}
 		}
 	}, [skip, next])
+
+	useEffect(() => {
+		if (loadingMorePosts) {
+			if (next) {
+				setLoadingMorePosts(true)
+				console.log({skip, next})
+
+				instance.get(`/posts?skip=${skip}&limit=${2}`)
+				.then(res => {
+					const postData = res.data.data
+					let nextValue = res.data.next
+					let skipValue = res.data.skip
+	
+					// adding posts
+					addPosts(postData)
+	
+					// setting posts arguments
+					setMorePostArgs(nextValue, skipValue)
+				})
+				.catch(err => {
+					console.log(err)
+				})
+				.finally(() => {
+					console.log("geroge")
+					setLoadingMorePosts(false)
+				})
+			} else {
+				setLoadingMorePosts(false)
+			}
+		}
+	}, [skip, next, loadingMorePosts])
 
 	const sortPostByDate = (posts) => {
 		return posts.sort((p1, p2) => p2.creation_date - p1.creation_date)
