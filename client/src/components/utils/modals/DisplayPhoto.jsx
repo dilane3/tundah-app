@@ -91,4 +91,4 @@ const DisplayPhoto = ({files, type, indexFile, onHide}) => {
   )
 }
 
-export default DisplayPhoto
+export default { DisplayPhoto, CarouselPhoto }

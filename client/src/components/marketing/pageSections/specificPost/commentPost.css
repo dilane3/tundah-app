@@ -38,26 +38,18 @@
     padding: 10px 0 10px 10px;
 }
 
-<<<<<<< HEAD
-/*input{
-    width:400px;
-=======
+
 .FormComment input{
     width: calc(100% - 100px);
->>>>>>> 83c7cdc1673965c402eda25849674044cc27d155
     margin-left: 5px;
     height: 40px;
     padding: 15px;
     background-color:  #e2e2e2;
     border-radius: 5px;
-<<<<<<< HEAD
-    color: gray
-}*/
-=======
     color: rgb(56, 56, 56);
     font-size: 14px;
 }
->>>>>>> 83c7cdc1673965c402eda25849674044cc27d155
+
 .CommentContent{
     display:flex;
     flex-direction: column;

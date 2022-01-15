@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useContext } from 'react'
+import React, { Fragment, useState, useEffect, useContext, useRef } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { BsEmojiHeartEyes, BsCardImage, BsCameraVideo }from 'react-icons/bs'
 
@@ -9,6 +9,7 @@ import Button from '../../elements/buttons/Button'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
 import Subscriber from '../../../entities/Subscriber'
 import navigationContext from '../../../dataManager/context/navigationContext'
+// import DisplayPhoto from '../utils/carousels/DisplayPhoto'
 
 const WritePostModal = (props) => {
 
@@ -29,6 +30,10 @@ const WritePostModal = (props) => {
 	const { currentUser } = useContext(currentUserContext)
 	const user = new Subscriber(currentUser)
 
+	//ref
+	const inputImagesRef = useRef()
+	const inputVideoRef = useRef()
+
 	//state variable
 	const [postData, setPostData] = useState(initialPostState)
 	const [tribu, setTribu] = useState([])
@@ -41,6 +46,15 @@ const WritePostModal = (props) => {
   //handler
 	const handleChange = (event) => {
 		setPostData({ ...postData, [event.target.id]: event.target.value })
+	}
+
+	const handleSelectImages = () => {
+		console.log("hello")
+		inputImagesRef.current.click();
+	}
+
+	const handleSelectVideo = () => {
+		inputVideoRef.current.click();
 	}
 
 	//function
@@ -73,7 +87,7 @@ const WritePostModal = (props) => {
 	return(
 		
 	  		<Transition appear show={show} as={Fragment}>
-	  			<div className="absolute px-5 z-10 left-0 top-0 h-screen w-screen bg-black opacity-50">
+	  			<div className="fixed px-5 z-10 left-0 top-0 h-screen w-screen bg-black opacity-50">
 		        <Dialog
 		          as="div"
 		          className="fixed inset-0 z-10 overflow-y-auto"
@@ -216,13 +230,30 @@ const WritePostModal = (props) => {
 															size="25" 
 															color="#456445" 
 															className="cursor-pointer text-gray-900"
+															onClick = { handleSelectImages }
 														/>
+														<input
+															type="file"
+															name="upload-photo"
+															ref = {inputImagesRef}
+															hidden
+															accept="image/*"
+															multiple
+														 />
 													</li>
 													<li>
 														<BsCameraVideo 
 															size="25" 
 															color="#456445" 
 															className="cursor-pointer text-gray-900"
+															onClick={handleSelectVideo}
+														/>
+
+														<input
+															type="file"
+															ref = {inputVideoRef}
+															hidden 
+															accept="video/*"
 														/>
 													</li>
 												</ul>

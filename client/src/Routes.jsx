@@ -19,7 +19,7 @@ const Routes = () => {
 
 	return (
     <Switch>
-      {/* <Route exact path="/" component={Social} /> */}
+       <Route exact path="/" component={Wiki} /> 
       <Route  path="/wiki/feed" component={Wiki} />
       <Route  path="/signup" component={Signup} />
       <Route  path="/signin" component={Signin} />
