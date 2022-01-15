@@ -34,10 +34,6 @@ const ListPosts = () => {
 
 		instance.defaults.headers.common["authorization"] = `Bearer ${token}`
 	}, [])
-	
-	useEffect(() => {
-		console.log(posts)
-	}, [posts])
 
 	const handleLikePost = (id) => {
 		instance.post(`/posts/like/${id}`)
@@ -62,6 +58,7 @@ const ListPosts = () => {
 	
 				if (next) {
 					setLoadingMorePosts(true)
+					console.log("hello")
 	
 					if (space < 0) {
 						instance.get(`/posts/?skip=${skip}&limit=2`)
@@ -69,6 +66,8 @@ const ListPosts = () => {
 							const postData = res.data.data
 							let nextValue = res.data.next
 							let skipValue = res.data.skip
+
+							console.log(postData)
 		
 							// adding posts
 							addPosts(postData)
@@ -79,19 +78,24 @@ const ListPosts = () => {
 						.catch(err => {
 							console.log(err)
 						})
-						.then(() => {
+						.finally(() => {
+							console.log("hello")
 							setLoadingMorePosts(false)
 						})
 					}
 				}
 			}
 		}
-	}, [])
+	}, [skip, next])
+
+	const sortPostByDate = (posts) => {
+		return posts.sort((p1, p2) => p2.creation_date - p1.creation_date)
+	}
 
 	return(
 		<div ref={listPostRef} className={`w-full flex flex-col listPost`}>
 			{
-				postsData.map(post => {
+				sortPostByDate(postsData).map(post => {
 					return <Post key={post.id} postData={post} onLikePost={handleLikePost} />
 				})
 			}

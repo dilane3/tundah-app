@@ -5,17 +5,10 @@ import AppSpecifificPost from '../../../components/marketing/pageSections/specif
 import currentUserContext from '../../../dataManager/context/currentUserContent'
 
 const BodySpecificPost = () => {
-	const {currentUser} = useContext(currentUserContext)
 
 	return(
 		<section>
-			{
-				currentUser ? (
-					<AppSpecifificPost/>
-				):(
-					<Redirect to="/wiki/feed" />
-				)
-			}
+			<AppSpecifificPost/>
 		</section>
 	)
 }

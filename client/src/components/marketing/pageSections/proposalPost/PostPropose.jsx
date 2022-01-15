@@ -4,26 +4,37 @@ import ImgCircle from '../../../elements/imgCircle/ImgCircle'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import {Image} from 'react-image-progressive-loading'
 import DisplayPhoto from '../../../utils/modals/DisplayPhoto'
-const image = require("../../../../medias/img/test.jpg")
+import { getRelativeDate } from '../../../../utils/dateOperations'
+import Post from '../../../../entities/Post'
+import Subscriber from '../../../../entities/Subscriber'
+import { ressourcesUrl } from '../../../../utils/url'
+
 const imageMariage= require("../../../../medias/img/mariage.jpg")
 
-const PostPropose = ({type, post}) => {
+const PostPropose = ({type, postData}) => {
     type = type ? type:"proposal_post"
+    const post = new Post(postData)
+    const author = new Subscriber(post.getAuthor)
 
-    // getting the time in hours
-    const postDateHour = Math.round((0.27777777777778*0.000001)*(Date.now() - post["modification_date"]))
+    // difinition of local state
+    const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
+
+    const truncateContent = (content) => {
+        if (content.length > 100) return content.substr(0, 100) + "..."
+        
+        return content
+    }
 
     return(
         <div className="PostPropose"> 
             <div className="header-Postpropose">
                 <div className="header-PostproposeInfo">
-                    <ImgCircle src={image} alt="profil" classe="profilCardImage"/>
+                    <ImgCircle src={`${ressourcesUrl.profil}/${author.getProfil}`} alt="profil" classe="profilCardImage"/>
 
                     <div className="profilInfo">
-                        <span>{post["author"]["name"]}</span>
-                        <span className="hour">Il y a {postDateHour > 24 ? Math.round((postDateHour/24)).toString() + "jr" : (postDateHour).toString() + "hr"} 
-                        {postDateHour < 1 ? Math.round((postDateHour/24)/60).toString() + "min" : (postDateHour).toString() + "hr"}
-                        {(postDateHour/24)/60 < 1 ? Math.round(((postDateHour/24)/60)/60).toString() + "s" : Math.round((postDateHour/24)/60).toString() + "min"}
+                        <span className="author-post-username">{author.getName[0].toUpperCase() + author.getName.substr(1).toLowerCase()}</span>
+                        <span className="hour">
+                            {getRelativeDate(post["modification_date"]/1000)}
                         </span>
                     </div>
                 </div>
@@ -39,27 +50,26 @@ const PostPropose = ({type, post}) => {
             </div>
             <div className="content-Postpropose">
                 <div className="Info-content">
-                      <span className="title">{(post["title"]).toUpperCase()} </span>
+                      <span className="title">{(post.getTitle).toUpperCase()} </span>
                       <div className="description"> 
-                        {post["content"]}
+                        {truncateContent(post.getContent)}
                       </div>
                 </div>
                     
-                {/* <div onClick={() => setShowDisplayPhotoModal(true)}> */}
+                <div onClick={() => setShowDisplayPhotoModal(true)}>
                     <Image image={imageMariage} className="CardImage" />
-                {/* </div> */}
+                </div>
 
 
-                {/* J'ai personnellement commenté ce module parce-qu'il m'empéchait d'acceder à l'ui de la page de recherche des posts */}
-                {/* {
-                    // showDisplayPhotoModal ? (
+                {
+                    showDisplayPhotoModal ? (
                         <DisplayPhoto
                             files={[imageMariage]}
                             type="profil"
-                            // onHide={() => setShowDisplayPhotoModal(false)}
+                            onHide={() => setShowDisplayPhotoModal(false)}
                         />
-                    // ):null
-                } */}
+                    ):null
+                }
             </div>
             
         </div>

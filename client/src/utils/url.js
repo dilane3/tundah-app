@@ -12,5 +12,16 @@ const instance = axios.create({
 // 	baseURL: "http://localhost:3001/api/posts"
 // })
 
+// const ressourcesUrl = {
+// 	profil: "http://192.168.43.81:5000/static/images/profil",
+// 	postImages: "http://192.168.43.81:5000/static/images/post",
+// 	postVideos: "http://192.168.43.81:5000/static/videos"
+// }
 
-export {instance}
+const ressourcesUrl = {
+	profil: "http://localhost:5000/static/images/profil",
+	postImages: "http://localhost:5000/static/images/post",
+	postVideos: "http://localhost:5000/static/videos"
+}
+
+export {instance, ressourcesUrl}

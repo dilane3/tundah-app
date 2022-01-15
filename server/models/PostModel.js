@@ -64,6 +64,7 @@ class PostModel extends InterfacePostModel {
         MATCH (post:Post)
         WHERE post.title =~ '.*(${value.toLowerCase()}).*'
         RETURN post
+        ORDER BY post.creation_date DESC
         `;
       // const query = `
       //   MATCH (post:Post)
@@ -91,10 +92,10 @@ class PostModel extends InterfacePostModel {
    * This function returns the number of posts available in the database
    * @param {Session} session
    */
-  async getNumberPost(session) {
+  async getNumberPost(session, status) {
     try {
       const query = `
-        MATCH (posts:Post{published: ${true}})
+        MATCH (posts:Post{published: ${status}})
         RETURN posts
       `;
 
@@ -195,7 +196,7 @@ class PostModel extends InterfacePostModel {
           // getting editors
           for (let expert of result3.records) {
             const editor = expert.get("users").properties
-            editors.push({...editor, profil: `http://localhost:5000/static/images/profil/${editor.profil}`})
+            editors.push(editor)
           }
         }
 
@@ -208,7 +209,7 @@ class PostModel extends InterfacePostModel {
 
         if (result4.records.length > 0) {
           const editor = result4.records[0].get("user").properties
-          editors.push({...editor, profil: `http://localhost:5000/static/images/profil/${editor.profil}`})
+          editors.push(editor)
         }
       } else {
         const query2 = `
@@ -234,12 +235,12 @@ class PostModel extends InterfacePostModel {
           // getting editors
           for (let expert of result4.records) {
             const editor = expert.get("users").properties
-            editors.push({...editor, profil: `http://localhost:5000/static/images/profil/${editor.profil}`})
+            editors.push({...editor})
           }
         }
       }
 
-      return {editors, author: {...author, profil: `http://localhost:5000/static/images/profil/${author.profil}`}}
+      return {editors, author}
     } catch(err) {
       return {editors: [], author: null}
     } finally {
@@ -266,17 +267,17 @@ class PostModel extends InterfacePostModel {
   /**
    * This method retrieves all the avalaible posts
    */
-  async getAllPosts(skip, limit) {
+  async getAllPosts(skip, limit, status) {
     const session = dbConnect();
 
     try {
-      const { postNumber, error } = await this.getNumberPost(session);
+      const { postNumber, error } = await this.getNumberPost(session, status);
 
       if (postNumber !== undefined) {
         const query = `
-          MATCH (posts:Post{published: ${true}})
+          MATCH (posts:Post{published: ${status}})
           RETURN posts
-          ORDER BY posts.creation_date
+          ORDER BY posts.creation_date DESC
           SKIP ${skip}
           LIMIT ${limit}
         `;
@@ -285,7 +286,10 @@ class PostModel extends InterfacePostModel {
 
         const postData = await this.gettingMoreInfos(result, "posts");
 
-        if (postNumber > skip) {
+        console.log({postNumber, skip})
+        console.log({postData})
+
+        if (postNumber > Number(skip)) {
           return {
             data: { data: postData, next: true, skip: Number(skip) + Number(limit) },
           };

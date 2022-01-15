@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
 import Subscriber from '../../../entities/Subscriber'
 import navigationContext from '../../../dataManager/context/navigationContext'
+import { ressourcesUrl } from '../../../utils/url'
 
 const image = require("../../../medias/img/test.jpg")
 
@@ -35,7 +36,7 @@ const ProfilCard = () => {
 		<article className={styles.profilCard}>
 			<div className={styles.profilCardTop}>
 				<div>
-					<ImgCircle src={user.getProfil} alt="profil" classe={styles.profilCardTopImage} />
+					<ImgCircle src={`${ressourcesUrl.profil}/${user.getProfil}`} alt="profil" classe={styles.profilCardTopImage} />
 
 					<div className={styles.profilCardInfo}>
 						<span>{formatName(user.getName)}</span>

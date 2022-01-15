@@ -267,7 +267,7 @@ class UserModel extends InterfaceUserModel {
         RETURN user
       `
 
-      const result = await session.run(query, {id: idSubscriber, role: 1})
+      const result = await session.run(query, {id: idSubscriber, role: 1.0})
 
       if (result.records.length > 0) {
         const userData = result.records[0].get("user").properties
