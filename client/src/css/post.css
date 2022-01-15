@@ -82,9 +82,12 @@ div.author-info span:nth-child(3) {
 }
 
 .author-post-username {
-	font-size: 14px;
-	color: rgb(163, 163, 163);
+	font-size: 16px;
 	margin: 0;
+}
+
+.author-info {
+	margin-left: 20px;
 }
 
 @media screen and (max-width: 576px) {

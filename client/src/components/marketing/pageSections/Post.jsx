@@ -77,8 +77,8 @@ const PostComponent = ({postData, onLikePost}) => {
 						alt="wangue fenyep"
 						src={`${ressourcesUrl.profil}/${author.getProfil}`}
 					 />
-					 <div className="flex flex-col space-y-1">
-					 	<span className="text-sm md:text-lg font-bold ">{author.getName[0].toUpperCase() + author.getName.substr(1).toLowerCase()}</span>
+					 <div className="flex flex-col space-y-1 author-info">
+					 	<span className="author-post-username text-sm md:text-lg font-bold ">{author.getName[0].toUpperCase() + author.getName.substr(1).toLowerCase()}</span>
 					 	<date className="text-xs text-gray-500">{relativeDate}</date>
 					 </div>
 				</div>

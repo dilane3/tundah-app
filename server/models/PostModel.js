@@ -91,10 +91,10 @@ class PostModel extends InterfacePostModel {
    * This function returns the number of posts available in the database
    * @param {Session} session
    */
-  async getNumberPost(session) {
+  async getNumberPost(session, status) {
     try {
       const query = `
-        MATCH (posts:Post{published: ${true}})
+        MATCH (posts:Post{published: ${status}})
         RETURN posts
       `;
 
@@ -266,15 +266,15 @@ class PostModel extends InterfacePostModel {
   /**
    * This method retrieves all the avalaible posts
    */
-  async getAllPosts(skip, limit) {
+  async getAllPosts(skip, limit, status) {
     const session = dbConnect();
 
     try {
-      const { postNumber, error } = await this.getNumberPost(session);
+      const { postNumber, error } = await this.getNumberPost(session, status);
 
       if (postNumber !== undefined) {
         const query = `
-          MATCH (posts:Post{published: ${true}})
+          MATCH (posts:Post{published: ${status}})
           RETURN posts
           ORDER BY posts.creation_date DESC
           SKIP ${skip}

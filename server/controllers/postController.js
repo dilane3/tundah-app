@@ -60,7 +60,7 @@ class PostController {
     console.log({skip, limit})
 
     if (skip !== undefined && limit !== undefined) {
-      const { data, error } = await postModel.getAllPosts(skip, limit);
+      const { data, error } = await postModel.getAllPosts(skip, limit, true);
 
       if (data !== undefined) {
         res.status(200).json(data);
@@ -73,6 +73,27 @@ class PostController {
         .json({ message: "Provide both skip and limit integer values" });
     }
   };
+
+  static getAllProposedPost = async (req, res) => {
+    const postModel = new PostModel();
+    const { skip, limit } = req.query;
+
+    console.log({skip, limit})
+
+    if (skip !== undefined && limit !== undefined) {
+      const { data, error } = await postModel.getAllPosts(skip, limit, false);
+
+      if (data !== undefined) {
+        res.status(200).json(data);
+      } else {
+        res.status(404).json(error);
+      }
+    } else {
+      return res
+        .status(400)
+        .json({ message: "Provide both skip and limit integer values" });
+    }
+  }
 
   // Algorithm
   /**

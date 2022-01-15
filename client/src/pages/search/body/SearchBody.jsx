@@ -57,7 +57,7 @@ const BodySearch = () => {
       
       <div className="container">
         {postsResults.map((post) => (
-          <PostPropose type="result" post={post}/>
+          <PostPropose type="result" postData={post}/>
         ))}
         {/* <PostPropose type="result"  />
         <PostPropose type="result" />

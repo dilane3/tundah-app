@@ -50,7 +50,7 @@ const Base = ({children}) => {
       })
       .then(() => {
 
-        instance.get("/posts?skip=0&limit=5")
+        instance.get("/posts?skip=0&limit=3")
         .then(res => {
           const postData = res.data.data
           let nextValue = res.data.next
