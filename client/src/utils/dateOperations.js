@@ -18,8 +18,6 @@ const getRelativeDate = (date) => {
 		"decembre"
 	]
 
-	console.log({diffDate})
-
 	if (diffDate < 60) {
 		return "A l'instant"
 	} else if (diffDate < 3600) {
