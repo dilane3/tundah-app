@@ -4,6 +4,7 @@ import './css/app.css';
 import Routes from './Routes'
 import currentUserContext from './dataManager/context/currentUserContent';
 import postsContext from './dataManager/context/postsContext';
+import proposedPostContext from './dataManager/context/proposedPostContext'
 import {
   login,
   logout,
@@ -11,7 +12,8 @@ import {
   editPost,
   createPost,
   updateProfil,
-  updateUser
+  updateUser,
+  likeUserPost
 } from './dataManager/data/currentUser/currentUserActions'
 import {
   deletePost as postDelete,
@@ -19,21 +21,35 @@ import {
   addPosts,
   addPost,
   addComment,
-  addComments
+  addComments,
+  likePost
 } from './dataManager/data/posts/postsActions'
+import {
+  deleteProposedPost,
+  updateProposedPost,
+  addProposedPosts,
+  addProposedPost,
+  validateProposedPost
+} from './dataManager/data/proposedPost/proposedPostActions'
 import currentUserReducer from './dataManager/data/currentUser/currentUserReducer';
 import postsReducer from './dataManager/data/posts/postsReducer';
 import navigationContext from './dataManager/context/navigationContext';
 import Post from './entities/Post';
 import researchContext from './dataManager/context/researchContext';
+import proposedPostsReducer from './dataManager/data/proposedPost/proposedPostReducer';
 
 function App() {
   const [posts, dispatchPosts] = useReducer(postsReducer, [])
+  const [proposedPosts, dispatchProposedPosts] = useReducer(proposedPostsReducer, [])
   const [currentUser, dispatchUser] = useReducer(currentUserReducer, null)
   const [navigation, setNavigation] = useState("")
   const [research, setReseach] = useState({
     postsResults: [],
     query: ""
+  })
+  const [postsArgs, setPostsArgs] = useState({
+    next: false,
+    skip: 0
   })
 
   // current User actions
@@ -59,6 +75,10 @@ function App() {
 
   const userUpdateProfil = (profil) => {
     dispatchUser(updateProfil(profil))
+  }
+
+  const userLikeUserPost = (idPost) => {
+    dispatchUser(likeUserPost(idPost))
   }
 
   const userUpdateUser = (data) => {
@@ -89,6 +109,36 @@ function App() {
   
   const postsAddComments = (idPost, comments) => {
     dispatchPosts(addComments(idPost, comments))
+  }
+
+  const postsLikePost = (idPost, idUser) => {
+    dispatchPosts(likePost(idPost, idUser))
+  }
+
+  const setMorePostArgs = (next, skip) => {
+    setPostsArgs(state => ({...state, next, skip}))
+  }
+
+  // Proposed Posts actions
+
+  const proposedPostsDeletePost = (idPost) => {
+    dispatchProposedPosts(deleteProposedPost(idPost))
+  }
+  
+  const proposedPostsUpdatePost = (idPost, data) => {
+    dispatchProposedPosts(updateProposedPost(idPost, data))
+  }
+  
+  const proposedPostsAddPosts = (posts) => {
+    dispatchProposedPosts(addProposedPosts(posts))
+  }
+  
+  const proposedPostsAddPost = (post) => {
+    dispatchProposedPosts(addProposedPost(post))
+  }
+
+  const proposedPostValidate = (idPost) => {
+    dispatchProposedPosts(validateProposedPost(idPost))
   }
 
   // navigation action
@@ -123,18 +173,33 @@ function App() {
     editPost: userEditPost,
     createPost: userCreatePost,
     updateProfil: userUpdateProfil,
-    updateUser: userUpdateUser
+    updateUser: userUpdateUser,
+    likeUserPost: userLikeUserPost
   }
 
   // data of posts context
   const postsContextValue = {
     posts,
+    ...postsArgs,
     deletePost: postsDeletePost,
     updatePost: postsUpdatePost,
     addPosts: postsAddPosts,
     addPost: postsAddPost,
     addComments: postsAddComments,
-    addComment: postsAddComment
+    addComment: postsAddComment,
+    likePost: postsLikePost,
+    setMorePostArgs
+  }
+
+  const proposedPostContextValue = {
+    proposedPosts,
+    next: false,
+    skip: 0,
+    deletePost: proposedPostsDeletePost,
+    updatePost: proposedPostsUpdatePost,
+    addPosts: proposedPostsAddPosts,
+    setMorePostArgs: () => {},
+    validatePost: proposedPostValidate
   }
 
   // data of navigation
@@ -153,13 +218,15 @@ function App() {
   return (
     <currentUserContext.Provider value={currentUserContextValue}>
       <postsContext.Provider value={postsContextValue}>
-        <navigationContext.Provider value={navigationContextValue}>
-          <researchContext.Provider value={researchContextValue}>
-            <BrowserRouter>
-              <Routes />
-            </BrowserRouter>
-          </researchContext.Provider>
-        </navigationContext.Provider>
+        <proposedPostContext.Provider value={proposedPostContextValue}>
+          <navigationContext.Provider value={navigationContextValue}>
+            <researchContext.Provider value={researchContextValue}>
+              <BrowserRouter>
+                <Routes />
+              </BrowserRouter>
+            </researchContext.Provider>
+          </navigationContext.Provider>
+        </proposedPostContext.Provider>
       </postsContext.Provider>
     </currentUserContext.Provider>
   );

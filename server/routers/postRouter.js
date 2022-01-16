@@ -9,6 +9,7 @@ const postRouter = express.Router();
 const {
   getPost,
   getAllPosts,
+  getAllProposedPost,
   getSearchedPosts,
   createPost,
   likePost,
@@ -17,23 +18,23 @@ const {
   updatePost,
 } = PostController;
 
+// Router for the the retrieval of all the posts
+// This can be performed by all the users
+postRouter.get("/", getAllPosts);
+
+// Router for the the retrieval of all the proposed posts
+// This can be performed by all the users
+postRouter.get("/proposed", getAllProposedPost)
+
 // Router for the retrieval of a post using it's id
 // This can be performed by all the users
 postRouter.get("/:id", getPost);
 
 // Router for the the retrieval of all the posts
 // This can be performed by all the users
-postRouter.get("/", getAllPosts);
-
-// Router for the the retrieval of all the posts
-// This can be performed by all the users
 postRouter.get("/search/:value", getSearchedPosts);
 
-// Router for the retrieval of a post using it's id
-// This can be performed by all the users
-postRouter.get("/:id", getPost)
-
-// Router for the creation of a post using the post form info and the user id with video
+// Router for the creation of a post using the post form info and the user id
 // This can be performed only by connected users
 postRouter.post(
   "/create/video", 

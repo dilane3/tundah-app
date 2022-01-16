@@ -163,6 +163,10 @@ body {
     width: 100%;
     margin: 0 auto;
   }
+
+  .container {
+    padding: 0;
+  }
 }
 
 @media screen and (max-width: 400px) {

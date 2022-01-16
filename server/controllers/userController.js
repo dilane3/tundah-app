@@ -3,6 +3,7 @@ import UserModel from "../models/UserModel.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import { validateEmail } from "../utils/validator.js"
+import PostModel from "../models/PostModel.js"
 
 // fetching data from .env file
 config()
@@ -14,15 +15,23 @@ const {
 
 class UserController {
   static getUser = async (req, res) => {
-    const {id} = req.params
+    const {username} = req.params
 
-    if (id) {
-      const user = req.user
+    if (username) {
+      // const user = req.user
+      const userModel = new UserModel()
+      const postModel = new PostModel()
 
-      const {data, error} = await user.dataManager.getUser(id)
+      const {data, error} = await userModel.getUser(username)
 
       if (data !== undefined) {
-        res.json({...data, password: undefined})
+        const postdata = (await postModel.getMyPosts(data.id)).data
+
+        if (postdata) {
+          res.json({...data, password: undefined, posts: postdata})
+        } else {
+          res.json({...data, password: undefined, posts: []})
+        }
       } else {
         res.json(error)
       }
@@ -34,7 +43,7 @@ class UserController {
   static getCurrentUser = async (req, res) => {
     const user = req.user
 
-    return res.status(200).json({...user, password: undefined, profil: `${req.protocol}://${req.headers.host}/static/images/profil/${user.getProfil}`})
+    return res.status(200).json({...user, password: undefined, profil: user.getProfil})
   }
 
   static signup = async (req, res) => {
@@ -79,7 +88,7 @@ class UserController {
               role
             }
   
-            const token = jwt.sign(payload, SECRET_CODE_TOKEN, {expiresIn: `${EXPIRE_IN} min`})
+            const token = jwt.sign({payload}, SECRET_CODE_TOKEN, {expiresIn: `${EXPIRE_IN} min`})
   
             return res.status(201).json({...data, token, password: undefined})
           } else {
@@ -200,7 +209,7 @@ class UserController {
       const {data, error} = await user.setProfil(file.filename)
 
       if (data) {
-        return res.status(200).json({...data, profil: `${req.protocol}://${req.headers.host}/static/images/profil/${data.profil}`})
+        return res.status(200).json({...data})
       } else {
         return res.status(500).json(error)
       }
@@ -216,7 +225,7 @@ class UserController {
     const {data, error} = await user.dataManager.deleteProfil(user.getId)
 
     if (data !== undefined) {
-      res.status(200).json({...data, profil: `${req.protocol}://${req.headers.host}/static/images/profil/${data.profil}`})
+      res.status(200).json({...data})
     } else {
       res.status(500).json({message: error})
     }

@@ -20,7 +20,7 @@ const {
 } = UserController
 
 userRouter.get("/current", authenticationMiddleware, getCurrentUser)
-userRouter.get("/:id", authenticationMiddleware, getUser)
+userRouter.get("/:username", authenticationMiddleware, getUser)
 userRouter.post("/signup", signup)
 userRouter.post("/signin", signin)
 userRouter.patch("/update", authenticationMiddleware, updateUser)

@@ -6,18 +6,12 @@ import ALink from '../../../elements/a/ALink'
 import H1 from '../../../elements/titles/H1'
 import styles from  "../../../../css/signup.module.css"
 import {Image} from 'react-image-progressive-loading'
-import axios from 'axios';
+import { instance } from '../../../../utils/url';
 import AlertError from '../signin/AlertError';
+import { PAYS } from '../../../../utils/Allcountries';
+import { Redirect } from 'react-router';
 
 const image = require("../../../../medias/img/signup-img.png")
-
-// const instance = axios.create({
-// 	baseURL: "http://localhost:5000/api",
-// })
-
-const instance = axios.create({
-	baseURL: "http://192.168.43.81:5000/api",
-})
 
 const SignupBlock = (props) => {
 	const initialSignupData = {
@@ -38,7 +32,8 @@ const SignupBlock = (props) => {
 	const [uniqueCheckLoadingEmail, setUniqueCheckLoadingEmail] = useState(false)
 	const [uniqueCheckLoadingUsername, setUniqueCheckLoadingUsername] = useState(false)
 	const [loading, setLoading] = useState(false)
-
+	const [redirect, setRedirect] = useState(false)
+	
 	// check if username is unique
 	useEffect(() => {
 		// send request to the server
@@ -59,6 +54,7 @@ const SignupBlock = (props) => {
 				}
 			})
 			.catch(err => {
+				console.log(err)
 				setUniqueUsernameCheck(false)
 			})
 			.then(() => {
@@ -134,7 +130,7 @@ const SignupBlock = (props) => {
 				const {token} = res.data
 
 				localStorage.setItem("tundah-token", token)
-				window.location.href = "/wiki/feed"
+				setRedirect(true)
 			})
 			.catch(err => {
 				console.log(err)
@@ -148,6 +144,22 @@ const SignupBlock = (props) => {
 			setErrorMessage("Verifier votre formulaire avant de valider")
 			setShowError(true)
 		}
+	}
+
+	// getting country names in french
+	const getCountryName = () => {
+		const countries = []
+		const others = []
+
+		for (let country of PAYS) {
+			let countryName = country["translations"]["fr"]
+
+			if (countryName) countries.push(countryName)
+			else others.push(country["translations"])
+		}
+
+		console.log(others)
+		return countries.sort()
 	}
 
 	//fonctions
@@ -275,14 +287,16 @@ const SignupBlock = (props) => {
 									<select 
 										name="country" 
 										id="country"
+										defaultValue="cameroun"
 										value={country}
 										onChange={handleChange} 
 										className="w-full py-2 px-3 lg:py-3 bg-white  text-primary text-sx md:text-sm rounded md:rounded-lg border-2 border-primary focus:outline-none"
 									>
-									  <option value="cameroun">Cameroun</option>
-									  <option value="gabon">Gabon</option>
-									  <option value="nigeria">Nigeria</option>
-									  <option value="tchad">Tchad</option>
+										{
+											getCountryName().map(country => {
+												return <option value={country.toLowerCase()}>{country[0].toUpperCase() + country.substr(1)}</option>
+											})
+										}
 									</select>
 								</div>
 							</div>
@@ -309,6 +323,11 @@ const SignupBlock = (props) => {
 								deja inscrit? <ALink link="/signin" classe="inline-block ml-2">connectez vous</ALink>
 							</Paragraphe>
 						</div>
+
+						{/* redirection to wiki page */}
+						{
+							redirect ? <Redirect to="/wiki/feed" />:null
+						}
 
 						{
 							loading ? <span className={styles.signupSectionRightLoaderSending}></span> : null

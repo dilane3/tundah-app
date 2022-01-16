@@ -95,6 +95,8 @@ class Subscriber {
         posts,
         country
       } = data
+
+      const postData = posts ? posts.map(post => new Post(post)):[]
     
       this.id = id
       this.name = name
@@ -103,7 +105,7 @@ class Subscriber {
       this.date = date
       this.role = role
       this.profil = profil
-      this.posts = posts ? posts:[]
+      this.posts = postData
       this.country = country
     }
   }
@@ -132,16 +134,24 @@ class Subscriber {
     this.description = description
   }
 
-  get getProposePosts() {
-    return this.posts.map(post => {
-      if (!post.getPublished) return post
+  get getProposedPosts() {
+    const posts = []
+
+    this.posts.forEach(post => {
+      if (!post.getPublished) posts.push(post)
     })
+
+    return posts
   }
 
   get getPublishedPosts() {
-    return this.posts.map(post => {
-      if (post.getPublished) return post
+    const posts = []
+    
+    this.posts.forEach(post => {
+      if (post.getPublished) posts.push(post)
     })
+
+    return posts
   }
 
   deletePost (idPost) {
@@ -158,6 +168,24 @@ class Subscriber {
 
   createPost (post) {
     this.posts.push(post)
+  }
+
+  likePost (idPost) {
+    const posts = [...this.posts]
+
+    const index = posts.findIndex(post => post.id === idPost)
+
+    if (index > -1) {
+      let post = new Post(posts[index])
+      console.log({post})
+
+      post = post.likePost(this.id)
+      console.log({post})
+
+      posts[index] = post
+
+      this.posts = posts
+    }
   }
 }
 

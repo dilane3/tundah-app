@@ -54,25 +54,32 @@ class PostModel extends InterfacePostModel {
    */
   async getSearchedPosts(value) {
     const session = dbConnect();
+    
+    // const regex = new RegExp(value.toLowerCase(), 'gi')
+    // console.log(regex)
+    // const solution = { "regex" : regex}
+
     try {
       const query = `
-        MATCH (post:Post)
+        MATCH (post:Post{published: ${true}})
         WHERE post.title =~ '.*(${value.toLowerCase()}).*'
         RETURN post
+        ORDER BY post.creation_date DESC
         `;
+      // const query = `
+      //   MATCH (post:Post)
+      //   WHERE post.title =~ '$solution'
+      //   RETURN post
+      // `;
+
       const result = await session.run(query);
-      console.log("result length: ", result.records.length);
-      if (result.records.length > 0) {
-        const postData = [];
 
-        for (let record of result.records) {
-          const post = record.get("post").properties;
-          postData.push({ ...post });
-        }
+      const moreInfosData = await this.gettingMoreInfos(result, "post");
 
-        return { data: postData };
+      if (moreInfosData.length > 0) {
+         return { data : moreInfosData }
       } else {
-        return { data: null };
+        return { data: [] };
       }
     } catch (err) {
       return { error: "Sorry the post(s) has not been found" };
@@ -85,10 +92,10 @@ class PostModel extends InterfacePostModel {
    * This function returns the number of posts available in the database
    * @param {Session} session
    */
-  async getNumberPost(session) {
+  async getNumberPost(session, status) {
     try {
       const query = `
-        MATCH (posts:Post{published: ${true}})
+        MATCH (posts:Post{published: ${status}})
         RETURN posts
       `;
 
@@ -188,7 +195,8 @@ class PostModel extends InterfacePostModel {
         if (result3.records.length > 0) {
           // getting editors
           for (let expert of result3.records) {
-            editors.push(expert.get("users").properties)
+            const editor = expert.get("users").properties
+            editors.push(editor)
           }
         }
 
@@ -200,7 +208,8 @@ class PostModel extends InterfacePostModel {
         const result4 = await session.run(query4, {id})
 
         if (result4.records.length > 0) {
-          editors.push(result4.records[0].get("user").properties)
+          const editor = result4.records[0].get("user").properties
+          editors.push(editor)
         }
       } else {
         const query2 = `
@@ -225,7 +234,8 @@ class PostModel extends InterfacePostModel {
         if (result4.records.length > 0) {
           // getting editors
           for (let expert of result4.records) {
-            editors.push(expert.get("users").properties)
+            const editor = expert.get("users").properties
+            editors.push({...editor})
           }
         }
       }
@@ -257,16 +267,17 @@ class PostModel extends InterfacePostModel {
   /**
    * This method retrieves all the avalaible posts
    */
-  async getAllPosts(skip, limit) {
+  async getAllPosts(skip, limit, status) {
     const session = dbConnect();
 
     try {
-      const { postNumber, error } = await this.getNumberPost(session);
+      const { postNumber, error } = await this.getNumberPost(session, status);
 
       if (postNumber !== undefined) {
         const query = `
-          MATCH (posts:Post{published: ${true}})
+          MATCH (posts:Post{published: ${status}})
           RETURN posts
+          ORDER BY posts.creation_date DESC
           SKIP ${skip}
           LIMIT ${limit}
         `;
@@ -275,12 +286,15 @@ class PostModel extends InterfacePostModel {
 
         const postData = await this.gettingMoreInfos(result, "posts");
 
-        if (postNumber > skip + limit) {
+        console.log({postNumber, skip})
+        console.log({postData})
+
+        if (postNumber > Number(skip)) {
           return {
-            data: { data: postData, next: true, skip: Number(skip + limit) },
+            data: { data: postData, next: true, skip: Number(skip) + Number(limit) },
           };
         } else {
-          return { data: { data: postData, next: false, skip } };
+          return { data: { data: postData, next: false, skip: Number(skip) } };
         }
       } else {
         return { error };
@@ -313,14 +327,13 @@ class PostModel extends InterfacePostModel {
       const result1 = await session.run(query1, { idUser });
       const result2 = await session.run(query2, { idUser });
 
-      const publishedPost = await this.gettingMoreInfos(
-        result1,
-        "publishedPost"
-      );
+      const publishedPost = await this.gettingMoreInfos(result1, "publishedPost");
 
-      let proposedPost = result2.records.map((record) => {
-        return record.get("proposedPost").properties;
-      });
+      let proposedPost = await this.gettingMoreInfos(result2, "proposedPost")
+
+      // let proposedPost = result2.records.map((record) => {
+      //   return record.get("proposedPost").properties;
+      // });
 
       const postData = [...publishedPost, ...proposedPost];
 

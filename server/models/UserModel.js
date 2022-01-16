@@ -14,18 +14,18 @@ const {
 class UserModel extends InterfaceUserModel {
   /**
    * This function get a specific user based on his id
-   * @param {string} id
+   * @param {string} username
    */
-   async getUser (id) {
+   async getUser (username) {
     const session = dbConnect()
 
     try {
       const query = `
-        MATCH (user:Subscriber{id: $id})
+        MATCH (user:Subscriber{username: $username})
         RETURN user
       `
 
-      const result = await session.run(query, {id})
+      const result = await session.run(query, {username})
 
       if (result.records.length > 0) {
         const userData = result.records[0].get('user').properties
@@ -267,7 +267,7 @@ class UserModel extends InterfaceUserModel {
         RETURN user
       `
 
-      const result = await session.run(query, {id: idSubscriber, role: 1})
+      const result = await session.run(query, {id: idSubscriber, role: 1.0})
 
       if (result.records.length > 0) {
         const userData = result.records[0].get("user").properties

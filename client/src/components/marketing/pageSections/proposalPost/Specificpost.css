@@ -112,8 +112,14 @@
   width: 100%;
 }
 
+.content-Postpropose > div.proposePost-img {
+  margin-left: auto;
+  padding-left: 10px;
+}
+
 .Info-content {
-  width: calc(100% - 180px);
+  /* width: calc(100% - 180px); */
+  width: auto;
 }
 .description{
   font-size: 14px;

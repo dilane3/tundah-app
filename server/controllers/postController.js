@@ -57,8 +57,10 @@ class PostController {
     const postModel = new PostModel();
     const { skip, limit } = req.query;
 
-    if (skip && limit) {
-      const { data, error } = await postModel.getAllPosts(skip, limit);
+    console.log({skip, limit})
+
+    if (skip !== undefined && limit !== undefined) {
+      const { data, error } = await postModel.getAllPosts(skip, limit, true);
 
       if (data !== undefined) {
         res.status(200).json(data);
@@ -72,15 +74,67 @@ class PostController {
     }
   };
 
+  static getAllProposedPost = async (req, res) => {
+    const postModel = new PostModel();
+    const { skip, limit } = req.query;
+
+    console.log({skip, limit})
+
+    if (skip !== undefined && limit !== undefined) {
+      const { data, error } = await postModel.getAllPosts(skip, limit, false);
+
+      if (data !== undefined) {
+        res.status(200).json(data);
+      } else {
+        res.status(404).json(error);
+      }
+    } else {
+      return res
+        .status(400)
+        .json({ message: "Provide both skip and limit integer values" });
+    }
+  }
+
+  // Algorithm
+  /**
+   * we verify if the for each element of the dataArray if \
+   * there is at least one occurrence of the entering post
+   * if true we send true
+   * else we send false
+   * @param {Array} dataArray
+   * @param {Post} post
+   */
+  static verifyPostExistence = async (dataArray, post) => {
+    dataArray.forEach((result) => {
+      if (post.id == result.id) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+  };
+
   // Algorithm
   /**
    * we first retrieve the value of the posts searched in the request
    * we verify if that value exist
-   *  * if true we call the corresponding method from the post model using that value
-   *   * we get the data and error objects from that operation
-   *   * if there is data, we send it to the front
-   *   * else we send the error to the front
-   *  * if false we send the value demand error message to the front
+   *  * if true we create a postModel Object
+   *   * we create dataArray and errorArray which will contain our results and errors respectively
+   *   * we split the research Query
+   *   * if the search array length is equal to one
+   *    * we execute the corresponding operations
+   *   * else
+   *    * we first execute the operations
+   *    * then we map over the search array from the second element to the end
+   *    * we retrieve the data and error and affect the data to the newly created newDataArray
+   *    * then we map true the newDataArray and verify if the post exist already in the dataArray
+   *    * if false 
+   *     * we push the data inside the dataArray
+   *    * else
+   *     * we push the error insde the errorArray
+   *    * if the length of the data array is different of 0
+   *     * we return the data array
+   *    * else we return an empty array
    * @param {*} req
    * @param {*} res
    */
@@ -91,20 +145,55 @@ class PostController {
     if (value) {
       const postModel = new PostModel();
 
-      const { data, error } = await postModel.getSearchedPosts(value);
+      var dataArray = [];
+      var errorArray = [];
 
-      if (data !== undefined) {
-        res.status(200).json(data);
+      var search = value.split(" ");
+      console.log(search);
+
+      if (search.length > 0 && search.length < 2) {
+        const { data, error } = await postModel.getSearchedPosts(search[0]);
+
+        console.log({data})
+
+        dataArray.push(...data);
+        errorArray.push({ ...error });
       } else {
-        res.status(404).json(error);
+        const { data, error } = await postModel.getSearchedPosts(search[0]);
+
+        dataArray.push(...data);
+        errorArray.push({ ...error });
+        for (let i = 1; i < search.length; i++) {
+          const { data, error } = await postModel.getSearchedPosts(search[i]);
+          const newDataArray = [...data];
+
+          newDataArray.forEach((result) => {
+            if (!this.verifyPostExistence(dataArray, result)) {
+              dataArray.push(result);
+            } else {
+              errorArray.push({ ...error });
+            }
+          });
+        }
+      }
+
+      console.log("Next to this is the data array");
+      console.log(dataArray);
+
+      console.log("Next to this is the data array length");
+      console.log(dataArray.length);
+
+      if (dataArray.length !== 0) {
+        console.log("passed again");
+        res.status(200).json(dataArray);
+      } else {
+        res.status(404).json(errorArray);
       }
     } else {
-      res
-        .status(400)
-        .json({
-          message:
-            "You need to provide a value for the search operation to take on",
-        });
+      res.status(400).json({
+        message:
+          "You need to provide a value for the search operation to take on",
+      });
     }
   };
 
@@ -116,52 +205,48 @@ class PostController {
    * */
   static createPost = async (req, res) => {
     const { title, content, region, tribe, fileType } = req.body;
-    let files_list
+    let files_list;
 
     if (fileType === "image") {
-      const files = req.files
+      const files = req.files;
 
       if (files !== undefined) {
-        files_list = req.files.map(file => file.filename)
+        files_list = req.files.map((file) => file.filename);
       } else {
-        files_list = []
+        files_list = [];
       }
     } else {
-      const file = req.file
+      const file = req.file;
 
       if (file) {
-        files_list = [file.filename]
+        files_list = [file.filename];
       } else {
-        files_list = []
+        files_list = [];
       }
     }
 
-    console.log(files_list)
+    const user = req.user;
+    console.log(user);
 
-    res.sendStatus(200)
+    if (title && content && region && tribe) {
+      const { data, error } = await user.createPost(
+        title,
+        content,
+        files_list,
+        region,
+        tribe
+      );
 
-    // const user = req.user;
-    // console.log(user);
-
-    // if (title && content && region && tribe) {
-    //   const { data, error } = await user.createPost(
-    //     title,
-    //     content,
-    //     files_list,
-    //     region,
-    //     tribe
-    //   );
-
-    //   if (data !== undefined) {
-    //     res
-    //       .status(201)
-    //       .json({ message: "New post successfully created", data });
-    //   } else {
-    //     res.status(404).json({ error });
-    //   }
-    // } else {
-    //   res.status(500).json({ error: "Please specify the post content" });
-    // }
+      if (data !== undefined) {
+        res
+          .status(201)
+          .json({ message: "New post successfully created", data });
+      } else {
+        res.status(404).json({ error });
+      }
+    } else {
+      res.status(500).json({ error: "Please specify the post content" });
+    }
   };
 
   // Algorithm

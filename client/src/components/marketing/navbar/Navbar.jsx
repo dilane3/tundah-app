@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styles from '../../../css/navbar.module.css'
 import Input from '../../elements/input/Input'
 import {BsChevronDown, BsSearch, BsJustify} from 'react-icons/bs'
@@ -7,12 +7,26 @@ import NavbarProfilDropdown from '../../utils/dropdowns/NavbarProfilDropdown'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
 import { Link } from 'react-router-dom'
 import Subscriber from '../../../entities/Subscriber'
+import { ressourcesUrl } from '../../../utils/url'
 
 const logo = require("../../../medias/logo/Tundah-large.png")
 
 const Navbar = ({className, onShowMobileMenu}) => {
 	const {currentUser} = useContext(currentUserContext)
 
+	const [researchQuery, setResearchQuery] = useState("")
+
+	const handleChange = event => {
+
+		event.preventDefault();
+
+		setResearchQuery(event.target.value);
+	}	
+
+	useEffect(() => {
+		console.log("The value entered is: ", researchQuery)
+	}, [researchQuery])
+	
 	const user = new Subscriber(currentUser)
 
 	return(
@@ -26,19 +40,28 @@ const Navbar = ({className, onShowMobileMenu}) => {
 			<div className={styles.headerSearchEngine}>
 				<Input 
 					type="search"
-					placeholder="Faites une recherche..."	
+					placeholder="Faites une recherche..."
+					handleChange={handleChange}
 				/>
-
-				<div className={styles.headerSearchEngineIcon}>
-					<BsSearch />
-				</div>
+				
+				<Link to={{
+					pathname: '/search',
+					state: {
+						researchQuery: researchQuery
+					}
+				}}>
+					<div className={styles.headerSearchEngineIcon}>
+						<BsSearch />
+					</div>
+				</Link>
+				
 			</div>
 			<div className={styles.headerProfil}>
 				<div className={styles.headerProfilIcon}>
 					{
 						currentUser ? (
 							<>
-								<ImgCircle src={user.getProfil} alt={"profil"} />
+								<ImgCircle src={`${ressourcesUrl.profil}/${user.getProfil}`} alt={"profil"} />
 			
 								<NavbarProfilDropdown 
 									dropElt={ <BsChevronDown className="icon" /> } 

@@ -1,33 +1,57 @@
-import React, { Fragment, useContext, useEffect, useRef, useState } from 'react'
+import React, { Fragment, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import Loader from '../components/utils/Loader'
 import Aside from '../components/marketing/aside/Aside'
 import MobileMenu from '../components/marketing/navbar/MobileMenu'
 import Navbar from '../components/marketing/navbar/Navbar'
 import styles from '../css/base.module.css'
 import currentUserContext from '../dataManager/context/currentUserContent'
-import axios from 'axios'
+import { instance } from '../utils/url'
 import postsContext from '../dataManager/context/postsContext'
+import AddExpertModal from '../components/utils/modals/AddExpertModal'
 
 const logo = require("../medias/logo/Tundah-large.png")
-
-// const instance = axios.create({
-// 	baseURL: "http://localhost:5000/api",
-// })
-
-const instance = axios.create({
-	baseURL: "http://192.168.43.81:5000/api",
-})
 
 const Base = ({children}) => {
   // getting context value
 	const {login, currentUser} = useContext(currentUserContext)
-  const {posts, addPosts} = useContext(postsContext)
+  const {
+    addPosts,
+    setMorePostArgs
+  } = useContext(postsContext)
 
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [maskBackground, setMaskBackground] = useState(true)
   const [showLoaderPage, setShowLoaderPage] = useState(!currentUser ? true:false)
   const [loaderClassActive, setLoaderClassActive] = useState(!currentUser ? false:true)
   const [dataLoaded, setDataLoaded] = useState(!currentUser ? false:true)
+  const [showAddExpertModal, setShowAddExpertModal] = useState(false)
+  const [addExpertAnimation, setAddExpertAnimation] = useState(false)
+
+  // use Memo and use Callback section
+  const currentUserMemo = useMemo(() => {
+    return currentUser
+  }, [currentUser])
+
+  const methodsCallback = useCallback(() => {
+    return {
+      addPosts,
+      login,
+      setMorePostArgs
+    }
+  }, [addPosts, login, setMorePostArgs])
+
+  // use Ref section
+  const currentUserRef = useRef(currentUserMemo)
+  const methodsRef = useRef(methodsCallback)
+
+  // use Effect section
+  useEffect(() => {
+    currentUserRef.current = currentUserMemo
+  }, [currentUserMemo])
+
+  useEffect(() => {
+    methodsRef.current = methodsCallback()
+  }, [methodsCallback])
 
   useEffect(() => {
     if (showMobileMenu) {
@@ -35,6 +59,8 @@ const Base = ({children}) => {
     } else {
       let timer = setTimeout(() => {
         setMaskBackground(true)
+
+        clearTimeout(timer)
       }, 1000)
     }
   }, [showMobileMenu])
@@ -44,7 +70,13 @@ const Base = ({children}) => {
 
     instance.defaults.headers.common['authorization'] = `Bearer ${token}`
 
-    if (!currentUser) {
+    const {
+      addPosts,
+      login,
+      setMorePostArgs
+    } = methodsRef.current
+
+    if (!currentUserRef.current) {
       instance.get("/users/current")
       .then(res => {
         // adding the current user in the global state
@@ -55,14 +87,26 @@ const Base = ({children}) => {
       })
       .then(() => {
 
-        instance.get("/posts?skip=0&limit=10")
+        instance.get("/posts?skip=0&limit=5")
         .then(res => {
-          // adding post to the global state
-          addPosts(res.data.data)
-          // console.log(res.data.data)
+          const postData = res.data.data
+          let nextValue = res.data.next
+          let skipValue = res.data.skip
 
-          setLoaderClassActive(true)
+          console.log({nextValue, skipValue})
+
+          // adding posts
+          addPosts(postData)
+
+          // setting posts arguments
+          setMorePostArgs(nextValue, skipValue)
+
+          // stopping the loader for loading posts
           setDataLoaded(true)
+
+          // hidden the loading page
+          setLoaderClassActive(true)
+          
         })
         .catch(err => {
           console.log(err)
@@ -82,6 +126,27 @@ const Base = ({children}) => {
     }
   }, [])
 
+  const handleDisplayAddExpertModal = (status) => {
+    setShowAddExpertModal(true)
+    setShowMobileMenu(false)
+
+    let timer = setTimeout(() => {
+      setAddExpertAnimation(true)
+
+      clearTimeout(timer)
+    }, 200)
+  }
+
+  const handleHiddeAddExpertModal = () => {
+    setAddExpertAnimation(false)
+
+    let timer = setTimeout(() => {
+      setShowAddExpertModal(false)
+
+      clearTimeout(timer)
+    }, 500)
+  }
+
   return (
     <Fragment>
       <Navbar className={styles.header} onShowMobileMenu={() => setShowMobileMenu(true)} />
@@ -95,10 +160,10 @@ const Base = ({children}) => {
           ):null
         }
 
-        <Aside className={styles.asideSection} />
+        <Aside className={styles.asideSection} onShowAddExpertSection={handleDisplayAddExpertModal} />
       </section>
 
-      <MobileMenu show={showMobileMenu} />
+      <MobileMenu show={showMobileMenu} onShowAddExpertSection={handleDisplayAddExpertModal} />
 
       {/* Background black while mobile menu is active */}
       {
@@ -118,6 +183,19 @@ const Base = ({children}) => {
             <Loader color="#3c6a46" size="30" />
           </div>
         )
+      }
+
+
+      {
+        showAddExpertModal ? (
+          <>
+            <AddExpertModal 
+              onHide={handleHiddeAddExpertModal} 
+              animationClass={addExpertAnimation} 
+            />
+            <span className={`${styles.backgroundBlack} ${!addExpertAnimation ? styles.backgroundBlackAnimation:""}`} onClick={handleHiddeAddExpertModal}></span>
+          </>
+        ):null
       }
     </Fragment>
   )
