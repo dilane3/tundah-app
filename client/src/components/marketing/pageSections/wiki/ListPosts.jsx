@@ -1,12 +1,27 @@
-import React, { useContext, useEffect, useMemo } from 'react'
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
 import currentUserContext from '../../../../dataManager/context/currentUserContent'
 import postsContext from '../../../../dataManager/context/postsContext'
 import Post from '../Post'
+import '../../../../css/post.css'
 import { instance } from '../../../../utils/url'
+import LoaderCircle from '../../../utils/loaders/Loader'
 
 const ListPosts = () => {
-	const {posts, likePost} = useContext(postsContext)
+	const {
+		posts, 
+		skip, 
+		next, 
+		likePost, 
+		setMorePostArgs, 
+		addPosts
+	} = useContext(postsContext)
 	const {currentUser, likeUserPost} = useContext(currentUserContext)
+
+	// local state
+	const [loadingMorePosts, setLoadingMorePosts] = useState(false)
+
+	// defining the reference of an element
+	const listPostRef = useRef()
 
 	const postsData = useMemo(() => {
 		return posts
@@ -38,12 +53,55 @@ const ListPosts = () => {
 		})
 	}
 
+	useEffect(() => {
+		window.onscroll = (event) => {
+			if (listPostRef.current) {
+				const wrapperHeight = window.scrollY
+				const contentHeight = listPostRef.current.offsetHeight - 500
+				const space = contentHeight - wrapperHeight
+	
+				if (next) {
+					setLoadingMorePosts(true)
+	
+					if (space < 0) {
+						instance.get(`/posts/?skip=${skip}&limit=2`)
+						.then(res => {
+							const postData = res.data.data
+							let nextValue = res.data.next
+							let skipValue = res.data.skip
+		
+							// adding posts
+							addPosts(postData)
+		
+							// setting posts arguments
+							setMorePostArgs(nextValue, skipValue)
+						})
+						.catch(err => {
+							console.log(err)
+						})
+						.then(() => {
+							setLoadingMorePosts(false)
+						})
+					}
+				}
+			}
+		}
+	}, [])
+
 	return(
-		<div className="w-full flex flex-col">
+		<div ref={listPostRef} className={`w-full flex flex-col listPost`}>
 			{
 				postsData.map(post => {
 					return <Post key={post.id} postData={post} onLikePost={handleLikePost} />
 				})
+			}
+
+			{
+				loadingMorePosts ? (
+					<div className="postsLoader">
+						<LoaderCircle color="#3c6a46" size={60} />
+					</div>
+				):null
 			}
 		</div>
 	)

@@ -13,7 +13,10 @@ const logo = require("../medias/logo/Tundah-large.png")
 const Base = ({children}) => {
   // getting context value
 	const {login, currentUser} = useContext(currentUserContext)
-  const {posts, addPosts} = useContext(postsContext)
+  const {
+    addPosts,
+    setMorePostArgs
+  } = useContext(postsContext)
 
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [maskBackground, setMaskBackground] = useState(true)
@@ -47,11 +50,25 @@ const Base = ({children}) => {
       })
       .then(() => {
 
-        instance.get("/posts?skip=0&limit=10")
+        instance.get("/posts?skip=0&limit=2")
         .then(res => {
-          // adding post to the global state
-          addPosts(res.data.data)
+          const postData = res.data.data
+          let nextValue = res.data.next
+          let skipValue = res.data.skip
 
+          console.log({nextValue, skipValue})
+          console.log(res.data)
+
+          // adding posts
+          addPosts(postData)
+
+          // setting posts arguments
+          setMorePostArgs(nextValue, skipValue)
+
+          // stopping the loader for loading posts
+          setDataLoaded(true)
+
+          // hidden the loading page
           setLoaderClassActive(true)
           
         })
@@ -60,7 +77,7 @@ const Base = ({children}) => {
         })
         .then(() => {
           // to remove
-          setDataLoaded(true)
+          // setDataLoaded(true)
 
 
           let timer = setTimeout(() => {

@@ -8,12 +8,6 @@ const AppProposalPost  = () => {
     return(
         <div className="content">
             <HeaderspecifisPost/>
-            <PostPropose/>
-            <PostPropose/>
-            <PostPropose/>
-            <PostPropose/>
-            <PostPropose/>
-            <PostPropose/>
         </div>
     )
 }

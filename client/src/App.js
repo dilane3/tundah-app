@@ -37,6 +37,10 @@ function App() {
     postsResults: [],
     query: ""
   })
+  const [postsArgs, setPostsArgs] = useState({
+    next: false,
+    skip: 0
+  })
 
   // current User actions
   const userLogin = (data) => {
@@ -101,6 +105,10 @@ function App() {
     dispatchPosts(likePost(idPost, idUser))
   }
 
+  const setMorePostArgs = (next, skip) => {
+    setPostsArgs(state => ({...state, next, skip}))
+  }
+
   // navigation action
   const navigateTo = (target) => {
     setNavigation(target)
@@ -140,13 +148,15 @@ function App() {
   // data of posts context
   const postsContextValue = {
     posts,
+    ...postsArgs,
     deletePost: postsDeletePost,
     updatePost: postsUpdatePost,
     addPosts: postsAddPosts,
     addPost: postsAddPost,
     addComments: postsAddComments,
     addComment: postsAddComment,
-    likePost: postsLikePost
+    likePost: postsLikePost,
+    setMorePostArgs
   }
 
   // data of navigation

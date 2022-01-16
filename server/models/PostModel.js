@@ -285,34 +285,14 @@ class PostModel extends InterfacePostModel {
         const result = await session.run(query);
 
         const postData = await this.gettingMoreInfos(result, "posts");
+        console.log({postData})
 
-        if (postNumber > skip + limit) {ser = req.user;
-          console.log(user);
-      
-          if (title && content && region && tribe) {
-            const { data, error } = await user.createPost(
-              title,
-              content,
-              files_list,
-              region,
-              tribe
-            );
-      
-            if (data !== undefined) {
-              res
-                .status(201)
-                .json({ message: "New post successfully created", data });
-            } else {
-              res.status(404).json({ error });
-            }
-          } else {
-            res.status(500).json({ error: "Please specify the post content" });
-          }
+        if (postNumber > skip) {
           return {
-            data: { data: postData, next: true, skip: Number(skip + limit) },
+            data: { data: postData, next: true, skip: Number(skip) + Number(limit) },
           };
         } else {
-          return { data: { data: postData, next: false, skip } };
+          return { data: { data: postData, next: false, skip: Number(skip) } };
         }
       } else {
         return { error };
