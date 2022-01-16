@@ -103,6 +103,7 @@ class PostModel extends InterfacePostModel {
 
       return { postNumber: result.records.length };
     } catch (err) {
+      console.log(err)
       return { error: "Error occured while getting posts number" };
     }
   }
