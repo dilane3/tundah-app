@@ -20,7 +20,7 @@ const AppProposalPost  = () => {
         .catch(err => {
             console.log(err)
         })
-    }, [])
+    }, [addPosts])
 
     return(
         <div className="content">
@@ -28,7 +28,7 @@ const AppProposalPost  = () => {
             
             {
                 proposedPosts.map(post => {
-                    return <PostPropose type="proposedPost" postData={post} />
+                    return <PostPropose key={post.id} type="proposedPost" postData={post} />
                 })
             }
         </div>

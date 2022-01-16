@@ -1,4 +1,4 @@
-import React, { Fragment, useContext, useEffect, useRef, useState } from 'react'
+import React, { Fragment, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import Loader from '../components/utils/Loader'
 import Aside from '../components/marketing/aside/Aside'
 import MobileMenu from '../components/marketing/navbar/MobileMenu'
@@ -27,12 +27,40 @@ const Base = ({children}) => {
   const [showAddExpertModal, setShowAddExpertModal] = useState(false)
   const [addExpertAnimation, setAddExpertAnimation] = useState(false)
 
+  // use Memo and use Callback section
+  const currentUserMemo = useMemo(() => {
+    return currentUser
+  }, [currentUser])
+
+  const methodsCallback = useCallback(() => {
+    return {
+      addPosts,
+      login,
+      setMorePostArgs
+    }
+  }, [addPosts, login, setMorePostArgs])
+
+  // use Ref section
+  const currentUserRef = useRef(currentUserMemo)
+  const methodsRef = useRef(methodsCallback)
+
+  // use Effect section
+  useEffect(() => {
+    currentUserRef.current = currentUserMemo
+  }, [currentUserMemo])
+
+  useEffect(() => {
+    methodsRef.current = methodsCallback()
+  }, [methodsCallback])
+
   useEffect(() => {
     if (showMobileMenu) {
       setMaskBackground(false)
     } else {
       let timer = setTimeout(() => {
         setMaskBackground(true)
+
+        clearTimeout(timer)
       }, 1000)
     }
   }, [showMobileMenu])
@@ -42,7 +70,13 @@ const Base = ({children}) => {
 
     instance.defaults.headers.common['authorization'] = `Bearer ${token}`
 
-    if (!currentUser) {
+    const {
+      addPosts,
+      login,
+      setMorePostArgs
+    } = methodsRef.current
+
+    if (!currentUserRef.current) {
       instance.get("/users/current")
       .then(res => {
         // adding the current user in the global state

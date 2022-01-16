@@ -11,7 +11,6 @@ import "../../../css/post.css"
 import DisplayPhoto from '../../utils/modals/DisplayPhoto'
 import Subscriber from '../../../entities/Subscriber'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
-import postsContext from '../../../dataManager/context/postsContext'
 import { Link } from 'react-router-dom'
 import {  ressourcesUrl } from "../../../utils/url"
 import { getRelativeDate } from '../../../utils/dateOperations'
@@ -33,10 +32,6 @@ const PostComponent = ({postData, onLikePost}) => {
 	console.log({author, postData})
 
 	// useEffect section
-	useEffect(() => {
-		post = new Post(postData)
-		console.log("post")
-	}, [postData])
 
 	useEffect(() => {
 		const timer = setInterval(() => {
@@ -79,7 +74,7 @@ const PostComponent = ({postData, onLikePost}) => {
 					 />
 					 <div className="flex flex-col space-y-1 author-info">
 					 	<span className="author-post-username text-sm md:text-lg font-bold ">{author.getName[0].toUpperCase() + author.getName.substr(1).toLowerCase()}</span>
-					 	<date className="text-xs text-gray-500">{relativeDate}</date>
+					 	<span className="text-xs text-gray-500">{relativeDate}</span>
 					 </div>
 				</div>
 				

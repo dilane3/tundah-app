@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
 import styles from '../../../css/aside.module.css'
-import baseStyles from '../../../css/base.module.css'
 import ImgCircle from '../../elements/imgCircle/ImgCircle'
 import {BsPlusCircleFill, BsJournals, BsPersonCheck, BsGear} from 'react-icons/bs'
 import { Link } from 'react-router-dom'
@@ -8,9 +7,6 @@ import currentUserContext from '../../../dataManager/context/currentUserContent'
 import Subscriber from '../../../entities/Subscriber'
 import navigationContext from '../../../dataManager/context/navigationContext'
 import { ressourcesUrl } from '../../../utils/url'
-import AddExpertModal from '../../utils/modals/AddExpertModal'
-
-const image = require("../../../medias/img/test.jpg")
 
 const StatPostItem = ({title, number}) => {
 	return (
