@@ -8,7 +8,7 @@ import { useParams } from 'react-router';
 import currentUserContext from '../../../../dataManager/context/currentUserContent';
 import { instance } from '../../../../utils/url';
 
-const CommentBlock = () => {
+const CommentBlock = ({comment}) => {
     const [showResponseInput, setShowResponseInput] = useState(false)
 
     // defining reference of element
@@ -22,11 +22,15 @@ const CommentBlock = () => {
 
     return (
         <div ref={commentBlockRef} className="firstElement">
-            <Comment onResponse={handleActivateResponse} />
-            <div className="secondElement">
-                <Comment onResponse={handleActivateResponse} />
-                <Comment onResponse={handleActivateResponse} />
-            </div>
+            <Comment data={comment} onResponse={handleActivateResponse} />
+
+            {
+                /*  <div className="secondElement">
+                        <Comment onResponse={handleActivateResponse} />
+                        <Comment onResponse={handleActivateResponse} />
+                    </div> 
+                */
+            }
                     
             {
                 showResponseInput ? (

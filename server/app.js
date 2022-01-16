@@ -19,7 +19,7 @@ const {
 } = process.env
 
 const corsOptions = {
-  origin: "*"
+  origin: ["https://tundah.vercel.app", "*"]
 }
 
 // use middelwares
