@@ -61,7 +61,7 @@ class PostModel extends InterfacePostModel {
 
     try {
       const query = `
-        MATCH (post:Post{published: ${true}})
+        MATCH (post:Post)
         WHERE post.title =~ '.*(${value.toLowerCase()}).*'
         RETURN post
         ORDER BY post.creation_date DESC
