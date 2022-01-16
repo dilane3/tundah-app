@@ -7,6 +7,7 @@ import styles from '../css/base.module.css'
 import currentUserContext from '../dataManager/context/currentUserContent'
 import { instance } from '../utils/url'
 import postsContext from '../dataManager/context/postsContext'
+import AddExpertModal from '../components/utils/modals/AddExpertModal'
 
 const logo = require("../medias/logo/Tundah-large.png")
 
@@ -23,6 +24,8 @@ const Base = ({children}) => {
   const [showLoaderPage, setShowLoaderPage] = useState(!currentUser ? true:false)
   const [loaderClassActive, setLoaderClassActive] = useState(!currentUser ? false:true)
   const [dataLoaded, setDataLoaded] = useState(!currentUser ? false:true)
+  const [showAddExpertModal, setShowAddExpertModal] = useState(false)
+  const [addExpertAnimation, setAddExpertAnimation] = useState(false)
 
   useEffect(() => {
     if (showMobileMenu) {
@@ -89,6 +92,27 @@ const Base = ({children}) => {
     }
   }, [])
 
+  const handleDisplayAddExpertModal = (status) => {
+    setShowAddExpertModal(true)
+    setShowMobileMenu(false)
+
+    let timer = setTimeout(() => {
+      setAddExpertAnimation(true)
+
+      clearTimeout(timer)
+    }, 200)
+  }
+
+  const handleHiddeAddExpertModal = () => {
+    setAddExpertAnimation(false)
+
+    let timer = setTimeout(() => {
+      setShowAddExpertModal(false)
+
+      clearTimeout(timer)
+    }, 500)
+  }
+
   return (
     <Fragment>
       <Navbar className={styles.header} onShowMobileMenu={() => setShowMobileMenu(true)} />
@@ -102,10 +126,10 @@ const Base = ({children}) => {
           ):null
         }
 
-        <Aside className={styles.asideSection} />
+        <Aside className={styles.asideSection} onShowAddExpertSection={handleDisplayAddExpertModal} />
       </section>
 
-      <MobileMenu show={showMobileMenu} />
+      <MobileMenu show={showMobileMenu} onShowAddExpertSection={handleDisplayAddExpertModal} />
 
       {/* Background black while mobile menu is active */}
       {
@@ -125,6 +149,19 @@ const Base = ({children}) => {
             <Loader color="#3c6a46" size="30" />
           </div>
         )
+      }
+
+
+      {
+        showAddExpertModal ? (
+          <>
+            <AddExpertModal 
+              onHide={handleHiddeAddExpertModal} 
+              animationClass={addExpertAnimation} 
+            />
+            <span className={`${styles.backgroundBlack} ${!addExpertAnimation ? styles.backgroundBlackAnimation:""}`} onClick={handleHiddeAddExpertModal}></span>
+          </>
+        ):null
       }
     </Fragment>
   )
