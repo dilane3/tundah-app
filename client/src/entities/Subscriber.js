@@ -1,5 +1,4 @@
 import Post from "./Post.js";
-import Comment from './Comment.js'
 
 class Subscriber {
   id;

@@ -4,7 +4,6 @@ import { useLocation } from 'react-router-dom'
 import PostPropose from '../../../components/marketing/pageSections/proposalPost/PostPropose'
 import styles from "../../../css/search.module.css"
 import researchContext from '../../../dataManager/context/researchContext'
-import axios from 'axios'
 
 const ResearchResultBar = () => {
   
@@ -16,19 +15,17 @@ const ResearchResultBar = () => {
 
   useEffect(() => {  
     instance.get(`/posts/search/${researchQuery}`)
-    .then(res => { 
-      console.log(res.data)
+    .then(res => {
       addResults([...res.data])
-    }).catch(() => {
-      console.log("lol ok")
+    }).catch((err) => {
+      console.log(err)
       addResults([])
     })
-  }, [researchQuery])
+  }, [researchQuery, addResults])
 
   useEffect(() => {
     changeQuery(researchQuery)
-    console.log("This are the post results ", postsResults)
-  }, [postsResults])
+  }, [postsResults, changeQuery, researchQuery])
 
   return (
     <div className={styles.researchResultBar}>
@@ -45,23 +42,19 @@ const BodySearch = () => {
   //   changeQuery("polygamie")
   // }, [])
 
-  const {postsResults, query, addResults, changeQuery} = useContext(researchContext)
+  const {postsResults} = useContext(researchContext)
 
-  const location = useLocation()
-
-  const {researchQuery} = location.state
 
   return (
     <section className={styles.researchResultSection}>
       <ResearchResultBar/>
       
       <div className="container">
-        {postsResults.map((post) => (
-          <PostPropose type="result" postData={post}/>
-        ))}
-        {/* <PostPropose type="result"  />
-        <PostPropose type="result" />
-        <PostPropose type="result" /> */}
+        {
+          postsResults.map((post) => (
+            <PostPropose type="result" postData={post}/>
+          ))
+        }
       </div>
     </section>
   )

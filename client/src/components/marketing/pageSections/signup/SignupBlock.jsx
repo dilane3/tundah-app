@@ -65,7 +65,7 @@ const SignupBlock = (props) => {
 			console.log("error")
 			setUniqueUsernameCheck(false)
 		}
-	}, [signupData.userName])
+	}, [signupData])
 
 	// check if the email is unique
 	useEffect(() => {
@@ -98,7 +98,7 @@ const SignupBlock = (props) => {
 			console.log("error")
 			setUniqueEmailCheck(false)
 		}
-	}, [signupData.email])
+	}, [signupData])
 
 	//handler
 	const handleChange = (event) => {
@@ -160,11 +160,6 @@ const SignupBlock = (props) => {
 
 		console.log(others)
 		return countries.sort()
-	}
-
-	//fonctions
-	const validateUserName = (name) => {
-		{/* to do*/}
 	}
 
 	const {

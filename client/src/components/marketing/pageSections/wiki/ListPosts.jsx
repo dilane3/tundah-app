@@ -94,7 +94,7 @@ const ListPosts = () => {
 				setLoadingMorePosts(false)
 			}
 		}
-	}, [skip, next, loadingMorePosts])
+	}, [skip, next, loadingMorePosts, addPosts, setMorePostArgs])
 
 	const sortPostByDate = (posts) => {
 		return posts.sort((p1, p2) => p2.creation_date - p1.creation_date)

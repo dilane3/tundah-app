@@ -7,12 +7,12 @@ const HeaderspecifisPost = () => {
     return(
       <div className="header">
         <div className="First-child">
-          <a> Trier par </a>
+          <span> Trier par </span>
           <BsChevronDown />
         </div>  
         <nav className="navbar-section">
-          <a className="proposalPost-active"> Tous les posts </a>
-          <a> recemment ajoute </a>
+          <span className="proposalPost-active"> Tous les posts </span>
+          <span> recemment ajoute </span>
         </nav>
       </div>
     )

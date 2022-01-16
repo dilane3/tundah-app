@@ -28,7 +28,6 @@ import {
   deleteProposedPost,
   updateProposedPost,
   addProposedPosts,
-  addProposedPost,
   validateProposedPost
 } from './dataManager/data/proposedPost/proposedPostActions'
 import currentUserReducer from './dataManager/data/currentUser/currentUserReducer';
@@ -131,10 +130,6 @@ function App() {
   
   const proposedPostsAddPosts = (posts) => {
     dispatchProposedPosts(addProposedPosts(posts))
-  }
-  
-  const proposedPostsAddPost = (post) => {
-    dispatchProposedPosts(addProposedPost(post))
   }
 
   const proposedPostValidate = (idPost) => {

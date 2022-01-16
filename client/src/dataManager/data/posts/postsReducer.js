@@ -1,6 +1,5 @@
 import {
   DELETE_POST,
-  UPDATE_POST,
   ADD_POSTS,
   ADD_POST,
   ADD_COMMENT,
@@ -8,7 +7,6 @@ import {
   LIKE_POST
 } from "./type"
 import Post from '../../../entities/Post'
-import Comment from "../../../entities/Comment"
 
 const postsReducer = (state = [], action) => {
   switch (action.type) {
@@ -24,10 +22,6 @@ const postsReducer = (state = [], action) => {
       }
 
       return posts
-    }
-
-    case UPDATE_POST: {
-
     }
 
     case ADD_POSTS: {

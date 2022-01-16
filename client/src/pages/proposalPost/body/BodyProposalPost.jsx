@@ -11,7 +11,7 @@ const BodyProposalPost = () => {
 
 	useEffect(() => {
 		navigateTo("proposal_posts")
-	}, [])
+	}, [navigateTo])
 
 	return(
 		<section>

@@ -12,7 +12,7 @@ const BodyProfile = () => {
 
 	useEffect(() => {
 		navigateTo("")
-	}, [])
+	}, [navigateTo])
 
 	return(
 		<div>

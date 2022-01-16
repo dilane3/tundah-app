@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { Redirect } from 'react-router'
+import React, { useEffect, useContext } from 'react'
 import ListPosts from '../../../components/marketing/pageSections/wiki/ListPosts'
 import WritePost from '../../../components/marketing/pageSections/WritePost'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
@@ -11,7 +10,7 @@ const BodyWiki = () => {
 
 	useEffect(() => {
 		navigateTo("wiki")
-	}, [])
+	}, [navigateTo])
 
 	return(
 		<>
