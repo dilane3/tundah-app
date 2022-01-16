@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useState} from "react";
 import Input from '../../../elements/input/Input';
 import ALink from '../../../elements/a/ALink';
 import './ConnexionPage.css';

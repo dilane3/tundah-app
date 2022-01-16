@@ -1,5 +1,5 @@
 import React from 'react'
-import { BsFillCameraFill, BsFillCloudArrowUpFill, BsFillCloudUploadFill, BsX } from 'react-icons/bs'
+import { BsFillCameraFill, BsX } from 'react-icons/bs'
 import { FaUpload } from 'react-icons/fa'
 import styles from './profilPhotoModal.module.css'
 
@@ -26,7 +26,7 @@ const AddProfilPhotoModal = ({image, onHide, onChangeProfil, onUploadProfil, per
         </span>
 
         <div className={styles.profilPhotoModalImage}>
-          <img src={image} className={styles.profilPhotoModalImageItem} />
+          <img src={image} alt="" className={styles.profilPhotoModalImageItem} />
         </div>
 
         {
