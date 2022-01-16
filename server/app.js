@@ -18,8 +18,12 @@ const {
   PORT
 } = process.env
 
+// const corsOptions = {
+//   origin: ["https://tundah.vercel.app", "*"]
+// }
+
 const corsOptions = {
-  origin: ["https://tundah.vercel.app", "*"]
+  origin: "*"
 }
 
 // use middelwares
