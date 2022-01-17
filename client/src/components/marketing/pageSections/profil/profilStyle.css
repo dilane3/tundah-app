@@ -13,13 +13,13 @@
   margin-top: 5px;
 }
 
-.profilInfo{
+div.profilInfo{
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   padding-left: 10px;
-  width: 170px;
+  width: calc(100% - 140px);
   margin-left: 6px;
 }
 
@@ -218,6 +218,13 @@
 
 .postsList article {
   margin-bottom: 10px;
+}
+
+@media screen and (max-width: 700px) {
+  .profil-content{
+    width: 100%;
+    padding: 0 10px;
+  }
 }
 
 @media screen and (max-width: 576px) {

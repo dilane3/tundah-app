@@ -9,6 +9,7 @@ import {Image} from 'react-image-progressive-loading'
 import { instance } from '../../../../utils/url';
 import AlertError from '../signin/AlertError';
 import { PAYS } from '../../../../utils/Allcountries';
+import { Redirect } from 'react-router';
 
 const image = require("../../../../medias/img/signup-img.png")
 
@@ -31,7 +32,8 @@ const SignupBlock = (props) => {
 	const [uniqueCheckLoadingEmail, setUniqueCheckLoadingEmail] = useState(false)
 	const [uniqueCheckLoadingUsername, setUniqueCheckLoadingUsername] = useState(false)
 	const [loading, setLoading] = useState(false)
-
+	const [redirect, setRedirect] = useState(false)
+	
 	// check if username is unique
 	useEffect(() => {
 		// send request to the server
@@ -63,7 +65,7 @@ const SignupBlock = (props) => {
 			console.log("error")
 			setUniqueUsernameCheck(false)
 		}
-	}, [signupData.userName])
+	}, [signupData])
 
 	// check if the email is unique
 	useEffect(() => {
@@ -96,7 +98,7 @@ const SignupBlock = (props) => {
 			console.log("error")
 			setUniqueEmailCheck(false)
 		}
-	}, [signupData.email])
+	}, [signupData])
 
 	//handler
 	const handleChange = (event) => {
@@ -128,7 +130,7 @@ const SignupBlock = (props) => {
 				const {token} = res.data
 
 				localStorage.setItem("tundah-token", token)
-				window.location.href = "/wiki/feed"
+				setRedirect(true)
 			})
 			.catch(err => {
 				console.log(err)
@@ -158,11 +160,6 @@ const SignupBlock = (props) => {
 
 		console.log(others)
 		return countries.sort()
-	}
-
-	//fonctions
-	const validateUserName = (name) => {
-		{/* to do*/}
 	}
 
 	const {
@@ -321,6 +318,11 @@ const SignupBlock = (props) => {
 								deja inscrit? <ALink link="/signin" classe="inline-block ml-2">connectez vous</ALink>
 							</Paragraphe>
 						</div>
+
+						{/* redirection to wiki page */}
+						{
+							redirect ? <Redirect to="/wiki/feed" />:null
+						}
 
 						{
 							loading ? <span className={styles.signupSectionRightLoaderSending}></span> : null

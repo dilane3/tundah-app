@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import Slider from "react-slick"
 import {Image} from 'react-image-progressive-loading'
+import { ressourcesUrl } from "../../../utils/url";
 
 const nextArrowStyle = {
   display: "block",
@@ -64,7 +65,7 @@ const PostCarousel = (props) => {
             return (
               <div className="postImgBlock w-full" onClick={() => onDisplayPhoto(index)}>
                 <Image 
-                  image={`http://localhost:5000/static/images/post/${file}`}
+                  image={`${ressourcesUrl.postImages}/${file}`}
                   alt={"image du post de leDoyen"}
                   className="postImg"
                   blur={true}

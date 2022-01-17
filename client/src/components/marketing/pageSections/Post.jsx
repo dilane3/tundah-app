@@ -11,27 +11,37 @@ import "../../../css/post.css"
 import DisplayPhoto from '../../utils/modals/DisplayPhoto'
 import Subscriber from '../../../entities/Subscriber'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
-import postsContext from '../../../dataManager/context/postsContext'
 import { Link } from 'react-router-dom'
-
+import {  ressourcesUrl } from "../../../utils/url"
+import { getRelativeDate } from '../../../utils/dateOperations'
 
 const PostComponent = ({postData, onLikePost}) => {
 	// getting data from the global state
 	const {currentUser} = useContext(currentUserContext)
 
-	// definition of the local state
-	const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
-	const [indexFile, setIndexFile] = useState(0)
-
 	// getting props values
 	let post = new Post(postData)
 
+	// definition of the local state
+	const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
+	const [indexFile, setIndexFile] = useState(0)
+	const [relativeDate, setRelativeDate] = useState(getRelativeDate(post.getCreationDate/1000))
+
+
 	const author = new Subscriber(post.getAuthor)
+	console.log({author, postData})
+
+	// useEffect section
 
 	useEffect(() => {
-		post = new Post(postData)
-		console.log("post")
-	}, [postData])
+		const timer = setInterval(() => {
+			setRelativeDate(getRelativeDate(post.getCreationDate/1000))
+		}, 1000)
+
+		return () => {
+			clearInterval(timer)
+		}
+	})
 
 
 	// some actions methods
@@ -53,43 +63,6 @@ const PostComponent = ({postData, onLikePost}) => {
 		}
 	}
 
-	// This function display the relative date
-	const getRelativeDate = (date) => {
-		const currentDate = new Date().getTime()
-		let diffDate = Math.floor((currentDate - Number(date)) / 1000)
-
-		const months = [
-			"janvier",
-			"fevrier",
-			"mars",
-			"avril",
-			"mai",
-			"juin",
-			"juillet",
-			"aout",
-			"septembre",
-			"octobre",
-			"novembre",
-			"decembre"
-		]
-
-		console.log({diffDate})
-
-		if (diffDate < 60) {
-			return "A l'instant"
-		} else if (diffDate < 3600) {
-			return `Il y a ${Math.floor(diffDate/60)}min`
-		} else if (diffDate < 86400) {
-			return `Il y a ${Math.floor(diffDate/3600)}h`
-		} else if (diffDate >= 86400 && diffDate < 86400*2) {
-			return "Hier"
-		} else {
-			const exactDate = new Date(date)
-			
-			return `${exactDate.getDay() + 1} ${months[exactDate.getMonth()]} ${exactDate.getFullYear()}`
-		}
-	}
-
 	return (
 		<article className="bg-white w-full font-primary pb-2 mx-auto rounded-sm" style={{border: "1px solid rgb(206, 206, 206)"}}>
 			<header className="flex justify-between items-center pb-3 px-2 pt-2">
@@ -97,11 +70,11 @@ const PostComponent = ({postData, onLikePost}) => {
 					<PostImg
 						size="small"
 						alt="wangue fenyep"
-						src={author.getProfil}
+						src={`${ressourcesUrl.profil}/${author.getProfil}`}
 					 />
-					 <div className="flex flex-col space-y-1">
-					 	<span className="text-sm md:text-lg font-bold ">{author.getName[0].toUpperCase() + author.getName.substr(1).toLowerCase()}</span>
-					 	<date className="text-xs text-gray-500">{getRelativeDate(post.getCreationDate)}</date>
+					 <div className="flex flex-col space-y-1 author-info">
+					 	<span className="author-post-username text-sm md:text-lg font-bold ">{author.getName[0].toUpperCase() + author.getName.substr(1).toLowerCase()}</span>
+					 	<span className="text-xs text-gray-500">{relativeDate}</span>
 					 </div>
 				</div>
 				

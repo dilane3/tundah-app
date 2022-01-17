@@ -1,5 +1,4 @@
 import Post from "./Post.js";
-import Comment from './Comment.js'
 
 class Subscriber {
   id;
@@ -135,15 +134,23 @@ class Subscriber {
   }
 
   get getProposedPosts() {
-    return this.posts.map(post => {
-      if (!post.getPublished) return post
+    const posts = []
+
+    this.posts.forEach(post => {
+      if (!post.getPublished) posts.push(post)
     })
+
+    return posts
   }
 
   get getPublishedPosts() {
-    return this.posts.map(post => {
-      if (post.getPublished) return post
+    const posts = []
+    
+    this.posts.forEach(post => {
+      if (post.getPublished) posts.push(post)
     })
+
+    return posts
   }
 
   deletePost (idPost) {

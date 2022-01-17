@@ -2,7 +2,6 @@ import React from 'react'
 import Body from './body/BodyAbout'
 import Seo from '../../components/utils/seo/Seo'
 
-
 const About = () => {
 	return(
 		<div className="">

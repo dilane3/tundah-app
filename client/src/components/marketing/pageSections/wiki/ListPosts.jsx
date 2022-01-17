@@ -34,10 +34,6 @@ const ListPosts = () => {
 
 		instance.defaults.headers.common["authorization"] = `Bearer ${token}`
 	}, [])
-	
-	useEffect(() => {
-		console.log(posts)
-	}, [posts])
 
 	const handleLikePost = (id) => {
 		instance.post(`/posts/like/${id}`)
@@ -59,39 +55,55 @@ const ListPosts = () => {
 				const wrapperHeight = window.scrollY
 				const contentHeight = listPostRef.current.offsetHeight - 500
 				const space = contentHeight - wrapperHeight
-	
+
 				if (next) {
-					setLoadingMorePosts(true)
-	
-					if (space < 0) {
-						instance.get(`/posts/?skip=${skip}&limit=2`)
-						.then(res => {
-							const postData = res.data.data
-							let nextValue = res.data.next
-							let skipValue = res.data.skip
-		
-							// adding posts
-							addPosts(postData)
-		
-							// setting posts arguments
-							setMorePostArgs(nextValue, skipValue)
-						})
-						.catch(err => {
-							console.log(err)
-						})
-						.then(() => {
-							setLoadingMorePosts(false)
-						})
+					if (space < 150) {
+						setLoadingMorePosts(true)
 					}
 				}
 			}
 		}
-	}, [])
+	}, [skip, next])
+
+	useEffect(() => {
+		if (loadingMorePosts) {
+			if (next) {
+				setLoadingMorePosts(true)
+				console.log({skip, next})
+
+				instance.get(`/posts?skip=${skip}&limit=${2}`)
+				.then(res => {
+					const postData = res.data.data
+					let nextValue = res.data.next
+					let skipValue = res.data.skip
+	
+					// adding posts
+					addPosts(postData)
+	
+					// setting posts arguments
+					setMorePostArgs(nextValue, skipValue)
+				})
+				.catch(err => {
+					console.log(err)
+				})
+				.finally(() => {
+					console.log("geroge")
+					setLoadingMorePosts(false)
+				})
+			} else {
+				setLoadingMorePosts(false)
+			}
+		}
+	}, [skip, next, loadingMorePosts, addPosts, setMorePostArgs])
+
+	const sortPostByDate = (posts) => {
+		return posts.sort((p1, p2) => p2.creation_date - p1.creation_date)
+	}
 
 	return(
 		<div ref={listPostRef} className={`w-full flex flex-col listPost`}>
 			{
-				postsData.map(post => {
+				sortPostByDate(postsData).map(post => {
 					return <Post key={post.id} postData={post} onLikePost={handleLikePost} />
 				})
 			}

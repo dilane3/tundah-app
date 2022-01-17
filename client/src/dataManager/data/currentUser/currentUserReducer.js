@@ -1,4 +1,3 @@
-import Expert from "../../../entities/Expert";
 import Subscriber from "../../../entities/Subscriber";
 import {
   LOGIN,

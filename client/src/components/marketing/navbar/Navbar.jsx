@@ -7,7 +7,7 @@ import NavbarProfilDropdown from '../../utils/dropdowns/NavbarProfilDropdown'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
 import { Link } from 'react-router-dom'
 import Subscriber from '../../../entities/Subscriber'
-import { addPosts } from '../../../dataManager/data/posts/postsActions'
+import { ressourcesUrl } from '../../../utils/url'
 
 const logo = require("../../../medias/logo/Tundah-large.png")
 
@@ -61,7 +61,7 @@ const Navbar = ({className, onShowMobileMenu}) => {
 					{
 						currentUser ? (
 							<>
-								<ImgCircle src={user.getProfil} alt={"profil"} />
+								<ImgCircle src={`${ressourcesUrl.profil}/${user.getProfil}`} alt={"profil"} />
 			
 								<NavbarProfilDropdown 
 									dropElt={ <BsChevronDown className="icon" /> } 

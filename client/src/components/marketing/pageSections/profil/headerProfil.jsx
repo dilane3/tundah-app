@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
-import ImgCircle from '../../../elements/imgCircle/ImgCircle'
 import { BsCameraFill, BsX } from 'react-icons/bs'
 import { BsGeoAlt } from 'react-icons/bs'
 import { MdContactMail } from 'react-icons/md'
@@ -8,11 +7,10 @@ import './profilStyle.css'
 import currentUserContext from '../../../../dataManager/context/currentUserContent'
 import Subscriber from '../../../../entities/Subscriber'
 import Post from '../Post'
-import { instance } from '../../../../utils/url'
+import { instance, ressourcesUrl } from '../../../../utils/url'
 import LoaderCircle from '../../../utils/loaders/Loader'
 import AddProfilPhotoModal from '../../../utils/modals/AddProfilPhotoModal'
 import DisplayPhoto from '../../../utils/modals/DisplayPhoto'
-import { useParams } from 'react-router-dom'
 import postsContext from '../../../../dataManager/context/postsContext'
 
 const image1 = require("../../../../medias/img/chinoise.jpg")
@@ -34,8 +32,6 @@ const HeaderProfil  = () => {
     const {currentUser, updateProfil, likeUserPost} = useContext(currentUserContext)
     const {likePost} = useContext(postsContext)
     let user = new Subscriber(currentUser)
-
-    const {username} = useParams()
 
     // setting up of the local state
     const [deleteProfilLoader, setDeleteProfilLoader] = useState(false)
@@ -174,7 +170,7 @@ const HeaderProfil  = () => {
                         <div className="header-profil-image-card">
                             <div className="profilImage">
                                 <img 
-                                    src={user.getProfil} 
+                                    src={`${ressourcesUrl.profil}/${user.getProfil}`} 
                                     alt="profil"
                                     onClick={() => setShowDisplayPhotoModal(true)} 
                                 />
@@ -248,11 +244,11 @@ const HeaderProfil  = () => {
                 {
                     postTypeToShow === "published" ? (
                         user.getPublishedPosts.map(post => {
-                            return <Post postData={post} onLikePost={handleLikePost}/>
+                            return <Post key={post.id} postData={post} onLikePost={handleLikePost}/>
                         })
                     ):(
                         user.getProposedPosts.map(post => {
-                            return <Post postData={post} onLikePost={handleLikePost}/>
+                            return <Post key={post.id} postData={post} onLikePost={handleLikePost}/>
                         })
                     )
                 }

@@ -1,6 +1,8 @@
 import React from 'react'
 
-const Logo = () => {
+const Logo = ({ color }) => {
+
+	let variant
 
 	return <Link
 					to=""

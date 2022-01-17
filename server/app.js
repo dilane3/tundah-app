@@ -18,6 +18,10 @@ const {
   PORT
 } = process.env
 
+// const corsOptions = {
+//   origin: ["https://tundah.vercel.app", "*"]
+// }
+
 const corsOptions = {
   origin: "*"
 }
@@ -35,9 +39,13 @@ app.use("/api/comments", commentRouter)
 app.use("/api/posts", postRouter)
 
 
-app.set('view engine', 'ejs')
+// app.set('view engine', 'ejs')
+// app.get("/", (req, res) => {
+//   res.render("index")
+// })
+
 app.get("/", (req, res) => {
-  res.render("index")
+  res.send("Tundah server app")
 })
 
 // launch app
