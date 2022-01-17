@@ -55,9 +55,36 @@ class PostModel extends InterfacePostModel {
   async getSearchedPosts(value) {
     const session = dbConnect();
     
-    // const regex = new RegExp(value.toLowerCase(), 'gi')
-    // console.log(regex)
-    // const solution = { "regex" : regex}
+    // const query = `
+    //     MATCH (post:Post)
+    //     WHERE post.title =~ '.*(${value.toLowerCase()}).*'
+    //     RETURN post
+    //     ORDER BY post.creation_date DESC
+    //     `;
+
+      // /\W*(${value.toLowerCase()})\W*/gi 
+  
+      // /\W.*(${value.toLowerCase()})\W.*/gi
+
+      // \W*(${value.toLowerCase()})\W*/gi 
+  
+      // \W.*(${value.toLowerCase()})\W.*/gi
+
+      // [^a-zA-Z0-9_]*(${value.toLowerCase()})[^a-zA-Z0-9_]*/gi
+
+      // [^a-zA-Z0-9_].*(${value.toLowerCase()})[^a-zA-Z0-9_].*/gi
+      
+      // (?gi)[^a-zA-Z0-9_].*(${value.toLowerCase()})[^a-zA-Z0-9_].*
+
+      // (?gi)[^a-zA-Z0-9_]*(${value.toLowerCase()})[^a-zA-Z0-9_]*
+
+      // [^a-zA-Z0-9_](?gi).*(${value.toLowerCase()})[^a-zA-Z0-9_].*
+
+      // [^a-zA-Z0-9_](?gi)*(${value.toLowerCase()})[^a-zA-Z0-9_]*
+
+      // [^a-zA-Z0-9_](?gi).*(${value.toLowerCase()})[^a-zA-Z0-9_].*
+
+      // [^a-zA-Z0-9_](?gi).*(${value.toLowerCase()})[^a-zA-Z0-9_].*
 
     try {
       const query = `
@@ -66,11 +93,6 @@ class PostModel extends InterfacePostModel {
         RETURN post
         ORDER BY post.creation_date DESC
         `;
-      // const query = `
-      //   MATCH (post:Post)
-      //   WHERE post.title =~ '$solution'
-      //   RETURN post
-      // `;
 
       const result = await session.run(query);
 
