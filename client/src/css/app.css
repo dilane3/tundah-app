@@ -36,6 +36,11 @@ body{
 	margin: 10px auto;
 }
 
+.writePostModal{
+	left: 50%;
+	transform: translateX(-50%);
+}
+
 @media screen and (max-width: 1200px ){
 	.african-women{
 		width: 300px;

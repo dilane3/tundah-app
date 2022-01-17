@@ -53,6 +53,17 @@ const Base = ({children}) => {
     methodsRef.current = methodsCallback()
   }, [methodsCallback])
 
+  // handle the resizing of the window viewport
+  useEffect(() => {
+    window.onresize = function() {
+      const width = window.innerWidth
+
+      if (width > 700) {
+        setShowMobileMenu(false)
+      }
+    }
+  })
+
   useEffect(() => {
     if (showMobileMenu) {
       setMaskBackground(false)

@@ -1,5 +1,5 @@
 import { instance } from '../../../utils/url'
-import React, { useContext, useEffect } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import PostPropose from '../../../components/marketing/pageSections/proposalPost/PostPropose'
 import styles from "../../../css/search.module.css"
@@ -13,19 +13,48 @@ const ResearchResultBar = () => {
 
   const {researchQuery} = location.state
 
+  // use Memo and use Callback section
+  const methodsCb = useCallback(() => {
+    return {
+      addResults,
+      changeQuery
+    }
+  }, [addResults, changeQuery])
+
+  const dataMemo = useMemo(() => {
+    return researchQuery
+  }, [researchQuery])
+
+  // use ref section
+  const dataRef = useRef(dataMemo)
+  const methodsRef = useRef(methodsCb)
+
+  // use effect section
+  useEffect(() => {
+    methodsRef.current = methodsCb
+  }, [methodsCb])
+
+  useEffect(() => {
+    dataRef.current = dataMemo
+  }, [dataMemo])
+
   useEffect(() => {  
-    instance.get(`/posts/search/${researchQuery}`)
+    const {addResults} = methodsRef.current()
+
+    instance.get(`/posts/search/${dataRef.current}`)
     .then(res => {
       addResults([...res.data])
     }).catch((err) => {
       console.log(err)
       addResults([])
     })
-  }, [researchQuery, addResults])
+  }, [researchQuery])
 
   useEffect(() => {
-    changeQuery(researchQuery)
-  }, [postsResults, changeQuery, researchQuery])
+    const {changeQuery} = methodsRef.current()
+
+    changeQuery(dataRef.current)
+  }, [postsResults])
 
   return (
     <div className={styles.researchResultBar}>
