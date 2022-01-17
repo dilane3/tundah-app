@@ -45,6 +45,17 @@ body{
 	transform: translateX(-50%);
 }
 
+.post-editor {
+	word-break: break-all;
+	max-height: 300px;
+	height: auto;
+	overflow-y: scroll;
+}
+
+.post-editor:focus{
+	outline: 0;
+}
+
 @media screen and (max-width: 1200px ){
 	.african-women{
 		width: 300px;

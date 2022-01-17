@@ -63,9 +63,10 @@ const PostCarousel = (props) => {
         {
           files.map((file, index) => {
             return (
-              <div className="postImgBlock w-full" onClick={() => onDisplayPhoto(index)}>
+              <div className="postImgBlock w-full" key={index} onClick={() => onDisplayPhoto(index)}>
                 <Image 
-                  image={`${ressourcesUrl.postImages}/${file}`}
+                  // image={`${ressourcesUrl.postImages}/${file}`}
+                  image={file}
                   alt={"image du post de leDoyen"}
                   className="postImg"
                   blur={true}
