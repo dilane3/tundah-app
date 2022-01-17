@@ -48,7 +48,9 @@ class PostModel extends InterfacePostModel {
   }
 
   /**
-   * This function return the researched posts
+   * This function return the researched posts using it's title
+   * Independent of the substring position
+   * And is case insensitive
    * @param {string} value
    * @returns post(s)
    */
