@@ -82,9 +82,44 @@ div.addExpertFrom input:focus {
   height: calc(100% - 100px);
   overflow-y: scroll;
   overflow-x: hidden;
-  padding: 10px;
+  border: 1px solid gray;
 }
-
+.addExpertContenu{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  }
+.addExpertHead{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+}
+.infoExpert{
+  display: flex;
+  flex-direction: column;
+  margin-left:5px;
+}
+.name{
+  font-weight: bold;
+  font-size: 16px;
+}
+.username{
+  font-size: 14px;
+  color: gray;
+  margin-top: 10px;
+}
+.headerPostproposeInfoImg{
+  width:60px;
+  height: 60px;
+}
+.BtnAddExpert{
+  margin-left: auto;
+}
+.ExpertDescription{
+  margin-top: 30px;
+}
 @media screen and (max-width: 500px) {
   .addExpertSection {
     top: 0;
