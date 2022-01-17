@@ -55,7 +55,7 @@ class CommentModel extends InterfaceCommentModel {
         `
         const response = await session.run(query, {id: comment.id})
 
-        comments.push({...comment, idAuthor: response.records[0].get("user").properties.id})
+        comments.push({...comment, author: response.records[0].get("user").properties})
       }
 
       return comments
@@ -68,6 +68,47 @@ class CommentModel extends InterfaceCommentModel {
   }
 
   /**
+   * This method retrieves all the avalaible comments that response to another comments
+   *  * @param {string} $idComment
+   */
+   async getAllResponses(commentData) {
+    const session = dbConnect();
+
+    try {
+      const comments = []
+
+      for (let comment of commentData) {
+        const query = `
+          MATCH (comment:Comment{id: $idComment}) -[:HAS_RESPONSE]-> (respComments:Comment)
+          RETURN respComments
+        `;
+
+        const result = await session.run(query, {idComment: comment.id})
+
+        if (result.records.length > 0) {
+          const commentsResp = result.records.map(record => {
+            return record.get("respComments").properties
+          })
+
+          comments.push({...comment, responses: commentsResp})
+        }
+
+      }
+
+      if (comments.length > 0) {
+        return {data: comments}
+      }
+
+      return {data: commentData}
+    } catch (err) {
+      console.log(err)
+      return { error: "Error while getting the comments" };
+    } finally {
+      await session.close();
+    }
+  }
+
+  /**
    * This method retrieves all the avalaible comments that belongs to a specific post
    *  * @param {string} idPost
    */
@@ -76,15 +117,21 @@ class CommentModel extends InterfaceCommentModel {
 
     try {
       const query = `
-        MATCH (post:Post{id: $idPost}) - [HAS_COMMENTS] -> (comment:Comment)
+        MATCH (post:Post{id: $idPost}) - [:HAS_COMMENT] -> (comment:Comment{is_response: ${false}})
         RETURN comment
       `;
       const result = await session.run(query,{
         idPost
       });
 
+      console.log(result)
+
       let commentData = (await this.getCommentsAuthor(result))
-      console.log(commentData)
+      const {data, error} = (await this.getAllResponses(commentData))
+
+      if (data) {
+        commentData = data
+      }
 
       if (!commentData) {
         commentData = result.records.map((record) => {
@@ -100,6 +147,7 @@ class CommentModel extends InterfaceCommentModel {
       await session.close();
     }
   }
+
 
   /**
   * This method create a new comment
@@ -122,7 +170,8 @@ class CommentModel extends InterfaceCommentModel {
             id: $id,
             content: $content, 
             creation_date: $creation_date,
-            edited: ${false} 
+            edited: ${false},
+            is_response: ${false} 
           }
         ) - [:COMMENTED_BY] -> (user)
         CREATE (comment) - [:BELONGS_TO] -> (post)
@@ -179,7 +228,8 @@ class CommentModel extends InterfaceCommentModel {
             id: $id,
             content: $content, 
             creation_date: $creation_date,
-            edited: ${false} 
+            edited: ${false},
+            is_response: ${true}
           }
         ) - [:COMMENTED_BY] -> (user)
         CREATE (comment) - [:BELONGS_TO] -> (post)

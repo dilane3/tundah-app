@@ -1,13 +1,16 @@
 import React from 'react'
 import { BsThreeDots, BsChat } from 'react-icons/bs'
 import ImgCircle from '../../../elements/imgCircle/ImgCircle'
+import Subscriber from '../../../../entities/Subscriber'
 import './commentPost.css'
-import {instance} from '../../../../utils/url'
+// import {ressourceUrl} from "../../../../utils/url"`${ressourceUrl.profil}/${subscriber.getProfil}`
+
 
 const image = require("../../../../medias/img/test.jpg")
 
 const Comment = ({onResponse,data}) => {
-    
+    const {author} = data;
+    const subscriber = new Subscriber(author)
 
     return(
         <div className="CommentContent">
@@ -15,7 +18,7 @@ const Comment = ({onResponse,data}) => {
                 <ImgCircle src={image} alt="profil" size="small" classe="header-PostproposeInfoImg" />
                 <div className="Info-Comment">
                    <div className="Info-User">
-                        <span className="Username">Kana Blondelle</span>
+                        <span className="Username">{subscriber.getUsername}</span>
                         <div className="BsThreeDotIcon">
                           <BsThreeDots/>
                         </div>
@@ -37,7 +40,7 @@ const Comment = ({onResponse,data}) => {
 				<div className="Answer" onClick={onResponse}>
 					Répondre
 				</div>
-                <span className="DateComment">Il ya 2h </span>
+                <span className="DateComment">Il ya {Date.now()-data.creation_date} </span>
 			</div>
         </div>
     )

@@ -42,10 +42,16 @@ const CommentBlock = ({comment,idPost}) => {
     return (
         <div ref={commentBlockRef} className="firstElement">
             <Comment data={comment} onResponse={handleActivateResponse} />
-            {/* <div className="secondElement">
-                <Comment onResponse={handleActivateResponse} />
-                <Comment onResponse={handleActivateResponse} />
-            </div> */}
+
+            <div className="secondElement">
+                {
+                    comment.responses.map(response => {
+                        return (
+                            <Comment data={response} onResponse={handleActivateResponse} />
+                        )
+                    })
+                }
+            </div>
                     
             {
                 showResponseInput ? (
@@ -119,10 +125,24 @@ const AppSpecifificPost  = () => {
         }
     }, [])
 
+    const handleUser = (id) => {
+		instance.get(`/posts/like/${id}`)
+		.then((res) => {
+			console.log(res.data)
+		})
+		.catch(err => {
+			console.log(err)
+		})
+		.then(() => {
+			likePost(id, currentUser.id)
+			likeUserPost(id)
+		})
+	}
+
     return(
         <section ref={commentPageRef} className="contentCommentPage">
             <Post postData={getPost(id)} onLikePost={handleLikePost} />
-            <WriteComment/>
+            <WriteComment idUser={currentUser.id} idPost={id}/>
             <section>
                 {comments.map(comment=>(
                     <CommentBlock id={id} comment={comment} />
