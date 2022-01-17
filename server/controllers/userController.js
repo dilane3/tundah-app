@@ -25,12 +25,17 @@ class UserController {
       const {data, error} = await userModel.getUser(username)
 
       if (data !== undefined) {
-        const postdata = (await postModel.getMyPosts(data.id)).data
-
-        if (postdata) {
-          res.json({...data, password: undefined, posts: postdata})
+        console.log(data)
+        if (data !== null) {
+          const postdata = (await postModel.getMyPosts(data.id)).data
+  
+          if (postdata) {
+            res.json({...data, password: undefined, posts: postdata})
+          } else {
+            res.json({...data, password: undefined, posts: []})
+          }
         } else {
-          res.json({...data, password: undefined, posts: []})
+          res.json(data)
         }
       } else {
         res.json(error)

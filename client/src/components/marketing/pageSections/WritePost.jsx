@@ -71,10 +71,11 @@ const WritePost = () => {
 					}
 				</div>
 			</div>
-        <WritePostModal
-        	show={openPostModal}
-        	closeModal={() => setOpenPostModal(false)} 
-        />
+        
+			<WritePostModal
+        show={openPostModal}
+        closeModal={() => setOpenPostModal(false)} 
+      />
 		</>
 	)
 }

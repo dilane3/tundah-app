@@ -73,7 +73,11 @@ const PostComponent = ({postData, onLikePost}) => {
 						src={`${ressourcesUrl.profil}/${author.getProfil}`}
 					 />
 					 <div className="flex flex-col space-y-1 author-info">
-					 	<span className="author-post-username text-sm md:text-lg font-bold ">{author.getName[0].toUpperCase() + author.getName.substr(1).toLowerCase()}</span>
+						<Link to={`/profile/${author.getUsername}`}>
+							<span 
+								className="author-post-username text-sm md:text-lg font-bold"
+							>{author.getName[0].toUpperCase() + author.getName.substr(1).toLowerCase()}</span>
+						</Link>
 					 	<span className="text-xs text-gray-500">{relativeDate}</span>
 					 </div>
 				</div>
