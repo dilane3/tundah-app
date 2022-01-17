@@ -1,6 +1,7 @@
 import React from 'react'
 import { BsX } from 'react-icons/bs'
 import styles from '../../../css/addExpert.module.css'
+import AddExpertContent from './AddExpertContent'
 
 const AddExpertModal = ({onHide, animationClass}) => {
   return (
@@ -21,7 +22,7 @@ const AddExpertModal = ({onHide, animationClass}) => {
       </div>
 
       <div className={styles.addExpertContent}>
-        Hello
+        <AddExpertContent/>
       </div>
     </section>
   )
