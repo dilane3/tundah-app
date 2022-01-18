@@ -11,7 +11,6 @@ import AlertError from '../signin/AlertError';
 import { PAYS } from '../../../../utils/Allcountries';
 import { Redirect } from 'react-router';
 
-import WritePostModal from '../../../utils/modals/WritePostModal'
 
 const image = require("../../../../medias/img/signup-img.png")
 
@@ -25,7 +24,6 @@ const SignupBlock = (props) => {
 	}
 
 	//state
-	const [openPostModal, setOpenPostModal] = useState(false)
 	const [showPreMessage, setShowPreMessage] = useState(true)
 
 	//hamdler
@@ -173,7 +171,6 @@ const SignupBlock = (props) => {
 			else others.push(country["translations"])
 		}
 
-		console.log(others)
 		return countries.sort()
 	}
 
@@ -194,7 +191,7 @@ const SignupBlock = (props) => {
 
 	return(
 		<>
-			<div className={styles.signupSection} onClick = {() => setOpenPostModal(true)}>
+			<div className={styles.signupSection} >
 					<section className={styles.signupSectionLeft}>
 						<div className={styles.signupSectionLeftContainer}>
 							<span className={styles.signupSectionLeftLogo}>

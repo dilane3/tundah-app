@@ -11,6 +11,8 @@ import navigationContext from '../../../dataManager/context/navigationContext'
 import PostCarousel from '../../utils/carousels/PostCarousel'
 import DisplayPhoto from './DisplayPhoto'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
+import {instance} from "../../../utils/url"
+import LoaderCircle from "../loaders/Loader"
 
 const WritePostModal = (props) => {
 
@@ -24,7 +26,6 @@ const WritePostModal = (props) => {
 	//constant
 	const initialPostState = {
 		title: "",
-		content: "développez votre idée",
 		region: "",
 		tribu: "",
 		images: [],
@@ -49,21 +50,82 @@ const WritePostModal = (props) => {
 	const [indexImage, setIndexImage] = useState(0)
 	const [displayEditPost, setDisplayEditPost] = useState(false)
 	const [displayImage, setDisplayImage] = useState(false)
+	const [isLoading, setLoading] = useState(false) 
 
 	//useEffect
 	useEffect(() => {
 		selectTribu(postData.region)
 	}, [postData.region])
 
-	useEffect(() => {
-		if(contentRef.current !== undefined && contentRef.current.innerHTML === "" && !showPreMessage){
-			setShowPreMessage(true)
-		}
-	}, [])
-
-  //handler
+	
+  	//handler
 	const handleChange = (event) => {
 		setPostData({ ...postData, [event.target.id]: event.target.value })
+	}
+
+	//submit data post
+	const handleSubmit = (event) => {
+		event.preventDefault()
+
+		const  { title, region, tribu } = postData
+		const contentPost = contentRef.current.innerHTML
+
+		if(title !== "" && contentPost !== "" && !showPreMessage && region !== "" && tribu !== ""){
+
+			console.log(contentPost)
+		    const fileType = postData.video ? "video" : "image"
+			const {
+				title,
+				content,
+				region,
+				tribu,
+				images,
+				video
+			} = postData
+
+			console.log(postData)
+
+			//send a FormData when post data content files
+			const dataToSend = new FormData()
+
+			dataToSend.append("title", title)
+			dataToSend.append("content", content)
+			dataToSend.append("region", region)
+			dataToSend.append("tribe", tribu)
+			dataToSend.append("fileType", fileType)
+
+			if(video){
+				dataToSend.append("video", inputVideoRef.current.files[0])
+			}
+
+			if(images.length){
+				images.forEach((img, index) => {
+					dataToSend.append("images", inputImagesRef.current.files[index])
+				})
+			}
+
+			console.log(dataToSend.getAll("images"))
+			
+			//stratloading
+			setLoading(true)
+
+		    const url = postData.images.length === 0 ? "video" : "images"
+
+			//send data 
+			instance.post(`/posts/create/${url}`, dataToSend)
+			.then(res => {
+				console.log(res.data)
+				setLoading(false)
+			})
+			.catch(err => {
+				console.log(err)
+
+				setLoading(false)
+			})
+		}else{
+			console.log("terminer la redactioin de post")
+		}
+
 	}
 
 	const handleSelectImages = () => {
@@ -82,7 +144,6 @@ const WritePostModal = (props) => {
 				images: imagesUrls,
 				video: null
 		})
-		console.log(postData.video)
 	}
 
 
@@ -108,6 +169,7 @@ const WritePostModal = (props) => {
 		setPostData({ ...initialPostState })
 		contentRef.current.innerHTML = ""
 		setShowPreMessage(true)
+		setLoading(false)
 
 	}
 
@@ -186,6 +248,7 @@ const WritePostModal = (props) => {
 	                </Dialog.Title>
 	                <span className="block h-0.5 w-full bg-gray-200"></span>
 	                <Dialog.Description className="mt-2 p-5">
+	               	<form onSubmit={ (event) => handleSubmit(event) }>
 	                  <div className="flex items-center justify-start space-x-2">
 	                  	<ImgCircle
 	                  		src={ user.getProfil }
@@ -255,10 +318,13 @@ const WritePostModal = (props) => {
 	                  	contentEditable="true"
 	                  	className="post-editor block focus:border-0 border-none w-full my-14 w-full text-gray-800"
 	                  	value={content}
+	                  	placeholder="développer votre idée yo"
 	                  	onClick={() => setShowPreMessage(false)}
 	                  >
 	                  	{
-	                  		showPreMessage && <span className="text-xs md:text-lg text-gray-400">Développez votre idée</span> 
+	                  		showPreMessage || contentRef.current.innerHTML === "" ?  (
+	                  			<span className="text-xs md:text-lg text-gray-400" id="preMessage">Développez votre idée</span> 
+	                  		) : null
 	                  	}
 	                  </div>
 
@@ -286,69 +352,69 @@ const WritePostModal = (props) => {
 	                 		}
 
 	                  <div className="flex justify-between items-center mt-5">
-											<ul className="flex items-center space-x-6">
-												<li>
-													<BsEmojiHeartEyes 
-														size="22" 
-														color="#456445" 
-														className="cursor-pointer text-gray-900"
-													/>
-												</li>
-												<li>
-													<BsCardImage 
-														size="25" 
-														color="#456445" 
-														className="cursor-pointer text-gray-900"
-														onClick = { handleSelectImages }
-													/>
-													<input
-														type="file"
-														name="upload-photo"
-														ref = {inputImagesRef}
-														hidden
-														accept="image/*"
-														multiple
-														onChange={ handleChangePostsImages }
-													 />
-												</li>
-												<li>
-													<BsCameraVideo 
-														size="25" 
-														color="#456445" 
-														className="cursor-pointer text-gray-900"
-														onClick={handleSelectVideo}
-													/>
+							<ul className="flex items-center space-x-6">
+								<li>
+									<BsEmojiHeartEyes 
+										size="22" 
+										color="#456445" 
+										className="cursor-pointer text-gray-900"
+									/>
+								</li>
+								<li>
+									<BsCardImage 
+										size="25" 
+										color="#456445" 
+										className="cursor-pointer text-gray-900"
+										onClick = { handleSelectImages }
+									/>
+									<input
+										type="file"
+										name="upload-photo"
+										ref = {inputImagesRef}
+										hidden
+										accept="image/*"
+										multiple
+										onChange={ handleChangePostsImages }
+									 />
+								</li>
+								<li>
+									<BsCameraVideo 
+										size="25" 
+										color="#456445" 
+										className="cursor-pointer text-gray-900"
+										onClick={handleSelectVideo}
+									/>
 
-													<input
-														type="file"
-														ref = {inputVideoRef}
-														hidden 
-														accept="video/*"
-														onChange={ handleChangePostsVideos }
-													/>
-												</li>
-											</ul>
+									<input
+										type="file"
+										ref = {inputVideoRef}
+										hidden 
+										accept="video/*"
+										onChange={ handleChangePostsVideos }
+									/>
+								</li>
+							</ul>
 
-											<div className="flex space-x-4">
-												<Button 
-													theme="gray"
-													action={ resetPostData }
-													>
-													anuler
-												</Button>
-												{
-													user.getRole === 0 ? (
-														<Button>
-															proposer
-														</Button>
-													):(
-														<Button>
-															publier
-														</Button>
-													)
-												}
-											</div>
-										</div>
+							<div className="flex space-x-4">
+								<Button 
+									theme="gray"
+									action={ resetPostData }
+									>
+									anuler
+								</Button>
+
+								<input
+									type="submit"
+									value={ user.getRole === 0 ? "proposer" : "publier" }
+									className="px-3 bg-primary text-white text-xs rounded hover:bg-primary-hover"
+								/>
+							</div>
+							{
+
+						    	isLoading && <LoaderCircle size="180" color="#FACC15" />
+							}
+						</div>
+					</form>
 	                </Dialog.Description>
 	              </div>
 	            </Transition.Child>
@@ -356,6 +422,7 @@ const WritePostModal = (props) => {
 	        </Dialog>
 	      </div>
 	    </Transition>
+	    
 	    {
 	    	displayImage && (
 	    		<DisplayPhoto

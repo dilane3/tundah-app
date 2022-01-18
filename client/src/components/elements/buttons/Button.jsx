@@ -74,7 +74,7 @@ const Button = (props) => {
 		<HashLink 
 			to={link} 
 			target={target}
-			onClick={ action ? (e) => action() : null}
+			onClick={ action ? (e) => action(e) : null}
 			className={`${classe} ${radius} ${padding} ${textSize} ${background} hover:${backgroundHover} ${textColor} font-primary font-semibold`}
 				>
 			{ children }

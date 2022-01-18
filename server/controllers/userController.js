@@ -116,6 +116,8 @@ class UserController {
 
       const {data, error} = await userModel.signin(username)
 
+    console.log({data})
+
       if (data) {
         const user = bcrypt.compareSync(password.toLowerCase(), data.password) && data
 

@@ -16,6 +16,7 @@ module.exports = {
 
       'primary': '#456445',
         'primary-hover': '#5C825B',
+      'secondary': '',
 
       inherit: colors.inherit,
       current: colors.current,

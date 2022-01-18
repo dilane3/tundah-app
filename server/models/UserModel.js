@@ -110,7 +110,9 @@ class UserModel extends InterfaceUserModel {
         LIMIT 1
       `
 
+      console.log(username)
       const result = await session.run(query, {username})
+      console.log(result)
 
       if (result.records.length > 0) {
         const userData = result.records[0].get("user").properties
@@ -120,6 +122,7 @@ class UserModel extends InterfaceUserModel {
         return {error: "Error occurs while connecting the user"}
       }
     } catch (err) {
+      console.log(err)
       return {error: "Error occurs while connecting the user"}
     } finally {
       await session.close()

@@ -48,7 +48,7 @@ body{
 .post-editor {
 	word-break: break-all;
 	max-height: 300px;
-	height: auto;
+	min-height: 60px;
 	overflow-y: scroll;
 }
 
