@@ -78,22 +78,26 @@ class CommentModel extends InterfaceCommentModel {
       const comments = []
 
       for (let comment of commentData) {
-        const query = `
+        if(!comment.is_response){
+          const query = `
           MATCH (comment:Comment{id: $idComment}) -[:HAS_RESPONSE]-> (respComments:Comment)
           RETURN respComments
-        `;
+          `;
 
-        const result = await session.run(query, {idComment: comment.id})
+          const result = await session.run(query, {idComment: comment.id})
+          console.log("comrecord:",result.records)
+          if (result.records.length > 0) {
+            const commentsResp = result.records.map(record => {
+              return record.get("respComments").properties
+            })
 
-        if (result.records.length > 0) {
-          const commentsResp = result.records.map(record => {
-            return record.get("respComments").properties
-          })
-
-          comments.push({...comment, responses: commentsResp})
-          console.log("respo",comments)
+            comments.push({...comment, responses: commentsResp})
+          }else{
+            comments.push({...comment, responses: []})
+          }
+          
         }
-
+      
       }
 
       if (comments.length > 0) {

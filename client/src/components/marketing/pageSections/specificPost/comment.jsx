@@ -12,7 +12,8 @@ const image = require("../../../../medias/img/test.jpg")
 const Comment = ({onResponse,data}) => {
     const {author} = data;
     const subscriber = new Subscriber(author)
-    console.log("userName",subscriber.getUsername)  
+    //console.log(data)
+    //console.log("userName",subscriber.getUsername)  
 
     return(
         <div className="CommentContent">
