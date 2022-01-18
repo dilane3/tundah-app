@@ -7,7 +7,7 @@ const nextArrowStyle = {
   display: "block",
   position: "absolute",
   right: "20px",
-  zIndex: "20",
+  zIndex: "15",
   borderRadius: "20px"
 }
 
@@ -15,7 +15,7 @@ const prevArrowStyle = {
   display: "block",
   position: "absolute",
   left: "20px",
-  zIndex: "20"
+  zIndex: "15"
 }
 
 function SampleNextArrow(props) {
@@ -54,7 +54,8 @@ const PostCarousel = (props) => {
 
   const {
     files,
-    onDisplayPhoto
+    onDisplayPhoto,
+    edited
   } = props
   
   return (
@@ -66,7 +67,7 @@ const PostCarousel = (props) => {
               <div className="postImgBlock w-full" key={index} onClick={() => onDisplayPhoto(index)}>
                 <Image 
                   // image={`${ressourcesUrl.postImages}/${file}`}
-                  image={file}
+                  image={`${edited ? ressourcesUrl.postImages + '/': ""}${file}`}
                   alt={"image du post de leDoyen"}
                   className="postImg"
                   blur={true}

@@ -18,7 +18,7 @@ const WritePostModal = (props) => {
 
 	const { 
 			show, 
-			closeModal, 
+			onCloseModal, 
 			showPreMessage, 
 			setShowPreMessage
 	} = props
@@ -76,7 +76,6 @@ const WritePostModal = (props) => {
 		    const fileType = postData.video ? "video" : "image"
 			const {
 				title,
-				content,
 				region,
 				tribu,
 				images,
@@ -89,7 +88,7 @@ const WritePostModal = (props) => {
 			const dataToSend = new FormData()
 
 			dataToSend.append("title", title)
-			dataToSend.append("content", content)
+			dataToSend.append("content", contentPost)
 			dataToSend.append("region", region)
 			dataToSend.append("tribe", tribu)
 			dataToSend.append("fileType", fileType)
@@ -104,7 +103,7 @@ const WritePostModal = (props) => {
 				})
 			}
 
-			console.log(dataToSend.getAll("images"))
+			console.log(dataToSend.get("content"))
 			
 			//stratloading
 			setLoading(true)
@@ -116,6 +115,7 @@ const WritePostModal = (props) => {
 			.then(res => {
 				console.log(res.data)
 				setLoading(false)
+				onCloseModal()
 			})
 			.catch(err => {
 				console.log(err)
@@ -165,7 +165,7 @@ const WritePostModal = (props) => {
 	}
 
 	const resetPostData = () => {
-		closeModal()
+		onCloseModal()
 		setPostData({ ...initialPostState })
 		contentRef.current.innerHTML = ""
 		setShowPreMessage(true)
@@ -333,6 +333,7 @@ const WritePostModal = (props) => {
 	                 				<PostCarousel 
 	                 					files={postData.images}
 	                 					onDisplayPhoto = { handleDisplayImage }
+	                 					edited={false}
 	                 				/>
 	                 			)
 

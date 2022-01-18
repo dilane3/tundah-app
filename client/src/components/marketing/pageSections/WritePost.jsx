@@ -84,7 +84,7 @@ const WritePost = () => {
 			</div>
         <WritePostModal
         	show={openPostModal}
-        	closeModal={() => handleCloseModal()}
+        	onCloseModal={handleCloseModal}
         	showPreMessage={showPreMessage}
         	setShowPreMessage={setShowPreMessage}
         />
