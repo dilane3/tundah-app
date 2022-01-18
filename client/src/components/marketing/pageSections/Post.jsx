@@ -25,7 +25,7 @@ const PostComponent = ({postData, onLikePost}) => {
 	// definition of the local state
 	const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
 	const [indexFile, setIndexFile] = useState(0)
-	const [relativeDate, setRelativeDate] = useState(getRelativeDate(post.getCreationDate/1000))
+	const [relativeDate, setRelativeDate] = useState(getRelativeDate(post.getCreationDate))
 
 
 	const author = new Subscriber(post.getAuthor)
@@ -35,7 +35,7 @@ const PostComponent = ({postData, onLikePost}) => {
 
 	useEffect(() => {
 		const timer = setInterval(() => {
-			setRelativeDate(getRelativeDate(post.getCreationDate/1000))
+			setRelativeDate(getRelativeDate(post.getCreationDate))
 		}, 1000)
 
 		return () => {
@@ -73,7 +73,11 @@ const PostComponent = ({postData, onLikePost}) => {
 						src={`${ressourcesUrl.profil}/${author.getProfil}`}
 					 />
 					 <div className="flex flex-col space-y-1 author-info">
-					 	<span className="author-post-username text-sm md:text-lg font-bold ">{author.getName[0].toUpperCase() + author.getName.substr(1).toLowerCase()}</span>
+						<Link to={`/profile/${author.getUsername}`}>
+							<span 
+								className="author-post-username text-sm md:text-lg font-bold"
+							>{author.getName[0].toUpperCase() + author.getName.substr(1).toLowerCase()}</span>
+						</Link>
 					 	<span className="text-xs text-gray-500">{relativeDate}</span>
 					 </div>
 				</div>

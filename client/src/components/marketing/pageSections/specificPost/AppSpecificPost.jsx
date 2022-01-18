@@ -75,7 +75,11 @@ const AppSpecifificPost  = () => {
 	}
 
     const getPost = (id) => {
-        const post = posts.find(p => p.id === id)
+        let post = posts.find(p => p.id === id)
+
+        if (!post) {
+            post = currentUser.posts.find(p => p.id === id)
+        }
 
         return post
     }

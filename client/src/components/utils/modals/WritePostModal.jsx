@@ -9,6 +9,7 @@ import Button from '../../elements/buttons/Button'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
 import Subscriber from '../../../entities/Subscriber'
 import navigationContext from '../../../dataManager/context/navigationContext'
+import {ressourcesUrl} from '../../../utils/url'
 
 const WritePostModal = ({ show, closeModal}) => {
 
@@ -71,10 +72,10 @@ const WritePostModal = ({ show, closeModal}) => {
 	return(
 		
 	  		<Transition appear show={show} as={Fragment}>
-	  			<div className="absolute px-5 z-10 left-0 top-0 h-screen w-screen bg-black opacity-50">
+	  			<div className="absolute px-5 z-25 left-0 top-0 h-screen w-screen bg-black opacity-50">
 		        <Dialog
 		          as="div"
-		          className="fixed inset-0 z-10 overflow-y-auto"
+		          className="fixed inset-0 z-23 overflow-y-auto"
 		          onClose={closeModal}
 		        >
 		          <div className="min-h-screen px-4 text-center">
@@ -117,7 +118,7 @@ const WritePostModal = ({ show, closeModal}) => {
 		                <Dialog.Description className="mt-2 p-5">
 		                  <div className="flex items-center justify-start space-x-2">
 		                  	<ImgCircle
-		                  		src={ user.getProfil }
+		                  		src={`${ressourcesUrl.profil}/${user.getProfil}`}
 		                  		alt="image du curent iser"
 		                  	/>
 		                  	<div>

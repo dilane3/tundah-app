@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import currentUserContext from '../../../../dataManager/context/currentUserContent'
 import postsContext from '../../../../dataManager/context/postsContext'
 import Post from '../Post'
@@ -20,8 +20,22 @@ const ListPosts = () => {
 	// local state
 	const [loadingMorePosts, setLoadingMorePosts] = useState(false)
 
+	// useCallback section
+	const methodsCb = useCallback(() => {
+		return {
+			addPosts,
+			setLoadingMorePosts,
+			loadingMorePosts
+		}
+	}, 
+	[addPosts, 
+		setLoadingMorePosts, 
+		loadingMorePosts
+	])
+
 	// defining the reference of an element
 	const listPostRef = useRef()
+	const methodsRef = useRef(methodsCb)
 
 	const postsData = useMemo(() => {
 		return posts
@@ -34,6 +48,10 @@ const ListPosts = () => {
 
 		instance.defaults.headers.common["authorization"] = `Bearer ${token}`
 	}, [])
+
+	useEffect(() => {
+		methodsRef.current = methodsCb
+	}, [methodsCb])
 
 	const handleLikePost = (id) => {
 		instance.post(`/posts/like/${id}`)
@@ -66,6 +84,8 @@ const ListPosts = () => {
 	}, [skip, next])
 
 	useEffect(() => {
+		const {setLoadingMorePosts, addPosts, loadingMorePosts} = methodsRef.current()
+
 		if (loadingMorePosts) {
 			if (next) {
 				setLoadingMorePosts(true)
@@ -94,7 +114,7 @@ const ListPosts = () => {
 				setLoadingMorePosts(false)
 			}
 		}
-	}, [skip, next, loadingMorePosts, addPosts, setMorePostArgs])
+	}, [skip, next, loadingMorePosts])
 
 	const sortPostByDate = (posts) => {
 		return posts.sort((p1, p2) => p2.creation_date - p1.creation_date)

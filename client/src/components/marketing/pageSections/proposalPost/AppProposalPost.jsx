@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useCallback, useContext, useEffect, useRef } from 'react'
 import proposedPostsContext from '../../../../dataManager/context/proposedPostContext';
 import { instance } from '../../../../utils/url';
 import HeaderspecifisPost from './headerspecificpost';
@@ -8,7 +8,25 @@ import  './Specificpost.css'
 const AppProposalPost  = () => {
     const {proposedPosts, addPosts} = useContext(proposedPostsContext)
 
+    // use callback section
+    const methodsCb = useCallback(() => {
+        return {
+            addPosts
+        }
+    }, [addPosts])
+
+    // use reference section
+    const methodsRef = useRef(methodsCb)
+
+    // use effect section
     useEffect(() => {
+        methodsRef.current = methodsCb()
+    }, [methodsCb])
+
+    useEffect(() => {
+        const {addPosts} = methodsRef.current
+        console.log(addPosts)
+
         instance.get("/posts/proposed?skip=0&limit=10")
         .then(res => {
             const datas = res.data
@@ -20,7 +38,7 @@ const AppProposalPost  = () => {
         .catch(err => {
             console.log(err)
         })
-    }, [addPosts])
+    }, [])
 
     return(
         <div className="content">
