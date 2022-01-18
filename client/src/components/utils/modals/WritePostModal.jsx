@@ -165,12 +165,11 @@ const WritePostModal = (props) => {
 	}
 
 	const resetPostData = () => {
-		onCloseModal()
 		setPostData({ ...initialPostState })
 		contentRef.current.innerHTML = ""
 		setShowPreMessage(true)
 		setLoading(false)
-
+		onCloseModal()
 	}
 
 	//function
