@@ -290,7 +290,7 @@ class PostModel extends InterfacePostModel {
         console.log({postNumber, skip})
         console.log({postData})
 
-        if (postNumber > Number(skip)) {
+        if (postNumber > Number(skip) + Number(limit)) {
           return {
             data: { data: postData, next: true, skip: Number(skip) + Number(limit) },
           };
