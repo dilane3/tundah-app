@@ -23,8 +23,11 @@ const AddExpertModal = ({onHide, animationClass}) => {
     console.log(newExpert)
     instance.get(`/users/${newExpert}`)
     .then(res => {
-      console.log(res.data ? true:false)
-      setUsers([{...res.data}])
+      if (res.data) {
+        setUsers([{...res.data}])
+      } else {
+        setUsers([])
+      }
     })
     .catch(err => {
       console.log(err)
