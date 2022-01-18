@@ -52,6 +52,17 @@ const HeaderProfil  = () => {
     // useEffect section
 
     useEffect(() => {
+        if (checkUsername(username, currentUser)) {
+            setIsCurrentUser(false)
+            setUser((new Subscriber(currentUser)))
+            setLoadingUser(false)
+        } else {
+            setIsCurrentUser(false)
+            setLoadingUser(true)
+        }
+    }, [username])
+
+    useEffect(() => {
         const token = localStorage.getItem("tundah-token")
         instance.defaults.headers.common["authorization"] = `Bearer ${token}`
     }, [])
@@ -81,7 +92,7 @@ const HeaderProfil  = () => {
                 console.log(err)
             })
         }
-    }, [])
+    }, [isCurrentUser])
 
     useEffect(() => {
         if (isCurrentUser) {
