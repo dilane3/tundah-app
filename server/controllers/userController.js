@@ -17,6 +17,8 @@ class UserController {
   static getUser = async (req, res) => {
     const {username} = req.params
 
+    console.log(username)
+
     if (username) {
       // const user = req.user
       const userModel = new UserModel()
@@ -24,7 +26,7 @@ class UserController {
 
       const {data, error} = await userModel.getUser(username)
 
-      if (data !== undefined) {
+      if (data !== undefined && data !== null) {
         const postdata = (await postModel.getMyPosts(data.id)).data
 
         if (postdata) {
