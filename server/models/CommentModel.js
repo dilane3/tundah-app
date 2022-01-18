@@ -91,6 +91,7 @@ class CommentModel extends InterfaceCommentModel {
           })
 
           comments.push({...comment, responses: commentsResp})
+          console.log("respo",comments)
         }
 
       }
@@ -116,23 +117,27 @@ class CommentModel extends InterfaceCommentModel {
     const session = dbConnect();
 
     try {
+      // const query = `
+      //   MATCH (post:Post{id: $idPost}) - [:HAS_COMMENT] -> (comment:Comment{is_response: ${false}})
+      //   RETURN comment
+      // `;
       const query = `
-        MATCH (post:Post{id: $idPost}) - [:HAS_COMMENT] -> (comment:Comment{is_response: ${false}})
+        MATCH (post:Post{id: $idPost}) - [:HAS_COMMENT] -> (comment:Comment)
+        MATCH (comment:Comment) - [:BELONGS_TO] -> (post:Post{id: $idPost})
         RETURN comment
       `;
       const result = await session.run(query,{
         idPost
       });
-
-      console.log(result)
-
       let commentData = (await this.getCommentsAuthor(result))
       const {data, error} = (await this.getAllResponses(commentData))
+
+      console.log("commentData_notfull",commentData)
 
       if (data) {
         commentData = data
       }
-
+      console.log("Data_res",data)
       if (!commentData) {
         commentData = result.records.map((record) => {
           return record.get("comment").properties;
@@ -141,6 +146,7 @@ class CommentModel extends InterfaceCommentModel {
 
       return { data: commentData };
     } catch (err) {
+      console.log("texte1")
       console.log(err)
       return { error: "Error while getting the comments" };
     } finally {

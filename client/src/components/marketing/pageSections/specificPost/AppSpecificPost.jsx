@@ -9,9 +9,8 @@ import currentUserContext from '../../../../dataManager/context/currentUserConte
 import { instance } from '../../../../utils/url';
 import { addComments } from '../../../../dataManager/data/posts/postsActions';
 
-const CommentBlock = ({comment,idPost}) => {
+const CommentBlock = ({comment, idPost, idUser}) => {
     const [showResponseInput, setShowResponseInput] = useState(false);
-   
 
     // defining reference of element
     const commentBlockRef = useRef()
@@ -47,7 +46,7 @@ const CommentBlock = ({comment,idPost}) => {
                 {
                     comment.responses.map(response => {
                         return (
-                            <Comment data={response} onResponse={handleActivateResponse} />
+                            <Comment key={response.id} data={response} onResponse={handleActivateResponse} />
                         )
                     })
                 }
@@ -55,7 +54,7 @@ const CommentBlock = ({comment,idPost}) => {
                     
             {
                 showResponseInput ? (
-                    <WriteResponseComment />
+                    <WriteResponseComment idPost={idPost} idUser={idUser} idComment={comment.id} />
                 ):null
             }
         </div>
@@ -113,7 +112,7 @@ const AppSpecifificPost  = () => {
         .then(res => {
             const comments = res.data;
             setComments(comments);
-            console.log(comments)
+            console.log("les comments",comments)
 
             addComments(id, {...comments, id});
         })
@@ -125,19 +124,19 @@ const AppSpecifificPost  = () => {
         }
     }, [])
 
-    const handleUser = (id) => {
-		instance.get(`/posts/like/${id}`)
-		.then((res) => {
-			console.log(res.data)
-		})
-		.catch(err => {
-			console.log(err)
-		})
-		.then(() => {
-			likePost(id, currentUser.id)
-			likeUserPost(id)
-		})
-	}
+    // const handleUser = (id) => {
+	// 	instance.get(`/posts/like/${id}`)
+	// 	.then((res) => {
+	// 		console.log(res.data)
+	// 	})
+	// 	.catch(err => {
+	// 		console.log(err)
+	// 	})
+	// 	.then(() => {
+	// 		likePost(id, currentUser.id)
+	// 		likeUserPost(id)
+	// 	})
+	// }
 
     return(
         <section ref={commentPageRef} className="contentCommentPage">
@@ -145,7 +144,7 @@ const AppSpecifificPost  = () => {
             <WriteComment idUser={currentUser.id} idPost={id}/>
             <section>
                 {comments.map(comment=>(
-                    <CommentBlock id={id} comment={comment} />
+                    <CommentBlock key={comment.id}  idUser={currentUser.id} idPost={id} comment={comment} />
                 ))}
                 
             </section>

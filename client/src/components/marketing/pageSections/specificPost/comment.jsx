@@ -2,8 +2,9 @@ import React from 'react'
 import { BsThreeDots, BsChat } from 'react-icons/bs'
 import ImgCircle from '../../../elements/imgCircle/ImgCircle'
 import Subscriber from '../../../../entities/Subscriber'
+import { getRelativeDate } from '../../../../utils/dateOperations'
 import './commentPost.css'
-// import {ressourceUrl} from "../../../../utils/url"`${ressourceUrl.profil}/${subscriber.getProfil}`
+import {ressourcesUrl} from "../../../../utils/url"
 
 
 const image = require("../../../../medias/img/test.jpg")
@@ -11,11 +12,12 @@ const image = require("../../../../medias/img/test.jpg")
 const Comment = ({onResponse,data}) => {
     const {author} = data;
     const subscriber = new Subscriber(author)
+    console.log("userName",subscriber.getUsername)  
 
     return(
         <div className="CommentContent">
             <div className="header-PostproposeInfo">
-                <ImgCircle src={image} alt="profil" size="small" classe="header-PostproposeInfoImg" />
+                <ImgCircle src={`${ressourcesUrl.profil}/${subscriber.getProfil}`} alt="profil" size="small" classe="header-PostproposeInfoImg" />
                 <div className="Info-Comment">
                    <div className="Info-User">
                         <span className="Username">{subscriber.getUsername}</span>
@@ -26,9 +28,6 @@ const Comment = ({onResponse,data}) => {
                     <div className="TextComment">
                         {data.content}
                     </div>
-                    {/* <div className="TextComment">
-                        Durant les ceremonies de mariages ont assiste souvent a  des litiges  Lorem ipsum dolor sit, amet consectetur adipisicing elit. Magni saepe accusamus, odit nulla est nemo consequuntur blanditiis delectus reprehenderit consequatur.
-                    </div> */}
                 </div>  
             </div>
             <div className="IconComment">
@@ -40,7 +39,7 @@ const Comment = ({onResponse,data}) => {
 				<div className="Answer" onClick={onResponse}>
 					Répondre
 				</div>
-                <span className="DateComment">Il ya {Date.now()-data.creation_date} </span>
+                <span className="DateComment">{getRelativeDate(data.creation_date/1000)} </span>
 			</div>
         </div>
     )

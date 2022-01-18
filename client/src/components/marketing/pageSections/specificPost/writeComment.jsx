@@ -60,11 +60,28 @@ const WriteComment  = ({idPost,idUser}) => {
     )
 }
 
-const WriteResponseComment = () => {
+const WriteResponseComment = ({idPost, idUser, idComment}) => {
     const [comment, setComment] = useState("")
 
     const handleChange = (event) =>{
         setComment(event.currentTarget.value);
+    }
+    
+    const handleSubmit = (event)=>{
+        console.log(idComment)
+        console.log("submit");
+        instance.post(`/comments/create`,{
+            content:comment,
+            idPost,
+            idUser,
+            idComment
+        })
+	 	.then((res) => {
+	 		console.log(res.data)
+	 	})
+	 	.catch(err => {
+	 		console.log(err)
+	 	})
     }
 
     return(
@@ -78,7 +95,7 @@ const WriteResponseComment = () => {
                     onChange={handleChange}
                     value={comment} />
                     
-                <Button size="meduim">
+                <Button size="meduim" type="submit" action={handleSubmit}>
                     publier
                 </Button>
            </form>
