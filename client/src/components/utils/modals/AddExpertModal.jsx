@@ -3,11 +3,13 @@ import { BsX } from 'react-icons/bs'
 import styles from '../../../css/addExpert.module.css'
 import AddExpertContent from './AddExpertContent'
 import { instance } from '../../../utils/url'
+import LoaderCircle from '../loaders/Loader'
 
 const AddExpertModal = ({onHide, animationClass}) => {
 
   const [newExpert,setNewExpert]= useState("");
   const [users, setUsers]= useState([])
+  const [loading, setLoading] = useState(false)
 
   const handleChange = event =>{
     setNewExpert(event.currentTarget.value);
@@ -20,7 +22,8 @@ const AddExpertModal = ({onHide, animationClass}) => {
   }, [])
 
   useEffect(()=>{
-    console.log(newExpert)
+    setLoading(true)
+
     instance.get(`/users/${newExpert}`)
     .then(res => {
       if (res.data) {
@@ -31,6 +34,9 @@ const AddExpertModal = ({onHide, animationClass}) => {
     })
     .catch(err => {
       console.log(err)
+    })
+    .then(() => {
+      setLoading(false)
     })
 
   }, [newExpert])
@@ -56,11 +62,21 @@ const AddExpertModal = ({onHide, animationClass}) => {
         </div>
       <div className={styles.addExpertContent}>
        {
-        users.length > 0 ? (
-          users.map(user => {
-            return <AddExpertContent key={user.id} data={user} />
-          }) 
-        ):null
+         !loading ? (
+           users.length > 0 ? (
+             users.map(user => {
+               return <AddExpertContent key={user.id} data={user} />
+             }) 
+           ):(
+             newExpert !== "" ? (
+              <article className={styles.addExpertNoResult}>
+                Aucun abonne ne correspond a ce nom d'utilisateur
+              </article>
+             ):null
+           )
+         ):(
+           <LoaderCircle size={100} color="#3c6a46" />
+         )
        }
        </div>
     </section>

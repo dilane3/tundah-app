@@ -94,7 +94,7 @@ const PostComponent = ({postData, onLikePost}) => {
 					{post.getTitle[0].toUpperCase() + post.getTitle.substr(1).toLowerCase()}
 				</div>
 				<div className="px-2">
-					<Link to={`/post/${post.getId}`}>
+					<Link to={`/posts/${post.getId}`}>
 						{post.getContent}
 					</Link>
 				</div>
@@ -125,7 +125,7 @@ const PostComponent = ({postData, onLikePost}) => {
 						</div>
 
 						<div className="flex items-center space-x-1">
-							<Link to={`/post/${post.getId}`}>
+							<Link to={`/posts/${post.getId}`}>
 								<BsChat size="20" className="icon" />
 							</Link>
 							<span className="text-xs md:text-sm">{formatLikesOrComment(post.getComments)}</span>

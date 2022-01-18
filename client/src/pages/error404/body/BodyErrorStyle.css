@@ -26,3 +26,19 @@
     margin: 0 auto;
     font-weight: bold;
 }
+
+@media screen and (max-width: 800px) {
+    .ImagePageError{
+        width: 200px;
+        height:auto;
+        margin-top: 30px;
+    }
+
+    .FirstDescription {
+        font-size: 20px;
+    }
+
+    .SecondDescription {
+        font-size: 14px;
+    }
+}

@@ -12,18 +12,18 @@ const BodyError404 = () => {
         <section className="">
 			<div className="ErrorPageContent">
 				<Image image={image} className="ImagePageError"/>	
-           		<div className="FirstDescription">
-               Cette page est inexistante
-		   		</div>
-		   		<div className="SecondDescription">
-				Soit la page que vous essayer d'acceder n'existe pas, 
-				soit vous n'etes pas autoriser a acceder a cette page.
-				Verifier que le lien que vous essayer d'acceder est correct, 
-				ou consulter votre fil d'actualiter.
-		  		</div>
+        <div className="FirstDescription">
+          Cette page est inexistante
+		   	</div>
+		   	<div className="SecondDescription">
+					Soit la page que vous essayez d'acceder n'existe pas, 
+					soit vous n'êtes pas autorisé à acceder à cette page.
+					Vérifier que le lien que vous essayez d'acceder est correct, 
+					ou consulter votre fil d'actualités.
+		  	</div>
 
 				<Button size="meduim" classe="BtnActualiter" link="/wiki/feed">
-					Fil D'actualiter     
+					Fil D'actualités
 				</Button>
 			</div>
 		</section>
