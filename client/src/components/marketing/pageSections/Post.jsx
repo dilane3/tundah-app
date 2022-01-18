@@ -25,7 +25,7 @@ const PostComponent = ({postData, onLikePost}) => {
 	// definition of the local state
 	const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
 	const [indexFile, setIndexFile] = useState(0)
-	const [relativeDate, setRelativeDate] = useState(getRelativeDate(post.getCreationDate/1000))
+	const [relativeDate, setRelativeDate] = useState(getRelativeDate(post.getCreationDate))
 
 
 	const author = new Subscriber(post.getAuthor)
@@ -35,7 +35,7 @@ const PostComponent = ({postData, onLikePost}) => {
 
 	useEffect(() => {
 		const timer = setInterval(() => {
-			setRelativeDate(getRelativeDate(post.getCreationDate/1000))
+			setRelativeDate(getRelativeDate(post.getCreationDate))
 		}, 1000)
 
 		return () => {

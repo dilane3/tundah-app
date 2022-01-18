@@ -1,3 +1,9 @@
+.container-profil {
+  position: relative;
+  min-height: calc(100vh - 100px);
+  height: auto;
+}
+
 .profil-content{
   display: flex;
   flex-direction: column;
@@ -209,6 +215,13 @@ div.profilInfo{
   color: #575656;
   font-size:1.4rem;
   margin-right: 10px;
+}
+
+.profil-loaderSection {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* post list */

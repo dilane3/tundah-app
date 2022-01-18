@@ -1,10 +1,11 @@
 import React from 'react'
 import HeaderProfil from './headerProfil'
+import './profilStyle.css'
 
 const AppProfilPost  = () => {
 
     return(
-        <div className="content">
+        <div className="container-profil">
             <HeaderProfil />
         </div>
     )

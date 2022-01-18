@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import  './Specificpost.css'
 import ImgCircle from '../../../elements/imgCircle/ImgCircle'
 import { BsThreeDotsVertical } from 'react-icons/bs'
@@ -8,6 +8,7 @@ import { getRelativeDate } from '../../../../utils/dateOperations'
 import Post from '../../../../entities/Post'
 import Subscriber from '../../../../entities/Subscriber'
 import { ressourcesUrl } from '../../../../utils/url'
+import { Link } from 'react-router-dom'
 
 const imageMariage= require("../../../../medias/img/mariage.jpg")
 
@@ -18,6 +19,19 @@ const PostPropose = ({type, postData}) => {
 
     // difinition of local state
     const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
+	const [relativeDate, setRelativeDate] = useState(getRelativeDate(post.getCreationDate))
+
+    // useEffect section
+
+	useEffect(() => {
+		const timer = setInterval(() => {
+			setRelativeDate(getRelativeDate(post.getCreationDate))
+		}, 1000)
+
+		return () => {
+			clearInterval(timer)
+		}
+	})
 
     const truncateContent = (content) => {
         if (content.length > 100) return content.substr(0, 100) + "..."
@@ -32,9 +46,12 @@ const PostPropose = ({type, postData}) => {
                     <ImgCircle src={`${ressourcesUrl.profil}/${author.getProfil}`} alt="profil" classe="profilCardImage"/>
 
                     <div className="profilInfo">
-                        <span className="author-post-username">{author.getName[0].toUpperCase() + author.getName.substr(1).toLowerCase()}</span>
+                        <Link to={`/profile/${author.getUsername}`}>
+                            <span className="author-post-username">{author.getName[0].toUpperCase() + author.getName.substr(1).toLowerCase()}</span>
+                        </Link>
+                        
                         <span className="hour">
-                            {getRelativeDate(post["modification_date"]/1000)}
+                            {relativeDate}
                         </span>
                     </div>
                 </div>

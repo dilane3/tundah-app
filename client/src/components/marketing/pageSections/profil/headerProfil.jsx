@@ -83,6 +83,12 @@ const HeaderProfil  = () => {
         }
     }, [])
 
+    useEffect(() => {
+        if (isCurrentUser) {
+            setUser((new Subscriber(currentUser)))
+        }
+    }, [currentUser])
+
     const formatName = (name) => {
 		return name[0].toUpperCase() + name.substr(1)
 	}
@@ -160,8 +166,8 @@ const HeaderProfil  = () => {
 			console.log(err)
 		})
 		.then(() => {
+            likePost(idPost, currentUser.id)
             likeUserPost(idPost)
-			likePost(idPost, currentUser.id)
 		})
     }
 
@@ -298,7 +304,9 @@ const HeaderProfil  = () => {
                         </section>
                     </>
                 ):(
-                    <LoaderCircle color="#3c6a46" size={30} />
+                    <div className="profil-loaderSection">
+                        <LoaderCircle color="#3c6a46" size={60} />
+                    </div>
                 )
             }
         </>
