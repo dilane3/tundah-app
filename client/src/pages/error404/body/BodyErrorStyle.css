@@ -1,0 +1,28 @@
+.ErrorPageContent{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 80%;
+}
+.ImagePageError{
+    width: 350px;
+    height:auto;
+    margin-top: 30px;
+}
+.FirstDescription{
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 0px;
+    padding: 10px;
+}
+.SecondDescription{
+    color: rgb(70, 67, 67);
+    font-size: 16px;
+    margin-bottom: 20px;
+    width: calc(100% - 100px);
+    text-align: center;
+}
+.BtnActualiter{
+    margin: 0 auto;
+    font-weight: bold;
+}
