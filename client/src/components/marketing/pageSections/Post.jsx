@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom'
 import {  ressourcesUrl } from "../../../utils/url"
 import { getRelativeDate } from '../../../utils/dateOperations'
 
-const imagesExtensions = [ "jpeg", "png", "gif", "bmp" ]
+const imagesExtensions = [ "jpeg", "png", "gif", "bmp", "jpg" ]
 const checkCurrentUser = (author, currentUser) => {
 	return author.getId === currentUser.id
 }
