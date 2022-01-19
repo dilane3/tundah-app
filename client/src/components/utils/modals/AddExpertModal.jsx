@@ -19,15 +19,16 @@ const AddExpertModal = ({onHide, animationClass}) => {
     const token = localStorage.getItem("tundah-token")
 
     instance.defaults.headers.common["authorization"] = `Bearer ${token}`
+    console.log(instance)
   }, [])
 
   useEffect(()=>{
     setLoading(true)
 
-    instance.get(`/users/${newExpert}`)
+    instance.get(`/users/search/${newExpert}`)
     .then(res => {
       if (res.data) {
-        setUsers([{...res.data}])
+        setUsers(res.data)
       } else {
         setUsers([])
       }
@@ -35,7 +36,7 @@ const AddExpertModal = ({onHide, animationClass}) => {
     .catch(err => {
       console.log(err)
     })
-    .then(() => {
+    .finally(() => {
       setLoading(false)
     })
 

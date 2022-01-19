@@ -8,8 +8,12 @@ import { useParams } from 'react-router';
 import currentUserContext from '../../../../dataManager/context/currentUserContent';
 import { instance } from '../../../../utils/url';
 
-const sortCommentByDate = (comments) => {
-    return comments.sort((c1, c2) => c2.creation_date - c1.creation_date)
+const sortCommentByDate = (comments, order) => {
+    order = order === undefined ? true:order
+    if (order)
+        return comments.sort((c1, c2) => c2.creation_date - c1.creation_date)
+
+    return comments.sort((c1, c2) => c1.creation_date - c2.creation_date)
 }
 
 const CommentBlock = ({comment, post, idUser}) => {
@@ -34,7 +38,7 @@ const CommentBlock = ({comment, post, idUser}) => {
 
             <div className="secondElement">
                 {
-                    sortCommentByDate(comment.responses).map(response => {
+                    sortCommentByDate(comment.responses, false).map(response => {
                         return (
                             <Comment 
                                 key={response.id} 

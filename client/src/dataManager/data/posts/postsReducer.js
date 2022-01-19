@@ -105,7 +105,7 @@ const postsReducer = (state = [], action) => {
         // we verify if we have a post
         if (index > -1) {
           let post = posts[index]
-
+          console.log(post)
           post = post.addComments(comments)
 
           console.log(post)

@@ -103,7 +103,7 @@ div.header-PostproposeInfoImg {
 }
 .isAuthor {
     font-size: 12px;
-    background-color: #575656;
+    background-color: #3c6a46;
     color: #fff;
     border-radius: 2px;
     padding: 2px 5px;
@@ -118,9 +118,10 @@ div.header-PostproposeInfoImg {
 }
 .TextComment{
     width: calc(100% - 10px);
-    /* min-height: 80px; */
+    min-height: 50px;
     height: auto;
-    border: 1px solid rgb(170, 170, 170);
+    /* border: 1px solid rgb(170, 170, 170); */
+    background-color: rgb(245, 245, 245);
     padding: 10px;
     margin-left: 10px;
     border-radius: 5px;
