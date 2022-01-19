@@ -16,16 +16,42 @@ const sortCommentByDate = (comments, order) => {
     return comments.sort((c1, c2) => c1.creation_date - c2.creation_date)
 }
 
-const CommentBlock = ({comment, post, idUser}) => {
+const CommentBlock = ({comment, post, idUser, onChangeToResponseInput, isResponseInput}) => {
     const [showResponseInput, setShowResponseInput] = useState(false);
+    const [responseDisplayed, setResponseDisplayed] = useState(false)
 
     // defining reference of element
     const commentBlockRef = useRef()
 
-    const handleActivateResponse = () => {
-        setShowResponseInput(true)
+    useEffect(() => {
+        window.addEventListener("resize", function() {
+            const width = this.window.innerWidth
 
-        commentBlockRef.current.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"})
+            if (width > 700) {
+                onChangeToResponseInput(false)
+                setShowResponseInput(true)
+                commentBlockRef.current.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"})
+            }
+            else 
+                onChangeToResponseInput(true, comment.id)
+        })
+    }, [])
+
+    const handleActivateResponse = () => {
+        const width = window.innerWidth
+
+        if (width > 700) {
+            onChangeToResponseInput(false)
+            setShowResponseInput(true)
+            commentBlockRef.current.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"})
+        }
+        else 
+            onChangeToResponseInput(true, comment.id)
+
+    }
+
+    const handleDisplayResponses = () => {
+        setResponseDisplayed(state => !state)
     }
 
     return (
@@ -34,9 +60,11 @@ const CommentBlock = ({comment, post, idUser}) => {
                 data={comment} 
                 onResponse={handleActivateResponse} 
                 author={post.author}
+                responseDisplayed={responseDisplayed}
+                onDisplayResponses={handleDisplayResponses}
             />
 
-            <div className="secondElement">
+            <div className={`secondElement ${!responseDisplayed ? "responsesSectionAnimation":""}`}>
                 {
                     sortCommentByDate(comment.responses, false).map(response => {
                         return (
@@ -53,8 +81,10 @@ const CommentBlock = ({comment, post, idUser}) => {
             </div>
                     
             {
-                showResponseInput ? (
-                    <WriteResponseComment idPost={post.id} idUser={idUser} idComment={comment.id} />
+                !isResponseInput ? (
+                    showResponseInput ? (
+                        <WriteResponseComment idPost={post.id} idUser={idUser} idComment={comment.id} />
+                    ):null
                 ):null
             }
         </div>
@@ -62,8 +92,15 @@ const CommentBlock = ({comment, post, idUser}) => {
 }
 
 const AppSpecifificPost  = () => {
+    // getting value from the global state
     const {posts, likePost, addComments} = useContext(postsContext)
     const {likeUserPost, currentUser} = useContext(currentUserContext)
+
+    // defining of the local state
+    const [isResponseInput, setIsResponseInput] = useState(false)
+    const [idComment, setIdComment] = useState(null)
+
+    // getting the id from the url params
     const {id} = useParams()
 
     // defining ref
@@ -118,14 +155,32 @@ const AppSpecifificPost  = () => {
         return post
     }
 
+    const handleChangeCommentEditorType = (status, idComment = null) => {
+        setIsResponseInput(status)
+        setIdComment(idComment)
+    }
+
     return(
         <section ref={commentPageRef} className="contentCommentPage">
             <Post postData={getPost(id)} onLikePost={handleLikePost} />
-            <WriteComment idUser={currentUser.id} idPost={id}/>
+            <WriteComment 
+                idUser={currentUser.id} 
+                idPost={id} 
+                isResponseInput={isResponseInput} 
+                idComment={idComment} 
+                onChangeToResponseInput={handleChangeCommentEditorType}
+            />
             <section>
                 {
                     sortCommentByDate(getPost(id).commentsData).map(comment=>(
-                        <CommentBlock key={comment.id}  idUser={currentUser.id} post={getPost(id)} comment={comment} />
+                        <CommentBlock 
+                            key={comment.id}  
+                            idUser={currentUser.id} 
+                            post={getPost(id)} 
+                            comment={comment} 
+                            isResponseInput={isResponseInput}
+                            onChangeToResponseInput={handleChangeCommentEditorType}    
+                        />
                     ))
                 }
                 

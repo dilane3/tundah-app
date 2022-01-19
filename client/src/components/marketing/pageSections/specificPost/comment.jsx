@@ -9,7 +9,7 @@ import {ressourcesUrl} from "../../../../utils/url"
 
 const image = require("../../../../medias/img/test.jpg")
 
-const Comment = ({onResponse, data, isResponse, author}) => {
+const Comment = ({onResponse, data, isResponse, author, onDisplayResponses, responseDisplayed}) => {
     const subscriber = new Subscriber(data.author)
 
     const isAuthor = () => {
@@ -51,6 +51,14 @@ const Comment = ({onResponse, data, isResponse, author}) => {
 				<div className={`${isResponse ? "Response": "Answer"}`} onClick={onResponse}>
 					Répondre
 				</div>
+
+                {
+                    data.responses ? (
+                        data.responses.length > 0 ? (
+                            <span className="displayResponse" onClick={onDisplayResponses}>{responseDisplayed ? "Masquer":"Afficher"} reponses</span>
+                        ):null
+                    ):null
+                }
                 <span className="DateComment">{getRelativeDate(data.creation_date)} </span>
 			</div>
         </div>

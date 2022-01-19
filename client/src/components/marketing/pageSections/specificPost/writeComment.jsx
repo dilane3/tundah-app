@@ -1,37 +1,59 @@
-import React ,{useContext, useState} from 'react'
-import { BsEmojiHeartEyes } from "react-icons/bs"
+import React ,{useContext, useEffect, useRef, useState} from 'react'
+import { BsEmojiHeartEyes, BsX } from "react-icons/bs"
 import Button from '../../../elements/buttons/Button'
 import {instance} from '../../../../utils/url'
 import Subscriber from '../../../../entities/Subscriber'
 import './commentPost.css'
 import postsContext from '../../../../dataManager/context/postsContext'
+import LoaderCircle from "../../../utils/loaders/Loader"
 
-const WriteComment  = ({idPost,idUser}) => {
+const WriteComment  = ({idPost, idUser, isResponseInput, idComment, onChangeToResponseInput}) => {
+    // defining the local state
     const [comment, setComment] = useState("")
+    const [sendingComment, setSendingComment] = useState(false)
 
     // getting data from global state
     const {addComment} = useContext(postsContext)
+
+    // reference section
+    const inputCommentRef = useRef()
+
+    // use Effect section
+    useEffect(() => {
+        if (isResponseInput) {
+            inputCommentRef.current.focus()
+        }
+    }, [isResponseInput])
 
     const handleChange = (event) =>{
         setComment(event.currentTarget.value);
     }
 
     const handleSubmit = (event)=>{
-        console.log("submit");
-        instance.post(`/comments/create`,{
+        const credentials = {
             content:comment,
             idPost,
-            idUser
-        })
+            idUser,
+            idComment: idComment ? idComment:undefined
+        }
+
+        setSendingComment(true)
+
+        instance.post(`/comments/create`, credentials)
 	 	.then((res) => {
 	 		const comment = res.data.data
 
-            addComment(idPost, comment)
+            addComment(idPost, comment, idComment)
             setComment("")
+
+            onChangeToResponseInput(false)
 	 	})
 	 	.catch(err => {
 	 		console.log(err)
 	 	})
+        .then(() => {
+            setSendingComment(false)
+        })
     }
 
     return(
@@ -40,12 +62,31 @@ const WriteComment  = ({idPost,idUser}) => {
                <BsEmojiHeartEyes size="25" className="icon" />
             </div> 
             <form className="FormComment">
-                 <input type="text" 
-                    placeholder="Votre commentaire..."
+                <input 
+                    ref={inputCommentRef}
+                    type="text" 
+                    placeholder={`${isResponseInput ? "Votre reponse":"Votre commentaire..."}`}
                     onChange={handleChange}
-                    value={comment} />
+                    value={comment} 
+                />
+
+                {
+                    isResponseInput ? (
+                        <span className="closeResponseInput" onClick={() => onChangeToResponseInput(false)}>
+                            <BsX size={25} className="icon" color="grey" />
+                        </span>
+                    ):null
+                }
+
+                {
+                    sendingComment ? (
+                        <span className="sendingCommentLoader">
+                            <LoaderCircle color="green" size={30} />
+                        </span>
+                    ):null
+                }
                     
-                <Button size="meduim" type="submit" action={handleSubmit}>
+                <Button size="meduim" type="submit" action={handleSubmit} classe="commentBtn">
                     publier
                 </Button>
            </form>
@@ -54,18 +95,28 @@ const WriteComment  = ({idPost,idUser}) => {
 }
 
 const WriteResponseComment = ({idPost, idUser, idComment}) => {
+    // defining local state
     const [comment, setComment] = useState("")
+    const [sendingComment, setSendingComment] = useState(false)
 
     // getting data from global state
     const {addComment} = useContext(postsContext)
+
+    // reference section
+    const inputResponseRef = useRef()
+
+    // use Effect section
+    useEffect(() => {
+        inputResponseRef.current.focus()
+    }, [idComment])
 
     const handleChange = (event) =>{
         setComment(event.currentTarget.value);
     }
     
     const handleSubmit = (event)=>{
-        console.log(idComment)
-        console.log("submit");
+        setSendingComment(true)
+
         instance.post(`/comments/create`,{
             content:comment,
             idPost,
@@ -81,6 +132,9 @@ const WriteResponseComment = ({idPost, idUser, idComment}) => {
 	 	.catch(err => {
 	 		console.log(err)
 	 	})
+        .then(() => {
+            setSendingComment(false)
+        })
     }
 
     return(
@@ -89,13 +143,25 @@ const WriteResponseComment = ({idPost, idUser, idComment}) => {
                <BsEmojiHeartEyes size="25" className="icon" />
             </div> 
             <form className="FormComment">
-                 <input type="text" 
+                 <input 
+                    ref={inputResponseRef}
+                    type="text" 
                     placeholder="Ajouter une reponse..."
                     onChange={handleChange}
-                    value={comment} />
+                    value={comment}
+                    onKeyPress={(event) => event.code === "Enter" ? handleSubmit(event):null} 
+                />
+
+                {
+                    sendingComment ? (
+                        <span className="sendingCommentLoader">
+                            <LoaderCircle color="green" size={30} />
+                        </span>
+                    ):null
+                }
                     
                 <Button size="meduim" type="submit" action={handleSubmit}>
-                    publier
+                    Répondre
                 </Button>
            </form>
         </div>
