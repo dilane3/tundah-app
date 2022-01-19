@@ -34,7 +34,7 @@ const postsReducer = (state = [], action) => {
           const p = posts.find(ps => ps.id === post.id)
 
           if (!p)
-            posts.push(post)
+            posts.push((new Post(post)).getData)
         }
       }
 
@@ -82,13 +82,20 @@ const postsReducer = (state = [], action) => {
     case ADD_COMMENTS: {
       const posts = [...state]
       const {idPost, comments} = action.payload
+      console.log("hello")
 
       if (idPost && comments) {
-        const index = posts.findIndex(post => post.getId === idPost)
+        const index = posts.findIndex(post => post.id === idPost)
+        console.log(index)
 
         // we verify if we have a post
         if (index > -1) {
-          posts[index].addComments(comments)
+          const post = posts[index]
+
+          post = post.addComments(comments)
+
+          console.log(post)
+          posts[index] = post
         }
       }
 

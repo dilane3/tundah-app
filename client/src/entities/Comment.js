@@ -5,7 +5,7 @@ class Comment extends InterfaceComment {
   content;
   creation_date;
   edited;
-  post;
+  idPost;
   author;
   comments;
 
@@ -27,7 +27,7 @@ class Comment extends InterfaceComment {
         content, 
         creation_date, 
         edited, 
-        post, 
+        idPost, 
         author, 
         comments
       } = data
@@ -36,7 +36,7 @@ class Comment extends InterfaceComment {
       this.content = content
       this.creation_date = creation_date
       this.edited = edited
-      this.post = post
+      this.idPost = idPost
       this.author = author
       this.comments = comments
     }
@@ -80,8 +80,8 @@ class Comment extends InterfaceComment {
   /**
    * @returns string
    */
-  get getPost() {
-    return this.post
+  get getIdPost() {
+    return this.idPost
   }
 
   /**

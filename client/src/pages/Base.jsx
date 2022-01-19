@@ -105,6 +105,7 @@ const Base = ({children}) => {
           let skipValue = res.data.skip
 
           console.log({nextValue, skipValue})
+          console.log(res.data)
 
           // adding posts
           addPosts(postData)

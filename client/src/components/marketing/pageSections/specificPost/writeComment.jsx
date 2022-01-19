@@ -1,14 +1,45 @@
 import React ,{useState} from 'react'
 import { BsEmojiHeartEyes } from "react-icons/bs"
 import Button from '../../../elements/buttons/Button'
+import {instance} from '../../../../utils/url'
+import Subscriber from '../../../../entities/Subscriber'
 import './commentPost.css'
 
-const WriteComment  = () => {
+const WriteComment  = ({idPost,idUser}) => {
     const [comment, setComment] = useState("")
 
     const handleChange = (event) =>{
         setComment(event.currentTarget.value);
     }
+
+    const handleSubmit = (event)=>{
+        console.log("submit");
+        instance.post(`/comments/create`,{
+            content:comment,
+            idPost,
+            idUser
+        })
+	 	.then((res) => {
+	 		console.log(res.data)
+	 	})
+	 	.catch(err => {
+	 		console.log(err)
+	 	})
+    }
+
+    // const handleLikePost = (id) => {
+	// 	instance.post(`/posts/like/${id}`)
+	// 	.then((res) => {
+	// 		console.log(res.data)
+	// 	})
+	// 	.catch(err => {
+	// 		console.log(err)
+	// 	})
+	// 	.then(() => {
+	// 		likePost(id, currentUser.id)
+	// 		likeUserPost(id)
+	// 	})
+	// }
 
     return(
         <div className="WriteCommentContent">
@@ -21,7 +52,7 @@ const WriteComment  = () => {
                     onChange={handleChange}
                     value={comment} />
                     
-                <Button size="meduim">
+                <Button size="meduim" type="submit" action={handleSubmit}>
                     publier
                 </Button>
            </form>
@@ -29,11 +60,28 @@ const WriteComment  = () => {
     )
 }
 
-const WriteResponseComment = () => {
+const WriteResponseComment = ({idPost, idUser, idComment}) => {
     const [comment, setComment] = useState("")
 
     const handleChange = (event) =>{
         setComment(event.currentTarget.value);
+    }
+    
+    const handleSubmit = (event)=>{
+        console.log(idComment)
+        console.log("submit");
+        instance.post(`/comments/create`,{
+            content:comment,
+            idPost,
+            idUser,
+            idComment
+        })
+	 	.then((res) => {
+	 		console.log(res.data)
+	 	})
+	 	.catch(err => {
+	 		console.log(err)
+	 	})
     }
 
     return(
@@ -47,7 +95,7 @@ const WriteResponseComment = () => {
                     onChange={handleChange}
                     value={comment} />
                     
-                <Button size="meduim">
+                <Button size="meduim" type="submit" action={handleSubmit}>
                     publier
                 </Button>
            </form>

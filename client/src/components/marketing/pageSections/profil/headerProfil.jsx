@@ -18,6 +18,12 @@ const checkUsername = (username, currentUser) => {
     return username === currentUser.username
 }
 
+const image1 = require("../../../../medias/img/chinoise.jpg")
+const image2 = require("../../../../medias/img/mariage.jpg")
+const image3 = require("../../../../medias/img/test.jpg")
+
+// const profilUpdate
+
 const StatPostItem = ({title, number}) => {
 	return (
 		<div className="profilCardPost">

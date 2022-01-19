@@ -285,6 +285,7 @@ class PostModel extends InterfacePostModel {
         const result = await session.run(query);
 
         const postData = await this.gettingMoreInfos(result, "posts");
+        console.log({postData})
 
         console.log({ postNumber, skip });
         console.log({ postData });
