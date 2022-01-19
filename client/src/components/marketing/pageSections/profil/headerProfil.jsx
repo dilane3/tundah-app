@@ -168,6 +168,24 @@ const HeaderProfil  = () => {
         setDisplayProfilUpload(true)
     }
 
+    // this methods allow the current user to like a post which is owned by another user
+    // whose the profil is displayed
+    const likeOtherUserPost = (idPost, idUser) => {
+        const userClone = new Subscriber({...user.getUserData})
+
+        const newPosts = userClone.posts.map(post => {
+            if (post.id === idPost) {
+                post = post.likePost(idUser)
+            }
+
+            return post
+        })
+
+        const newUser = new Subscriber({...userClone.getUserData, posts: newPosts})
+
+        setUser(newUser)
+    }
+
     const handleLikePost = (idPost) => {
         instance.post(`/posts/like/${idPost}`)
 		.then((res) => {
@@ -177,8 +195,16 @@ const HeaderProfil  = () => {
 			console.log(err)
 		})
 		.then(() => {
-            likePost(idPost, currentUser.id)
-            likeUserPost(idPost)
+            // we verify if the post liked if for the current user or not
+            if (checkUsername(username, currentUser)) {
+                likePost(idPost, currentUser.id)
+                likeUserPost(idPost)
+            } else {
+                likePost(idPost, currentUser.id)
+                // to do
+
+                likeOtherUserPost(idPost, currentUser.id)
+            }
 		})
     }
 
@@ -308,7 +334,7 @@ const HeaderProfil  = () => {
                                     })
                                 ):(
                                     user.getProposedPosts.map(post => {
-                                        return <Post key={post.id} postData={post} onLikePost={handleLikePost}/>
+                                        return <Post key={post.id} postData={post} onLikePost={handleLikePost} published={false}/>
                                     })
                                 )
                             }

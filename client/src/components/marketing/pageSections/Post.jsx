@@ -15,7 +15,9 @@ import { Link } from 'react-router-dom'
 import {  ressourcesUrl } from "../../../utils/url"
 import { getRelativeDate } from '../../../utils/dateOperations'
 
-const PostComponent = ({postData, onLikePost}) => {
+const PostComponent = ({postData, onLikePost, published}) => {
+	const isPublished = published === undefined || published === true ? true:false
+
 	// getting data from the global state
 	const {currentUser} = useContext(currentUserContext)
 
@@ -111,7 +113,7 @@ const PostComponent = ({postData, onLikePost}) => {
 			</main>
 
 			{
-				currentUser ? (
+				currentUser && isPublished ? (
 					<footer className="post-footer mt-3 px-2 md:mt-3 flex items-center space-x-6">
 						<div className="flex items-center space-x-1" onClick={() => onLikePost(post.getId)}>
 							{
