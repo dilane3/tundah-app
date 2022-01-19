@@ -34,8 +34,8 @@ body{
 }
 
 .post-title {
-	font-size: 18px;
-	font-weight: 800;
+	/*font-size: 18px;*/
+	/*font-weight: 800;*/
 	width: calc(100% - 10px);
 	margin: 10px auto;
 }

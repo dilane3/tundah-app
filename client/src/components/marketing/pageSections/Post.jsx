@@ -107,7 +107,7 @@ const PostComponent = ({postData, onLikePost}) => {
 			  </div>
 			</header>
 			<main className="">
-				<div className="post-title">
+				<div className="post-title font-bold text-base">
 					{post.getTitle[0].toUpperCase() + post.getTitle.substr(1).toLowerCase()}
 				</div>
 				<Link to={`/post/${post.getId}`}>
