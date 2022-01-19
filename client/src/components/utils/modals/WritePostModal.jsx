@@ -13,8 +13,13 @@ import DisplayPhoto from './DisplayPhoto'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
 import {instance} from "../../../utils/url"
 import LoaderCircle from "../loaders/Loader"
+import postsContext from '../../../dataManager/context/postsContext'
+import { ADD_POST } from '../../../dataManager/data/posts/type'
+// import postReducer from '../../../dataManager/data/posts/postsReducer'
 
 const WritePostModal = (props) => {
+
+	const postsContextValue = useContext(postsContext)
 
 	const { 
 			show, 
@@ -38,6 +43,7 @@ const WritePostModal = (props) => {
 	//context
 	const { currentUser } = useContext(currentUserContext)
 	const user = new Subscriber(currentUser)
+	const contextPost = useContext(postsContext)
 
 	//ref
 	const inputImagesRef = useRef()
