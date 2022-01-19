@@ -6,12 +6,11 @@ const H2 = (props) => {
 
   return (
     <h2 className={`
+      ${classe}
       text-2xl md:text-3xl lg:text-4xl 
       font-extrabold 
       font-primary
       leading-snug
-      capitalize 
-      ${classe}
     `}>
       {children}
     </h2>

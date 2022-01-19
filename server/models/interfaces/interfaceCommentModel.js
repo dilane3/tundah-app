@@ -31,6 +31,12 @@ class InterfaceCommentModel {
     getAllComments() {
       throw new Error("Error you have to implemnt this function");
     }
+    /**
+     * This method retrieves all responses to comment
+    */
+     getAllResponses() {
+      throw new Error("Error you have to implemnt this function");
+    }
   
     /**
     * This method update a comment

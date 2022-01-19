@@ -9,7 +9,7 @@ const currentUserContext = React.createContext({
   createPost: (post) => {},
   updateProfil: (profil) => {},
   updateUser: (data) => {},
-  likePost: (idPost) => {}
+  likeUserPost: (idPost) => {}
 })
 
 export default currentUserContext

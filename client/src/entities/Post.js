@@ -1,3 +1,4 @@
+import Comment from './Comment.js';
 import InterfacePost from './interfaces/interfacePost.js'
 
 class Post extends InterfacePost {
@@ -11,6 +12,7 @@ class Post extends InterfacePost {
   region;
   tribe;
   comments;
+  commentsData;
   likes;
   author;
   subAuthors;
@@ -38,7 +40,8 @@ class Post extends InterfacePost {
         published, 
         region, 
         tribe, 
-        comments, 
+        comments,
+        commentsData, 
         author,
         subAuthors,
         likes
@@ -54,6 +57,7 @@ class Post extends InterfacePost {
       this.region = region
       this.tribe = tribe
       this.comments = comments
+      this.commentsData = commentsData ? commentsData:[];
       this.author = author
       this.subAuthors = subAuthors
       this.likes = likes
@@ -130,6 +134,10 @@ class Post extends InterfacePost {
     return this.comments
   }
 
+  get getCommentsData() {
+    return this.commentsData
+  }
+
   /**
    * @returns User
    */
@@ -176,16 +184,22 @@ class Post extends InterfacePost {
   }
 
   addComments (comments) {
-    this.comments = comments
+    this.commentsData = comments.map(comment => new Comment(comment))
+
+    return this
   }
 
   addComment (comment) {
-    this.comments.push(comment)
+    this.commentsData.push((new Comment(comment)))
+  }
+
+  incrementNumberComment () {
+    this.comments += 1
   }
 
   getComment (idComment) {
-    const index = this.comments.findIndex(comment => comment.getId === idComment)
-
+    const index = this.commentsData.findIndex(comment => comment.id === idComment)
+    console.log({comments: this.commentsData, idComment})
     return index
   }
 

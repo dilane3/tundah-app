@@ -48,36 +48,29 @@ class PostModel extends InterfacePostModel {
   }
 
   /**
-   * This function return the researched posts
+   * This function return the researched posts using it's title
+   * Independent of the substring position
+   * And is case insensitive
    * @param {string} value
    * @returns post(s)
    */
   async getSearchedPosts(value) {
     const session = dbConnect();
-    
-    // const regex = new RegExp(value.toLowerCase(), 'gi')
-    // console.log(regex)
-    // const solution = { "regex" : regex}
 
     try {
       const query = `
         MATCH (post:Post{published: ${true}})
-        WHERE post.title =~ '.*(${value.toLowerCase()}).*'
+        WHERE post.title =~ '(?i).*(${value.toLowerCase()}).*'
         RETURN post
         ORDER BY post.creation_date DESC
         `;
-      // const query = `
-      //   MATCH (post:Post)
-      //   WHERE post.title =~ '$solution'
-      //   RETURN post
-      // `;
 
       const result = await session.run(query);
 
       const moreInfosData = await this.gettingMoreInfos(result, "post");
 
       if (moreInfosData.length > 0) {
-         return { data : moreInfosData }
+        return { data: moreInfosData };
       } else {
         return { data: [] };
       }
@@ -103,7 +96,7 @@ class PostModel extends InterfacePostModel {
 
       return { postNumber: result.records.length };
     } catch (err) {
-      console.log(err)
+      console.log(err);
       return { error: "Error occured while getting posts number" };
     }
   }
@@ -168,36 +161,36 @@ class PostModel extends InterfacePostModel {
   }
 
   async getAuthorOfPost(id) {
-    const session = dbConnect()
+    const session = dbConnect();
 
     try {
-      let editors = []
-      let author = null
+      let editors = [];
+      let author = null;
 
       // query for retrieving the user who has proposed the post
       const query1 = `
         MATCH (:Post{id: $id}) -[proposed_by:PROPOSED_BY]-> (user:Subscriber)
         RETURN proposed_by, user
         LIMIT 1
-      `
-      const result1 = await session.run(query1, {id})
+      `;
+      const result1 = await session.run(query1, { id });
 
       if (result1.records.length > 0) {
         // getting author who has proposed the post
-        author = result1.records[0].get("user").properties
+        author = result1.records[0].get("user").properties;
 
         // query for retrieving all the experts who have edited the post
         const query3 = `
           MATCH (post:Post{id: $id}) -[:EDITED_BY]-> (users:Expert)
           RETURN users
-        `
-        const result3 = await session.run(query3, {id})
+        `;
+        const result3 = await session.run(query3, { id });
 
         if (result3.records.length > 0) {
           // getting editors
           for (let expert of result3.records) {
-            const editor = expert.get("users").properties
-            editors.push(editor)
+            const editor = expert.get("users").properties;
+            editors.push(editor);
           }
         }
 
@@ -205,47 +198,47 @@ class PostModel extends InterfacePostModel {
           MATCH (:Post{id: $id}) -[:PUBLISHED_BY]-> (user:Expert)
           RETURN user
           LIMIT 1
-        `
-        const result4 = await session.run(query4, {id})
+        `;
+        const result4 = await session.run(query4, { id });
 
         if (result4.records.length > 0) {
-          const editor = result4.records[0].get("user").properties
-          editors.push(editor)
+          const editor = result4.records[0].get("user").properties;
+          editors.push(editor);
         }
       } else {
         const query2 = `
           MATCH (:Post{id: $id}) -[:PUBLISHED_BY]-> (user:Expert)
           RETURN user
           LIMIT 1
-        `
-        const result2 = await session.run(query2, {id})
+        `;
+        const result2 = await session.run(query2, { id });
 
         if (result2.records.length > 0) {
           // getting author who has published the post
-          author = result2.records[0].get("user").properties
+          author = result2.records[0].get("user").properties;
         }
 
         // query for retrieving all the experts who have edited the post
         const query4 = `
           MATCH (:Post{id: $id}) -[:EDITED_BY]-> (users:Expert)
           RETURN users
-        `
-        const result4 = await session.run(query4, {id})
+        `;
+        const result4 = await session.run(query4, { id });
 
         if (result4.records.length > 0) {
           // getting editors
           for (let expert of result4.records) {
-            const editor = expert.get("users").properties
-            editors.push({...editor})
+            const editor = expert.get("users").properties;
+            editors.push({ ...editor });
           }
         }
       }
 
-      return {editors, author}
-    } catch(err) {
-      return {editors: [], author: null}
+      return { editors, author };
+    } catch (err) {
+      return { editors: [], author: null };
     } finally {
-      await session.close()
+      await session.close();
     }
   }
 
@@ -257,9 +250,15 @@ class PostModel extends InterfacePostModel {
 
       const { commentsNumber } = await this.getCommentNumber(post.id);
       const { likes } = await this.getLikes(post.id);
-      const { editors, author } = await this.getAuthorOfPost(post.id)
+      const { editors, author } = await this.getAuthorOfPost(post.id);
 
-      postData.push({ ...post, likes, comments: commentsNumber, author, subAuthors: editors });
+      postData.push({
+        ...post,
+        likes,
+        comments: commentsNumber,
+        author,
+        subAuthors: editors,
+      });
     }
 
     return postData;
@@ -286,13 +285,18 @@ class PostModel extends InterfacePostModel {
         const result = await session.run(query);
 
         const postData = await this.gettingMoreInfos(result, "posts");
-
-        console.log({postNumber, skip})
         console.log({postData})
 
-        if (postNumber > Number(skip)) {
+        console.log({ postNumber, skip });
+        console.log({ postData });
+
+        if (postNumber > Number(skip) + Number(limit)) {
           return {
-            data: { data: postData, next: true, skip: Number(skip) + Number(limit) },
+            data: {
+              data: postData,
+              next: true,
+              skip: Number(skip) + Number(limit),
+            },
           };
         } else {
           return { data: { data: postData, next: false, skip: Number(skip) } };
@@ -328,9 +332,12 @@ class PostModel extends InterfacePostModel {
       const result1 = await session.run(query1, { idUser });
       const result2 = await session.run(query2, { idUser });
 
-      const publishedPost = await this.gettingMoreInfos(result1, "publishedPost");
+      const publishedPost = await this.gettingMoreInfos(
+        result1,
+        "publishedPost"
+      );
 
-      let proposedPost = await this.gettingMoreInfos(result2, "proposedPost")
+      let proposedPost = await this.gettingMoreInfos(result2, "proposedPost");
 
       // let proposedPost = result2.records.map((record) => {
       //   return record.get("proposedPost").properties;
@@ -402,9 +409,9 @@ class PostModel extends InterfacePostModel {
       });
 
       if (result.records.length > 0) {
-        const postData = result.records[0].get("post").properties;
+        const postData = (await this.gettingMoreInfos(result, "post"))
 
-        return { data: postData };
+        return { data: postData[0] };
       } else {
         return { data: null };
       }

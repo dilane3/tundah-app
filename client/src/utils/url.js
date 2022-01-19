@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // const instance = axios.create({
-// 	baseURL: "http://localhost:5000/api",
+// 	baseURL: "http://localhost:5000/api"
 // })
 
 // const instance = axios.create({
@@ -13,8 +13,14 @@ const instance = axios.create({
 })
 
 // const instance = axios.create({
-// 	baseURL: "http://localhost:3001/api/posts"
+// 	baseURL: "http://localhost:3001/api"
 // })
+
+// const ressourcesUrl = {
+// 	profil: "http://localhost:3001/static/images/profil",
+// 	postImages: "http://localhost:3001/static/images/post",
+// 	postVideos: "http://localhost:3001/static/videos"
+// }
 
 const ressourcesUrl = {
 	profil: "https://tundah-server.herokuapp.com/static/images/profil",

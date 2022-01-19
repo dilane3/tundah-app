@@ -4,6 +4,7 @@
    width: 100%;
    background-color: white;
    border: 1px solid rgb(206, 206, 206);
+   margin-bottom: 100px;
 }
 
 .contentCommentPage section{
@@ -12,6 +13,7 @@
 }
 .firstElement{
     width: 100%;
+    overflow-y: hidden;
 }
 
 .firstElement:not(:last-child) {
@@ -21,7 +23,17 @@
 .secondElement{
     width: calc(100% - 40px);
     margin-left: auto;
+    padding-top: 10px;
+    height: auto;
+    transition: all .5s;
+    opacity: 1;
 }
+
+.responsesSectionAnimation {
+    opacity: 0;
+    height: 0;
+}
+
 .WriteCommentContent,
 .WriteCommentResponseContent{
     display: flex;
@@ -35,6 +47,7 @@
     border-bottom: 1px solid rgb(206, 206, 206);
 }
 .FormComment{
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -53,13 +66,48 @@
     color: rgb(56, 56, 56);
     font-size: 14px;
 }
+
+.FormComment button.commentBtn {
+    width: 80px;
+    text-align: center;
+    padding: 10px 20px;
+}
+
+.FormComment button {
+    padding: 10px;
+    background-color: #3c6a46;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.closeResponseInput {
+    position: absolute;
+    top: 50%;
+    right: 100px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.sendingCommentLoader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(calc(-50% - 30px), -50%);
+    cursor: pointer;
+}
+
+.closeResponseInput svg {
+    font-weight: bold;
+}
+
 .CommentContent{
     display:flex;
     flex-direction: column;
     font-size: 14px;
     width: 100%;
     background-color: white;
-    padding:15px;
+    padding:10px;
     align-items: flex-start;
 }
 
@@ -101,6 +149,14 @@ div.header-PostproposeInfoImg {
     font-weight: bold;
     width: calc(100% - 4px);
 }
+.isAuthor {
+    font-size: 12px;
+    background-color: #3c6a46;
+    color: #fff;
+    border-radius: 2px;
+    padding: 2px 5px;
+    margin-left: 2px;
+}
 .BsThreeDotIcon{
   color: #575656;
   font-size: 1.8rem;
@@ -109,8 +165,11 @@ div.header-PostproposeInfoImg {
   justify-content: flex-end;
 }
 .TextComment{
+    width: calc(100% - 10px);
+    min-height: 50px;
     height: auto;
-    border: 1px solid rgb(170, 170, 170);
+    /* border: 1px solid rgb(170, 170, 170); */
+    background-color: rgb(245, 245, 245);
     padding: 10px;
     margin-left: 10px;
     border-radius: 5px;
@@ -127,13 +186,25 @@ div.header-PostproposeInfoImg {
     display: flex;
     flex-direction: row;
 }
-.Answer{
-    margin-left: 10px;
-    padding-left: 10px;
-    border-left: 1px solid rgb(170, 170, 170);
+.Response,
+.Answer,
+.displayResponse {
     font-size: 14px;
     font-weight: bold;
 }
+
+.Answer {
+    margin-left: 10px;
+    padding-left: 10px;
+    border-left: 1px solid rgb(170, 170, 170);
+}
+
+.displayResponse {
+    margin-left: 15px;
+    color: #3c6a46;
+    cursor: pointer;
+}
+
 .DateComment{
     margin-left: auto;
     color: gray;

@@ -1,10 +1,13 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Body from './body/BodyWiki'
 import Seo from '../../components/utils/seo/Seo'
 import Base from '../Base'
+import WritePost from '../../components/marketing/pageSections/WritePost'
+import currentUserContext from '../../dataManager/context/currentUserContent'
 
 
 const Wiki = () => {
+	const {currentUser} = useContext(currentUserContext)
 	return(
 		<div className="">
 			<Seo
@@ -12,6 +15,9 @@ const Wiki = () => {
 				description="tundah est un réseau social qui met en avant la culture africaine pour la transmettre à la génération futur"
 			/>
 			<Base>
+				{
+					currentUser ? <WritePost /> : null
+				}
 				<Body />
 			</Base>
 		</div>

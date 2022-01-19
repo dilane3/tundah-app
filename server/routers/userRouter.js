@@ -8,6 +8,7 @@ const userRouter = express.Router()
 const {
   getUser,
   getCurrentUser,
+  getSearchedUsers,
   signup,
   signin,
   updateUser,
@@ -21,6 +22,7 @@ const {
 
 userRouter.get("/current", authenticationMiddleware, getCurrentUser)
 userRouter.get("/:username", authenticationMiddleware, getUser)
+userRouter.get("/search/:value", getSearchedUsers);
 userRouter.post("/signup", signup)
 userRouter.post("/signin", signin)
 userRouter.patch("/update", authenticationMiddleware, updateUser)

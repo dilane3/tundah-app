@@ -1,39 +1,62 @@
 import React from 'react'
 import { BsThreeDots, BsChat } from 'react-icons/bs'
 import ImgCircle from '../../../elements/imgCircle/ImgCircle'
+import Subscriber from '../../../../entities/Subscriber'
+import { getRelativeDate } from '../../../../utils/dateOperations'
 import './commentPost.css'
+import {ressourcesUrl} from "../../../../utils/url"
 
-const image = require("../../../../medias/img/test.jpg")
+const Comment = ({onResponse, data, isResponse, author, onDisplayResponses, responseDisplayed}) => {
+    const subscriber = new Subscriber(data.author)
 
-const Comment = ({onResponse}) => {
+    const isAuthor = () => {
+        if (author.id === data.author.id) {
+            return (
+                <span className="isAuthor">Auteur</span>
+            )
+        }
+
+        return null
+    }
 
     return(
         <div className="CommentContent">
             <div className="header-PostproposeInfo">
-                <ImgCircle src={image} alt="profil" size="small" classe="header-PostproposeInfoImg" />
+                <ImgCircle src={`${ressourcesUrl.profil}/${subscriber.getProfil}`} alt="profil" size="small" classe="header-PostproposeInfoImg" />
                 <div className="Info-Comment">
                    <div className="Info-User">
-                        <span className="Username">Kana Blondelle</span>
+                        <span className="Username">{subscriber.getName} {isAuthor()}</span>
                         <div className="BsThreeDotIcon">
                           <BsThreeDots/>
                         </div>
                     </div>
                     <div className="TextComment">
-                        Durant les cérémonies de mariages, nous assistons souvent à des litiges
-                        opposant Toutes les coutumes aofrutieutuiruyuruhyuiioopp...
+                        {data.content}
                     </div>
                 </div>  
             </div>
             <div className="IconComment">
-				<div className="BiMessageRounded">
-                    <BsChat size="20" className="icon" />
-					<span className="NumberL">115</span>
-				</div>
+                {
+                    !isResponse ? (
+                        <div className="BiMessageRounded">
+                            <BsChat size="20" className="icon" />
+                            <span className="NumberL">{data.responses.length}</span>
+                        </div>
+                    ):null
+                }
 
-				<div className="Answer" onClick={onResponse}>
+				<div className={`${isResponse ? "Response": "Answer"}`} onClick={onResponse}>
 					Répondre
 				</div>
-                <span className="DateComment">Il ya 2h </span>
+
+                {
+                    data.responses ? (
+                        data.responses.length > 0 ? (
+                            <span className="displayResponse" onClick={onDisplayResponses}>{responseDisplayed ? "Masquer":"Afficher"} reponses</span>
+                        ):null
+                    ):null
+                }
+                <span className="DateComment">{getRelativeDate(data.creation_date)} </span>
 			</div>
         </div>
     )

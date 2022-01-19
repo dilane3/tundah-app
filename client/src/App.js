@@ -50,6 +50,10 @@ function App() {
     next: false,
     skip: 0
   })
+  const [proposedPostsArgs, setProposedPostsArgs] = useState({
+    next: true,
+    skip: 0
+  })
 
   // current User actions
   const userLogin = (data) => {
@@ -136,6 +140,10 @@ function App() {
     dispatchProposedPosts(validateProposedPost(idPost))
   }
 
+  const setMoreProposedPostsArgs = (next, skip) => {
+    setProposedPostsArgs(state => ({...state, next, skip}))
+  }
+
   // navigation action
   const navigateTo = (target) => {
     setNavigation(target)
@@ -188,12 +196,11 @@ function App() {
 
   const proposedPostContextValue = {
     proposedPosts,
-    next: false,
-    skip: 0,
+    ...proposedPostsArgs,
     deletePost: proposedPostsDeletePost,
     updatePost: proposedPostsUpdatePost,
     addPosts: proposedPostsAddPosts,
-    setMorePostArgs: () => {},
+    setMoreProposedPostsArgs,
     validatePost: proposedPostValidate
   }
 
