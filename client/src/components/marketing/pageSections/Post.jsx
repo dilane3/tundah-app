@@ -17,6 +17,7 @@ import { getRelativeDate } from '../../../utils/dateOperations'
 
 const imagesExtensions = [ "jpeg", "png", "gif", "bmp", "jpg" ]
 const checkCurrentUser = (author, currentUser) => {
+	if (!currentUser) return false
 	return author.getId === currentUser.id
 }
 

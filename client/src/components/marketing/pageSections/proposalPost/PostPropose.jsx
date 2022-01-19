@@ -11,6 +11,7 @@ import { ressourcesUrl } from '../../../../utils/url'
 import { Link } from 'react-router-dom'
 
 const imageMariage= require("../../../../medias/img/mariage.jpg")
+const imagesExtensions = [ "jpeg", "png", "gif", "bmp", "jpg" ]
 
 const PostPropose = ({type, postData}) => {
     type = type ? type:"proposal_post"
@@ -38,6 +39,13 @@ const PostPropose = ({type, postData}) => {
         
         return content
     }
+
+    const checkExtension = (str) => {
+		const tabSplit = str.split(".")
+		const extension = tabSplit[tabSplit.length - 1]
+
+		return imagesExtensions.includes(extension)
+	}
 
     return(
         <div className="PostPropose"> 
@@ -76,7 +84,19 @@ const PostPropose = ({type, postData}) => {
                 {
                     post.getFilesList.length > 0 ? (
                         <div onClick={() => setShowDisplayPhotoModal(true)} className="proposePost-img">
-                            <Image image={imageMariage} className="CardImage" />
+                            {
+                                checkExtension(post.getFilesList[0]) ? (
+                                    <Image image={ `${ressourcesUrl.postImages}/${post.getFilesList[0]}` } className="CardImage" />
+                                ):(
+                                    <video controls className="CardImage">
+
+                                        <source src={ `${ressourcesUrl.postVideos}/${post.getFilesList[0]}` }
+                                                type="video/webm" />
+
+                                        Sorry, your browser doesn't support embedded videos.
+                                    </video>
+                                )
+                            }
                         </div>
                     ):null
                 }
