@@ -1,6 +1,5 @@
 import React ,{useContext, useEffect, useRef, useState} from 'react'
 import { BsEmojiHeartEyes, BsX } from "react-icons/bs"
-import Button from '../../../elements/buttons/Button'
 import {instance} from '../../../../utils/url'
 import './commentPost.css'
 import postsContext from '../../../../dataManager/context/postsContext'
