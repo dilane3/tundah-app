@@ -76,6 +76,14 @@ class CommentModel extends InterfaceCommentModel {
 
     try {
       const comments = []
+      const allRes = []
+      let commentsResp = []
+
+      for (let comment of commentData){
+        if(comment.is_response){
+          allRes.push(comment)
+        }
+      }
 
       for (let comment of commentData) {
         if(!comment.is_response){
@@ -87,17 +95,21 @@ class CommentModel extends InterfaceCommentModel {
           const result = await session.run(query, {idComment: comment.id})
           console.log("comrecord:",result.records)
           if (result.records.length > 0) {
-            const commentsResp = result.records.map(record => {
-              return record.get("respComments").properties
-            })
+            
+            for (let respComment of result.records){
+              for (let oneRes of allRes){
+                if (respComment.get("respComments").properties.id === oneRes.id){
+                  commentsResp.push(oneRes)
+                }
+              }
+            }
 
             comments.push({...comment, responses: commentsResp})
-          }else{
+          } else {
             comments.push({...comment, responses: []})
           }
-          
         }
-      
+        
       }
 
       if (comments.length > 0) {
@@ -121,10 +133,6 @@ class CommentModel extends InterfaceCommentModel {
     const session = dbConnect();
 
     try {
-      // const query = `
-      //   MATCH (post:Post{id: $idPost}) - [:HAS_COMMENT] -> (comment:Comment{is_response: ${false}})
-      //   RETURN comment
-      // `;
       const query = `
         MATCH (post:Post{id: $idPost}) - [:HAS_COMMENT] -> (comment:Comment)
         MATCH (comment:Comment) - [:BELONGS_TO] -> (post:Post{id: $idPost})
@@ -136,12 +144,10 @@ class CommentModel extends InterfaceCommentModel {
       let commentData = (await this.getCommentsAuthor(result))
       const {data, error} = (await this.getAllResponses(commentData))
 
-      console.log("commentData_notfull",commentData)
-
       if (data) {
         commentData = data
       }
-      console.log("Data_res",data)
+
       if (!commentData) {
         commentData = result.records.map((record) => {
           return record.get("comment").properties;
@@ -150,7 +156,7 @@ class CommentModel extends InterfaceCommentModel {
 
       return { data: commentData };
     } catch (err) {
-      console.log("texte1")
+      
       console.log(err)
       return { error: "Error while getting the comments" };
     } finally {
