@@ -160,7 +160,7 @@ const AppSpecifificPost  = () => {
     const getPost = (id) => {
         let post = posts.find(p => p.id === id)
 
-        if (!post) {
+        if (!post && currentUser) {
             post = currentUser.posts.find(p => p.id === id)
         }
 
@@ -177,28 +177,35 @@ const AppSpecifificPost  = () => {
     return(
         <section ref={commentPageRef} className="contentCommentPage">
             <Post postData={getPost(id)} onLikePost={handleLikePost} />
-            <WriteComment 
-                idUser={currentUser.id} 
-                idPost={id} 
-                isResponseInput={isResponseInput} 
-                idComment={idComment} 
-                onChangeToResponseInput={handleChangeCommentEditorType}
-            />
-            <section>
-                {
-                    sortCommentByDate(getPost(id).commentsData).map(comment=>(
-                        <CommentBlock 
-                            key={comment.id}  
+
+            {
+                currentUser ? (
+                    <>
+                        <WriteComment 
                             idUser={currentUser.id} 
-                            post={getPost(id)} 
-                            comment={comment} 
-                            isResponseInput={isResponseInput}
-                            onChangeToResponseInput={handleChangeCommentEditorType}    
+                            idPost={id} 
+                            isResponseInput={isResponseInput} 
+                            idComment={idComment} 
+                            onChangeToResponseInput={handleChangeCommentEditorType}
                         />
-                    ))
-                }
-                
-            </section>
+                        <section>
+                            {
+                                sortCommentByDate(getPost(id).commentsData).map(comment=>(
+                                    <CommentBlock 
+                                        key={comment.id}  
+                                        idUser={currentUser.id} 
+                                        post={getPost(id)} 
+                                        comment={comment} 
+                                        isResponseInput={isResponseInput}
+                                        onChangeToResponseInput={handleChangeCommentEditorType}    
+                                    />
+                                ))
+                            }
+                            
+                        </section>
+                    </>
+                ):null
+            }
         </section>
     )
 }
