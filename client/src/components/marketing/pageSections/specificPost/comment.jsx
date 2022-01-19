@@ -9,11 +9,18 @@ import {ressourcesUrl} from "../../../../utils/url"
 
 const image = require("../../../../medias/img/test.jpg")
 
-const Comment = ({onResponse,data}) => {
-    const {author} = data;
-    const subscriber = new Subscriber(author)
-    //console.log(data)
-    //console.log("userName",subscriber.getUsername)  
+const Comment = ({onResponse, data, isResponse, author}) => {
+    const subscriber = new Subscriber(data.author)
+
+    const isAuthor = () => {
+        if (author.id === data.author.id) {
+            return (
+                <span className="isAuthor">Auteur</span>
+            )
+        }
+
+        return null
+    }
 
     return(
         <div className="CommentContent">
@@ -21,7 +28,7 @@ const Comment = ({onResponse,data}) => {
                 <ImgCircle src={`${ressourcesUrl.profil}/${subscriber.getProfil}`} alt="profil" size="small" classe="header-PostproposeInfoImg" />
                 <div className="Info-Comment">
                    <div className="Info-User">
-                        <span className="Username">{subscriber.getUsername}</span>
+                        <span className="Username">{subscriber.getName} {isAuthor()}</span>
                         <div className="BsThreeDotIcon">
                           <BsThreeDots/>
                         </div>
@@ -32,15 +39,19 @@ const Comment = ({onResponse,data}) => {
                 </div>  
             </div>
             <div className="IconComment">
-				<div className="BiMessageRounded">
-                    <BsChat size="20" className="icon" />
-					<span className="NumberL">115</span>
-				</div>
+                {
+                    !isResponse ? (
+                        <div className="BiMessageRounded">
+                            <BsChat size="20" className="icon" />
+                            <span className="NumberL">{data.responses.length}</span>
+                        </div>
+                    ):null
+                }
 
-				<div className="Answer" onClick={onResponse}>
+				<div className={`${isResponse ? "Response": "Answer"}`} onClick={onResponse}>
 					Répondre
 				</div>
-                <span className="DateComment">{getRelativeDate(data.creation_date/1000)} </span>
+                <span className="DateComment">{getRelativeDate(data.creation_date)} </span>
 			</div>
         </div>
     )

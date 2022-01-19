@@ -7,9 +7,12 @@ import postsContext from '../../../../dataManager/context/postsContext';
 import { useParams } from 'react-router';
 import currentUserContext from '../../../../dataManager/context/currentUserContent';
 import { instance } from '../../../../utils/url';
-import { addComments } from '../../../../dataManager/data/posts/postsActions';
 
-const CommentBlock = ({comment, idPost, idUser}) => {
+const sortCommentByDate = (comments) => {
+    return comments.sort((c1, c2) => c2.creation_date - c1.creation_date)
+}
+
+const CommentBlock = ({comment, post, idUser}) => {
     const [showResponseInput, setShowResponseInput] = useState(false);
 
     // defining reference of element
@@ -21,32 +24,25 @@ const CommentBlock = ({comment, idPost, idUser}) => {
         commentBlockRef.current.scrollIntoView({behavior: "smooth", block: "end", inline: "nearest"})
     }
 
-    // return (
-    //     <div ref={commentBlockRef} className="firstElement">
-    //         {comments.map(comment=>( 
-    //             <div>
-    //                 <Comment onResponse={handleActivateResponse} comment={comment} />   
-    //                 <div className="secondElement">
-    //                     <Comment onResponse={handleActivateResponse} comment={comment} />
-    //                 </div> 
-    //             </div>
-    //         ))}  
-    //         {showResponseInput ? (
-    //             <WriteResponseComment />
-    //         ):null}        
-            
-    //    </div>    
-    // )
-
     return (
         <div ref={commentBlockRef} className="firstElement">
-            <Comment data={comment} onResponse={handleActivateResponse} />
+            <Comment 
+                data={comment} 
+                onResponse={handleActivateResponse} 
+                author={post.author}
+            />
 
             <div className="secondElement">
                 {
-                    comment.responses.map(response => {
+                    sortCommentByDate(comment.responses).map(response => {
                         return (
-                            <Comment key={response.id} data={response} onResponse={handleActivateResponse} />
+                            <Comment 
+                                key={response.id} 
+                                data={response} 
+                                onResponse={handleActivateResponse} 
+                                isResponse={true}
+                                author={post.author}
+                            />
                         )
                     })
                 }
@@ -54,7 +50,7 @@ const CommentBlock = ({comment, idPost, idUser}) => {
                     
             {
                 showResponseInput ? (
-                    <WriteResponseComment idPost={idPost} idUser={idUser} idComment={comment.id} />
+                    <WriteResponseComment idPost={post.id} idUser={idUser} idComment={comment.id} />
                 ):null
             }
         </div>
@@ -62,9 +58,8 @@ const CommentBlock = ({comment, idPost, idUser}) => {
 }
 
 const AppSpecifificPost  = () => {
-    const {posts, likePost} = useContext(postsContext)
+    const {posts, likePost, addComments} = useContext(postsContext)
     const {likeUserPost, currentUser} = useContext(currentUserContext)
-    const [comments, setComments] = useState([])
     const {id} = useParams()
 
     // defining ref
@@ -76,10 +71,22 @@ const AppSpecifificPost  = () => {
 
 		instance.defaults.headers.common["authorization"] = `Bearer ${token}`
 	}, [])
-	
-	useEffect(() => {
-		console.log(posts)
-	}, [posts])
+
+    useEffect(() => {
+        commentPageRef.current.scrollIntoView()
+    }, [])
+
+    useEffect(() => {
+        instance.get(`/comments/all/${id}`)
+        .then(res => {
+            const comments = res.data;
+
+            addComments(id, comments);
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+    }, [])
 
 	const handleLikePost = (id) => {
 		instance.post(`/posts/like/${id}`)
@@ -107,49 +114,16 @@ const AppSpecifificPost  = () => {
         return post
     }
 
-    useEffect(() => {
-        commentPageRef.current.scrollIntoView()
-    }, [])
-
-    useEffect(() => {
-        instance.get(`/comments/all/${id}`)
-        .then(res => {
-            const comments = res.data;
-            setComments(comments);
-            console.log("les comments",comments)
-
-            addComments(id, {...comments, id});
-        })
-        .catch(err=>{
-            console.log(err);
-        })
-        return()=>{
-            setComments({})
-        }
-    }, [])
-
-    // const handleUser = (id) => {
-	// 	instance.get(`/posts/like/${id}`)
-	// 	.then((res) => {
-	// 		console.log(res.data)
-	// 	})
-	// 	.catch(err => {
-	// 		console.log(err)
-	// 	})
-	// 	.then(() => {
-	// 		likePost(id, currentUser.id)
-	// 		likeUserPost(id)
-	// 	})
-	// }
-
     return(
         <section ref={commentPageRef} className="contentCommentPage">
             <Post postData={getPost(id)} onLikePost={handleLikePost} />
             <WriteComment idUser={currentUser.id} idPost={id}/>
             <section>
-                {comments.map(comment=>(
-                    <CommentBlock key={comment.id}  idUser={currentUser.id} idPost={id} comment={comment} />
-                ))}
+                {
+                    sortCommentByDate(getPost(id).commentsData).map(comment=>(
+                        <CommentBlock key={comment.id}  idUser={currentUser.id} post={getPost(id)} comment={comment} />
+                    ))
+                }
                 
             </section>
         </section>

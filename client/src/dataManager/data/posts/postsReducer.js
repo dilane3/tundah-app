@@ -44,6 +44,8 @@ const postsReducer = (state = [], action) => {
     case ADD_POST: {
       const posts = [...state]
 
+      console.log({comments: action.payload})
+
       if (action.payload) {
         posts.push(action.payload)
       }
@@ -55,6 +57,8 @@ const postsReducer = (state = [], action) => {
       const posts = [...state]
       const {idPost, comment, responseTo} = action.payload
 
+      console.log(responseTo)
+
       if (idPost && comment) {
         const index = posts.findIndex(post => post.getId === idPost)
 
@@ -63,15 +67,24 @@ const postsReducer = (state = [], action) => {
           // responseTo contains the id of a specific comment
           if (responseTo) {
             // we get the position of the comment inside the comments table of the post
-            const indexComment = posts.getComment(responseTo)
+            console.log(posts[index])
+            let post = new Post(posts[index])
+
+            const indexComment = post.getComment(responseTo)
+            console.log(post)
 
             // if it exist
             if (indexComment > -1) {
               // we add the comment inside the table of response comment of the comment
-              posts[index].getComments()[indexComment].addCommentResponse(comment)
+              post.getCommentsData[indexComment].addCommentResponse(comment)
+              console.log(post)
+
+              posts[index] = post.getData
             }
           } else {
-            posts[index].addComment(comment)
+            console.log("hey")
+            console.log(comment)
+            posts[index].addComment({...comment, responses: []})
           }
         }
       }
@@ -82,7 +95,8 @@ const postsReducer = (state = [], action) => {
     case ADD_COMMENTS: {
       const posts = [...state]
       const {idPost, comments} = action.payload
-      console.log("hello")
+      
+      console.log({comments})
 
       if (idPost && comments) {
         const index = posts.findIndex(post => post.id === idPost)
@@ -90,7 +104,7 @@ const postsReducer = (state = [], action) => {
 
         // we verify if we have a post
         if (index > -1) {
-          const post = posts[index]
+          let post = posts[index]
 
           post = post.addComments(comments)
 

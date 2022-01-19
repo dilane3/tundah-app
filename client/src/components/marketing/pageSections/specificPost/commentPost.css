@@ -59,7 +59,7 @@
     font-size: 14px;
     width: 100%;
     background-color: white;
-    padding:15px;
+    padding:10px;
     align-items: flex-start;
 }
 
@@ -101,6 +101,14 @@ div.header-PostproposeInfoImg {
     font-weight: bold;
     width: calc(100% - 4px);
 }
+.isAuthor {
+    font-size: 12px;
+    background-color: #575656;
+    color: #fff;
+    border-radius: 2px;
+    padding: 2px 5px;
+    margin-left: 2px;
+}
 .BsThreeDotIcon{
   color: #575656;
   font-size: 1.8rem;
@@ -109,6 +117,8 @@ div.header-PostproposeInfoImg {
   justify-content: flex-end;
 }
 .TextComment{
+    width: calc(100% - 10px);
+    /* min-height: 80px; */
     height: auto;
     border: 1px solid rgb(170, 170, 170);
     padding: 10px;
@@ -127,12 +137,16 @@ div.header-PostproposeInfoImg {
     display: flex;
     flex-direction: row;
 }
-.Answer{
+.Response,
+.Answer {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.Answer {
     margin-left: 10px;
     padding-left: 10px;
     border-left: 1px solid rgb(170, 170, 170);
-    font-size: 14px;
-    font-weight: bold;
 }
 .DateComment{
     margin-left: auto;

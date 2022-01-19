@@ -41,14 +41,14 @@ class CommentModel extends InterfaceCommentModel {
     }
   }
 
-  async getCommentsAuthor(result) {
+  async getCommentsAuthor(result, field="comment") {
     const session = dbConnect()
 
     try {
       const comments = []
 
       for (let record of result.records) {
-        const comment = record.get("comment").properties
+        const comment = record.get(field).properties
         let query = `
           MATCH (comment:Comment{id: $id}) -[:COMMENTED_BY]-> (user:Subscriber)
           RETURN user
@@ -85,26 +85,31 @@ class CommentModel extends InterfaceCommentModel {
         }
       }
 
+      console.log({commentData})
+
       for (let comment of commentData) {
         if(!comment.is_response){
           const query = `
-          MATCH (comment:Comment{id: $idComment}) -[:HAS_RESPONSE]-> (respComments:Comment)
-          RETURN respComments
+            MATCH (comment:Comment{id: $idComment}) -[:HAS_RESPONSE]-> (respComments:Comment)
+            RETURN respComments
           `;
 
           const result = await session.run(query, {idComment: comment.id})
-          console.log("comrecord:",result.records)
+
           if (result.records.length > 0) {
+
+            // getting author of responses comments
+            const responses = (await this.getCommentsAuthor(result, "respComments"))
+
+            console.log(responses)
             
-            for (let respComment of result.records){
-              for (let oneRes of allRes){
-                if (respComment.get("respComments").properties.id === oneRes.id){
-                  commentsResp.push(oneRes)
-                }
-              }
+            // assigning response to their parent comments
+            for (let respComment of responses){
+              commentsResp.push(respComment)
             }
 
             comments.push({...comment, responses: commentsResp})
+            commentsResp = []
           } else {
             comments.push({...comment, responses: []})
           }
@@ -134,7 +139,7 @@ class CommentModel extends InterfaceCommentModel {
 
     try {
       const query = `
-        MATCH (post:Post{id: $idPost}) - [:HAS_COMMENT] -> (comment:Comment)
+        MATCH (post:Post{id: $idPost}) - [:HAS_COMMENT] -> (comment:Comment{is_response: ${false}})
         MATCH (comment:Comment) - [:BELONGS_TO] -> (post:Post{id: $idPost})
         RETURN comment
       `;
@@ -206,10 +211,10 @@ class CommentModel extends InterfaceCommentModel {
       })
       
       if (result.records.length > 0) {
-        let commentData = result.records[0].get("comment").properties;
+        let commentData = (await this.getCommentsAuthor(result))
 
         console.log("text")
-        return { data: commentData };
+        return { data: commentData[0] };
       } else {
         return { data: null };
       }
@@ -264,10 +269,10 @@ class CommentModel extends InterfaceCommentModel {
       })
       
       if (result.records.length > 0) {
-        let commentData = result.records[0].get("comment").properties;
+        let commentData = (await this.getCommentsAuthor(result))
 
         console.log("text")
-        return { data: commentData };
+        return { data: commentData[0] };
       } else {
         return { data: null };
       }

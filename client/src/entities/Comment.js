@@ -7,7 +7,7 @@ class Comment extends InterfaceComment {
   edited;
   idPost;
   author;
-  comments;
+  responses;
 
   constructor(data) {
     super()
@@ -29,7 +29,7 @@ class Comment extends InterfaceComment {
         edited, 
         idPost, 
         author, 
-        comments
+        responses
       } = data
     
       this.id = id
@@ -38,7 +38,7 @@ class Comment extends InterfaceComment {
       this.edited = edited
       this.idPost = idPost
       this.author = author
-      this.comments = comments
+      this.responses = responses
     }
   }
 
@@ -87,8 +87,8 @@ class Comment extends InterfaceComment {
   /**
    * @returns Array of Comment
    */
-  get getComments() {
-    return this.comments
+  get getResponses() {
+    return this.responses
   }
 
   /**
@@ -112,14 +112,14 @@ class Comment extends InterfaceComment {
    * @param {Comment} comment 
    */
   addCommentResponse (comment) {
-    this.comments.push(comment)
+    this.responses.push(comment)
   }
 
   deleteCommentResponse (idComment) {
-    const index = this.comments.findIndex(comment => comment.getId === idComment)
+    const index = this.responses.findIndex(comment => comment.getId === idComment)
 
     if (index > -1) {
-      this.comments.splice(index, 1)
+      this.responses.splice(index, 1)
     }
   }
 }

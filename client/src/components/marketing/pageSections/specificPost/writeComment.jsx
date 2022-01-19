@@ -1,12 +1,16 @@
-import React ,{useState} from 'react'
+import React ,{useContext, useState} from 'react'
 import { BsEmojiHeartEyes } from "react-icons/bs"
 import Button from '../../../elements/buttons/Button'
 import {instance} from '../../../../utils/url'
 import Subscriber from '../../../../entities/Subscriber'
 import './commentPost.css'
+import postsContext from '../../../../dataManager/context/postsContext'
 
 const WriteComment  = ({idPost,idUser}) => {
     const [comment, setComment] = useState("")
+
+    // getting data from global state
+    const {addComment} = useContext(postsContext)
 
     const handleChange = (event) =>{
         setComment(event.currentTarget.value);
@@ -20,26 +24,15 @@ const WriteComment  = ({idPost,idUser}) => {
             idUser
         })
 	 	.then((res) => {
-	 		console.log(res.data)
+	 		const comment = res.data.data
+
+            addComment(idPost, comment)
+            setComment("")
 	 	})
 	 	.catch(err => {
 	 		console.log(err)
 	 	})
     }
-
-    // const handleLikePost = (id) => {
-	// 	instance.post(`/posts/like/${id}`)
-	// 	.then((res) => {
-	// 		console.log(res.data)
-	// 	})
-	// 	.catch(err => {
-	// 		console.log(err)
-	// 	})
-	// 	.then(() => {
-	// 		likePost(id, currentUser.id)
-	// 		likeUserPost(id)
-	// 	})
-	// }
 
     return(
         <div className="WriteCommentContent">
@@ -63,6 +56,9 @@ const WriteComment  = ({idPost,idUser}) => {
 const WriteResponseComment = ({idPost, idUser, idComment}) => {
     const [comment, setComment] = useState("")
 
+    // getting data from global state
+    const {addComment} = useContext(postsContext)
+
     const handleChange = (event) =>{
         setComment(event.currentTarget.value);
     }
@@ -78,6 +74,9 @@ const WriteResponseComment = ({idPost, idUser, idComment}) => {
         })
 	 	.then((res) => {
 	 		console.log(res.data)
+            addComment(idPost, res.data.data, idComment)
+
+            setComment("")
 	 	})
 	 	.catch(err => {
 	 		console.log(err)

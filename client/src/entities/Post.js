@@ -40,7 +40,8 @@ class Post extends InterfacePost {
         published, 
         region, 
         tribe, 
-        comments, 
+        comments,
+        commentsData, 
         author,
         subAuthors,
         likes
@@ -56,7 +57,7 @@ class Post extends InterfacePost {
       this.region = region
       this.tribe = tribe
       this.comments = comments
-      this.commentsData = [];
+      this.commentsData = commentsData ? commentsData:[];
       this.author = author
       this.subAuthors = subAuthors
       this.likes = likes
@@ -133,6 +134,10 @@ class Post extends InterfacePost {
     return this.comments
   }
 
+  get getCommentsData() {
+    return this.commentsData
+  }
+
   /**
    * @returns User
    */
@@ -189,8 +194,8 @@ class Post extends InterfacePost {
   }
 
   getComment (idComment) {
-    const index = this.comments.findIndex(comment => comment.getId === idComment)
-
+    const index = this.commentsData.findIndex(comment => comment.id === idComment)
+    console.log({comments: this.commentsData, idComment})
     return index
   }
 
