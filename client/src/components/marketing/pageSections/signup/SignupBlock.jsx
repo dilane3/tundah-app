@@ -11,6 +11,7 @@ import AlertError from '../signin/AlertError';
 import { PAYS } from '../../../../utils/Allcountries';
 import { Redirect } from 'react-router';
 
+
 const image = require("../../../../medias/img/signup-img.png")
 
 const SignupBlock = (props) => {
@@ -21,6 +22,10 @@ const SignupBlock = (props) => {
 		password:  "",
 		country: "cameroun"
 	}
+
+	//state
+	const [showPreMessage, setShowPreMessage] = useState(true)
+
 
 	// state variables
 	const [signupData, setUserData] = useState(initialSignupData)
@@ -158,7 +163,6 @@ const SignupBlock = (props) => {
 			else others.push(country["translations"])
 		}
 
-		console.log(others)
 		return countries.sort()
 	}
 
@@ -173,7 +177,7 @@ const SignupBlock = (props) => {
 	const disabled = fullName === "" || userName === "" || email === "" || password === "" || country === "" || !checkTermsUses
 
 	return(
-		<div className={styles.signupSection}>
+		<div className={styles.signupSection} >
 				<section className={styles.signupSectionLeft}>
 					<div className={styles.signupSectionLeftContainer}>
 						<span className={styles.signupSectionLeftLogo}>

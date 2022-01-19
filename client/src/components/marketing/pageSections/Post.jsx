@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 //packages
 import { BsHeartFill, BsHeart, BsThreeDotsVertical, BsChat } from "react-icons/bs"
 //composans
@@ -15,6 +15,8 @@ import { Link } from 'react-router-dom'
 import {  ressourcesUrl } from "../../../utils/url"
 import { getRelativeDate } from '../../../utils/dateOperations'
 
+const imagesExtensions = [ "jpeg", "png", "gif", "bmp" ]
+
 const PostComponent = ({postData, onLikePost, published}) => {
 	const isPublished = published === undefined || published === true ? true:false
 
@@ -23,6 +25,9 @@ const PostComponent = ({postData, onLikePost, published}) => {
 
 	// getting props values
 	let post = new Post(postData)
+
+	//ref
+	const postContentRef = useRef()
 
 	// definition of the local state
 	const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
@@ -45,6 +50,10 @@ const PostComponent = ({postData, onLikePost, published}) => {
 		}
 	})
 
+	useEffect(() => {
+		postContentRef.current.innerHTML = post.getContent
+	}, [])
+
 
 	// some actions methods
 	const handleDisplayPhoto = (index) => {
@@ -63,6 +72,13 @@ const PostComponent = ({postData, onLikePost, published}) => {
 		} else {
 			return `${Math.floor(value / 1000)}M`
 		}
+	}
+
+	const checkExtension = (str) => {
+		const tabSplit = str.split(".")
+		const extension = tabSplit[tabSplit.length - 1]
+
+		return imagesExtensions.includes(extension)
 	}
 
 	return (
@@ -92,24 +108,32 @@ const PostComponent = ({postData, onLikePost, published}) => {
 			  </div>
 			</header>
 			<main className="">
-				<div className="post-title">
+				<div className="post-title font-bold text-base">
 					{post.getTitle[0].toUpperCase() + post.getTitle.substr(1).toLowerCase()}
 				</div>
-				<div className="px-2">
-					<Link to={`/posts/${post.getId}`}>
-						{post.getContent}
-					</Link>
-				</div>
+				<Link to={`/posts/${post.getId}`}>
+					<div ref={postContentRef} className="px-2"></div>
+				</Link>
 
 				{
 					post.getFilesList.length > 0 ? (
-						<PostCarousel
-							files={post.getFilesList}
-							onDisplayPhoto={(index) => handleDisplayPhoto(index)}
-						/>
+						checkExtension(post.getFilesList[0]) ? (
+							<PostCarousel
+								files={post.getFilesList}
+								onDisplayPhoto={(index) => handleDisplayPhoto(index)}
+								edited={true}
+							/>
+							) : (
+								<video controls className="w-full h-full">
+
+								    <source src={ `${ressourcesUrl.postVideos}/${post.getFilesList[0]}` }
+								            type="video/webm" />
+
+								    Sorry, your browser doesn't support embedded videos.
+								</video>
+							)
 					):null
 				}
-
 			</main>
 
 			{

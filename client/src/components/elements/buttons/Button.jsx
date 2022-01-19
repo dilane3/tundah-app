@@ -30,6 +30,10 @@ const Button = (props) => {
  		background = "bg-red-500"
  		backgroundHover = "bg-red-700"
  		textColor = "text-white"
+ 	}else if(theme === "gray"){
+ 		background = "bg-gray-300"
+ 		backgroundHover = "bg-red-200"
+ 		textColor = "text-gray-800"
  	}else{
  		background = "bg-primary"
  		backgroundHover = "bg-primary-hover"
@@ -70,7 +74,7 @@ const Button = (props) => {
 		<HashLink 
 			to={link} 
 			target={target}
-			onClick={ action ? (e) => action() : null}
+			onClick={ action ? (e) => action(e) : null}
 			className={`${classe} ${radius} ${padding} ${textSize} ${background} hover:${backgroundHover} ${textColor} font-primary font-semibold`}
 				>
 			{ children }

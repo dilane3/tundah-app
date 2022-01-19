@@ -1,3 +1,7 @@
+*{
+	box-sizing: border-box;
+}
+
 body{
 	/*background: red;*/
 	width: 100%;
@@ -30,8 +34,8 @@ body{
 }
 
 .post-title {
-	font-size: 18px;
-	font-weight: 800;
+	/*font-size: 18px;*/
+	/*font-weight: 800;*/
 	width: calc(100% - 10px);
 	margin: 10px auto;
 }
@@ -39,6 +43,17 @@ body{
 .writePostModal{
 	left: 50%;
 	transform: translateX(-50%);
+}
+
+.post-editor {
+	word-break: break-all;
+	max-height: 300px;
+	min-height: 60px;
+	overflow-y: scroll;
+}
+
+.post-editor:focus{
+	outline: 0;
 }
 
 @media screen and (max-width: 1200px ){
