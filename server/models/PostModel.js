@@ -409,9 +409,9 @@ class PostModel extends InterfacePostModel {
       });
 
       if (result.records.length > 0) {
-        const postData = result.records[0].get("post").properties;
+        const postData = (await this.gettingMoreInfos(result, "post"))
 
-        return { data: postData };
+        return { data: postData[0] };
       } else {
         return { data: null };
       }

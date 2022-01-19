@@ -21,7 +21,7 @@
 	opacity: .6;
 	position: absolute;
 	bottom: 0px !important;
-	width: 80px !important;
+	width: auto !important;
 	height: 30px !important;
 	left: 50%!important;
 	transform: translateX(-50%);
@@ -30,6 +30,7 @@
 	justify-content: center !important;
 	align-items: center !important;
 	border-radius: 4px !important;
+	border: 1px solid rgb(112, 112, 112);
 }
 
 .slick-dots li{
@@ -37,7 +38,6 @@
 	height: 10 !important;
 	margin: 0 !important;
 	padding: 0 !important;
-	background: black !important;
 	border-radius: 4px !important;
 }
 
@@ -49,6 +49,10 @@
 
 .slick-active{
 	@apply bg-primary !important;
+}
+
+.slick-arrow::before {
+	color: rgb(54, 54, 54) !important;
 }
 
 /* Post */

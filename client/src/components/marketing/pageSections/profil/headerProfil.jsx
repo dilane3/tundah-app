@@ -18,6 +18,10 @@ const checkUsername = (username, currentUser) => {
     return username === currentUser.username
 }
 
+const sortPostByDate = (posts) => {
+    return posts.sort((p1, p2) => p2.creation_date - p1.creation_date)
+}
+
 const StatPostItem = ({title, number}) => {
 	return (
 		<div className="profilCardPost">
@@ -329,11 +333,11 @@ const HeaderProfil  = () => {
                         <section className="postsList">
                             {
                                 postTypeToShow === "published" ? (
-                                    user.getPublishedPosts.map(post => {
+                                    sortPostByDate(user.getPublishedPosts).map(post => {
                                         return <Post key={post.id} postData={post} onLikePost={handleLikePost}/>
                                     })
                                 ):(
-                                    user.getProposedPosts.map(post => {
+                                    sortPostByDate(user.getProposedPosts).map(post => {
                                         return <Post key={post.id} postData={post} onLikePost={handleLikePost} published={false}/>
                                     })
                                 )

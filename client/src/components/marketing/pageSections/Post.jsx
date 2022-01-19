@@ -16,6 +16,9 @@ import {  ressourcesUrl } from "../../../utils/url"
 import { getRelativeDate } from '../../../utils/dateOperations'
 
 const imagesExtensions = [ "jpeg", "png", "gif", "bmp" ]
+const checkCurrentUser = (author, currentUser) => {
+	return author.getId === currentUser.id
+}
 
 const PostComponent = ({postData, onLikePost, published}) => {
 	const isPublished = published === undefined || published === true ? true:false
@@ -36,7 +39,7 @@ const PostComponent = ({postData, onLikePost, published}) => {
 
 
 	const author = new Subscriber(post.getAuthor)
-	console.log({author, postData})
+	console.log({author, currentUser})
 
 	// useEffect section
 
@@ -88,7 +91,7 @@ const PostComponent = ({postData, onLikePost, published}) => {
 					<PostImg
 						size="small"
 						alt="wangue fenyep"
-						src={`${ressourcesUrl.profil}/${author.getProfil}`}
+						src={`${ressourcesUrl.profil}/${checkCurrentUser(author, currentUser) ? currentUser.profil:author.getProfil}`}
 					 />
 					 <div className="flex flex-col space-y-1 author-info">
 						<Link to={`/profile/${author.getUsername}`}>

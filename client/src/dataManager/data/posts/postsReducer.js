@@ -77,7 +77,7 @@ const postsReducer = (state = [], action) => {
             if (indexComment > -1) {
               // we add the comment inside the table of response comment of the comment
               post.getCommentsData[indexComment].addCommentResponse(comment)
-              console.log(post)
+              post.incrementNumberComment()
 
               posts[index] = post.getData
             }
@@ -85,6 +85,7 @@ const postsReducer = (state = [], action) => {
             console.log("hey")
             console.log(comment)
             posts[index].addComment({...comment, responses: []})
+            posts[index].incrementNumberComment()
           }
         }
       }

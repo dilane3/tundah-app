@@ -193,6 +193,10 @@ class Post extends InterfacePost {
     this.commentsData.push((new Comment(comment)))
   }
 
+  incrementNumberComment () {
+    this.comments += 1
+  }
+
   getComment (idComment) {
     const index = this.commentsData.findIndex(comment => comment.id === idComment)
     console.log({comments: this.commentsData, idComment})

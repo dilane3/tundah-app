@@ -7,14 +7,13 @@ import ImgCircle from '../../elements/imgCircle/ImgCircle'
 import Button from '../../elements/buttons/Button'
 
 import Subscriber from '../../../entities/Subscriber'
-import navigationContext from '../../../dataManager/context/navigationContext'
 import PostCarousel from '../../utils/carousels/PostCarousel'
 import DisplayPhoto from './DisplayPhoto'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
-import {instance} from "../../../utils/url"
+import {instance, ressourcesUrl} from "../../../utils/url"
 import LoaderCircle from "../loaders/Loader"
 import postsContext from '../../../dataManager/context/postsContext'
-import { ADD_POST } from '../../../dataManager/data/posts/type'
+import "../../../css/app.css"
 // import postReducer from '../../../dataManager/data/posts/postsReducer'
 
 const WritePostModal = (props) => {
@@ -207,7 +206,7 @@ const WritePostModal = (props) => {
 	} = postData
 
 	return(
-		<>
+		<div style={{position: 'fixed', top: 0, left: 0, width: "100%", height: "100vh", zIndex: 5}}>
 			<Transition appear show={show} as={Fragment}>
 				<div className="fixed px-5 z-10 left-0 top-0 h-screen w-screen bg-black opacity-50">
 	        <Dialog
@@ -244,7 +243,7 @@ const WritePostModal = (props) => {
 	              leaveFrom="opacity-100 scale-100"
 	              leaveTo="opacity-0 scale-95"
 	            >
-	              <div className="writePostModal absolute z-30 top-20 inline-block w-full max-w-xl my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
+	              <div className="writePostModal absolute top-20 inline-block w-full max-w-xl overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
 	                <Dialog.Title
 	                  as="h3"
 	                  className="text-xm font-medium text-gray-900"
@@ -253,10 +252,10 @@ const WritePostModal = (props) => {
 	                </Dialog.Title>
 	                <span className="block h-0.5 w-full bg-gray-200"></span>
 	                <Dialog.Description className="mt-2 p-5">
-	               	<form onSubmit={ (event) => handleSubmit(event) }>
+	               	<form className="post-modal-form" onSubmit={ (event) => handleSubmit(event) }>
 	                  <div className="flex items-center justify-start space-x-2">
 	                  	<ImgCircle
-	                  		src={ user.getProfil }
+	                  		src={ ressourcesUrl.profil + "/" + user.getProfil }
 	                  		alt="image du curent iser"
 	                  	/>
 	                  	<div>
@@ -357,70 +356,70 @@ const WritePostModal = (props) => {
 	                 			)
 	                 		}
 
-	                  <div className="flex justify-between items-center mt-5">
-							<ul className="flex items-center space-x-6">
-								<li>
-									<BsEmojiHeartEyes 
-										size="22" 
-										color="#456445" 
-										className="cursor-pointer text-gray-900"
-									/>
-								</li>
-								<li>
-									<BsCardImage 
-										size="25" 
-										color="#456445" 
-										className="cursor-pointer text-gray-900"
-										onClick = { handleSelectImages }
-									/>
-									<input
-										type="file"
-										name="upload-photo"
-										ref = {inputImagesRef}
-										hidden
-										accept="image/*"
-										multiple
-										onChange={ handleChangePostsImages }
-									 />
-								</li>
-								<li>
-									<BsCameraVideo 
-										size="25" 
-										color="#456445" 
-										className="cursor-pointer text-gray-900"
-										onClick={handleSelectVideo}
-									/>
+	                  <div className="post-modal-control flex justify-between items-center mt-5">
+											<ul className="flex items-center space-x-6">
+												<li>
+													<BsEmojiHeartEyes 
+														size="22" 
+														color="#456445" 
+														className="cursor-pointer text-gray-900"
+													/>
+												</li>
+												<li>
+													<BsCardImage 
+														size="25" 
+														color="#456445" 
+														className="cursor-pointer text-gray-900"
+														onClick = { handleSelectImages }
+													/>
+													<input
+														type="file"
+														name="upload-photo"
+														ref = {inputImagesRef}
+														hidden
+														accept="image/*"
+														multiple
+														onChange={ handleChangePostsImages }
+													/>
+												</li>
+												<li>
+													<BsCameraVideo 
+														size="25" 
+														color="#456445" 
+														className="cursor-pointer text-gray-900"
+														onClick={handleSelectVideo}
+													/>
 
-									<input
-										type="file"
-										ref = {inputVideoRef}
-										hidden 
-										accept="video/*"
-										onChange={ handleChangePostsVideos }
-									/>
-								</li>
-							</ul>
+													<input
+														type="file"
+														ref = {inputVideoRef}
+														hidden 
+														accept="video/*"
+														onChange={ handleChangePostsVideos }
+													/>
+												</li>
+											</ul>
 
-							<div className="flex space-x-4">
-								<Button 
-									theme="gray"
-									action={ resetPostData }
-									>
-									anuler
-								</Button>
+											<div className="flex space-x-4">
+												<Button 
+													theme="gray"
+													action={ resetPostData }
+													>
+													anuler
+												</Button>
 
-								<input
-									type="submit"
-									value={ user.getRole === 0 ? "proposer" : "publier" }
-									className="px-3 bg-primary text-white text-xs rounded hover:bg-primary-hover"
-								/>
-							</div>
-							{
+												<input
+													type="submit"
+													value={ user.getRole === 0 ? "proposer" : "publier" }
+													className="px-3 bg-primary text-white text-xs rounded hover:bg-primary-hover"
+												/>
+											</div>
+											{
 
-						    	isLoading && <LoaderCircle size="180" color="#FACC15" />
-							}
-						</div>
-					</form>
+													isLoading && <LoaderCircle size="180" color="#FACC15" />
+											}
+										</div>
+									</form>
 	                </Dialog.Description>
 	              </div>
 	            </Transition.Child>
@@ -440,7 +439,7 @@ const WritePostModal = (props) => {
 	    		/>
 	    	)
 	    }
-	 	</>
+	 	</div>
 	)
 }
 export default WritePostModal

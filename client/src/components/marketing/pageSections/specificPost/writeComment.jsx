@@ -30,30 +30,35 @@ const WriteComment  = ({idPost, idUser, isResponseInput, idComment, onChangeToRe
     }
 
     const handleSubmit = (event)=>{
-        const credentials = {
-            content:comment,
-            idPost,
-            idUser,
-            idComment: idComment ? idComment:undefined
+        event.preventDefault()
+
+        if (comment.length > 0) {
+            const credentials = {
+                content:comment,
+                idPost,
+                idUser,
+                idComment: idComment ? idComment:undefined
+            }
+    
+            setSendingComment(true)
+    
+            instance.post(`/comments/create`, credentials)
+             .then((res) => {
+                 const comment = res.data.data
+    
+                addComment(idPost, comment, idComment)
+                setComment("")
+    
+                onChangeToResponseInput(false)
+             })
+             .catch(err => {
+                 console.log(err)
+             })
+            .then(() => {
+                setSendingComment(false)
+            })
         }
 
-        setSendingComment(true)
-
-        instance.post(`/comments/create`, credentials)
-	 	.then((res) => {
-	 		const comment = res.data.data
-
-            addComment(idPost, comment, idComment)
-            setComment("")
-
-            onChangeToResponseInput(false)
-	 	})
-	 	.catch(err => {
-	 		console.log(err)
-	 	})
-        .then(() => {
-            setSendingComment(false)
-        })
     }
 
     return(
@@ -115,26 +120,29 @@ const WriteResponseComment = ({idPost, idUser, idComment}) => {
     }
     
     const handleSubmit = (event)=>{
-        setSendingComment(true)
+        
+        if (comment.length > 0) {
+            setSendingComment(true)
+            instance.post(`/comments/create`,{
+                content:comment,
+                idPost,
+                idUser,
+                idComment
+            })
+             .then((res) => {
+                 console.log(res.data)
+                addComment(idPost, res.data.data, idComment)
+    
+                setComment("")
+             })
+             .catch(err => {
+                 console.log(err)
+             })
+            .then(() => {
+                setSendingComment(false)
+            })
+        }
 
-        instance.post(`/comments/create`,{
-            content:comment,
-            idPost,
-            idUser,
-            idComment
-        })
-	 	.then((res) => {
-	 		console.log(res.data)
-            addComment(idPost, res.data.data, idComment)
-
-            setComment("")
-	 	})
-	 	.catch(err => {
-	 		console.log(err)
-	 	})
-        .then(() => {
-            setSendingComment(false)
-        })
     }
 
     return(
