@@ -71,13 +71,13 @@ const WritePost = () => {
 
 					{
 						user.getRole === 1 ? (
-							<Button>
+							<button className="cursor-notallowed bg-gray-300 text-gray-500 px-4 py-2 text-sm cursor-not-allowed font-primary rounded">
 								Publier
-							</Button>
+							</button>
 						):(
-							<Button>
+							<button className="cursor-notallowed bg-gray-300 text-gray-500 px-4 py-2 text-sm cursor-not-allowed font-primary rounded">
 								Proposer
-							</Button>
+							</button>
 						)
 					}
 				</div>
