@@ -2,7 +2,6 @@ import React ,{useContext, useEffect, useRef, useState} from 'react'
 import { BsEmojiHeartEyes, BsX } from "react-icons/bs"
 import Button from '../../../elements/buttons/Button'
 import {instance} from '../../../../utils/url'
-import Subscriber from '../../../../entities/Subscriber'
 import './commentPost.css'
 import postsContext from '../../../../dataManager/context/postsContext'
 import LoaderCircle from "../../../utils/loaders/Loader"
@@ -91,9 +90,9 @@ const WriteComment  = ({idPost, idUser, isResponseInput, idComment, onChangeToRe
                     ):null
                 }
                     
-                <Button size="meduim" type="submit" action={handleSubmit} classe="commentBtn">
+                <button size="meduim" onClick={handleSubmit} className="commentBtn">
                     publier
-                </Button>
+                </button>
            </form>
         </div>
     )
@@ -145,6 +144,14 @@ const WriteResponseComment = ({idPost, idUser, idComment}) => {
 
     }
 
+    const sendResponse = (event) => {
+        if (event.code === "Enter") {
+            event.preventDefault()
+
+            handleSubmit(event)
+        }
+    }
+
     return(
         <div className="WriteCommentResponseContent">
             <div className="HeartEyesIcon">
@@ -157,7 +164,7 @@ const WriteResponseComment = ({idPost, idUser, idComment}) => {
                     placeholder="Ajouter une reponse..."
                     onChange={handleChange}
                     value={comment}
-                    onKeyPress={(event) => event.code === "Enter" ? handleSubmit(event):null} 
+                    onKeyPress={sendResponse} 
                 />
 
                 {
@@ -168,9 +175,9 @@ const WriteResponseComment = ({idPost, idUser, idComment}) => {
                     ):null
                 }
                     
-                <Button size="meduim" type="submit" action={handleSubmit}>
+                <button size="meduim" onClick={handleSubmit} classeName="responseBtn">
                     Répondre
-                </Button>
+                </button>
            </form>
         </div>
     )

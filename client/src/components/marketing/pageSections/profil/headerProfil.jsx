@@ -64,7 +64,7 @@ const HeaderProfil  = () => {
             setIsCurrentUser(false)
             setLoadingUser(true)
         }
-    }, [username])
+    }, [username, currentUser])
 
     useEffect(() => {
         const token = localStorage.getItem("tundah-token")
@@ -96,13 +96,13 @@ const HeaderProfil  = () => {
                 console.log(err)
             })
         }
-    }, [isCurrentUser])
+    }, [isCurrentUser, username])
 
     useEffect(() => {
         if (isCurrentUser) {
             setUser((new Subscriber(currentUser)))
         }
-    }, [currentUser])
+    }, [currentUser, isCurrentUser])
 
     const formatName = (name) => {
 		return name[0].toUpperCase() + name.substr(1)

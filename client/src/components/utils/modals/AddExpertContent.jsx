@@ -6,8 +6,6 @@ import Subscriber from '../../../entities/Subscriber'
 import { Link } from 'react-router-dom'
 import { ressourcesUrl } from '../../../utils/url'
 
-const image = require("../../../medias/img/test.jpg")
-
 const AddExpertContent = ({data}) => {   
 	const user = new Subscriber(data)
 

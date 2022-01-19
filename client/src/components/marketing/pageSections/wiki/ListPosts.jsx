@@ -25,12 +25,12 @@ const ListPosts = () => {
 		return {
 			addPosts,
 			setLoadingMorePosts,
-			loadingMorePosts
+			setMorePostArgs
 		}
 	}, 
 	[addPosts, 
 		setLoadingMorePosts, 
-		loadingMorePosts
+		setMorePostArgs
 	])
 
 	// defining the reference of an element
@@ -84,7 +84,7 @@ const ListPosts = () => {
 	}, [skip, next])
 
 	useEffect(() => {
-		const {setLoadingMorePosts, addPosts, loadingMorePosts} = methodsRef.current()
+		const {setLoadingMorePosts, addPosts, setMorePostArgs} = methodsRef.current()
 
 		if (loadingMorePosts) {
 			if (next) {

@@ -14,12 +14,12 @@ const WritePost = () => {
 	const [showPreMessage, setShowPreMessage] = useState(true)
 
 	//hamdler
-	const handleCloseModal = () => {
-		setOpenPostModal(false)
+	// const handleCloseModal = () => {
+	// 	setOpenPostModal(false)
 		
-		let timer = setTimeout(setShowPreMessage(true), 5000)
-		clearTimeout(timer)
-	}
+	// 	let timer = setTimeout(setShowPreMessage(true), 5000)
+	// 	clearTimeout(timer)
+	// }
 
 	const user = new Subscriber(currentUser)
 

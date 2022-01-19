@@ -55,7 +55,7 @@ const PostComponent = ({postData, onLikePost, published}) => {
 
 	useEffect(() => {
 		postContentRef.current.innerHTML = post.getContent
-	}, [])
+	}, [post.getContent])
 
 
 	// some actions methods

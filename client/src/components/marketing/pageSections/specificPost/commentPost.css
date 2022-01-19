@@ -67,13 +67,18 @@
     font-size: 14px;
 }
 
-.FormComment a.commentBtn {
+.FormComment button.commentBtn {
     width: 80px;
     text-align: center;
+    padding: 10px 20px;
 }
 
-.FormComment a {
+.FormComment button {
     padding: 10px;
+    background-color: #3c6a46;
+    color: #fff;
+    border-radius: 5px;
+    font-size: 14px;
 }
 
 .closeResponseInput {

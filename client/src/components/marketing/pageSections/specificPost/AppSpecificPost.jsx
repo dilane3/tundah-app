@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { WriteComment, WriteResponseComment } from './writeComment';
 import Post from '../Post';
 import Comment from './comment';
@@ -35,7 +35,7 @@ const CommentBlock = ({comment, post, idUser, onChangeToResponseInput, isRespons
             else 
                 onChangeToResponseInput(true, comment.id)
         })
-    }, [])
+    })
 
     const handleActivateResponse = () => {
         const width = window.innerWidth
@@ -103,8 +103,16 @@ const AppSpecifificPost  = () => {
     // getting the id from the url params
     const {id} = useParams()
 
+    // use callback section
+    const methodsCb = useCallback(() => {
+        return {
+            addComments
+        }
+    }, [addComments])
+
     // defining ref
     const commentPageRef = useRef()
+    const methodsRef = useRef(methodsCb)
 
     // useEffect section
 	useEffect(() => {
@@ -114,10 +122,16 @@ const AppSpecifificPost  = () => {
 	}, [])
 
     useEffect(() => {
+        methodsRef.current = methodsCb
+    }, [methodsCb])
+
+    useEffect(() => {
         commentPageRef.current.scrollIntoView()
     }, [])
 
     useEffect(() => {
+        const {addComments} = methodsRef.current()
+
         instance.get(`/comments/all/${id}`)
         .then(res => {
             const comments = res.data;
@@ -127,7 +141,7 @@ const AppSpecifificPost  = () => {
         .catch(err=>{
             console.log(err);
         })
-    }, [])
+    }, [id])
 
 	const handleLikePost = (id) => {
 		instance.post(`/posts/like/${id}`)

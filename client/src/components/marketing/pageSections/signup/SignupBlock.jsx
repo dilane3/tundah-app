@@ -23,10 +23,6 @@ const SignupBlock = (props) => {
 		country: "cameroun"
 	}
 
-	//state
-	const [showPreMessage, setShowPreMessage] = useState(true)
-
-
 	// state variables
 	const [signupData, setUserData] = useState(initialSignupData)
 	const [checkTermsUses, setCheckTermsUses] = useState(false)

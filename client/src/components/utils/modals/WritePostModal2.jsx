@@ -20,7 +20,7 @@ const WritePostModal2 = (props) => {
   const {createPost} = useContext(currentUserContext)
 
 	const { 
-			show, 
+			// show, 
 			onCloseModal, 
 			showPreMessage, 
 			setShowPreMessage
@@ -41,7 +41,6 @@ const WritePostModal2 = (props) => {
 	//context
 	const { currentUser } = useContext(currentUserContext)
 	const user = new Subscriber(currentUser)
-	const contextPost = useContext(postsContext)
 
 	//ref
 	const inputImagesRef = useRef()
@@ -52,7 +51,7 @@ const WritePostModal2 = (props) => {
 	const [postData, setPostData] = useState(initialPostState)
 	const [tribus, setTribus] = useState([])
 	const [indexImage, setIndexImage] = useState(0)
-	const [displayEditPost, setDisplayEditPost] = useState(false)
+	// const [displayEditPost, setDisplayEditPost] = useState(false)
 	const [displayImage, setDisplayImage] = useState(false)
 	const [isLoading, setLoading] = useState(false) 
 
@@ -209,8 +208,8 @@ const WritePostModal2 = (props) => {
 		content,
 		region,
 		tribu,
-		images,
-		video
+		// images,
+		// video
 	} = postData
 
 

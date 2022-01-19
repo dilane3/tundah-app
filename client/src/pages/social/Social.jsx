@@ -1,7 +1,7 @@
 import React from 'react'
-import Body from './body/BodySocial'
-import Seo from '../../components/utils/seo/Seo'
-import Base from '../Base'
+// import Body from './body/BodySocial'
+// import Seo from '../../components/utils/seo/Seo'
+// import Base from '../Base'
 import { Redirect } from 'react-router'
 
 

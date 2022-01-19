@@ -1,6 +1,5 @@
 import React from 'react'
 import {Image} from 'react-image-progressive-loading'
-import { Link } from 'react-router-dom'
 import Button from '../../../components/elements/buttons/Button'
 import './BodyErrorStyle.css'
 

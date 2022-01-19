@@ -6,9 +6,6 @@ import { getRelativeDate } from '../../../../utils/dateOperations'
 import './commentPost.css'
 import {ressourcesUrl} from "../../../../utils/url"
 
-
-const image = require("../../../../medias/img/test.jpg")
-
 const Comment = ({onResponse, data, isResponse, author, onDisplayResponses, responseDisplayed}) => {
     const subscriber = new Subscriber(data.author)
 
