@@ -9,7 +9,7 @@ import axios from "axios";
 // })
 
 const instance = axios.create({
-	baseURL: "https://tundah-server.herokuapp.com/api"
+	baseURL: "https://tundah-server.osc-fr1.scalingo.io/api"
 })
 
 // const instance = axios.create({
@@ -23,9 +23,9 @@ const instance = axios.create({
 // }
 
 const ressourcesUrl = {
-	profil: "https://tundah-server.herokuapp.com/static/images/profil",
-	postImages: "https://tundah-server.herokuapp.com/static/images/post",
-	postVideos: "https://tundah-server.herokuapp.com/static/videos"
+	profil: "https://tundah-server.osc-fr1.scalingo.io/static/images/profil",
+	postImages: "https://tundah-server.osc-fr1.scalingo.io/static/images/post",
+	postVideos: "https://tundah-server.osc-fr1.scalingo.io/static/videos"
 }
 
 // const ressourcesUrl = {
