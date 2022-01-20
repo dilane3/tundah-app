@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { ScaleLoader } from 'react-spinners';
 
 const Loader = (props) => {

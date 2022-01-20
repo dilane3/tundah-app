@@ -5,7 +5,7 @@ import styles from "../../../css/mobileMenu.module.css"
 import Input from "../../elements/input/Input";
 import Aside from "../aside/Aside";
 
-const MobileMenu = ({show}) => {
+const MobileMenu = ({show, onShowAddExpertSection}) => {
 
   const [researchQuery, setResearchQuery] = useState("")
 
@@ -41,7 +41,7 @@ const MobileMenu = ({show}) => {
 				</Link>
 			</div>
 
-      <Aside />
+      <Aside onShowAddExpertSection={onShowAddExpertSection} />
     </section>
   )
 }

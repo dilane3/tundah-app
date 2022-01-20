@@ -2,7 +2,7 @@ import React, { Fragment } from 'react'
 import { AiOutlineEdit } from "react-icons/ai"
 import { Menu, Transition } from '@headlessui/react'
 import { MdOutlineMailOutline } from "react-icons/md"
-import { BsThreeDotsVertical, BsArchive } from "react-icons/bs"
+import { BsArchive } from "react-icons/bs"
 
 
 const SocialPostDropdown = ({ dropElt }) => {

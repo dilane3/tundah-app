@@ -33,6 +33,13 @@ body{
 	width: 100%;
 }
 
+.postImg img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+}
+
 .post-title {
 	/*font-size: 18px;*/
 	/*font-weight: 800;*/
@@ -73,5 +80,18 @@ body{
 		top: 48%;
 		left: 50%;
 		transform: translate(-50%, -50%);
+	}
+}
+
+@media screen and (max-width: 576px) {
+	.writePostModal {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		transform: translate(0, 0);
+		border-radius: 0;
+		z-index: 10;
 	}
 }

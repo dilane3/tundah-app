@@ -1,7 +1,6 @@
-import React, { useState , useContext } from 'react' 
-import Paragraphe from '../../elements/p/Paragraphe'
-import Button from '../../elements/buttons/Button'
-import WritePostModal from '../../utils/modals/WritePostModal'
+import React, { useState , useContext } from 'react'
+import WritePostModal2 from '../../utils/modals/WritePostModal2'
+import style from '../../../css/base.module.css'
 
 import { BsEmojiHeartEyes, BsCardImage, BsCameraVideo }from 'react-icons/bs'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
@@ -15,12 +14,12 @@ const WritePost = () => {
 	const [showPreMessage, setShowPreMessage] = useState(true)
 
 	//hamdler
-	const handleCloseModal = () => {
-		setOpenPostModal(false)
+	// const handleCloseModal = () => {
+	// 	setOpenPostModal(false)
 		
-		let timer = setTimeout(setShowPreMessage(true), 5000)
-		clearTimeout(timer)
-	}
+	// 	let timer = setTimeout(setShowPreMessage(true), 5000)
+	// 	clearTimeout(timer)
+	// }
 
 	const user = new Subscriber(currentUser)
 
@@ -82,12 +81,22 @@ const WritePost = () => {
 					}
 				</div>
 			</div>
-        <WritePostModal
-        	show={openPostModal}
-        	onCloseModal={() => setOpenPostModal(false)}
-        	showPreMessage={showPreMessage}
-        	setShowPreMessage={setShowPreMessage}
-        />
+
+
+			{
+				openPostModal ? (
+					<>
+						<span className={style.backgroundBlack}></span>
+		
+						<WritePostModal2
+							show={openPostModal}
+							onCloseModal={() => setOpenPostModal(false)}
+							showPreMessage={showPreMessage}
+							setShowPreMessage={setShowPreMessage}
+						/>
+					</>
+				):null
+			}
 		</>
 	)
 }

@@ -8,8 +8,8 @@ const postsContext = React.createContext({
   updatePost: (idPost, data) => {},
   addPosts: (posts) => {},
   addPost: (post) => {},
-  addComments: (comments) => {},
-  addComment: (comment) => {},
+  addComments: (idPost, comments) => {},
+  addComment: (idPost, idComment, comment) => {},
   likePost: (idPost, idUser) => {},
   setMorePostArgs: (next, skip) => {}
 })

@@ -1,4 +1,3 @@
-import Expert from "../../../entities/Expert";
 import Subscriber from "../../../entities/Subscriber";
 import {
   LOGIN,
@@ -101,6 +100,7 @@ const currentUserReducer = (state, action) => {
         const user = new Subscriber(state)
 
         user.likePost(idPost)
+        console.log(user.getPosts)
 
         return user.getUserData
       }

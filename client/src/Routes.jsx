@@ -5,12 +5,12 @@ import Social from './pages/social/Social'
 import Wiki from './pages/wiki/Wiki'
 import Signup from './pages/signup/Signup'
 import Signin from './pages/signin/Signin'
-import Notifications from './pages/notifications/Notifications'
-import Messages from './pages/messages/Messages'
+// import Notifications from './pages/notifications/Notifications'
+// import Messages from './pages/messages/Messages'
 import Profile from './pages/profile/Profile'
 import SpecificPost from './pages/specificPost/SpecificPost'
-import About from './pages/about/About'
-import TermsUses from './pages/termsUses/TermsUses'
+// import About from './pages/about/About'
+// import TermsUses from './pages/termsUses/TermsUses'
 import Error404 from './pages/error404/Error404'
 import ProposalPost from './pages/proposalPost/ProposalPost'
 import Search from './pages/search/Search';
@@ -19,7 +19,7 @@ const Routes = () => {
 
 	return (
     <Switch>
-       <Route exact path="/" component={Wiki} /> 
+      <Route exact path="/" component={Social} />
       <Route  path="/wiki/feed" component={Wiki} />
       <Route  path="/signup" component={Signup} />
       <Route  path="/signin" component={Signin} />
@@ -31,8 +31,6 @@ const Routes = () => {
       <Route  path="/posts/:id" component={SpecificPost} />
       <Route path="/proposal_posts" component={ProposalPost} />
       <Route path="/search" component={Search} />
-      <Route path="/post/:id" component={SpecificPost} />
-      {/* <Route path="/profil" component={Profile} /> */}
       <Route  component={Error404} />
     </Switch>
 	)

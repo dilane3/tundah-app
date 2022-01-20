@@ -1,7 +1,4 @@
-import React, { useState, useEffect } from 'react'
-import Navbar from '../../../components/marketing/navbar/Navbar'
-import Loader from '../../../components/utils/Loader'
-import BigContainer from '../../../components/utils/BigContainer'
+import React, { useEffect } from 'react'
 import axios from 'axios'
 
 const instance = axios.create({
@@ -9,23 +6,15 @@ const instance = axios.create({
 })
 
 const BodySocial = () => {
-	const [showLoader, setShowLoader] = useState(true)
 
 	useEffect(() => {
 		const token = localStorage.getItem("tundah-token")
 		instance.defaults.headers.common["authorization"] = `Bearer ${token}`
 	}, [])
 
-	useEffect(() => {
-		let timeout = setTimeout(() => setShowLoader(false), 1500)
-		return () => {
-			clearTimeout(timeout)
-		}
-	}, [])
-
 	return(
-		<section>
-
+		<section>	
+			Hello
 		</section>
 	)
 }

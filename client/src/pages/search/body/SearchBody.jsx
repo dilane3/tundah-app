@@ -1,10 +1,9 @@
 import { instance } from '../../../utils/url'
-import React, { useContext, useEffect } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import PostPropose from '../../../components/marketing/pageSections/proposalPost/PostPropose'
 import styles from "../../../css/search.module.css"
 import researchContext from '../../../dataManager/context/researchContext'
-import axios from 'axios'
 
 const ResearchResultBar = () => {
   
@@ -14,20 +13,47 @@ const ResearchResultBar = () => {
 
   const {researchQuery} = location.state
 
+  // use Memo and use Callback section
+  const methodsCb = useCallback(() => {
+    return {
+      addResults,
+      changeQuery
+    }
+  }, [addResults, changeQuery])
+
+  const dataMemo = useMemo(() => {
+    return researchQuery
+  }, [researchQuery])
+
+  // use ref section
+  const dataRef = useRef(dataMemo)
+  const methodsRef = useRef(methodsCb)
+
+  // use effect section
+  useEffect(() => {
+    methodsRef.current = methodsCb
+  }, [methodsCb])
+
+  useEffect(() => {
+    dataRef.current = dataMemo
+  }, [dataMemo])
+
   useEffect(() => {  
-    instance.get(`/posts/search/${researchQuery}`)
-    .then(res => { 
-      console.log(res.data)
+    const {addResults} = methodsRef.current()
+
+    instance.get(`/posts/search/${dataRef.current}`)
+    .then(res => {
       addResults([...res.data])
-    }).catch(() => {
-      console.log("lol ok")
+    }).catch((err) => {
+      console.log(err)
       addResults([])
     })
   }, [researchQuery])
 
   useEffect(() => {
-    changeQuery(researchQuery)
-    console.log("This are the post results ", postsResults)
+    const {changeQuery} = methodsRef.current()
+
+    changeQuery(dataRef.current)
   }, [postsResults])
 
   return (
@@ -45,23 +71,19 @@ const BodySearch = () => {
   //   changeQuery("polygamie")
   // }, [])
 
-  const {postsResults, query, addResults, changeQuery} = useContext(researchContext)
+  const {postsResults} = useContext(researchContext)
 
-  const location = useLocation()
-
-  const {researchQuery} = location.state
 
   return (
     <section className={styles.researchResultSection}>
       <ResearchResultBar/>
       
       <div className="container">
-        {postsResults.map((post) => (
-          <PostPropose type="result" postData={post}/>
-        ))}
-        {/* <PostPropose type="result"  />
-        <PostPropose type="result" />
-        <PostPropose type="result" /> */}
+        {
+          postsResults.map((post) => (
+            <PostPropose type="result" postData={post}/>
+          ))
+        }
       </div>
     </section>
   )

@@ -1,3 +1,9 @@
+.container-profil {
+  position: relative;
+  min-height: calc(100vh - 100px);
+  height: auto;
+}
+
 .profil-content{
   display: flex;
   flex-direction: column;
@@ -13,13 +19,13 @@
   margin-top: 5px;
 }
 
-.profilInfo{
+div.profilInfo{
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   padding-left: 10px;
-  width: 170px;
+  width: calc(100% - 140px);
   margin-left: 6px;
 }
 
@@ -211,6 +217,13 @@
   margin-right: 10px;
 }
 
+.profil-loaderSection {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 /* post list */
 .postsList {
   margin-top: 20px;
@@ -218,6 +231,13 @@
 
 .postsList article {
   margin-bottom: 10px;
+}
+
+@media screen and (max-width: 700px) {
+  .profil-content{
+    width: 100%;
+    padding: 0 10px;
+  }
 }
 
 @media screen and (max-width: 576px) {

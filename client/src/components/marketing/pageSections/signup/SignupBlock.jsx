@@ -23,10 +23,6 @@ const SignupBlock = (props) => {
 		country: "cameroun"
 	}
 
-	//state
-	const [showPreMessage, setShowPreMessage] = useState(true)
-
-
 	// state variables
 	const [signupData, setUserData] = useState(initialSignupData)
 	const [checkTermsUses, setCheckTermsUses] = useState(false)
@@ -70,7 +66,7 @@ const SignupBlock = (props) => {
 			console.log("error")
 			setUniqueUsernameCheck(false)
 		}
-	}, [signupData.userName])
+	}, [signupData])
 
 	// check if the email is unique
 	useEffect(() => {
@@ -103,7 +99,7 @@ const SignupBlock = (props) => {
 			console.log("error")
 			setUniqueEmailCheck(false)
 		}
-	}, [signupData.email])
+	}, [signupData])
 
 	//handler
 	const handleChange = (event) => {
@@ -164,11 +160,6 @@ const SignupBlock = (props) => {
 		}
 
 		return countries.sort()
-	}
-
-	//fonctions
-	const validateUserName = (name) => {
-		{/* to do*/}
 	}
 
 	const {

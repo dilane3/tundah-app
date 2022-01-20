@@ -41,6 +41,42 @@ class UserModel extends InterfaceUserModel {
     }
   }
 
+  async getSearchedUsers(value) {
+    const session = dbConnect();
+
+    try {
+      const query = `
+        MATCH (user: Subscriber)
+        WHERE NOT user:Expert AND user.username =~ '(?i).*(${value.toLowerCase()}).*'
+        RETURN user
+        ORDER BY user.username ASC
+      `;
+
+      const result = await session.run(query);
+
+      if(result.records.length > 0) {
+
+        const userData = result.records
+
+        var dataArray = []
+
+        for (let i = 0; i < result.records.length; i++) {
+          dataArray.push({ ...userData[i].get("user").properties })
+        }
+        
+        return { data: dataArray }
+      } else {
+        return { data: null }
+      }
+    } catch (err) {
+      console.log(err)
+      return { error: "The searched user has not been found" }
+    } finally {
+      session.close()
+    }
+  }
+  
+
   /**
    * This method create a new subscriber
    * @param {string} name 

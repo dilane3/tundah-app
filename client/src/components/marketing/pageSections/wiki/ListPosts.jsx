@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import currentUserContext from '../../../../dataManager/context/currentUserContent'
 import postsContext from '../../../../dataManager/context/postsContext'
 import Post from '../Post'
@@ -20,8 +20,22 @@ const ListPosts = () => {
 	// local state
 	const [loadingMorePosts, setLoadingMorePosts] = useState(false)
 
+	// useCallback section
+	const methodsCb = useCallback(() => {
+		return {
+			addPosts,
+			setLoadingMorePosts,
+			setMorePostArgs
+		}
+	}, 
+	[addPosts, 
+		setLoadingMorePosts, 
+		setMorePostArgs
+	])
+
 	// defining the reference of an element
 	const listPostRef = useRef()
+	const methodsRef = useRef(methodsCb)
 
 	const postsData = useMemo(() => {
 		return posts
@@ -34,6 +48,10 @@ const ListPosts = () => {
 
 		instance.defaults.headers.common["authorization"] = `Bearer ${token}`
 	}, [])
+
+	useEffect(() => {
+		methodsRef.current = methodsCb
+	}, [methodsCb])
 
 	const handleLikePost = (id) => {
 		instance.post(`/posts/like/${id}`)
@@ -55,38 +73,48 @@ const ListPosts = () => {
 				const wrapperHeight = window.scrollY
 				const contentHeight = listPostRef.current.offsetHeight - 500
 				const space = contentHeight - wrapperHeight
-	
-				if (next) {
-					setLoadingMorePosts(true)
-					console.log("hello")
-	
-					if (space < 0) {
-						instance.get(`/posts/?skip=${skip}&limit=2`)
-						.then(res => {
-							const postData = res.data.data
-							let nextValue = res.data.next
-							let skipValue = res.data.skip
 
-							console.log(postData)
-		
-							// adding posts
-							addPosts(postData)
-		
-							// setting posts arguments
-							setMorePostArgs(nextValue, skipValue)
-						})
-						.catch(err => {
-							console.log(err)
-						})
-						.finally(() => {
-							console.log("hello")
-							setLoadingMorePosts(false)
-						})
+				if (next) {
+					if (space < 150) {
+						setLoadingMorePosts(true)
 					}
 				}
 			}
 		}
 	}, [skip, next])
+
+	useEffect(() => {
+		const {setLoadingMorePosts, addPosts, setMorePostArgs} = methodsRef.current()
+
+		if (loadingMorePosts) {
+			if (next) {
+				setLoadingMorePosts(true)
+				console.log({skip, next})
+
+				instance.get(`/posts?skip=${skip}&limit=${2}`)
+				.then(res => {
+					const postData = res.data.data
+					let nextValue = res.data.next
+					let skipValue = res.data.skip
+	
+					// adding posts
+					addPosts(postData)
+	
+					// setting posts arguments
+					setMorePostArgs(nextValue, skipValue)
+				})
+				.catch(err => {
+					console.log(err)
+				})
+				.finally(() => {
+					console.log("geroge")
+					setLoadingMorePosts(false)
+				})
+			} else {
+				setLoadingMorePosts(false)
+			}
+		}
+	}, [skip, next, loadingMorePosts])
 
 	const sortPostByDate = (posts) => {
 		return posts.sort((p1, p2) => p2.creation_date - p1.creation_date)

@@ -11,14 +11,19 @@ import "../../../css/post.css"
 import DisplayPhoto from '../../utils/modals/DisplayPhoto'
 import Subscriber from '../../../entities/Subscriber'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
-import postsContext from '../../../dataManager/context/postsContext'
 import { Link } from 'react-router-dom'
 import {  ressourcesUrl } from "../../../utils/url"
 import { getRelativeDate } from '../../../utils/dateOperations'
 
-const imagesExtensions = [ "jpeg", "png", "gif", "bmp" ]
+const imagesExtensions = [ "jpeg", "png", "gif", "bmp", "jpg" ]
+const checkCurrentUser = (author, currentUser) => {
+	if (!currentUser) return false
+	return author.getId === currentUser.id
+}
 
-const PostComponent = ({postData, onLikePost}) => {
+const PostComponent = ({postData, onLikePost, published}) => {
+	const isPublished = published === undefined || published === true ? true:false
+
 	// getting data from the global state
 	const {currentUser} = useContext(currentUserContext)
 
@@ -31,21 +36,17 @@ const PostComponent = ({postData, onLikePost}) => {
 	// definition of the local state
 	const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
 	const [indexFile, setIndexFile] = useState(0)
-	const [relativeDate, setRelativeDate] = useState(getRelativeDate(post.getCreationDate/1000))
+	const [relativeDate, setRelativeDate] = useState(getRelativeDate(post.getCreationDate))
 
 
 	const author = new Subscriber(post.getAuthor)
-	console.log({author, postData})
+	console.log({author, currentUser})
 
 	// useEffect section
-	useEffect(() => {
-		post = new Post(postData)
-		console.log("post")
-	}, [postData])
 
 	useEffect(() => {
 		const timer = setInterval(() => {
-			setRelativeDate(getRelativeDate(post.getCreationDate/1000))
+			setRelativeDate(getRelativeDate(post.getCreationDate))
 		}, 1000)
 
 		return () => {
@@ -55,7 +56,7 @@ const PostComponent = ({postData, onLikePost}) => {
 
 	useEffect(() => {
 		postContentRef.current.innerHTML = post.getContent
-	}, [])
+	}, [post.getContent])
 
 
 	// some actions methods
@@ -91,11 +92,15 @@ const PostComponent = ({postData, onLikePost}) => {
 					<PostImg
 						size="small"
 						alt="wangue fenyep"
-						src={`${ressourcesUrl.profil}/${author.getProfil}`}
+						src={`${ressourcesUrl.profil}/${checkCurrentUser(author, currentUser) ? currentUser.profil:author.getProfil}`}
 					 />
 					 <div className="flex flex-col space-y-1 author-info">
-					 	<span className="author-post-username text-sm md:text-lg font-bold ">{author.getName[0].toUpperCase() + author.getName.substr(1).toLowerCase()}</span>
-					 	<date className="text-xs text-gray-500">{relativeDate}</date>
+						<Link to={`/profile/${author.getUsername}`}>
+							<span 
+								className="author-post-username text-sm md:text-lg font-bold"
+							>{author.getName[0].toUpperCase() + author.getName.substr(1).toLowerCase()}</span>
+						</Link>
+					 	<span className="text-xs text-gray-500">{relativeDate}</span>
 					 </div>
 				</div>
 				
@@ -110,7 +115,7 @@ const PostComponent = ({postData, onLikePost}) => {
 				<div className="post-title font-bold text-base">
 					{post.getTitle[0].toUpperCase() + post.getTitle.substr(1).toLowerCase()}
 				</div>
-				<Link to={`/post/${post.getId}`}>
+				<Link to={`/posts/${post.getId}`}>
 					<div ref={postContentRef} className="px-2"></div>
 				</Link>
 
@@ -136,7 +141,7 @@ const PostComponent = ({postData, onLikePost}) => {
 			</main>
 
 			{
-				currentUser ? (
+				currentUser && isPublished ? (
 					<footer className="post-footer mt-3 px-2 md:mt-3 flex items-center space-x-6">
 						<div className="flex items-center space-x-1" onClick={() => onLikePost(post.getId)}>
 							{
@@ -150,7 +155,7 @@ const PostComponent = ({postData, onLikePost}) => {
 						</div>
 
 						<div className="flex items-center space-x-1">
-							<Link to={`/post/${post.getId}`}>
+							<Link to={`/posts/${post.getId}`}>
 								<BsChat size="20" className="icon" />
 							</Link>
 							<span className="text-xs md:text-sm">{formatLikesOrComment(post.getComments)}</span>

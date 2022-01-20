@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { BsArrowLeft, BsArrowRight, BsX } from 'react-icons/bs'
 import styles from '../../../css/displayPhoto.module.css'
-import Slider from "react-slick";
 import { ressourcesUrl } from '../../../utils/url';
 
 const video = require("../../../medias/img/profil.mp4")
@@ -32,7 +31,7 @@ const CarouselPhoto = ({files, type, index, edited}) => {
       {
         type === "images" ? (
           <>
-            <img src={`${edited ? ressourcesUrl.postImages + '/': ""}${files[fileIndex]}`} />
+            <img alt="" src={`${edited ? ressourcesUrl.postImages + '/': ""}${files[fileIndex]}`} />
 
             <span onClick={() => navigate("next")}>
               <BsArrowRight />
@@ -60,7 +59,7 @@ const CarouselPhoto = ({files, type, index, edited}) => {
                     className={`${styles.displayPhotoTrackerItem} ${current ? styles.displayPhotoTrackerItemActive:""}`}
                     onClick={() => setFileIndex(index)}  
                   >
-                    <img src={`${edited ? ressourcesUrl.postImages + '/': ""}${file}`} />
+                    <img alt="" src={`${edited ? ressourcesUrl.postImages + '/': ""}${file}`} />
                   </div>
                 )
               })
@@ -90,7 +89,7 @@ const DisplayPhoto = ({files, type, edited, indexFile, onHide}) => {
       {
         type === "profil" ? (
           <div className={styles.displayPhotoPreview}>
-            <img src={`${editedValue ? ressourcesUrl.profil+"/":""}${files[0]}`} />
+            <img alt="" src={`${editedValue ? ressourcesUrl.profil+"/":""}${files[0]}`} />
           </div>
         ):<CarouselPhoto files={files} type={type} index={index} edited={editedValue} />
       }

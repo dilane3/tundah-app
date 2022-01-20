@@ -4,6 +4,7 @@ import './css/app.css';
 import Routes from './Routes'
 import currentUserContext from './dataManager/context/currentUserContent';
 import postsContext from './dataManager/context/postsContext';
+import proposedPostContext from './dataManager/context/proposedPostContext'
 import {
   login,
   logout,
@@ -23,14 +24,22 @@ import {
   addComments,
   likePost
 } from './dataManager/data/posts/postsActions'
+import {
+  deleteProposedPost,
+  updateProposedPost,
+  addProposedPosts,
+  validateProposedPost
+} from './dataManager/data/proposedPost/proposedPostActions'
 import currentUserReducer from './dataManager/data/currentUser/currentUserReducer';
 import postsReducer from './dataManager/data/posts/postsReducer';
 import navigationContext from './dataManager/context/navigationContext';
 import Post from './entities/Post';
 import researchContext from './dataManager/context/researchContext';
+import proposedPostsReducer from './dataManager/data/proposedPost/proposedPostReducer';
 
 function App() {
   const [posts, dispatchPosts] = useReducer(postsReducer, [])
+  const [proposedPosts, dispatchProposedPosts] = useReducer(proposedPostsReducer, [])
   const [currentUser, dispatchUser] = useReducer(currentUserReducer, null)
   const [navigation, setNavigation] = useState("")
   const [research, setReseach] = useState({
@@ -39,6 +48,10 @@ function App() {
   })
   const [postsArgs, setPostsArgs] = useState({
     next: false,
+    skip: 0
+  })
+  const [proposedPostsArgs, setProposedPostsArgs] = useState({
+    next: true,
     skip: 0
   })
 
@@ -109,6 +122,28 @@ function App() {
     setPostsArgs(state => ({...state, next, skip}))
   }
 
+  // Proposed Posts actions
+
+  const proposedPostsDeletePost = (idPost) => {
+    dispatchProposedPosts(deleteProposedPost(idPost))
+  }
+  
+  const proposedPostsUpdatePost = (idPost, data) => {
+    dispatchProposedPosts(updateProposedPost(idPost, data))
+  }
+  
+  const proposedPostsAddPosts = (posts) => {
+    dispatchProposedPosts(addProposedPosts(posts))
+  }
+
+  const proposedPostValidate = (idPost) => {
+    dispatchProposedPosts(validateProposedPost(idPost))
+  }
+
+  const setMoreProposedPostsArgs = (next, skip) => {
+    setProposedPostsArgs(state => ({...state, next, skip}))
+  }
+
   // navigation action
   const navigateTo = (target) => {
     setNavigation(target)
@@ -159,6 +194,16 @@ function App() {
     setMorePostArgs
   }
 
+  const proposedPostContextValue = {
+    proposedPosts,
+    ...proposedPostsArgs,
+    deletePost: proposedPostsDeletePost,
+    updatePost: proposedPostsUpdatePost,
+    addPosts: proposedPostsAddPosts,
+    setMoreProposedPostsArgs,
+    validatePost: proposedPostValidate
+  }
+
   // data of navigation
   const navigationContextValue = {
     navigation,
@@ -175,13 +220,15 @@ function App() {
   return (
     <currentUserContext.Provider value={currentUserContextValue}>
       <postsContext.Provider value={postsContextValue}>
-        <navigationContext.Provider value={navigationContextValue}>
-          <researchContext.Provider value={researchContextValue}>
-            <BrowserRouter>
-              <Routes />
-            </BrowserRouter>
-          </researchContext.Provider>
-        </navigationContext.Provider>
+        <proposedPostContext.Provider value={proposedPostContextValue}>
+          <navigationContext.Provider value={navigationContextValue}>
+            <researchContext.Provider value={researchContextValue}>
+              <BrowserRouter>
+                <Routes />
+              </BrowserRouter>
+            </researchContext.Provider>
+          </navigationContext.Provider>
+        </proposedPostContext.Provider>
       </postsContext.Provider>
     </currentUserContext.Provider>
   );
