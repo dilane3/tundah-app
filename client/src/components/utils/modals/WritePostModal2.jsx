@@ -189,11 +189,19 @@ const WritePostModal2 = (props) => {
 		let someTribu = []
 		switch(region.toLowerCase()){
 			case "nord":
-				someTribu = ["Toupouri", "Mousgoum", "Foufouldé"]
+				someTribu = ["Toupouri", "Moundan", "Massah", "Arabe choa"]
 				setTribus(someTribu)
 				break
 			case "ouest":
-				someTribu = ["Dschang", "Mbouda", "Bagante", "Bafang", "Balengou"]
+				someTribu = ["Dschang", "Mbouda", "Bagante", "Bamoun", "Bafousam", "Bafang", "Baham", "Bandjoun"]
+				setTribus(someTribu)
+				break
+			case "centre":
+				someTribu = ["Eton", "Ewondo", "Bassa", "Boulou"]
+				setTribus(someTribu)
+				break
+			case "littoral":
+				someTribu = ["Douala", "Mboo", "Bassa"]
 				setTribus(someTribu)
 				break
 			default:

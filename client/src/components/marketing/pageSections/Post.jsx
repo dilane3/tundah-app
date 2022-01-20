@@ -6,6 +6,7 @@ import SocialPostDropdown from '../../utils/dropdowns/SocialPostDropdown'
 import PostImg from '../../elements/imgCircle/ImgCircle'
 import PostCarousel from '../../utils/carousels/PostCarousel'
 import Post from '../../../entities/Post'
+import LoaderCircle from '../../utils/loaders/Loader'
 
 import "../../../css/post.css"
 import DisplayPhoto from '../../utils/modals/DisplayPhoto'
@@ -37,6 +38,7 @@ const PostComponent = ({postData, onLikePost, published}) => {
 	const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
 	const [indexFile, setIndexFile] = useState(0)
 	const [relativeDate, setRelativeDate] = useState(getRelativeDate(post.getCreationDate))
+	const [isLoading, setLoading] = useState(false)
 
 
 	const author = new Subscriber(post.getAuthor)
@@ -65,6 +67,7 @@ const PostComponent = ({postData, onLikePost, published}) => {
 
 		setShowDisplayPhotoModal(true)
 	}
+
 
 	// This function format the likes number and comment number
 	// so that we can have 10K likes for example
@@ -107,7 +110,10 @@ const PostComponent = ({postData, onLikePost, published}) => {
 
 				<div>
 			    <SocialPostDropdown 
-			      dropElt={ <BsThreeDotsVertical size="25" className="icon" /> } 
+			      dropElt={ <BsThreeDotsVertical size="25" className="icon" /> }
+			      idPost={ post.getId }
+			      idAuthor={author.getId}
+			      onLoading={ (status) => setLoading(status) }
 			    />
 			  </div>
 			</header>
@@ -173,6 +179,10 @@ const PostComponent = ({postData, onLikePost, published}) => {
 						onHide={() => setShowDisplayPhotoModal(false)}	
 					/>
 				):null
+			}
+
+			{
+				isLoading && <LoaderCircle size="100" color="" />
 			}
 		</article>
 	)
