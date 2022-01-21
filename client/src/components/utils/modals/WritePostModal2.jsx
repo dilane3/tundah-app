@@ -245,7 +245,7 @@ const WritePostModal2 = (props) => {
               id="region"
               value={region}
               onChange={handleChange}
-              className="bg-gray-200 p-2 rounded text-xm font-primary"
+              className={`${styles.writePostSelect} bg-gray-200 p-2 rounded text-xm font-primary`}
             >
               <option value="">
                 Région conserné
@@ -264,7 +264,7 @@ const WritePostModal2 = (props) => {
               id="tribu"
               value={ tribu }
               onChange={handleChange}
-              className="bg-gray-200 p-2 rounded text-xm font-primary"
+              className={`${styles.writePostSelect} bg-gray-200 p-2 rounded text-xm font-primary`}
             >
               {
                 !region && (
@@ -325,15 +325,13 @@ const WritePostModal2 = (props) => {
         <div className={`${styles.postEditorControl} flex justify-between items-center mt-5`}>
             <ul className="flex items-center space-x-6">
               <li>
-                <BsEmojiHeartEyes 
-                  size="22" 
+                <BsEmojiHeartEyes
                   color="#456445" 
                   className="cursor-pointer text-gray-900"
                 />
               </li>
               <li>
-                <BsCardImage 
-                  size="25" 
+                <BsCardImage
                   color="#456445" 
                   className="cursor-pointer text-gray-900"
                   onClick = { handleSelectImages }
@@ -349,8 +347,7 @@ const WritePostModal2 = (props) => {
                 />
               </li>
               <li>
-                <BsCameraVideo 
-                  size="25" 
+                <BsCameraVideo
                   color="#456445" 
                   className="cursor-pointer text-gray-900"
                   onClick={handleSelectVideo}
@@ -370,7 +367,8 @@ const WritePostModal2 = (props) => {
               <Button 
                 theme="gray"
                 action={ resetPostData }
-                >
+                classe={styles.writePostButtonControl}
+              >
                 annuler
               </Button>
 
@@ -378,7 +376,7 @@ const WritePostModal2 = (props) => {
                 onClick={ (event) => handleSubmit(event) }
                 type="submit"
                 value={ user.getRole === 0 ? "proposer" : "publier" }
-                className="px-3 bg-primary text-white text-xs rounded hover:bg-primary-hover"
+                className={`${styles.writePostButtonControl} px-3 bg-primary text-white text-xs rounded hover:bg-primary-hover`}
               />
             </div>
             {

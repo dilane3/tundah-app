@@ -7,6 +7,7 @@ import postsContext from '../../../../dataManager/context/postsContext';
 import { useParams } from 'react-router';
 import currentUserContext from '../../../../dataManager/context/currentUserContent';
 import { instance } from '../../../../utils/url';
+import LoaderCircle from '../../../utils/loaders/Loader';
 
 const sortCommentByDate = (comments, order) => {
     order = order === undefined ? true:order
@@ -99,6 +100,7 @@ const AppSpecifificPost  = () => {
     // defining of the local state
     const [isResponseInput, setIsResponseInput] = useState(false)
     const [idComment, setIdComment] = useState(null)
+    const [loading, setLoading] = useState(false)
 
     // getting the id from the url params
     const {id} = useParams()
@@ -132,6 +134,8 @@ const AppSpecifificPost  = () => {
     useEffect(() => {
         const {addComments} = methodsRef.current()
 
+        setLoading(true)
+
         instance.get(`/comments/all/${id}`)
         .then(res => {
             const comments = res.data;
@@ -140,6 +144,9 @@ const AppSpecifificPost  = () => {
         })
         .catch(err=>{
             console.log(err);
+        })
+        .then(() => {
+            setLoading(false)
         })
     }, [id])
 
@@ -190,16 +197,22 @@ const AppSpecifificPost  = () => {
                         />
                         <section>
                             {
-                                sortCommentByDate(getPost(id).commentsData).map(comment=>(
-                                    <CommentBlock 
-                                        key={comment.id}  
-                                        idUser={currentUser.id} 
-                                        post={getPost(id)} 
-                                        comment={comment} 
-                                        isResponseInput={isResponseInput}
-                                        onChangeToResponseInput={handleChangeCommentEditorType}    
-                                    />
-                                ))
+                                !loading ? (
+                                    sortCommentByDate(getPost(id).commentsData).map(comment=>(
+                                        <CommentBlock 
+                                            key={comment.id}  
+                                            idUser={currentUser.id} 
+                                            post={getPost(id)} 
+                                            comment={comment} 
+                                            isResponseInput={isResponseInput}
+                                            onChangeToResponseInput={handleChangeCommentEditorType}    
+                                        />
+                                    ))
+                                ):(
+                                    <div className="commentLoader">
+                                        <LoaderCircle size={50} color="#3c6a46" />
+                                    </div>
+                                )
                             }
                             
                         </section>

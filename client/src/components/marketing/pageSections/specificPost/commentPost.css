@@ -1,4 +1,5 @@
 .contentCommentPage{
+    position: relative;
    display: flex;
    flex-direction: column;
    width: 100%;
@@ -60,7 +61,7 @@
     width: calc(100% - 100px);
     margin-left: 5px;
     height: 40px;
-    padding: 15px;
+    padding: 15px 30px 15px 10px;
     background-color:  #e2e2e2;
     border-radius: 5px;
     color: rgb(56, 56, 56);
@@ -191,6 +192,7 @@ div.header-PostproposeInfoImg {
 .displayResponse {
     font-size: 14px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .Answer {
@@ -213,6 +215,22 @@ div.header-PostproposeInfoImg {
 .NumberL{
     margin-left:5px;
 }
+
+.commentLoader {
+    position: absolute;
+    margin-top: 80px;
+    width: 100%;
+    height: auto;
+    padding-bottom: 100px;
+    z-index: 1;
+}
+
+.commentLoader > div {
+    position: absolute;
+    top: -30px;
+    z-index: 1;
+}
+
 @media screen and (max-width: 1200px) {
     .DateComment{
         margin-left: auto;    
@@ -234,6 +252,7 @@ div.header-PostproposeInfoImg {
         width: 100%;
         height: 80px;
         border-top: 1px solid rgb(206, 206, 206);
+        z-index: 1;
     }
 
     .contentCommentPage{

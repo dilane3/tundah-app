@@ -41,13 +41,17 @@ const ResearchResultBar = () => {
   useEffect(() => {  
     const {addResults} = methodsRef.current()
 
-    instance.get(`/posts/search/${dataRef.current}`)
-    .then(res => {
-      addResults([...res.data])
-    }).catch((err) => {
-      console.log(err)
-      addResults([])
-    })
+    if (dataRef.current.length > 0) {
+      instance.get(`/posts/search/${dataRef.current}`)
+      .then(res => {
+        console.log("res.data")
+        addResults([...res.data])
+      }).catch((err) => {
+        console.log(err)
+        addResults([])
+      })
+    }
+
   }, [researchQuery])
 
   useEffect(() => {
@@ -64,13 +68,6 @@ const ResearchResultBar = () => {
 }
 
 const BodySearch = () => {
-  // const {changeQuery} = useContext(researchContext)
-
-  // // test
-  // useEffect(() => {
-  //   changeQuery("polygamie")
-  // }, [])
-
   const {postsResults} = useContext(researchContext)
 
 

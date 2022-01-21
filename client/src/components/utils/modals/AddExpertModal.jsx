@@ -1,15 +1,20 @@
-import React,{useState, useEffect} from 'react'
+import React,{useState, useEffect, useContext} from 'react'
 import { BsX } from 'react-icons/bs'
 import styles from '../../../css/addExpert.module.css'
 import AddExpertContent from './AddExpertContent'
 import { instance } from '../../../utils/url'
 import LoaderCircle from '../loaders/Loader'
+import {ToastContext} from 'react-simple-toastify'
+import Subscriber from '../../../entities/Subscriber'
 
 const AddExpertModal = ({onHide, animationClass}) => {
 
   const [newExpert,setNewExpert]= useState("");
   const [users, setUsers]= useState([])
   const [loading, setLoading] = useState(false)
+
+  // using context
+  const {displayToast} = useContext(ToastContext)
 
   const handleChange = event =>{
     setNewExpert(event.currentTarget.value);
@@ -42,6 +47,43 @@ const AddExpertModal = ({onHide, animationClass}) => {
 
   }, [newExpert])
 
+  const deleteUser = (id) => {
+    const usersClone = [...users]
+
+    const index = usersClone.findIndex(user => user.id === id)
+
+    if (index > -1) {
+      usersClone.splice(index, 1)
+
+      setUsers(usersClone)
+    }
+  }
+
+  const handleAddExpert = (idUser) => {
+    if (idUser) {
+      setLoading(true)
+
+      instance.post("/users/add_expert", {idSubscriber: idUser})
+      .then(res => {
+        console.log(res.data)
+
+        const user = new Subscriber(res.data)
+
+        deleteUser(user.getId)
+
+        displayToast(`${user.getName} a été ajouté comme expert`)
+      })
+      .catch(err => {
+        console.log(err)
+
+        displayToast("Erreur lors de l'ajout d'un expert")
+      })
+      .then(() => {
+        setLoading(false)
+      })
+    }
+  }
+
 
   return (
     <section className={`${styles.addExpertSection} ${animationClass ? styles.addExpertSectionAnimation:null}`}>
@@ -66,7 +108,7 @@ const AddExpertModal = ({onHide, animationClass}) => {
          !loading ? (
            users.length > 0 ? (
              users.map(user => {
-               return <AddExpertContent key={user.id} data={user} />
+               return <AddExpertContent onAddExpert={handleAddExpert} key={user.id} data={user} />
              }) 
            ):(
              newExpert !== "" ? (

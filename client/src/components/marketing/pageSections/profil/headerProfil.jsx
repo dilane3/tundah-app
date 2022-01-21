@@ -191,24 +191,22 @@ const HeaderProfil  = () => {
     }
 
     const handleLikePost = (idPost) => {
+        // we verify if the post liked if for the current user or not
+        if (checkUsername(username, currentUser)) {
+            likePost(idPost, currentUser.id)
+            likeUserPost(idPost)
+        } else {
+            likePost(idPost, currentUser.id)
+
+            likeOtherUserPost(idPost, currentUser.id)
+        }
+
         instance.post(`/posts/like/${idPost}`)
 		.then((res) => {
 			console.log(res.data)
 		})
 		.catch(err => {
 			console.log(err)
-		})
-		.then(() => {
-            // we verify if the post liked if for the current user or not
-            if (checkUsername(username, currentUser)) {
-                likePost(idPost, currentUser.id)
-                likeUserPost(idPost)
-            } else {
-                likePost(idPost, currentUser.id)
-                // to do
-
-                likeOtherUserPost(idPost, currentUser.id)
-            }
 		})
     }
 

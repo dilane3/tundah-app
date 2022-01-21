@@ -18,7 +18,7 @@ body {
   justify-content: space-between;
   box-shadow: 0 1px 5px #b1b1b1;
   background-color: #fff;
-  z-index: 5;
+  z-index: 15;
 }
 
 .container {

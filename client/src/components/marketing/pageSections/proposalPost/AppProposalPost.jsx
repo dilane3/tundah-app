@@ -5,8 +5,10 @@ import LoaderCircle from '../../../utils/loaders/Loader';
 import HeaderspecifisPost from './headerspecificpost';
 import PostPropose from './PostPropose';
 import  './Specificpost.css'
+import {ToastContext} from 'react-simple-toastify'
 
 const AppProposalPost  = () => {
+    // getting data from global state
     const {
         proposedPosts, 
         addPosts, 
@@ -14,6 +16,7 @@ const AppProposalPost  = () => {
         skip,
         next
     } = useContext(proposedPostsContext)
+    const {displayToast} = useContext(ToastContext)
 
     // setting the local state
     const [loadingMorePosts, setLoadingMorePosts] = useState(true)
@@ -76,6 +79,8 @@ const AppProposalPost  = () => {
                     })
                     .catch(err => {
                         console.log(err)
+
+                        displayToast("Une erreur est survenu lors du chargement des commentaires")
                     })
                     .then(() => {
                         setLoadingMorePosts(false)

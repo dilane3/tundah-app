@@ -66,6 +66,7 @@ class PostModel extends InterfacePostModel {
         `;
 
       const result = await session.run(query);
+      console.log(result.records)
 
       const moreInfosData = await this.gettingMoreInfos(result, "post");
 
@@ -75,6 +76,7 @@ class PostModel extends InterfacePostModel {
         return { data: [] };
       }
     } catch (err) {
+       console.log(err)
       return { error: "Sorry the post(s) has not been found" };
     } finally {
       session.close();
