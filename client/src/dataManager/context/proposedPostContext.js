@@ -8,7 +8,7 @@ const proposedPostsContext = React.createContext({
   updatePost: (idPost, data) => {},
   addPosts: (posts) => {},
   addPost: (post) => {},
-  setMorePostArgs: (next, skip) => {},
+  setMoreProposedPostsArgs: (next, skip) => {},
   validatePost: (idPost) => {}
 })
 

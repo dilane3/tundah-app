@@ -125,6 +125,7 @@
 .description{
   font-size: 14px;
   color: #575656;
+  cursor: pointer;
 }
 .CardImage{
   display: flex;
@@ -142,6 +143,12 @@
   margin-bottom: 10px;
   line-height: 20px;
   display: block;
+}
+
+/* loader */
+.loader-section {
+  position: relative;
+  padding: 20px;
 }
 
 @media screen and (max-width: 990px) {

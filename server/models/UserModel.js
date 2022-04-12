@@ -41,6 +41,42 @@ class UserModel extends InterfaceUserModel {
     }
   }
 
+  async getSearchedUsers(value) {
+    const session = dbConnect();
+
+    try {
+      const query = `
+        MATCH (user: Subscriber)
+        WHERE NOT user:Expert AND user.username =~ '(?i).*(${value.toLowerCase()}).*'
+        RETURN user
+        ORDER BY user.username ASC
+      `;
+
+      const result = await session.run(query);
+
+      if(result.records.length > 0) {
+
+        const userData = result.records
+
+        var dataArray = []
+
+        for (let i = 0; i < result.records.length; i++) {
+          dataArray.push({ ...userData[i].get("user").properties })
+        }
+        
+        return { data: dataArray }
+      } else {
+        return { data: null }
+      }
+    } catch (err) {
+      console.log(err)
+      return { error: "The searched user has not been found" }
+    } finally {
+      session.close()
+    }
+  }
+  
+
   /**
    * This method create a new subscriber
    * @param {string} name 
@@ -110,7 +146,9 @@ class UserModel extends InterfaceUserModel {
         LIMIT 1
       `
 
+      console.log(username)
       const result = await session.run(query, {username})
+      console.log(result)
 
       if (result.records.length > 0) {
         const userData = result.records[0].get("user").properties
@@ -120,6 +158,7 @@ class UserModel extends InterfaceUserModel {
         return {error: "Error occurs while connecting the user"}
       }
     } catch (err) {
+      console.log(err)
       return {error: "Error occurs while connecting the user"}
     } finally {
       await session.close()

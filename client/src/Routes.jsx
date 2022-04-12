@@ -1,7 +1,7 @@
 import React from 'react'
 import { Switch, Route } from 'react-router-dom';
 
-// import Social from './pages/social/Social'
+import Social from './pages/social/Social'
 import Wiki from './pages/wiki/Wiki'
 import Signup from './pages/signup/Signup'
 import Signin from './pages/signin/Signin'
@@ -19,7 +19,7 @@ const Routes = () => {
 
 	return (
     <Switch>
-      {/* <Route exact path="/" component={Social} /> */}
+      <Route exact path="/" component={Social} />
       <Route  path="/wiki/feed" component={Wiki} />
       <Route  path="/signup" component={Signup} />
       <Route  path="/signin" component={Signin} />
@@ -31,8 +31,6 @@ const Routes = () => {
       <Route  path="/posts/:id" component={SpecificPost} />
       <Route path="/proposal_posts" component={ProposalPost} />
       <Route path="/search" component={Search} />
-      <Route path="/post/:id" component={SpecificPost} />
-      {/* <Route path="/profil" component={Profile} /> */}
       <Route  component={Error404} />
     </Switch>
 	)

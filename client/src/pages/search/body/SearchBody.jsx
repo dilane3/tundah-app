@@ -1,5 +1,5 @@
 import { instance } from '../../../utils/url'
-import React, { useContext, useEffect } from 'react'
+import React, { useCallback, useContext, useEffect, useMemo, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import PostPropose from '../../../components/marketing/pageSections/proposalPost/PostPropose'
 import styles from "../../../css/search.module.css"
@@ -13,19 +13,52 @@ const ResearchResultBar = () => {
 
   const {researchQuery} = location.state
 
-  useEffect(() => {  
-    instance.get(`/posts/search/${researchQuery}`)
-    .then(res => {
-      addResults([...res.data])
-    }).catch((err) => {
-      console.log(err)
-      addResults([])
-    })
-  }, [researchQuery, addResults])
+  // use Memo and use Callback section
+  const methodsCb = useCallback(() => {
+    return {
+      addResults,
+      changeQuery
+    }
+  }, [addResults, changeQuery])
+
+  const dataMemo = useMemo(() => {
+    return researchQuery
+  }, [researchQuery])
+
+  // use ref section
+  const dataRef = useRef(dataMemo)
+  const methodsRef = useRef(methodsCb)
+
+  // use effect section
+  useEffect(() => {
+    methodsRef.current = methodsCb
+  }, [methodsCb])
 
   useEffect(() => {
-    changeQuery(researchQuery)
-  }, [postsResults, changeQuery, researchQuery])
+    dataRef.current = dataMemo
+  }, [dataMemo])
+
+  useEffect(() => {  
+    const {addResults} = methodsRef.current()
+
+    if (dataRef.current.length > 0) {
+      instance.get(`/posts/search/${dataRef.current}`)
+      .then(res => {
+        console.log("res.data")
+        addResults([...res.data])
+      }).catch((err) => {
+        console.log(err)
+        addResults([])
+      })
+    }
+
+  }, [researchQuery])
+
+  useEffect(() => {
+    const {changeQuery} = methodsRef.current()
+
+    changeQuery(dataRef.current)
+  }, [postsResults])
 
   return (
     <div className={styles.researchResultBar}>
@@ -35,13 +68,6 @@ const ResearchResultBar = () => {
 }
 
 const BodySearch = () => {
-  // const {changeQuery} = useContext(researchContext)
-
-  // // test
-  // useEffect(() => {
-  //   changeQuery("polygamie")
-  // }, [])
-
   const {postsResults} = useContext(researchContext)
 
 

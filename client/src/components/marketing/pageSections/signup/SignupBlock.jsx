@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { BsArrowRight, BsCheck, BsX } from "react-icons/bs";
 import Input from '../../../elements/input/Input'
 import Paragraphe from '../../../elements/p/Paragraphe'
@@ -10,6 +10,8 @@ import { instance } from '../../../../utils/url';
 import AlertError from '../signin/AlertError';
 import { PAYS } from '../../../../utils/Allcountries';
 import { Redirect } from 'react-router';
+import {ToastContext} from 'react-simple-toastify'
+
 
 const image = require("../../../../medias/img/signup-img.png")
 
@@ -33,6 +35,9 @@ const SignupBlock = (props) => {
 	const [uniqueCheckLoadingUsername, setUniqueCheckLoadingUsername] = useState(false)
 	const [loading, setLoading] = useState(false)
 	const [redirect, setRedirect] = useState(false)
+
+	// getting data from global state
+	const {displayToast} = useContext(ToastContext)
 	
 	// check if username is unique
 	useEffect(() => {
@@ -64,8 +69,11 @@ const SignupBlock = (props) => {
 		} else {
 			console.log("error")
 			setUniqueUsernameCheck(false)
+
+
+			displayToast("Fournissez un nom d'utilisateur avec au moins 4 caracteres")
 		}
-	}, [signupData])
+	}, [signupData.userName])
 
 	// check if the email is unique
 	useEffect(() => {
@@ -98,7 +106,7 @@ const SignupBlock = (props) => {
 			console.log("error")
 			setUniqueEmailCheck(false)
 		}
-	}, [signupData])
+	}, [signupData.email])
 
 	//handler
 	const handleChange = (event) => {
@@ -131,11 +139,14 @@ const SignupBlock = (props) => {
 
 				localStorage.setItem("tundah-token", token)
 				setRedirect(true)
+				displayToast("Votre compte a ete cree avec succes")
 			})
 			.catch(err => {
 				console.log(err)
 				setErrorMessage("Quelque ait survenu cote serveur, s'il vous plait ressayer")
 				setShowError(true)
+
+				displayToast("Un probleme ait survenu lors de la creation de votre compte")
 			})
 			.then(() => {
 				setLoading(false)
@@ -143,6 +154,10 @@ const SignupBlock = (props) => {
 		} else {
 			setErrorMessage("Verifier votre formulaire avant de valider")
 			setShowError(true)
+
+			console.log("hello error")
+
+			displayToast("Veillez remplir correctement le formulaire avant de soumettre")
 		}
 	}
 
@@ -158,7 +173,6 @@ const SignupBlock = (props) => {
 			else others.push(country["translations"])
 		}
 
-		console.log(others)
 		return countries.sort()
 	}
 
@@ -173,7 +187,7 @@ const SignupBlock = (props) => {
 	const disabled = fullName === "" || userName === "" || email === "" || password === "" || country === "" || !checkTermsUses
 
 	return(
-		<div className={styles.signupSection}>
+		<div className={styles.signupSection} >
 				<section className={styles.signupSectionLeft}>
 					<div className={styles.signupSectionLeftContainer}>
 						<span className={styles.signupSectionLeftLogo}>

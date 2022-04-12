@@ -36,6 +36,7 @@ import navigationContext from './dataManager/context/navigationContext';
 import Post from './entities/Post';
 import researchContext from './dataManager/context/researchContext';
 import proposedPostsReducer from './dataManager/data/proposedPost/proposedPostReducer';
+import {ToastProvider} from "react-simple-toastify"
 
 function App() {
   const [posts, dispatchPosts] = useReducer(postsReducer, [])
@@ -48,6 +49,10 @@ function App() {
   })
   const [postsArgs, setPostsArgs] = useState({
     next: false,
+    skip: 0
+  })
+  const [proposedPostsArgs, setProposedPostsArgs] = useState({
+    next: true,
     skip: 0
   })
 
@@ -136,6 +141,10 @@ function App() {
     dispatchProposedPosts(validateProposedPost(idPost))
   }
 
+  const setMoreProposedPostsArgs = (next, skip) => {
+    setProposedPostsArgs(state => ({...state, next, skip}))
+  }
+
   // navigation action
   const navigateTo = (target) => {
     setNavigation(target)
@@ -188,12 +197,11 @@ function App() {
 
   const proposedPostContextValue = {
     proposedPosts,
-    next: false,
-    skip: 0,
+    ...proposedPostsArgs,
     deletePost: proposedPostsDeletePost,
     updatePost: proposedPostsUpdatePost,
     addPosts: proposedPostsAddPosts,
-    setMorePostArgs: () => {},
+    setMoreProposedPostsArgs,
     validatePost: proposedPostValidate
   }
 
@@ -210,15 +218,23 @@ function App() {
     changeQuery
   }
 
+  // toast config
+  const toastOptions = {
+    position: "bottom",
+    timeout: 5000
+  }
+
   return (
     <currentUserContext.Provider value={currentUserContextValue}>
       <postsContext.Provider value={postsContextValue}>
         <proposedPostContext.Provider value={proposedPostContextValue}>
           <navigationContext.Provider value={navigationContextValue}>
             <researchContext.Provider value={researchContextValue}>
-              <BrowserRouter>
-                <Routes />
-              </BrowserRouter>
+              <ToastProvider options={toastOptions}>
+                <BrowserRouter>
+                  <Routes />
+                </BrowserRouter>
+              </ToastProvider>
             </researchContext.Provider>
           </navigationContext.Provider>
         </proposedPostContext.Provider>

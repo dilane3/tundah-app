@@ -19,10 +19,12 @@ This app section will be made using **Reactjs** (a javascript framework).
 This folder concerns only the server side of the project, the place where will be writen the core functionalities of the project, where the database will be managed.
 This part will be made using **Nodejs/Express** (a javascript framework). Concerning the database, we will use Neo4j, a database oriented graph
 
-## Distribution of task
+## Liste des développeurs
 
-| Frontend Actors                   | Backend Actors                        |
-| ---                               | ---                                   |
-| Blondelle                         | Dilane (chief)                        |
-| Dan (chief)                       | Omer                                  |
-| Dilane                            | Wangue                                |
+| Matricules      | Noms et Prénoms                       |
+| ---             | ---                                   |
+| 18T2610         | FENYEP WANGUE                         |
+| 19M2441         | FOTSO WAFO Omer Élysé                 |
+| 19M2557         | KANA ZANLEFACK Blondelle              |
+| 19M2069         | KOMBOU MBIANDA Armel Dilane (chef)    |
+| 18U2355         | NGIMDOCK ZEMFACK                      |

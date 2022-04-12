@@ -54,6 +54,7 @@ const SecondConnexionPage = () => {
 			.catch(err => {
 				setErrorMessage("Soit le nom d'utilisateur, soit le mot de passe est incorrect, ressayez s'il vous plait")
 				setShowError(true)
+				console.log(err)
 			})
 			.finally(() => {
 				setLoading(false)

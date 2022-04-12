@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, useRef } from 'react'
 //packages
 import { BsHeartFill, BsHeart, BsThreeDotsVertical, BsChat } from "react-icons/bs"
 //composans
@@ -6,6 +6,7 @@ import SocialPostDropdown from '../../utils/dropdowns/SocialPostDropdown'
 import PostImg from '../../elements/imgCircle/ImgCircle'
 import PostCarousel from '../../utils/carousels/PostCarousel'
 import Post from '../../../entities/Post'
+import LoaderCircle from '../../utils/loaders/Loader'
 
 import "../../../css/post.css"
 import DisplayPhoto from '../../utils/modals/DisplayPhoto'
@@ -15,33 +16,49 @@ import { Link } from 'react-router-dom'
 import {  ressourcesUrl } from "../../../utils/url"
 import { getRelativeDate } from '../../../utils/dateOperations'
 
-const PostComponent = ({postData, onLikePost}) => {
+const imagesExtensions = [ "jpeg", "png", "gif", "bmp", "jpg" ]
+const checkCurrentUser = (author, currentUser) => {
+	if (!currentUser) return false
+	return author.getId === currentUser.id
+}
+
+const PostComponent = ({postData, onLikePost, published}) => {
+	const isPublished = published === undefined || published === true ? true:false
+
 	// getting data from the global state
 	const {currentUser} = useContext(currentUserContext)
 
 	// getting props values
 	let post = new Post(postData)
 
+	//ref
+	const postContentRef = useRef()
+
 	// definition of the local state
 	const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
 	const [indexFile, setIndexFile] = useState(0)
-	const [relativeDate, setRelativeDate] = useState(getRelativeDate(post.getCreationDate/1000))
+	const [relativeDate, setRelativeDate] = useState(getRelativeDate(post.getCreationDate))
+	const [isLoading, setLoading] = useState(false)
 
 
 	const author = new Subscriber(post.getAuthor)
-	console.log({author, postData})
+	console.log({author, currentUser})
 
 	// useEffect section
 
 	useEffect(() => {
 		const timer = setInterval(() => {
-			setRelativeDate(getRelativeDate(post.getCreationDate/1000))
+			setRelativeDate(getRelativeDate(post.getCreationDate))
 		}, 1000)
 
 		return () => {
 			clearInterval(timer)
 		}
 	})
+
+	useEffect(() => {
+		postContentRef.current.innerHTML = post.getContent
+	}, [post.getContent])
 
 
 	// some actions methods
@@ -50,6 +67,7 @@ const PostComponent = ({postData, onLikePost}) => {
 
 		setShowDisplayPhotoModal(true)
 	}
+
 
 	// This function format the likes number and comment number
 	// so that we can have 10K likes for example
@@ -63,6 +81,13 @@ const PostComponent = ({postData, onLikePost}) => {
 		}
 	}
 
+	const checkExtension = (str) => {
+		const tabSplit = str.split(".")
+		const extension = tabSplit[tabSplit.length - 1]
+
+		return imagesExtensions.includes(extension)
+	}
+
 	return (
 		<article className="bg-white w-full font-primary pb-2 mx-auto rounded-sm" style={{border: "1px solid rgb(206, 206, 206)"}}>
 			<header className="flex justify-between items-center pb-3 px-2 pt-2">
@@ -70,44 +95,63 @@ const PostComponent = ({postData, onLikePost}) => {
 					<PostImg
 						size="small"
 						alt="wangue fenyep"
-						src={`${ressourcesUrl.profil}/${author.getProfil}`}
+						src={`${ressourcesUrl.profil}/${checkCurrentUser(author, currentUser) ? currentUser.profil:author.getProfil}`}
 					 />
 					 <div className="flex flex-col space-y-1 author-info">
-					 	<span className="author-post-username text-sm md:text-lg font-bold ">{author.getName[0].toUpperCase() + author.getName.substr(1).toLowerCase()}</span>
+						<Link to={`/profile/${author.getUsername}`}>
+							<span 
+								className="author-post-username text-sm md:text-lg font-bold"
+							>{author.getName[0].toUpperCase() + author.getName.substr(1).toLowerCase()}</span>
+						</Link>
 					 	<span className="text-xs text-gray-500">{relativeDate}</span>
 					 </div>
 				</div>
 				
-
-				<div>
-			    <SocialPostDropdown 
-			      dropElt={ <BsThreeDotsVertical size="25" className="icon" /> } 
-			    />
-			  </div>
-			</header>
-			<main className="">
-				<div className="post-title">
-					{post.getTitle[0].toUpperCase() + post.getTitle.substr(1).toLowerCase()}
-				</div>
-				<div className="px-2">
-					<Link to={`/post/${post.getId}`}>
-						{post.getContent}
-					</Link>
-				</div>
-
 				{
-					post.getFilesList.length > 0 ? (
-						<PostCarousel
-							files={post.getFilesList}
-							onDisplayPhoto={(index) => handleDisplayPhoto(index)}
-						/>
+					currentUser ? (
+						<div>
+							<SocialPostDropdown 
+								dropElt={ <BsThreeDotsVertical size="25" className="icon" /> }
+								idPost={ post.getId }
+								idAuthor={author.getId}
+								onLoading={ (status) => setLoading(status) }
+							/>
+						</div>
 					):null
 				}
 
+			</header>
+			<main className="">
+				<div className="post-title font-bold text-base">
+					{post.getTitle[0].toUpperCase() + post.getTitle.substr(1).toLowerCase()}
+				</div>
+				<Link to={`/posts/${post.getId}`}>
+					<div ref={postContentRef} className="px-2"></div>
+				</Link>
+
+				{
+					post.getFilesList.length > 0 ? (
+						checkExtension(post.getFilesList[0]) ? (
+							<PostCarousel
+								files={post.getFilesList}
+								onDisplayPhoto={(index) => handleDisplayPhoto(index)}
+								edited={true}
+							/>
+							) : (
+								<video controls className="w-full h-full">
+
+								    <source src={ `${ressourcesUrl.postVideos}/${post.getFilesList[0]}` }
+								            type="video/webm" />
+
+								    Sorry, your browser doesn't support embedded videos.
+								</video>
+							)
+					):null
+				}
 			</main>
 
 			{
-				currentUser ? (
+				currentUser && isPublished ? (
 					<footer className="post-footer mt-3 px-2 md:mt-3 flex items-center space-x-6">
 						<div className="flex items-center space-x-1" onClick={() => onLikePost(post.getId)}>
 							{
@@ -121,7 +165,7 @@ const PostComponent = ({postData, onLikePost}) => {
 						</div>
 
 						<div className="flex items-center space-x-1">
-							<Link to={`/post/${post.getId}`}>
+							<Link to={`/posts/${post.getId}`}>
 								<BsChat size="20" className="icon" />
 							</Link>
 							<span className="text-xs md:text-sm">{formatLikesOrComment(post.getComments)}</span>
@@ -139,6 +183,10 @@ const PostComponent = ({postData, onLikePost}) => {
 						onHide={() => setShowDisplayPhotoModal(false)}	
 					/>
 				):null
+			}
+
+			{
+				isLoading && <LoaderCircle size="100" color="#3c6a46" />
 			}
 		</article>
 	)

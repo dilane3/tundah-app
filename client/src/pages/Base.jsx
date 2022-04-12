@@ -8,6 +8,7 @@ import currentUserContext from '../dataManager/context/currentUserContent'
 import { instance } from '../utils/url'
 import postsContext from '../dataManager/context/postsContext'
 import AddExpertModal from '../components/utils/modals/AddExpertModal'
+import {ToastContext} from 'react-simple-toastify'
 
 const logo = require("../medias/logo/Tundah-large.png")
 
@@ -18,6 +19,7 @@ const Base = ({children}) => {
     addPosts,
     setMorePostArgs
   } = useContext(postsContext)
+  const {displayToast} = useContext(ToastContext)
 
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [maskBackground, setMaskBackground] = useState(true)
@@ -53,6 +55,17 @@ const Base = ({children}) => {
     methodsRef.current = methodsCallback()
   }, [methodsCallback])
 
+  // handle the resizing of the window viewport
+  useEffect(() => {
+    window.onresize = function() {
+      const width = window.innerWidth
+
+      if (width > 700) {
+        setShowMobileMenu(false)
+      }
+    }
+  })
+
   useEffect(() => {
     if (showMobileMenu) {
       setMaskBackground(false)
@@ -81,9 +94,13 @@ const Base = ({children}) => {
       .then(res => {
         // adding the current user in the global state
         login({...res.data, token: undefined})
+
+        displayToast("Vos données ont été chargées avec succes")
       })
       .catch(err => {
         console.log(err)
+
+        displayToast("Vous n'êtes pas connecté")
       })
       .then(() => {
 
@@ -94,6 +111,7 @@ const Base = ({children}) => {
           let skipValue = res.data.skip
 
           console.log({nextValue, skipValue})
+          console.log(res.data)
 
           // adding posts
           addPosts(postData)
@@ -110,6 +128,8 @@ const Base = ({children}) => {
         })
         .catch(err => {
           console.log(err)
+
+          displayToast("Une erreur est survenu lors du chargement des posts, veuillez recharger la page s'il vous plait")
         })
         .then(() => {
           // to remove

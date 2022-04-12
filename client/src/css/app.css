@@ -1,3 +1,7 @@
+*{
+	box-sizing: border-box;
+}
+
 body{
 	/*background: red;*/
 	width: 100%;
@@ -29,11 +33,39 @@ body{
 	width: 100%;
 }
 
+.postImg img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	object-position: center;
+}
+
 .post-title {
-	font-size: 18px;
-	font-weight: 800;
+	/*font-size: 18px;*/
+	/*font-weight: 800;*/
 	width: calc(100% - 10px);
 	margin: 10px auto;
+}
+
+
+.slick-arrow {
+	z-index: 10 !important;
+}
+
+.writePostModal{
+	left: 50%;
+	transform: translateX(-50%);
+}
+
+.post-editor {
+	word-break: break-all;
+	max-height: 300px;
+	min-height: 60px;
+	overflow-y: scroll;
+}
+
+.post-editor:focus{
+	outline: 0;
 }
 
 @media screen and (max-width: 1200px ){
@@ -53,5 +85,18 @@ body{
 		top: 48%;
 		left: 50%;
 		transform: translate(-50%, -50%);
+	}
+}
+
+@media screen and (max-width: 576px) {
+	.writePostModal {
+		position: fixed;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		transform: translate(0, 0);
+		border-radius: 0;
+		z-index: 10;
 	}
 }

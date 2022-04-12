@@ -156,8 +156,12 @@ class PostController {
 
         console.log({data})
 
-        dataArray.push(...data);
-        errorArray.push({ ...error });
+        if (data) {
+          dataArray.push(...data);
+        } else {
+          errorArray.push({ ...error });
+        }
+
       } else {
         const { data, error } = await postModel.getSearchedPosts(search[0]);
 

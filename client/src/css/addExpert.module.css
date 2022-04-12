@@ -22,7 +22,7 @@
 .addExpertHeader {
   position: relative;
   width: 100%;
-  height: 100px;
+  height: 120px;
   padding: 10px;
   border-bottom: 1px solid rgb(179, 179, 179);
   display: flex;
@@ -57,6 +57,7 @@
 
 .addExpertFrom {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
 }
@@ -67,6 +68,7 @@
   font-size: 16px;
   height: 40px;
   padding: 0 10px;
+  margin-top: 20px;
   border: 0;
   background-color: #e9ffed;
   color: rgb(44, 44, 44);
@@ -78,13 +80,70 @@ div.addExpertFrom input:focus {
 }
 
 .addExpertContent {
-  width: 100%;
-  height: calc(100% - 100px);
+  height: calc(100% - 120px);
   overflow-y: scroll;
   overflow-x: hidden;
+}
+div.addExpertContenu{
+  width: calc(100% - 20px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   padding: 10px;
+  border: 1px solid gray;
+  margin: 10px;
+}
+.addExpertHead{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+}
+.infoExpert{
+  display: flex;
+  flex-direction: column;
+  margin-left:5px;
+}
+.name{
+  font-weight: bold;
+  font-size: 16px;
+}
+.username{
+  font-size: 14px;
+  color: gray;
+  margin-top: 5px;
+}
+.headerPostproposeInfoImg{
+  width:60px;
+  height: 60px;
+}
+.BtnAddExpert{
+  margin-left: auto;
+  background-color: #3c6a46;
+  color: #fff;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+.ExpertDescription{
+  margin-top: 20px;
+  font-size: 14px;
+  width: 100%;
 }
 
+.addExpertNoResult {
+  width: calc(100% - 30px);
+  margin: 15px;
+  border: 1px solid #bdbdbd;
+  border-radius: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+}
 @media screen and (max-width: 500px) {
   .addExpertSection {
     top: 0;
