@@ -85,7 +85,6 @@ class PostModel extends InterfacePostModel {
 
   /**
    * This function returns the number of posts available in the database
-   * @param {Session} session
    */
   async getNumberPost(session, status) {
     try {

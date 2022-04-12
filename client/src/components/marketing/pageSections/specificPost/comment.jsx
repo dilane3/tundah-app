@@ -23,10 +23,12 @@ const Comment = ({onResponse, data, isResponse, author, onDisplayResponses, resp
     return(
         <div className="CommentContent">
             <div className="header-PostproposeInfo">
-                <ImgCircle src={`${ressourcesUrl.profil}/${subscriber.getProfil}`} alt="profil" size="small" classe="header-PostproposeInfoImg" />
+                <Link to={`/profile/${subscriber.getUsername}`}>
+                    <ImgCircle src={`${ressourcesUrl.profil}/${subscriber.getProfil}`} alt="profil" size="small" classe="header-PostproposeInfoImg" />
+                </Link>
                 <div className="Info-Comment">
                    <div className="Info-User">
-                        <Link to={`/posts/${subscriber.getUsername}`}>
+                        <Link to={`/profile/${subscriber.getUsername}`}>
                             <span className="Username">{subscriber.getName} {isAuthor()}</span>
                         </Link>
 

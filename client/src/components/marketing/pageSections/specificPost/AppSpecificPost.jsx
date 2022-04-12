@@ -4,7 +4,7 @@ import Post from '../Post';
 import Comment from './comment';
 import './commentPost.css'
 import postsContext from '../../../../dataManager/context/postsContext';
-import { useParams } from 'react-router';
+import { Redirect, useParams } from 'react-router-dom';
 import currentUserContext from '../../../../dataManager/context/currentUserContent';
 import { instance } from '../../../../utils/url';
 import LoaderCircle from '../../../utils/loaders/Loader';
@@ -101,6 +101,7 @@ const AppSpecifificPost  = () => {
     const [isResponseInput, setIsResponseInput] = useState(false)
     const [idComment, setIdComment] = useState(null)
     const [loading, setLoading] = useState(false)
+    const [redirect, setRedirect] = useState(false)
 
     // getting the id from the url params
     const {id} = useParams()
@@ -171,8 +172,6 @@ const AppSpecifificPost  = () => {
             post = currentUser.posts.find(p => p.id === id)
         }
 
-        console.log({posts, id})
-
         return post
     }
 
@@ -183,7 +182,11 @@ const AppSpecifificPost  = () => {
 
     return(
         <section ref={commentPageRef} className="contentCommentPage">
-            <Post postData={getPost(id)} onLikePost={handleLikePost} />
+            {
+                !getPost(id) ? (
+                    <Redirect to="/wiki/feed" />
+                ):<Post postData={getPost(id)} onLikePost={handleLikePost} />
+            }
 
             {
                 currentUser ? (
@@ -198,16 +201,18 @@ const AppSpecifificPost  = () => {
                         <section>
                             {
                                 !loading ? (
-                                    sortCommentByDate(getPost(id).commentsData).map(comment=>(
-                                        <CommentBlock 
-                                            key={comment.id}  
-                                            idUser={currentUser.id} 
-                                            post={getPost(id)} 
-                                            comment={comment} 
-                                            isResponseInput={isResponseInput}
-                                            onChangeToResponseInput={handleChangeCommentEditorType}    
-                                        />
-                                    ))
+                                    getPost(id) ? (
+                                        sortCommentByDate(getPost(id).commentsData).map(comment=>(
+                                            <CommentBlock 
+                                                key={comment.id}  
+                                                idUser={currentUser.id} 
+                                                post={getPost(id)} 
+                                                comment={comment} 
+                                                isResponseInput={isResponseInput}
+                                                onChangeToResponseInput={handleChangeCommentEditorType}    
+                                            />
+                                        ))
+                                    ):<Redirect to="/wiki/feed" />
                                 ):(
                                     <div className="commentLoader">
                                         <LoaderCircle size={50} color="#3c6a46" />

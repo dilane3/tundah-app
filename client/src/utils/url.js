@@ -1,12 +1,12 @@
 import axios from "axios";
 
-// const instance = axios.create({
-// 	baseURL: "http://localhost:5000/api"
-// })
-
 const instance = axios.create({
-	baseURL: "http://192.168.43.81:5000/api",
+	baseURL: "http://localhost:5000/api"
 })
+
+// const instance = axios.create({
+// 	baseURL: "http://192.168.43.81:5000/api",
+// })
 
 // const instance = axios.create({
 // 	baseURL: "https://tundah-server.osc-fr1.scalingo.io/api"
@@ -28,16 +28,16 @@ const instance = axios.create({
 // 	postVideos: "https://tundah-server.osc-fr1.scalingo.io/static/videos"
 // }
 
-const ressourcesUrl = {
-	profil: "http://192.168.43.81:5000/static/images/profil",
-	postImages: "http://192.168.43.81:5000/static/images/post",
-	postVideos: "http://192.168.43.81:5000/static/videos"
-}
-
 // const ressourcesUrl = {
-// 	profil: "http://localhost:5000/static/images/profil",
-// 	postImages: "http://localhost:5000/static/images/post",
-// 	postVideos: "http://localhost:5000/static/videos"
+// 	profil: "http://192.168.43.81:5000/static/images/profil",
+// 	postImages: "http://192.168.43.81:5000/static/images/post",
+// 	postVideos: "http://192.168.43.81:5000/static/videos"
 // }
+
+const ressourcesUrl = {
+	profil: "http://localhost:5000/static/images/profil",
+	postImages: "http://localhost:5000/static/images/post",
+	postVideos: "http://localhost:5000/static/videos"
+}
 
 export {instance, ressourcesUrl}
