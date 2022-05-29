@@ -101,12 +101,35 @@ div.profilInfo{
 
 .town{
   margin-left: 10px;
-  font-size: 14px;
+  font-size: 18px;
 }
 
 .username{
-  font-size: 14px;
+  font-size: 18px;
   color: #575656;
+}
+
+.profilFollowSection {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.btn-follow {
+  background-color: #3c6a46;
+  color: #fff;
+  width: auto;
+  padding: 5px 25px;
+  border-radius: 5px;
+  border: 2px solid transparent
+}
+
+.followed {
+  background-color: transparent;
+  color: #3c6a46;
+  border-color: #3c6a46;
 }
 
 .BsJournals{
@@ -143,11 +166,42 @@ div.profilInfo{
 
 .profilFollower{
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
   margin-top: 20px;
   font-size: 14px;
   justify-content: space-between;
+}
+
+.profilFollowerTop,
+.profilFollowerBottom {
+  width: 100%;
+}
+
+.profilFollowerTop {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.profilFollowerBottom {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.profilFollowerBottom > div:last-child {
+  margin-left: 20px;
+}
+
+.profileFollowerItem span:first-child {
+  color: #555;
+  font-weight: bold;
+}
+
+.profileFollowerItem span:last-child {
+  margin-left: 5px;
+  color: #555;
 }
 
 .iconEditerProfil{
@@ -254,5 +308,15 @@ div.profilInfo{
 @media screen and (max-width: 425px) {
   .profilPost div{
     font-size: 12px;
+  }
+
+  .profilFollowSection {  
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+
+  .btn-follow {
+    margin-top: 10px
   }
 }

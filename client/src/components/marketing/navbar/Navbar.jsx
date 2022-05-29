@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import styles from '../../../css/navbar.module.css'
 import Input from '../../elements/input/Input'
-import {BsChevronDown, BsSearch, BsJustify} from 'react-icons/bs'
+import { BsChevronDown, BsSearch, BsJustify } from 'react-icons/bs'
 import ImgCircle from '../../elements/imgCircle/ImgCircle'
 import NavbarProfilDropdown from '../../utils/dropdowns/NavbarProfilDropdown'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
@@ -11,8 +11,8 @@ import { ressourcesUrl } from '../../../utils/url'
 
 const logo = require("../../../medias/logo/Tundah-large.png")
 
-const Navbar = ({className, onShowMobileMenu}) => {
-	const {currentUser} = useContext(currentUserContext)
+const Navbar = ({ className, onShowMobileMenu }) => {
+	const { currentUser } = useContext(currentUserContext)
 
 	const [researchQuery, setResearchQuery] = useState("")
 
@@ -21,15 +21,11 @@ const Navbar = ({className, onShowMobileMenu}) => {
 		event.preventDefault();
 
 		setResearchQuery(event.target.value);
-	}	
+	}
 
-	useEffect(() => {
-		console.log("The value entered is: ", researchQuery)
-	}, [researchQuery])
-	
 	const user = new Subscriber(currentUser)
 
-	return(
+	return (
 		<header className={className}>
 			<div className={styles.headerLogo}>
 				<div className={styles.headerMenuIcon} onClick={onShowMobileMenu}>
@@ -38,12 +34,12 @@ const Navbar = ({className, onShowMobileMenu}) => {
 				<img src={logo} alt="logo" />
 			</div>
 			<div className={styles.headerSearchEngine}>
-				<Input 
+				<Input
 					type="search"
 					placeholder="Faites une recherche..."
 					handleChange={handleChange}
 				/>
-				
+
 				<Link to={{
 					pathname: '/search',
 					state: {
@@ -54,7 +50,7 @@ const Navbar = ({className, onShowMobileMenu}) => {
 						<BsSearch />
 					</div>
 				</Link>
-				
+
 			</div>
 			<div className={styles.headerProfil}>
 				<div className={styles.headerProfilIcon}>
@@ -62,12 +58,12 @@ const Navbar = ({className, onShowMobileMenu}) => {
 						currentUser ? (
 							<>
 								<ImgCircle src={`${ressourcesUrl.profil}/${user.getProfil}`} alt={"profil"} />
-			
-								<NavbarProfilDropdown 
-									dropElt={ <BsChevronDown className="icon" /> } 
+
+								<NavbarProfilDropdown
+									dropElt={<BsChevronDown className="icon" />}
 								/>
 							</>
-						):(
+						) : (
 							<Link to="/signin">
 								<button className={styles.headerProfilButton}>se connecter</button>
 							</Link>

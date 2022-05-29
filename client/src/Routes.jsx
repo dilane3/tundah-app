@@ -17,23 +17,23 @@ import Search from './pages/search/Search';
 
 const Routes = () => {
 
-	return (
+  return (
     <Switch>
-      <Route exact path="/" component={Social} />
-      <Route  path="/wiki/feed" component={Wiki} />
-      <Route  path="/signup" component={Signup} />
-      <Route  path="/signin" component={Signin} />
+      <Route exact path="/" component={Wiki} />
+      <Route path="/social" component={Social} />
+      <Route path="/signup" component={Signup} />
+      <Route path="/signin" component={Signin} />
       {/* <Route  path="/notifications" component={Notifications} /> */}
       {/* <Route  path="/messages" component={Messages} /> */}
       <Route exact path="/profile/:username" component={Profile} />
       {/* <Route  path="/about" component={About} /> */}
       {/* <Route  path="/termsuses" component={TermsUses} /> */}
-      <Route  path="/posts/:id" component={SpecificPost} />
+      <Route path="/posts/:id" component={SpecificPost} />
       <Route path="/proposal_posts" component={ProposalPost} />
       <Route path="/search" component={Search} />
-      <Route  component={Error404} />
+      <Route component={Error404} />
     </Switch>
-	)
+  )
 }
 
 export default Routes
