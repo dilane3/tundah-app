@@ -152,7 +152,7 @@ const PostComponent = ({ postData, onLikePost, published }) => {
 								edited={true}
 							/>
 						) : (
-							<video controls className="w-full h-full">
+							<video controls className="w-full h-full mt-4">
 
 								<source src={`${ressourcesUrl.postVideos}/${post.getFilesList[0]}`}
 									type="video/webm" />

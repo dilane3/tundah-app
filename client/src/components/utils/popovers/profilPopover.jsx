@@ -23,12 +23,12 @@ const ProfilPopover = ({ authorData }) => {
       <div className={styles.popoverBottom}>
         <div className={styles.popoverFollowersInfo}>
           <div className={styles.popoverFollowerItem}>
-            <span>13K</span>
+            <span>375</span>
             <span>Abonnés</span>
           </div>
 
           <div className={styles.popoverFollowerItem}>
-            <span>350</span>
+            <span>122</span>
             <span>Abonnements</span>
           </div>
         </div>

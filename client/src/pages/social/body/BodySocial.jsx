@@ -1,6 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import axios from 'axios'
 import navigationContext from '../../../dataManager/context/navigationContext'
+import ListPosts from '../../../components/marketing/pageSections/wiki/ListPosts'
 
 const instance = axios.create({
 	baseURL: "http://localhost:5000/api",
@@ -19,9 +20,9 @@ const BodySocial = () => {
 	}, [])
 
 	return (
-		<section>
-			Hello
-		</section>
+		<>
+			<ListPosts />
+		</>
 	)
 }
 

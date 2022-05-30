@@ -7,17 +7,14 @@ import currentUserContext from '../../dataManager/context/currentUserContent'
 
 
 const Wiki = () => {
-	const {currentUser} = useContext(currentUserContext)
-	return(
+	const { currentUser } = useContext(currentUserContext)
+	return (
 		<div className="">
 			<Seo
 				title="wiki | tundah"
 				description="tundah est un réseau social qui met en avant la culture africaine pour la transmettre à la génération futur"
 			/>
 			<Base>
-				{
-					currentUser ? <WritePost /> : null
-				}
 				<Body />
 			</Base>
 		</div>
