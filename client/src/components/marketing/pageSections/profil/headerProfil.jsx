@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import { BsCameraFill, BsX } from 'react-icons/bs'
 import { BsGeoAlt } from 'react-icons/bs'
-import { MdContactMail } from 'react-icons/md'
+import { MdContactMail, MdDashboard } from 'react-icons/md'
 import { AiOutlineEdit } from 'react-icons/ai'
 import './profilStyle.css'
 import currentUserContext from '../../../../dataManager/context/currentUserContent'
@@ -13,362 +13,378 @@ import AddProfilPhotoModal from '../../../utils/modals/AddProfilPhotoModal'
 import DisplayPhoto from '../../../utils/modals/DisplayPhoto'
 import postsContext from '../../../../dataManager/context/postsContext'
 import { useParams } from 'react-router'
+import CategoryContext from '../../../../dataManager/context/categoryContext'
 
 const checkUsername = (username, currentUser) => {
-    return username === currentUser.username
+	return username === currentUser.username
 }
 
 const sortPostByDate = (posts) => {
-    return posts.sort((p1, p2) => p2.creation_date - p1.creation_date)
+	return posts.sort((p1, p2) => p2.creation_date - p1.creation_date)
 }
 
 const StatPostItem = ({ title, number }) => {
-    return (
-        <div className="profilCardPost">
-            <span>{title} ({number})</span>
-        </div>
-    )
+	return (
+		<div className="profilCardPost">
+			<span>{title} ({number})</span>
+		</div>
+	)
 }
 
 const HeaderProfil = () => {
-    // getting data from the global state
-    const { currentUser, updateProfil, likeUserPost } = useContext(currentUserContext)
-    const { likePost } = useContext(postsContext)
+	// getting data from the global state
+	const { currentUser, updateProfil, likeUserPost } = useContext(currentUserContext)
+	const { likePost } = useContext(postsContext)
+	const { openModal } = useContext(CategoryContext)
 
-    // username passed inside the url
-    const { username } = useParams()
 
-    // setting up of the local state
-    const [deleteProfilLoader, setDeleteProfilLoader] = useState(false)
-    const [displayProfilUpload, setDisplayProfilUpload] = useState(false)
-    const [profilData, setProfilData] = useState("")
-    const [percentageUploadProfil, setPercentageUploadProfil] = useState(0)
-    const [uploading, setUploading] = useState(false)
-    const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
-    const [postTypeToShow, setPostTypeToShow] = useState("published") // define the type of posts to show
-    const [isCurrentUser, setIsCurrentUser] = useState(checkUsername(username, currentUser)) // check if the username passed in the url is for the current user or not
-    const [user, setUser] = useState(checkUsername(username, currentUser) ? new Subscriber(currentUser) : null) // store the other user 
-    const [loadingUser, setLoadingUser] = useState(checkUsername(username, currentUser) ? false : true)
+	// username passed inside the url
+	const { username } = useParams()
 
-    // use ref
-    const updloadProfilRef = useRef()
+	// setting up of the local state
+	const [deleteProfilLoader, setDeleteProfilLoader] = useState(false)
+	const [displayProfilUpload, setDisplayProfilUpload] = useState(false)
+	const [profilData, setProfilData] = useState("")
+	const [percentageUploadProfil, setPercentageUploadProfil] = useState(0)
+	const [uploading, setUploading] = useState(false)
+	const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
+	const [postTypeToShow, setPostTypeToShow] = useState("published") // define the type of posts to show
+	const [isCurrentUser, setIsCurrentUser] = useState(checkUsername(username, currentUser)) // check if the username passed in the url is for the current user or not
+	const [user, setUser] = useState(checkUsername(username, currentUser) ? new Subscriber(currentUser) : null) // store the other user 
+	const [loadingUser, setLoadingUser] = useState(checkUsername(username, currentUser) ? false : true)
 
-    // useEffect section
+	// use ref
+	const updloadProfilRef = useRef()
 
-    useEffect(() => {
-        if (checkUsername(username, currentUser)) {
-            setIsCurrentUser(false)
-            setUser((new Subscriber(currentUser)))
-            setLoadingUser(false)
-        } else {
-            setIsCurrentUser(false)
-            setLoadingUser(true)
-        }
-    }, [username, currentUser])
+	// useEffect section
 
-    useEffect(() => {
-        const token = localStorage.getItem("tundah-token")
-        instance.defaults.headers.common["authorization"] = `Bearer ${token}`
-    }, [])
+	useEffect(() => {
+		if (checkUsername(username, currentUser)) {
+			setIsCurrentUser(false)
+			setUser((new Subscriber(currentUser)))
+			setLoadingUser(false)
+		} else {
+			setIsCurrentUser(false)
+			setLoadingUser(true)
+		}
+	}, [username, currentUser])
 
-    useEffect(() => {
-        if (percentageUploadProfil === 100) {
-            setUploading(false)
-        }
-    }, [percentageUploadProfil])
+	useEffect(() => {
+		const token = localStorage.getItem("tundah-token")
+		instance.defaults.headers.common["authorization"] = `Bearer ${token}`
+	}, [])
 
-    useEffect(() => {
-        if (!isCurrentUser) {
-            instance.get(`/users/${username}`)
-                .then(res => {
-                    if (res.data) {
-                        const data = res.data
-                        console.log(data)
+	useEffect(() => {
+		if (percentageUploadProfil === 100) {
+			setUploading(false)
+		}
+	}, [percentageUploadProfil])
 
-                        setUser(new Subscriber(data))
-                        setLoadingUser(false)
-                    } else {
-                        // to change
-                        window.location.href = "/wiki/feed"
-                    }
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-        }
-    }, [isCurrentUser, username])
+	useEffect(() => {
+		if (!isCurrentUser) {
+			instance.get(`/users/${username}`)
+				.then(res => {
+					if (res.data) {
+						const data = res.data
+						console.log(data)
 
-    useEffect(() => {
-        if (isCurrentUser) {
-            setUser((new Subscriber(currentUser)))
-        }
-    }, [currentUser, isCurrentUser])
+						setUser(new Subscriber(data))
+						setLoadingUser(false)
+					} else {
+						// to change
+						window.location.href = "/wiki/feed"
+					}
+				})
+				.catch(err => {
+					console.log(err)
+				})
+		}
+	}, [isCurrentUser, username])
 
-    const formatName = (name) => {
-        return name[0].toUpperCase() + name.substr(1)
-    }
+	useEffect(() => {
+		if (isCurrentUser) {
+			setUser((new Subscriber(currentUser)))
+		}
+	}, [currentUser, isCurrentUser])
 
-    // this function allow a user to delete his profil photo
-    const deleteProfil = () => {
-        setDeleteProfilLoader(true)
+	const formatName = (name) => {
+		return name[0].toUpperCase() + name.substr(1)
+	}
 
-        instance.post("/users/delete_profil")
-            .then(res => {
-                updateProfil(res.data.profil)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-            .then(() => {
-                setDeleteProfilLoader(false)
-            })
-    }
+	// this function allow a user to delete his profil photo
+	const deleteProfil = () => {
+		setDeleteProfilLoader(true)
 
-    // this function allow a user to upload his profil photo
-    const uploadProfil = () => {
-        const formData = new FormData()
-        const fileImg = updloadProfilRef.current.files[0]
+		instance.post("/users/delete_profil")
+			.then(res => {
+				updateProfil(res.data.profil)
+			})
+			.catch(err => {
+				console.log(err)
+			})
+			.then(() => {
+				setDeleteProfilLoader(false)
+			})
+	}
 
-        formData.append("profil", fileImg)
+	// this function allow a user to upload his profil photo
+	const uploadProfil = () => {
+		const formData = new FormData()
+		const fileImg = updloadProfilRef.current.files[0]
 
-        // progressive loading
-        const uploadOption = {
-            onUploadProgress: (progressEvent) => {
-                const { loaded, total } = progressEvent
+		formData.append("profil", fileImg)
 
-                const percentage = Math.floor((loaded * 100) / total)
+		// progressive loading
+		const uploadOption = {
+			onUploadProgress: (progressEvent) => {
+				const { loaded, total } = progressEvent
 
-                console.log(`${loaded}B on ${total}B | percentage = ${percentage}`)
+				const percentage = Math.floor((loaded * 100) / total)
 
-                setPercentageUploadProfil(percentage)
-            }
-        }
+				console.log(`${loaded}B on ${total}B | percentage = ${percentage}`)
 
-        // display the progress bar for uploading photo
-        setUploading(true)
+				setPercentageUploadProfil(percentage)
+			}
+		}
 
-        instance.post("/users/change_profil", formData, uploadOption)
-            .then(res => {
-                setPercentageUploadProfil(0)
-                updateProfil(res.data.profil)
+		// display the progress bar for uploading photo
+		setUploading(true)
 
-                setDisplayProfilUpload(false)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
+		instance.post("/users/change_profil", formData, uploadOption)
+			.then(res => {
+				setPercentageUploadProfil(0)
+				updateProfil(res.data.profil)
 
-    const handleClickProfilPhotoUpload = () => {
-        updloadProfilRef.current.click()
-    }
+				setDisplayProfilUpload(false)
+			})
+			.catch(err => {
+				console.log(err)
+			})
+	}
 
-    const handleChangeProfilPhotoUploadData = (event) => {
-        const file = event.target.files[0]
+	const handleClickProfilPhotoUpload = () => {
+		updloadProfilRef.current.click()
+	}
 
-        const preview = URL.createObjectURL(file)
+	const handleChangeProfilPhotoUploadData = (event) => {
+		const file = event.target.files[0]
 
-        setProfilData(preview)
-        setDisplayProfilUpload(true)
-    }
+		const preview = URL.createObjectURL(file)
 
-    // this methods allow the current user to like a post which is owned by another user
-    // whose the profil is displayed
-    const likeOtherUserPost = (idPost, idUser) => {
-        const userClone = new Subscriber({ ...user.getUserData })
+		setProfilData(preview)
+		setDisplayProfilUpload(true)
+	}
 
-        const newPosts = userClone.posts.map(post => {
-            if (post.id === idPost) {
-                post = post.likePost(idUser)
-            }
+	// this methods allow the current user to like a post which is owned by another user
+	// whose the profil is displayed
+	const likeOtherUserPost = (idPost, idUser) => {
+		const userClone = new Subscriber({ ...user.getUserData })
 
-            return post
-        })
+		const newPosts = userClone.posts.map(post => {
+			if (post.id === idPost) {
+				post = post.likePost(idUser)
+			}
 
-        const newUser = new Subscriber({ ...userClone.getUserData, posts: newPosts })
+			return post
+		})
 
-        setUser(newUser)
-    }
+		const newUser = new Subscriber({ ...userClone.getUserData, posts: newPosts })
 
-    const handleLikePost = (idPost) => {
-        // we verify if the post liked if for the current user or not
-        if (checkUsername(username, currentUser)) {
-            likePost(idPost, currentUser.id)
-            likeUserPost(idPost)
-        } else {
-            likePost(idPost, currentUser.id)
+		setUser(newUser)
+	}
 
-            likeOtherUserPost(idPost, currentUser.id)
-        }
+	const handleLikePost = (idPost) => {
+		// we verify if the post liked if for the current user or not
+		if (checkUsername(username, currentUser)) {
+			likePost(idPost, currentUser.id)
+			likeUserPost(idPost)
+		} else {
+			likePost(idPost, currentUser.id)
 
-        instance.post(`/posts/like/${idPost}`)
-            .then((res) => {
-                console.log(res.data)
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
+			likeOtherUserPost(idPost, currentUser.id)
+		}
 
-    return (
-        <>
-            {
-                !loadingUser ? (
-                    <>
-                        <div className="profil-content">
+		instance.post(`/posts/like/${idPost}`)
+			.then((res) => {
+				console.log(res.data)
+			})
+			.catch(err => {
+				console.log(err)
+			})
+	}
 
-                            {
-                                displayProfilUpload ? (
-                                    <AddProfilPhotoModal
-                                        onHide={() => setDisplayProfilUpload(false)}
-                                        image={profilData}
-                                        onChangeProfil={handleClickProfilPhotoUpload}
-                                        onUploadProfil={uploadProfil}
-                                        percentage={percentageUploadProfil}
-                                        uploading={uploading}
-                                    />
-                                ) : null
-                            }
+	return (
+		<>
+			{
+				!loadingUser ? (
+					<>
+						<div className="profil-content">
 
-                            {
-                                showDisplayPhotoModal ? (
-                                    <DisplayPhoto
-                                        files={[user.getProfil]}
-                                        type="profil"
-                                        onHide={() => setShowDisplayPhotoModal(false)}
-                                    />
-                                ) : null
-                            }
+							{
+								displayProfilUpload ? (
+									<AddProfilPhotoModal
+										onHide={() => setDisplayProfilUpload(false)}
+										image={profilData}
+										onChangeProfil={handleClickProfilPhotoUpload}
+										onUploadProfil={uploadProfil}
+										percentage={percentageUploadProfil}
+										uploading={uploading}
+									/>
+								) : null
+							}
 
-                            <div className="informationContent">
-                                <div className="header-profil">
-                                    <div className="header-profil-image-card">
-                                        <div className="profilImage">
-                                            <img
-                                                src={`${ressourcesUrl.profil}/${user.getProfil}`}
-                                                alt="profil"
-                                                onClick={() => setShowDisplayPhotoModal(true)}
-                                            />
-                                        </div>
+							{
+								showDisplayPhotoModal ? (
+									<DisplayPhoto
+										files={[user.getProfil]}
+										type="profil"
+										onHide={() => setShowDisplayPhotoModal(false)}
+									/>
+								) : null
+							}
 
-                                        {
-                                            checkUsername(username, currentUser) ? (
-                                                <>
-                                                    <input
-                                                        ref={updloadProfilRef}
-                                                        type="file"
-                                                        hidden
-                                                        accept="image/*"
-                                                        onChange={handleChangeProfilPhotoUploadData}
-                                                    />
+							<div className="informationContent">
+								<div className="header-profil">
+									<div className="header-profil-image-card">
+										<div className="profilImage">
+											<img
+												src={`${ressourcesUrl.profil}/${user.getProfil}`}
+												alt="profil"
+												onClick={() => setShowDisplayPhotoModal(true)}
+											/>
+										</div>
 
-                                                    <span onClick={handleClickProfilPhotoUpload} title="changer de photo">
-                                                        <BsCameraFill />
-                                                    </span>
+										{
+											checkUsername(username, currentUser) ? (
+												<>
+													<input
+														ref={updloadProfilRef}
+														type="file"
+														hidden
+														accept="image/*"
+														onChange={handleChangeProfilPhotoUploadData}
+													/>
 
-                                                    <div className="deleteProfil" onClick={deleteProfil} title="supprimer le profil">
-                                                        <BsX />
-                                                    </div>
+													<span onClick={handleClickProfilPhotoUpload} title="changer de photo">
+														<BsCameraFill />
+													</span>
 
-                                                    {
-                                                        deleteProfilLoader ? <LoaderCircle color="#3c6a46" size={30} /> : null
-                                                    }
-                                                </>
-                                            ) : null
-                                        }
+													<div className="deleteProfil" onClick={deleteProfil} title="supprimer le profil">
+														<BsX />
+													</div>
 
-                                    </div>
+													{
+														deleteProfilLoader ? <LoaderCircle color="#3c6a46" size={30} /> : null
+													}
+												</>
+											) : null
+										}
 
-                                    <div className="profilInfo">
-                                        <span className="name">{formatName(user.getName)}</span>
-                                        <span className="username">@{user.getUsername}</span>
+									</div>
 
-                                        <div className='profilFollowSection'>
-                                            <div className="BsJournals">
-                                                <BsGeoAlt size={20} />
-                                                <span className="town">{user.getCountry}</span>
-                                            </div>
+									<div className="profilInfo">
+										<span className="name">{formatName(user.getName)}</span>
+										<span className="username">@{user.getUsername}</span>
 
-                                            <button className='btn-follow followed'>Ne plus Suivre</button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="profilDescription">
-                                    {user.getDescription}
-                                </div>
-                                <div className="profilFollower">
-                                    <div className='profilFollowerTop'>
-                                        <div className="iconContact">
-                                            <div className="MdContactMai" > <MdContactMail /> </div>
-                                            <div> contact</div>
-                                        </div>
-                                        {
-                                            checkUsername(username, currentUser) ? (
-                                                <div className="iconEditerProfil">
-                                                    <div className="AiOutlineEdit"> <AiOutlineEdit /> </div>
-                                                    <div> Editer profil</div>
-                                                </div>
-                                            ) : null
-                                        }
-                                    </div>
+										<div className='profilFollowSection'>
+											<div className="BsJournals">
+												<BsGeoAlt size={20} />
+												<span className="town">{user.getCountry}</span>
+											</div>
 
-                                    <section className='profilFollowerBottom'>
-                                        <div className='profileFollowerItem'>
-                                            <span>375</span>
-                                            <span>Abonnés</span>
-                                        </div>
+											{
+												!checkUsername(username, currentUser) && (
+													<button className='btn-follow followed'>Se désabonner</button>
+												)
+											}
+										</div>
+									</div>
+								</div>
+								<div className="profilDescription">
+									{user.getDescription}
+								</div>
+								<div className="profilFollower">
+									<div className='profilFollowerTop'>
+										<div className="iconContact">
+											<div className="MdContactMai" >
+												<MdContactMail />
+											</div>
+											<div> contact</div>
+										</div>
 
-                                        <div className='profileFollowerItem'>
-                                            <span>122</span>
-                                            <span>Abonnements</span>
-                                        </div>
-                                    </section>
-                                </div>
-                                <div className="profilPost">
-                                    {
-                                        !user.getRole ? (
-                                            checkUsername(username, currentUser) ? (
-                                                <div
-                                                    className={`${postTypeToShow === "proposed" ? "active" : ""}`}
-                                                    onClick={() => setPostTypeToShow("proposed")}
-                                                >
-                                                    <StatPostItem title="postes proposés" number={user.getProposedPosts.length} />
-                                                </div>
-                                            ) : null
-                                        ) : null
-                                    }
-                                    <div
-                                        className={`${postTypeToShow === "published" ? "active" : ""}`}
-                                        onClick={() => setPostTypeToShow("published")}
-                                    >
-                                        <StatPostItem title="postes publiés" number={user.getPublishedPosts.length} />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+										<div className="iconContact" onClick={openModal}>
+											<div className="MdContactMai">
+												<MdDashboard />
+											</div>
+											<span>Categories</span>
+										</div>
+										{
+											checkUsername(username, currentUser) ? (
+												<div className="iconContact">
+													<div className="AiOutlineEdit"> <AiOutlineEdit /> </div>
+													<div> Editer profil</div>
+												</div>
+											) : null
+										}
+									</div>
 
-                        <section className="postsList">
-                            {
-                                postTypeToShow === "published" ? (
-                                    sortPostByDate(user.getPublishedPosts).map(post => {
-                                        return <Post key={post.id} postData={post} onLikePost={handleLikePost} />
-                                    })
-                                ) : (
-                                    sortPostByDate(user.getProposedPosts).map(post => {
-                                        return <Post key={post.id} postData={post} onLikePost={handleLikePost} published={false} />
-                                    })
-                                )
-                            }
-                        </section>
-                    </>
-                ) : (
-                    <div className="profil-loaderSection">
-                        <LoaderCircle color="#3c6a46" size={60} />
-                    </div>
-                )
-            }
-        </>
-    )
+									<section className='profilFollowerBottom'>
+										<div className='profileFollowerItem'>
+											<span>375</span>
+											<span>Abonnés</span>
+										</div>
+
+										<div className='profileFollowerItem'>
+											<span>122</span>
+											<span>Abonnements</span>
+										</div>
+									</section>
+								</div>
+								<div className="profilPost">
+									{
+										!user.getRole ? (
+											checkUsername(username, currentUser) ? (
+												<div
+													className={`${postTypeToShow === "proposed" ? "active" : ""}`}
+													onClick={() => setPostTypeToShow("proposed")}
+												>
+													<StatPostItem title="postes proposés" number={user.getProposedPosts.length} />
+												</div>
+											) : null
+										) : null
+									}
+									<div
+										className={`${postTypeToShow === "published" ? "active" : ""}`}
+										onClick={() => setPostTypeToShow("published")}
+									>
+										<StatPostItem title="postes publiés" number={user.getPublishedPosts.length} />
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<section className="postsList">
+							{
+								postTypeToShow === "published" ? (
+									sortPostByDate(user.getPublishedPosts).map(post => {
+										return <Post key={post.id} postData={post} onLikePost={handleLikePost} />
+									})
+								) : (
+									sortPostByDate(user.getProposedPosts).map(post => {
+										return <Post key={post.id} postData={post} onLikePost={handleLikePost} published={false} />
+									})
+								)
+							}
+						</section>
+					</>
+				) : (
+					<div className="profil-loaderSection">
+						<LoaderCircle color="#3c6a46" size={60} />
+					</div>
+				)
+			}
+		</>
+	)
 }
 
 export default HeaderProfil;

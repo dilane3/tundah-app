@@ -101,7 +101,7 @@ div.profilInfo{
 
 .town{
   margin-left: 10px;
-  font-size: 18px;
+  font-size: 16px;
 }
 
 .username{
@@ -123,13 +123,18 @@ div.profilInfo{
   width: auto;
   padding: 5px 25px;
   border-radius: 5px;
-  border: 2px solid transparent
+  border: 2px solid transparent;
+  transition: all 1s;
 }
 
 .followed {
   background-color: transparent;
   color: #3c6a46;
   border-color: #3c6a46;
+}
+
+.followed:hover {
+  background-color: #b6e2c0;
 }
 
 .BsJournals{
@@ -142,19 +147,25 @@ div.profilInfo{
 
 .iconContact{
   color: #2e2828;
-  font-size: 14px;
-  width: 100px;
+  font-size: 16px;
+  width: auto;
   display: flex;
   align-self: flex-end;
   justify-content: flex-start;
   align-items: flex-start;
+  transition: all 1s;
+}
+
+.iconContact:hover {
+  color: #3c6a46;
+  cursor: pointer;
 }
 
 .profilDescription,.profilFollower{
-  font-size: 14px;
+  font-size: 16px;
   color: #2e2828;
   height: auto;
-  width: 60%;
+  width: 100%;
   margin-top: 10px;
 }
 
@@ -167,7 +178,7 @@ div.profilInfo{
 .profilFollower{
   display: flex;
   flex-direction: column;
-  width: 100%;
+  width: calc(100% - 10px);
   margin-top: 20px;
   font-size: 14px;
   justify-content: space-between;

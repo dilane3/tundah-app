@@ -8,24 +8,27 @@ import currentUserContext from '../dataManager/context/currentUserContent'
 import { instance } from '../utils/url'
 import postsContext from '../dataManager/context/postsContext'
 import AddExpertModal from '../components/utils/modals/AddExpertModal'
-import {ToastContext} from 'react-simple-toastify'
+import { ToastContext } from 'react-simple-toastify'
+import ShowCategories from '../components/utils/modals/showCategories'
+import CategoryContext from '../dataManager/context/categoryContext'
 
 const logo = require("../medias/logo/Tundah-large.png")
 
-const Base = ({children}) => {
+const Base = ({ children }) => {
   // getting context value
-	const {login, currentUser} = useContext(currentUserContext)
+  const { login, currentUser } = useContext(currentUserContext)
   const {
     addPosts,
     setMorePostArgs
   } = useContext(postsContext)
-  const {displayToast} = useContext(ToastContext)
+  const { displayToast } = useContext(ToastContext)
+  const { open: modalOpened, openModal, closeModal } = useContext(CategoryContext)
 
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [maskBackground, setMaskBackground] = useState(true)
-  const [showLoaderPage, setShowLoaderPage] = useState(!currentUser ? true:false)
-  const [loaderClassActive, setLoaderClassActive] = useState(!currentUser ? false:true)
-  const [dataLoaded, setDataLoaded] = useState(!currentUser ? false:true)
+  const [showLoaderPage, setShowLoaderPage] = useState(!currentUser ? true : false)
+  const [loaderClassActive, setLoaderClassActive] = useState(!currentUser ? false : true)
+  const [dataLoaded, setDataLoaded] = useState(!currentUser ? false : true)
   const [showAddExpertModal, setShowAddExpertModal] = useState(false)
   const [addExpertAnimation, setAddExpertAnimation] = useState(false)
 
@@ -57,7 +60,7 @@ const Base = ({children}) => {
 
   // handle the resizing of the window viewport
   useEffect(() => {
-    window.onresize = function() {
+    window.onresize = function () {
       const width = window.innerWidth
 
       if (width > 700) {
@@ -91,58 +94,59 @@ const Base = ({children}) => {
 
     if (!currentUserRef.current) {
       instance.get("/users/current")
-      .then(res => {
-        // adding the current user in the global state
-        login({...res.data, token: undefined})
-
-        displayToast("Vos données ont été chargées avec succes")
-      })
-      .catch(err => {
-        console.log(err)
-
-        displayToast("Vous n'êtes pas connecté")
-      })
-      .then(() => {
-
-        instance.get("/posts?skip=0&limit=5")
         .then(res => {
-          const postData = res.data.data
-          let nextValue = res.data.next
-          let skipValue = res.data.skip
+          console.log({ data: res.data })
+          // adding the current user in the global state
+          login({ ...res.data, token: undefined })
 
-          console.log({nextValue, skipValue})
-          console.log(res.data)
-
-          // adding posts
-          addPosts(postData)
-
-          // setting posts arguments
-          setMorePostArgs(nextValue, skipValue)
-
-          // stopping the loader for loading posts
-          setDataLoaded(true)
-
-          // hidden the loading page
-          setLoaderClassActive(true)
-          
+          displayToast("Vos données ont été chargées avec succes")
         })
         .catch(err => {
           console.log(err)
 
-          displayToast("Une erreur est survenu lors du chargement des posts, veuillez recharger la page s'il vous plait")
+          displayToast("Vous n'êtes pas connecté")
         })
         .then(() => {
-          // to remove
-          // setDataLoaded(true)
+
+          instance.get("/posts?skip=0&limit=5")
+            .then(res => {
+              const postData = res.data.data
+              let nextValue = res.data.next
+              let skipValue = res.data.skip
+
+              console.log({ nextValue, skipValue })
+              console.log(res.data)
+
+              // adding posts
+              addPosts(postData)
+
+              // setting posts arguments
+              setMorePostArgs(nextValue, skipValue)
+
+              // stopping the loader for loading posts
+              setDataLoaded(true)
+
+              // hidden the loading page
+              setLoaderClassActive(true)
+
+            })
+            .catch(err => {
+              console.log(err)
+
+              displayToast("Une erreur est survenu lors du chargement des posts, veuillez recharger la page s'il vous plait")
+            })
+            .then(() => {
+              // to remove
+              // setDataLoaded(true)
 
 
-          let timer = setTimeout(() => {
-            setShowLoaderPage(false)
-    
-            clearTimeout(timer)
-          }, 1000)
+              let timer = setTimeout(() => {
+                setShowLoaderPage(false)
+
+                clearTimeout(timer)
+              }, 1000)
+            })
         })
-      })
     }
   }, [])
 
@@ -177,7 +181,7 @@ const Base = ({children}) => {
             <section className={styles.mainSection}>
               {children}
             </section>
-          ):null
+          ) : null
         }
 
         <Aside className={styles.asideSection} onShowAddExpertSection={handleDisplayAddExpertModal} />
@@ -188,8 +192,8 @@ const Base = ({children}) => {
       {/* Background black while mobile menu is active */}
       {
         !maskBackground && (
-          <span 
-            className={`${styles.backgroundBlack} ${!showMobileMenu ? styles.backgroundBlackAnimation:''}`} 
+          <span
+            className={`${styles.backgroundBlack} ${!showMobileMenu ? styles.backgroundBlackAnimation : ''}`}
             onClick={() => setShowMobileMenu(false)}
           ></span>
         )
@@ -198,7 +202,7 @@ const Base = ({children}) => {
       {/* loader page */}
       {
         showLoaderPage && (
-          <div className={`${styles.loaderPage} ${loaderClassActive ? styles.loaderPageAnimation:""}`}>
+          <div className={`${styles.loaderPage} ${loaderClassActive ? styles.loaderPageAnimation : ""}`}>
             <img src={logo} alt="logo" />
             <Loader color="#3c6a46" size="30" />
           </div>
@@ -209,13 +213,20 @@ const Base = ({children}) => {
       {
         showAddExpertModal ? (
           <>
-            <AddExpertModal 
-              onHide={handleHiddeAddExpertModal} 
-              animationClass={addExpertAnimation} 
+            <AddExpertModal
+              onHide={handleHiddeAddExpertModal}
+              animationClass={addExpertAnimation}
             />
-            <span className={`${styles.backgroundBlack} ${!addExpertAnimation ? styles.backgroundBlackAnimation:""}`} onClick={handleHiddeAddExpertModal}></span>
+            <span className={`${styles.backgroundBlack} ${!addExpertAnimation ? styles.backgroundBlackAnimation : ""}`} onClick={handleHiddeAddExpertModal}></span>
           </>
-        ):null
+        ) : null
+      }
+
+
+      {
+        modalOpened && (
+          <ShowCategories onCloseModal={closeModal} />
+        )
       }
     </Fragment>
   )

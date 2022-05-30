@@ -5,6 +5,7 @@ import Routes from './Routes'
 import currentUserContext from './dataManager/context/currentUserContent';
 import postsContext from './dataManager/context/postsContext';
 import proposedPostContext from './dataManager/context/proposedPostContext'
+import CategoryContext from './dataManager/context/categoryContext';
 import {
   login,
   logout,
@@ -55,6 +56,7 @@ function App() {
     next: true,
     skip: 0
   })
+  const [categoryModalOpen, setCategoryModalOpen] = useState(false)
 
   // current User actions
   const userLogin = (data) => {
@@ -168,6 +170,16 @@ function App() {
     setReseach(researchClone)
   }
 
+  // Category Modal section
+
+  const openModal = () => {
+    setCategoryModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setCategoryModalOpen(false)
+  }
+
   // data of current user context
   const currentUserContextValue = {
     currentUser,
@@ -218,6 +230,13 @@ function App() {
     changeQuery
   }
 
+  // Data of category modal
+  const categoryContextValue = {
+    open: categoryModalOpen,
+    openModal,
+    closeModal
+  }
+
   // toast config
   const toastOptions = {
     position: "bottom",
@@ -231,9 +250,11 @@ function App() {
           <navigationContext.Provider value={navigationContextValue}>
             <researchContext.Provider value={researchContextValue}>
               <ToastProvider options={toastOptions}>
-                <BrowserRouter>
-                  <Routes />
-                </BrowserRouter>
+                <CategoryContext.Provider value={categoryContextValue}>
+                  <BrowserRouter>
+                    <Routes />
+                  </BrowserRouter>
+                </CategoryContext.Provider>
               </ToastProvider>
             </researchContext.Provider>
           </navigationContext.Provider>
