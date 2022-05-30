@@ -92,7 +92,7 @@ const HeaderProfil = () => {
 						setLoadingUser(false)
 					} else {
 						// to change
-						window.location.href = "/wiki/feed"
+						window.location.href = "/"
 					}
 				})
 				.catch(err => {
