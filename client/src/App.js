@@ -5,6 +5,7 @@ import Routes from './Routes'
 import currentUserContext from './dataManager/context/currentUserContent';
 import postsContext from './dataManager/context/postsContext';
 import proposedPostContext from './dataManager/context/proposedPostContext'
+import CategoryContext from './dataManager/context/categoryContext';
 import {
   login,
   logout,
@@ -36,6 +37,7 @@ import navigationContext from './dataManager/context/navigationContext';
 import Post from './entities/Post';
 import researchContext from './dataManager/context/researchContext';
 import proposedPostsReducer from './dataManager/data/proposedPost/proposedPostReducer';
+import {ToastProvider} from "react-simple-toastify"
 
 function App() {
   const [posts, dispatchPosts] = useReducer(postsReducer, [])
@@ -54,6 +56,7 @@ function App() {
     next: true,
     skip: 0
   })
+  const [categoryModalOpen, setCategoryModalOpen] = useState(false)
 
   // current User actions
   const userLogin = (data) => {
@@ -167,6 +170,16 @@ function App() {
     setReseach(researchClone)
   }
 
+  // Category Modal section
+
+  const openModal = () => {
+    setCategoryModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setCategoryModalOpen(false)
+  }
+
   // data of current user context
   const currentUserContextValue = {
     currentUser,
@@ -217,15 +230,32 @@ function App() {
     changeQuery
   }
 
+  // Data of category modal
+  const categoryContextValue = {
+    open: categoryModalOpen,
+    openModal,
+    closeModal
+  }
+
+  // toast config
+  const toastOptions = {
+    position: "bottom",
+    timeout: 5000
+  }
+
   return (
     <currentUserContext.Provider value={currentUserContextValue}>
       <postsContext.Provider value={postsContextValue}>
         <proposedPostContext.Provider value={proposedPostContextValue}>
           <navigationContext.Provider value={navigationContextValue}>
             <researchContext.Provider value={researchContextValue}>
-              <BrowserRouter>
-                <Routes />
-              </BrowserRouter>
+              <ToastProvider options={toastOptions}>
+                <CategoryContext.Provider value={categoryContextValue}>
+                  <BrowserRouter>
+                    <Routes />
+                  </BrowserRouter>
+                </CategoryContext.Provider>
+              </ToastProvider>
             </researchContext.Provider>
           </navigationContext.Provider>
         </proposedPostContext.Provider>

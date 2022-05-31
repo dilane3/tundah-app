@@ -1,11 +1,59 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect, useContext, useState } from 'react'
 import { AiOutlineEdit } from "react-icons/ai"
 import { Menu, Transition } from '@headlessui/react'
-import { MdOutlineMailOutline } from "react-icons/md"
 import { BsArchive } from "react-icons/bs"
+import { AiOutlineDelete } from "react-icons/ai";
 
+import postContext from '../../../dataManager/context/postsContext'
+import currentUserContext from '../../../dataManager/context/currentUserContent'
+import {ToastContext} from 'react-simple-toastify'
 
-const SocialPostDropdown = ({ dropElt }) => {
+import Subscriber from '../../../entities/Subscriber'
+
+import { instance } from '../../../utils/url'
+
+const SocialPostDropdown = (props) => {
+
+    const { 
+      dropElt, 
+      idPost, 
+      idAuthor,
+      onLoading
+    } = props
+
+    //context
+    const contextPost = useContext(postContext)
+    const deletePostFeed = contextPost.deletePost
+    const { currentUser, deletePost } = useContext(currentUserContext)
+    const {displayToast} = useContext(ToastContext)
+
+    const user = new Subscriber(currentUser)
+
+    //handler
+    const handleDelete = (id) => {
+      
+      //start loading
+      onLoading(true)
+
+      instance.delete(`/posts/delete/${idPost}`)
+      .then(res => {
+        console.log(res.data)
+        onLoading(false)
+
+        deletePostFeed(id);
+        if(user.getId === idAuthor){ //delete post in profil if current user is the owner of the post to delete
+          deletePost(id)
+        }
+
+        displayToast("Le post a été supprimé avec succès")
+      })
+      .catch(res => {
+        console.log(res.data)
+        onLoading(false)
+
+        displayToast("Uner erreur est survenu lors de la suppression du post")
+      })
+    }
 
 	return(
 		<Menu as="div" className="relative z-10 inline-block text-left font-primary">
@@ -30,7 +78,7 @@ const SocialPostDropdown = ({ dropElt }) => {
                 <button
                   className={`${
                     active ? 'bg-gray-100 text-primary' : 'text-gray-900'
-                  } group flex items-center space-x-2 w-full px-2 py-2 text-sm`}
+                  } group flex items-center space-x-3 w-full px-2 py-2 text-sm`}
                 >
                   <AiOutlineEdit size="25" className="icon" />
                   <span>Editer le post</span>
@@ -47,25 +95,33 @@ const SocialPostDropdown = ({ dropElt }) => {
                   } group flex items-center space-x-3 w-full px-2 py-2 text-sm`}
                 >
                   <BsArchive size="20" className="icon" />
-                  <span>archiver</span>
+                  <span>archiver ce post</span>
                 </button>
               )}
             </Menu.Item>
           </div>
-          <div className="px-1 py-1">
-            <Menu.Item>
-              {({ active }) => (
-                <button
-                  className={`${
-                    active ? 'bg-gray-100 text-primary' : 'text-gray-900'
-                  } group flex items-center space-x-2 w-full px-2 py-2 text-sm`}
+
+          {
+            idAuthor === user.getId ? (
+              <div 
+                className="px-1 py-1"
+                onClick={() => handleDelete(idPost) }
                 >
-                 <MdOutlineMailOutline size="25" className="icon" />
-                  <span>Message privé</span>
-                </button>
-              )}
-            </Menu.Item>
-          </div>
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={`${
+                        active ? 'bg-gray-100 text-primary' : 'text-gray-900'
+                      } group flex items-center space-x-2 w-full px-2 py-2 text-sm`}
+                    >
+                    <AiOutlineDelete size="25" className="icon" />
+                      <span>Supprimer ce post</span>
+                    </button>
+                  )}
+                </Menu.Item>
+              </div>
+            ):null
+          }
         </Menu.Items>
       </Transition>
     </Menu>

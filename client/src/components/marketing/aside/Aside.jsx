@@ -1,14 +1,15 @@
 import React, { useContext } from 'react'
 import styles from '../../../css/aside.module.css'
 import ImgCircle from '../../elements/imgCircle/ImgCircle'
-import {BsPlusCircleFill, BsJournals, BsPersonCheck, BsGear} from 'react-icons/bs'
+import { BsPlusCircleFill, BsJournals, BsPersonCheck, BsGear } from 'react-icons/bs'
+import { IoShareSocial } from 'react-icons/io5'
 import { Link } from 'react-router-dom'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
 import Subscriber from '../../../entities/Subscriber'
 import navigationContext from '../../../dataManager/context/navigationContext'
 import { ressourcesUrl } from '../../../utils/url'
 
-const StatPostItem = ({title, number}) => {
+const StatPostItem = ({ title, number }) => {
 	return (
 		<div className={styles.profilCardStats}>
 			<div>
@@ -22,7 +23,7 @@ const StatPostItem = ({title, number}) => {
 }
 
 const ProfilCard = () => {
-	const {currentUser} = useContext(currentUserContext)
+	const { currentUser } = useContext(currentUserContext)
 
 	const user = new Subscriber(currentUser)
 
@@ -49,7 +50,7 @@ const ProfilCard = () => {
 				{
 					!user.getRole ? (
 						<StatPostItem title="postes proposés" number={user.getProposedPosts.length} />
-					):null
+					) : null
 				}
 				<StatPostItem title="postes publiés" number={user.getPublishedPosts.length} />
 			</div>
@@ -57,44 +58,44 @@ const ProfilCard = () => {
 	)
 }
 
-const Navigation = ({onShowAddExpertSection}) => {
-	const {currentUser} = useContext(currentUserContext)
-	const {navigation, navigateTo} = useContext(navigationContext)
+const Navigation = ({ onShowAddExpertSection }) => {
+	const { currentUser } = useContext(currentUserContext)
+	const { navigation, navigateTo } = useContext(navigationContext)
 
 	const user = new Subscriber(currentUser)
 
 	return (
 		<>
 			<section className={styles.navigationSection}>
-				<div 
-					className={`${styles.navigationItem} ${navigation === "wiki" ? styles.navigationItemActive:""}`}
-					onClick={() => {navigateTo("wiki")}}
+				<div
+					className={`${styles.navigationItem} ${navigation === "wiki" ? styles.navigationItemActive : ""}`}
+					onClick={() => { navigateTo("wiki") }}
 				>
-					<Link to="/wiki/feed" style={{width: "100%"}}>
+					<Link to="/" style={{ width: "100%" }}>
 						<span>W</span>
 						<span>Wiki</span>
 					</Link>
 				</div>
 
 				{
-					user.getRole === 1 ? (
+					user ? (
 						<>
-							<div 
-								className={`${styles.navigationItem} ${navigation === "proposal_posts" ? styles.navigationItemActive:""}`}
-								onClick={() => {navigateTo("proposal_posts")}}
+							<div
+								className={`${styles.navigationItem} ${navigation === "social" ? styles.navigationItemActive : ""}`}
+								onClick={() => { navigateTo("social") }}
 							>
-								<Link to="/proposal_posts" style={{width: "100%", display: "flex", flexDirection: "row"}}>
-									<BsJournals />
-									<span>Postes Proposes</span>
+								<Link to="/social" style={{ width: "100%", display: "flex", flexDirection: "row" }}>
+									<IoShareSocial />
+									<span>Reseau social</span>
 								</Link>
 							</div>
 
-							<div className={`${styles.navigationItem}`} onClick={onShowAddExpertSection}>
+							{/* <div className={`${styles.navigationItem}`} onClick={onShowAddExpertSection}>
 								<BsPersonCheck />
 								<span>Gerer les experts</span>
-							</div>
+							</div> */}
 						</>
-					):null
+					) : null
 				}
 
 				<div className={`${styles.navigationItem}`}>
@@ -106,10 +107,10 @@ const Navigation = ({onShowAddExpertSection}) => {
 	)
 }
 
-const Aside = ({className, location, onShowAddExpertSection}) => {
-	const {currentUser} = useContext(currentUserContext)
+const Aside = ({ className, location, onShowAddExpertSection }) => {
+	const { currentUser } = useContext(currentUserContext)
 
-	return(
+	return (
 		<aside className={className}>
 			{
 				currentUser ? <ProfilCard /> : null

@@ -77,6 +77,13 @@ class Subscriber {
   }
 
   /**
+   * @returns string
+   */
+  get getDescription () {
+    return this.description
+  }
+
+  /**
    * 
    * @param {Object} data
    * @returns void 
@@ -88,6 +95,7 @@ class Subscriber {
         name,
         username,
         email,
+        description,
         date,
         role,
         profil,
@@ -106,6 +114,7 @@ class Subscriber {
       this.profil = profil
       this.posts = postData
       this.country = country
+      this.description = description
     }
   }
 

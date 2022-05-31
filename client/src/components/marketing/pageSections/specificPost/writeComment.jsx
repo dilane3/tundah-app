@@ -4,6 +4,7 @@ import {instance} from '../../../../utils/url'
 import './commentPost.css'
 import postsContext from '../../../../dataManager/context/postsContext'
 import LoaderCircle from "../../../utils/loaders/Loader"
+import {ToastContext} from 'react-simple-toastify'
 
 const WriteComment  = ({idPost, idUser, isResponseInput, idComment, onChangeToResponseInput}) => {
     // defining the local state
@@ -12,6 +13,7 @@ const WriteComment  = ({idPost, idUser, isResponseInput, idComment, onChangeToRe
 
     // getting data from global state
     const {addComment} = useContext(postsContext)
+    const {displayToast} = useContext(ToastContext)
 
     // reference section
     const inputCommentRef = useRef()
@@ -48,9 +50,13 @@ const WriteComment  = ({idPost, idUser, isResponseInput, idComment, onChangeToRe
                 setComment("")
     
                 onChangeToResponseInput(false)
+
+                displayToast("Commentaire publié avec succès")
              })
              .catch(err => {
                  console.log(err)
+
+                 displayToast("Une erreur est survenu lors de la creation du commentaire")
              })
             .then(() => {
                 setSendingComment(false)
@@ -118,6 +124,7 @@ const WriteResponseComment = ({idPost, idUser, idComment}) => {
     }
     
     const handleSubmit = (event)=>{
+        event.preventDefault()
         
         if (comment.length > 0) {
             setSendingComment(true)

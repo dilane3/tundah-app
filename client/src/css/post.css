@@ -25,12 +25,13 @@
 	height: 30px !important;
 	left: 50%!important;
 	transform: translateX(-50%);
-	margin-bottom: 50px !important;
+	margin-bottom: 30px !important;
 	display: flex !important;
 	justify-content: center !important;
 	align-items: center !important;
 	border-radius: 4px !important;
 	border: 1px solid rgb(112, 112, 112);
+	background-color: #fff;
 }
 .slick-dots li{
 	width: 10 !important;

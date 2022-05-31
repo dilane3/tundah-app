@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import  './Specificpost.css'
 import ImgCircle from '../../../elements/imgCircle/ImgCircle'
 import { BsThreeDotsVertical } from 'react-icons/bs'
@@ -9,6 +9,7 @@ import Post from '../../../../entities/Post'
 import Subscriber from '../../../../entities/Subscriber'
 import { ressourcesUrl } from '../../../../utils/url'
 import { Link } from 'react-router-dom'
+import postsContext from '../../../../dataManager/context/postsContext'
 
 const imageMariage= require("../../../../medias/img/mariage.jpg")
 const imagesExtensions = [ "jpeg", "png", "gif", "bmp", "jpg" ]
@@ -18,9 +19,15 @@ const PostPropose = ({type, postData}) => {
     const post = new Post(postData)
     const author = new Subscriber(post.getAuthor)
 
+    // getting data from global state
+    const {addPost} = useContext(postsContext)
+
     // difinition of local state
     const [showDisplayPhotoModal, setShowDisplayPhotoModal] = useState(false)
 	const [relativeDate, setRelativeDate] = useState(getRelativeDate(post.getCreationDate))
+
+    // useRef section
+    const postContentRef = useRef()
 
     // useEffect section
 
@@ -34,6 +41,10 @@ const PostPropose = ({type, postData}) => {
 		}
 	})
 
+    useEffect(() => {
+        postContentRef.current.innerHTML = truncateContent(post.getContent)
+    }, [])
+
     const truncateContent = (content) => {
         if (content.length > 100) return content.substr(0, 100) + "..."
         
@@ -46,6 +57,16 @@ const PostPropose = ({type, postData}) => {
 
 		return imagesExtensions.includes(extension)
 	}
+
+    const displayPost = () => {
+        addPost(post)
+
+        let timer = setTimeout(() => {
+            window.location.href = `/posts/${post.getId}`
+
+            clearTimeout(timer)
+        }, 500)
+    }
 
     return(
         <div className="PostPropose"> 
@@ -75,10 +96,13 @@ const PostPropose = ({type, postData}) => {
             </div>
             <div className="content-Postpropose">
                 <div className="Info-content">
-                      <span className="title">{(post.getTitle).toUpperCase()} </span>
-                      <div className="description"> 
-                        {truncateContent(post.getContent)}
-                      </div>
+                    <span className="title">{(post.getTitle).toUpperCase()} </span>
+                      
+                    <div 
+                        ref={postContentRef} 
+                        className="description"
+                        onClick={displayPost}    
+                    ></div>
                 </div>
                     
                 {
@@ -105,8 +129,8 @@ const PostPropose = ({type, postData}) => {
                 {
                     showDisplayPhotoModal ? (
                         <DisplayPhoto
-                            files={[imageMariage]}
-                            type="profil"
+                            files={post.getFilesList}
+                            type="images"
                             onHide={() => setShowDisplayPhotoModal(false)}
                         />
                     ):null

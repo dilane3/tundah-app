@@ -6,7 +6,7 @@ import Subscriber from '../../../entities/Subscriber'
 import { Link } from 'react-router-dom'
 import { ressourcesUrl } from '../../../utils/url'
 
-const AddExpertContent = ({data}) => {   
+const AddExpertContent = ({data, onAddExpert}) => {   
 	const user = new Subscriber(data)
 
 	return(
@@ -22,9 +22,9 @@ const AddExpertContent = ({data}) => {
             @{user.getUsername}
           </span>
         </div>
-				<Button size="meduim" classe={styles.BtnAddExpert}>
+				<button size="meduim" className={styles.BtnAddExpert} onClick={() => onAddExpert(user.getId)}>
           Ajouter
-        </Button>
+        </button>
 			</div>
 			<span className={styles.ExpertDescription}>
         {

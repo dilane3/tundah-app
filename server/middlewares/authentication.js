@@ -4,6 +4,7 @@ import Subscriber from '../entities/Subscriber.js'
 import Expert from '../entities/Expert.js'
 import UserModel from '../models/UserModel.js'
 import PostModel from '../models/PostModel.js'
+import Admin from '../entities/Admin.js'
 
 // fetching data from .env file
 config()
@@ -39,8 +40,10 @@ const authenticationMiddleware = (req, res, next) => {
 
         if (data.role === 0) {
           user = new Subscriber({...data, posts: postdata})
-        } else {
+        } else if (data.role === 1) {
           user = new Expert({...data, posts: postdata})
+        } else {
+          user = new Admin({ ...data, posts: [] })
         }
 
         console.log(user)

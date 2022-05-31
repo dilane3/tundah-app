@@ -1,9 +1,9 @@
 class InterfaceCommentModel {
-    constructor() {
-      if (this.constructor === InterfaceCommentModel) {
-        throw new Error('ERROR: You are not able to create object with this class')
-      }
+  constructor() {
+    if (this.constructor === InterfaceCommentModel) {
+      throw new Error('ERROR: You are not able to create object with this class')
     }
+  }
   
    /**
   * This method create a new comment

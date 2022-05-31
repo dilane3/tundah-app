@@ -54,16 +54,15 @@ const ListPosts = () => {
 	}, [methodsCb])
 
 	const handleLikePost = (id) => {
+		likePost(id, currentUser.id)
+		likeUserPost(id)
+
 		instance.post(`/posts/like/${id}`)
 		.then((res) => {
 			console.log(res.data)
 		})
 		.catch(err => {
 			console.log(err)
-		})
-		.then(() => {
-			likePost(id, currentUser.id)
-			likeUserPost(id)
 		})
 	}
 

@@ -125,6 +125,7 @@
 .description{
   font-size: 14px;
   color: #575656;
+  cursor: pointer;
 }
 .CardImage{
   display: flex;

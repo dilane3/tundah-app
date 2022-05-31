@@ -119,6 +119,11 @@ div.addExpertContenu{
 }
 .BtnAddExpert{
   margin-left: auto;
+  background-color: #3c6a46;
+  color: #fff;
+  border-radius: 5px;
+  padding: 5px 10px;
+  font-size: 14px;
 }
 .ExpertDescription{
   margin-top: 20px;

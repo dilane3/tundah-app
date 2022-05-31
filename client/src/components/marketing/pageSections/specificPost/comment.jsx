@@ -5,6 +5,7 @@ import Subscriber from '../../../../entities/Subscriber'
 import { getRelativeDate } from '../../../../utils/dateOperations'
 import './commentPost.css'
 import {ressourcesUrl} from "../../../../utils/url"
+import {Link} from 'react-router-dom'
 
 const Comment = ({onResponse, data, isResponse, author, onDisplayResponses, responseDisplayed}) => {
     const subscriber = new Subscriber(data.author)
@@ -22,10 +23,15 @@ const Comment = ({onResponse, data, isResponse, author, onDisplayResponses, resp
     return(
         <div className="CommentContent">
             <div className="header-PostproposeInfo">
-                <ImgCircle src={`${ressourcesUrl.profil}/${subscriber.getProfil}`} alt="profil" size="small" classe="header-PostproposeInfoImg" />
+                <Link to={`/profile/${subscriber.getUsername}`}>
+                    <ImgCircle src={`${ressourcesUrl.profil}/${subscriber.getProfil}`} alt="profil" size="small" classe="header-PostproposeInfoImg" />
+                </Link>
                 <div className="Info-Comment">
                    <div className="Info-User">
-                        <span className="Username">{subscriber.getName} {isAuthor()}</span>
+                        <Link to={`/profile/${subscriber.getUsername}`}>
+                            <span className="Username">{subscriber.getName} {isAuthor()}</span>
+                        </Link>
+
                         <div className="BsThreeDotIcon">
                           <BsThreeDots/>
                         </div>

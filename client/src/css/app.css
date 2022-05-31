@@ -47,6 +47,11 @@ body{
 	margin: 10px auto;
 }
 
+
+.slick-arrow {
+	z-index: 10 !important;
+}
+
 .writePostModal{
 	left: 50%;
 	transform: translateX(-50%);

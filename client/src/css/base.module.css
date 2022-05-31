@@ -12,19 +12,19 @@ body {
   position: fixed;
   top: 0;
   width: 100%;
-  height: 90px;
+  height: 70px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   box-shadow: 0 1px 5px #b1b1b1;
   background-color: #fff;
-  z-index: 5;
+  z-index: 15;
 }
 
 .container {
   width: 100%;
   padding: 0 300px;
-  margin: 110px auto 0 auto;
+  margin: 90px auto 0 auto;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -41,7 +41,7 @@ body {
   /* position: -webkit-sticky; */
    /*position: sticky; */
   position: fixed;
-  top: 110px;
+  top: 90px;
   right: 300px;
   width: 290px;
   z-index: 1;

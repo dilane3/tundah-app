@@ -101,12 +101,40 @@ div.profilInfo{
 
 .town{
   margin-left: 10px;
-  font-size: 14px;
+  font-size: 16px;
 }
 
 .username{
-  font-size: 14px;
+  font-size: 18px;
   color: #575656;
+}
+
+.profilFollowSection {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.btn-follow {
+  background-color: #3c6a46;
+  color: #fff;
+  width: auto;
+  padding: 5px 25px;
+  border-radius: 5px;
+  border: 2px solid transparent;
+  transition: all 1s;
+}
+
+.followed {
+  background-color: transparent;
+  color: #3c6a46;
+  border-color: #3c6a46;
+}
+
+.followed:hover {
+  background-color: #b6e2c0;
 }
 
 .BsJournals{
@@ -119,19 +147,26 @@ div.profilInfo{
 
 .iconContact{
   color: #2e2828;
-  font-size: 14px;
-  width: 100px;
+  font-size: 16px;
+  width: auto;
   display: flex;
   align-self: flex-end;
   justify-content: flex-start;
   align-items: flex-start;
+  transition: all 1s;
+  margin-bottom: 5px;
+}
+
+.iconContact:hover {
+  color: #3c6a46;
+  cursor: pointer;
 }
 
 .profilDescription,.profilFollower{
-  font-size: 14px;
+  font-size: 16px;
   color: #2e2828;
   height: auto;
-  width: 60%;
+  width: 100%;
   margin-top: 10px;
 }
 
@@ -143,11 +178,43 @@ div.profilInfo{
 
 .profilFollower{
   display: flex;
-  flex-direction: row;
-  width: 100%;
+  flex-direction: column;
+  width: calc(100% - 10px);
   margin-top: 20px;
   font-size: 14px;
   justify-content: space-between;
+}
+
+.profilFollowerTop,
+.profilFollowerBottom {
+  width: 100%;
+}
+
+.profilFollowerTop {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.profilFollowerBottom {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.profilFollowerBottom > div:last-child {
+  margin-left: 20px;
+}
+
+.profileFollowerItem span:first-child {
+  color: #555;
+  font-weight: bold;
+}
+
+.profileFollowerItem span:last-child {
+  margin-left: 5px;
+  color: #555;
 }
 
 .iconEditerProfil{
@@ -254,5 +321,15 @@ div.profilInfo{
 @media screen and (max-width: 425px) {
   .profilPost div{
     font-size: 12px;
+  }
+
+  .profilFollowSection {  
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: flex-start;
+  }
+
+  .btn-follow {
+    margin-top: 10px
   }
 }
