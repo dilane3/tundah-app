@@ -379,15 +379,28 @@ class UserController {
 
   static followUser = async (req, res) => {
     const {
-      userId
+      userId,
+      type
     } = req.body
 
     const currentUser = req.user
 
     if (userId) {
       const userModel = new UserModel()
+      let data;
+      let error;
 
-      const { data, error } = await userModel.followUser(currentUser.getId, userId)
+      if (type === "follow") {
+        const result = await userModel.followUser(currentUser.getId, userId)
+
+        data = result.data
+        error = result.error
+      } else {
+        const result = await userModel.unFollowUser(currentUser.getId, userId)
+
+        data = result.data
+        error = result.error
+      }
 
       if (data) {
         return res.status(201).json({ data })

@@ -385,6 +385,34 @@ class UserModel extends InterfaceUserModel {
       await session.close()
     }
   }
+
+  /**
+   * Follow a user
+   * @param {string} currentUserId 
+   * @param {string} userId 
+   */ 
+   async unFollowUser (currentUserId, userId) {
+    const session = dbConnect()
+
+    try {
+      const query = `
+        MATCH (currentUser:Subscriber{ id: $currentUserId }),
+              (user:Subscriber{ id: $userId }),
+              (currentUser) -[follow:FOLLOW]-> (user)
+        DELETE follow
+      `
+
+      await session.run(query, { currentUserId, userId })
+
+      return { data: "You are now unfollowing a new user" }
+    } catch (err) {
+      console.log(err)
+
+      return { error: "Error occured while follow a user" }
+    } finally {
+      await session.close()
+    }
+  }
 }
 
 export default UserModel
