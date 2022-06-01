@@ -17,7 +17,8 @@ const {
   deleteProfil,
   addExpert,
   uniqueEmail,
-  uniqueUsername
+  uniqueUsername,
+  followUser
 } = UserController
 
 userRouter.get("/current", authenticationMiddleware, getCurrentUser)
@@ -32,5 +33,6 @@ userRouter.post("/delete_profil", authenticationMiddleware, deleteProfil)
 userRouter.post("/add_expert", authenticationMiddleware, addExpert)
 userRouter.post("/check_email", uniqueEmail)
 userRouter.post("/check_username", uniqueUsername)
+userRouter.post("/follow", authenticationMiddleware, followUser)
 
 export default userRouter

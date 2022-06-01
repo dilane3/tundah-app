@@ -353,6 +353,38 @@ class UserModel extends InterfaceUserModel {
       await session.close()
     }
   }
+
+  /**
+   * Follow a user
+   * @param {string} currentUserId 
+   * @param {string} userId 
+   */ 
+  async followUser (currentUserId, userId) {
+    const session = dbConnect()
+
+    try {
+      const query = `
+        MATCH (currentUser:Subscriber{ id: $currentUserId }),
+              (user:Subscriber{ id: $userId })
+        CREATE (currentUser) -[follow:FOLLOW]-> (user)
+        RETURN follow
+      `
+
+      const result = await session.run(query, { currentUserId, userId })
+
+      if (result.records.length > 0) {
+        return { data: "You are now following a new user" }
+      }
+
+      return { error: "Error occured while follow a user" }
+    } catch (err) {
+      console.log(err)
+
+      return { error: "Error occured while follow a user" }
+    } finally {
+      await session.close()
+    }
+  }
 }
 
 export default UserModel

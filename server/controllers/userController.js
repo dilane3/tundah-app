@@ -376,6 +376,28 @@ class UserController {
       return res.status(400).json({ message: "Provide an username" });
     }
   };
+
+  static followUser = async (req, res) => {
+    const {
+      userId
+    } = req.body
+
+    const currentUser = req.user
+
+    if (userId) {
+      const userModel = new UserModel()
+
+      const { data, error } = await userModel.followUser(currentUser.getId, userId)
+
+      if (data) {
+        return res.status(201).json({ data })
+      }
+
+      return res.status(500).json({ error })
+    }
+
+    return res.status(400).json({ error: "Provide the id of the target user to follow" })
+  }
 }
 
 export default UserController;
