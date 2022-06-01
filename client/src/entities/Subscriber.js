@@ -11,6 +11,8 @@ class Subscriber {
   profil;
   country;
   posts;
+  followers;
+  followings;
 
   constructor(data) {
     this.initialization(data)
@@ -84,7 +86,7 @@ class Subscriber {
   }
 
   /**
-   * 
+   * Initialize the user instance
    * @param {Object} data
    * @returns void 
    */
@@ -100,7 +102,9 @@ class Subscriber {
         role,
         profil,
         posts,
-        country
+        country,
+        followers,
+        followings
       } = data
 
       const postData = posts ? posts.map(post => new Post(post)):[]
@@ -115,6 +119,22 @@ class Subscriber {
       this.posts = postData
       this.country = country
       this.description = description
+
+      if (followers && followings) {
+        const myFollowers = []
+        const myFollowings = []
+  
+        for (let follower of followers) {
+          myFollowers.push(new Subscriber(follower))
+        }
+  
+        for (let following of followings) {
+          myFollowings.push(new Subscriber(following))
+        }
+  
+        this.followers = myFollowers
+        this.followings = myFollowings
+      }
     }
   }
 

@@ -75,6 +75,46 @@ class UserModel extends InterfaceUserModel {
       session.close()
     }
   }
+
+  async getFollowersAndFollowings (userId) {
+    const session = dbConnect()
+
+    try { 
+      const query = `
+        MATCH (user:Subscriber{ id: $userId })
+        MATCH (user) -[:FOLLOW]-> (followings:Subscriber)
+        RETURN followings
+      `
+
+      const query2 = `
+        MATCH (user:Subscriber{ id: $userId })
+        MATCH (user) <-[:FOLLOW]- (followers:Subscriber)
+        RETURN followers
+      `
+
+      const result = await session.run(query, { userId })
+      const result2 = await session.run(query2, { userId })
+
+      const followers = []
+      const followings = []
+
+      for (let res of result.records) {
+        // followers.push({ ...res.get("followers").properties })
+        followings.push({ ...res.get("followings").properties })
+      }
+
+      for (let res of result2.records) {
+        followers.push({ ...res.get("followers").properties })
+        // followings.push({ ...res.get("followings").properties })
+      }
+
+      return { data: { followers, followings } }
+    } catch (err) {
+      console.log(err)
+
+      return { error: "An error occured" }
+    }
+  }
   
 
   /**

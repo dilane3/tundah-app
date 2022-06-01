@@ -24,7 +24,6 @@ class UserController {
       const { data, error } = await userModel.getUser(username);
 
       if (data !== undefined) {
-        console.log(data)
         if (data !== null) {
           const postdata = (await postModel.getMyPosts(data.id)).data
   

@@ -27,8 +27,6 @@ const authenticationMiddleware = (req, res, next) => {
         return res.status(401).json({message: "Not authorized"})
       }
 
-      console.log(result)
-
       const userModel = new UserModel()
       const postModel = new PostModel()
 
@@ -36,21 +34,30 @@ const authenticationMiddleware = (req, res, next) => {
 
       if (data) {
         const postdata = (await postModel.getMyPosts(data.id)).data
-        let user;
+        const { data: usersData, error } = await userModel.getFollowersAndFollowings(data.id)
 
-        if (data.role === 0) {
-          user = new Subscriber({...data, posts: postdata})
-        } else if (data.role === 1) {
-          user = new Expert({...data, posts: postdata})
+        console.log({ usersData, error })
+
+        if (usersData) {
+          const { followers, followings } = usersData
+
+          console.log({ followings })
+          let user;
+  
+          if (data.role === 0) {
+            user = new Subscriber({...data, posts: postdata, followers, followings})
+          } else if (data.role === 1) {
+            user = new Expert({...data, posts: postdata, followers, followings})
+          } else {
+            user = new Admin({ ...data, posts: [], followers, followings })
+          }
+          
+          req.user = user
+  
+          next()
         } else {
-          user = new Admin({ ...data, posts: [] })
+          return res.status(401).json({ message: "Not authorized" })
         }
-
-        console.log(user)
-        
-        req.user = user
-
-        next()
       } else {
         return res.status(401).json({message: "Not authorized"})
       }      
