@@ -26,6 +26,24 @@ class UserApi {
       return { error: "An error occured" };
     }
   }
+
+  static async getUser(username) {
+    try {
+      const instance = insertToken(axiosInstance);
+
+      const { data: res, error } = await instance.get(`/users/${username}`);
+
+      if (res) {
+        return { data: res };
+      }
+
+      return { error };
+    } catch (err) {
+      console.log(err);
+
+      return { error: "An error occured" };
+    }
+  }
 }
 
 export default UserApi;

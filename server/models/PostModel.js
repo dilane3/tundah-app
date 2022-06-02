@@ -66,7 +66,7 @@ class PostModel extends InterfacePostModel {
         `;
 
       const result = await session.run(query);
-      console.log(result.records)
+      console.log(result.records);
 
       const moreInfosData = await this.gettingMoreInfos(result, "post");
 
@@ -76,7 +76,7 @@ class PostModel extends InterfacePostModel {
         return { data: [] };
       }
     } catch (err) {
-       console.log(err)
+      console.log(err);
       return { error: "Sorry the post(s) has not been found" };
     } finally {
       session.close();
@@ -286,10 +286,6 @@ class PostModel extends InterfacePostModel {
         const result = await session.run(query);
 
         const postData = await this.gettingMoreInfos(result, "posts");
-        console.log({postData})
-
-        console.log({ postNumber, skip });
-        console.log({ postData });
 
         if (postNumber > Number(skip) + Number(limit)) {
           return {
@@ -410,7 +406,7 @@ class PostModel extends InterfacePostModel {
       });
 
       if (result.records.length > 0) {
-        const postData = (await this.gettingMoreInfos(result, "post"))
+        const postData = await this.gettingMoreInfos(result, "post");
 
         return { data: postData[0] };
       } else {

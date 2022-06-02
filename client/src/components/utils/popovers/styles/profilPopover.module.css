@@ -63,6 +63,7 @@
   width: 100%;
   display: flex;
   flex-direction: row;
+  margin-bottom: 10px;
 }
 
 .popoverFollowersInfo > div:last-child {
@@ -77,11 +78,11 @@
 .popoverFollowerItem > span:last-child {
   margin-left: 5px;
   font-size: 14px;
-  color: #828282
+  color: #828282;
 }
 
 .popoverFollowersControls {
-  padding-top: 30px;
+  padding-top: 20px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -94,4 +95,16 @@
   border-radius: 10px;
   background-color: #3c6a46;
   color: #fff;
+  transition: all 1s;
+  border: 2px solid transparent;
+}
+
+.followed {
+  background-color: transparent;
+  color: #3c6a46;
+  border-color: #3c6a46;
+}
+
+.followed:hover {
+  background-color: #b6e2c0;
 }

@@ -327,9 +327,9 @@ const HeaderProfil = () => {
 
 											{
 												!checkUsername(username, currentUser) && (
-													<button className='btn-follow followed' onClick={(e) => handleFollowUser(e, user)}>
+													<button className={`btn-follow ${currentUser.alreadyFollowed(user.getId) && "followed"}`} onClick={(e) => handleFollowUser(e, user)}>
 														{
-															currentUser.alreadyFollowed(user.getId) ? "Se desabonner" : "S'abonner"
+															currentUser.alreadyFollowed(user.getId) ? "Se désabonner" : "S'abonner"
 														}
 													</button>
 												)
