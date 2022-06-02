@@ -23,7 +23,8 @@ const {
 postRouter.get("/", getAllPosts);
 
 // Router for the the retrieval of all the proposed posts
-// This can be performed by all the users
+// This can be performed by all the usersZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZzz
+
 postRouter.get("/proposed", getAllProposedPost)
 
 // Router for the retrieval of a post using it's id

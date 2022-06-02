@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 import PostPropose from '../../../components/marketing/pageSections/proposalPost/PostPropose'
 import styles from "../../../css/search.module.css"
 import researchContext from '../../../dataManager/context/researchContext'
+import SearchNavbar from '../../../components/marketing/pageSections/search/seachNavbar'
 
 const ResearchResultBar = () => {
   
@@ -74,6 +75,7 @@ const BodySearch = () => {
   return (
     <section className={styles.researchResultSection}>
       <ResearchResultBar/>
+      <SearchNavbar/>
       
       <div className="container">
         {
