@@ -6,26 +6,26 @@ class UserApi {
   /**
    * Follow and UnFollow a user
    * data is an Object that contains the userId and the type of the operation (follow | unfollow)
-   * @param {Object} data 
-   * @returns 
+   * @param {Object} data
+   * @returns
    */
-  static async follow (data) {
+  static async follow(data) {
     try {
-      const instance = insertToken(axiosInstance)
+      const instance = insertToken(axiosInstance);
 
-      const { data, error } = await instance.post("/users/follow", data)
+      const { data: res, error } = await instance.post("/users/follow", data);
 
-      if (data) {
-        return { data }
+      if (res) {
+        return { data: res };
       }
 
-      return { error }
+      return { error };
     } catch (err) {
-      console.log(err)
+      console.log(err);
 
-      return { error: "An error occured" }
+      return { error: "An error occured" };
     }
   }
 }
 
-export default UserApi
+export default UserApi;

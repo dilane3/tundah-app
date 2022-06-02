@@ -46,7 +46,6 @@ const PostComponent = ({ postData, onLikePost, published }) => {
 
 
 	const author = new Subscriber(post.getAuthor)
-	console.log({ author, currentUser })
 
 	// useEffect section
 

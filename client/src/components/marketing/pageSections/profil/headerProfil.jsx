@@ -14,6 +14,8 @@ import DisplayPhoto from '../../../utils/modals/DisplayPhoto'
 import postsContext from '../../../../dataManager/context/postsContext'
 import { useParams } from 'react-router'
 import CategoryContext from '../../../../dataManager/context/categoryContext'
+import UserApi from '../../../../api/users'
+import { deleteFollowing } from '../../../../dataManager/data/currentUser/currentUserActions'
 
 const checkUsername = (username, currentUser) => {
 	return username === currentUser.username
@@ -33,7 +35,7 @@ const StatPostItem = ({ title, number }) => {
 
 const HeaderProfil = () => {
 	// getting data from the global state
-	const { currentUser, updateProfil, likeUserPost } = useContext(currentUserContext)
+	const { currentUser, updateProfil, likeUserPost, addFollowing, deleteFollowing } = useContext(currentUserContext)
 	const { likePost } = useContext(postsContext)
 	const { openModal } = useContext(CategoryContext)
 
@@ -64,10 +66,9 @@ const HeaderProfil = () => {
 			setUser((new Subscriber(currentUser)))
 			setLoadingUser(false)
 		} else {
-			setIsCurrentUser(false)
 			setLoadingUser(true)
 		}
-	}, [username, currentUser])
+	}, [username])
 
 	useEffect(() => {
 		const token = localStorage.getItem("tundah-token")
@@ -141,8 +142,6 @@ const HeaderProfil = () => {
 
 				const percentage = Math.floor((loaded * 100) / total)
 
-				console.log(`${loaded}B on ${total}B | percentage = ${percentage}`)
-
 				setPercentageUploadProfil(percentage)
 			}
 		}
@@ -211,6 +210,40 @@ const HeaderProfil = () => {
 			.catch(err => {
 				console.log(err)
 			})
+	}
+
+	const handleFollowUser = async (e, user) => {
+		e.preventDefault()
+
+		try {
+			const type = currentUser.alreadyFollowed(user.getId) ? "unfollow" : "follow"
+
+			const { data, error } = await UserApi.follow({ type, userId: user.getId })
+
+			if (data) {
+				if (type === "follow") {
+					addFollowing(user)
+
+					const updatedUser = (new Subscriber({ ...user }))
+
+					updatedUser.addFollower(currentUser)
+
+					setUser(updatedUser)
+				} else {
+					deleteFollowing(user.getId)
+
+					const updatedUser = (new Subscriber({ ...user }))
+
+					updatedUser.deleteFollower(currentUser.getId)
+
+					setUser(updatedUser)
+				}
+			} else {
+				console.log(error)
+			}
+		} catch (err) {
+			console.log(err)
+		}
 	}
 
 	return (
@@ -294,7 +327,11 @@ const HeaderProfil = () => {
 
 											{
 												!checkUsername(username, currentUser) && (
-													<button className='btn-follow followed'>Se désabonner</button>
+													<button className='btn-follow followed' onClick={(e) => handleFollowUser(e, user)}>
+														{
+															currentUser.alreadyFollowed(user.getId) ? "Se desabonner" : "S'abonner"
+														}
+													</button>
 												)
 											}
 										</div>
@@ -330,12 +367,12 @@ const HeaderProfil = () => {
 
 									<section className='profilFollowerBottom'>
 										<div className='profileFollowerItem'>
-											<span>375</span>
+											<span>{user.getFollowers.length}</span>
 											<span>Abonnés</span>
 										</div>
 
 										<div className='profileFollowerItem'>
-											<span>122</span>
+											<span>{user.getFollowings.length}</span>
 											<span>Abonnements</span>
 										</div>
 									</section>

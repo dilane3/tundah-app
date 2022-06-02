@@ -14,8 +14,6 @@ class UserController {
   static getUser = async (req, res) => {
     const { username } = req.params;
 
-    console.log(username)
-
     if (username) {
       // const user = req.user
       const userModel = new UserModel();
@@ -25,15 +23,33 @@ class UserController {
 
       if (data !== undefined) {
         if (data !== null) {
-          const postdata = (await postModel.getMyPosts(data.id)).data
-  
-          if (postdata) {
-            res.json({...data, password: undefined, posts: postdata})
-          } else {
-            res.json({...data, password: undefined, posts: []})
+          const postdata = (await postModel.getMyPosts(data.id)).data;
+          const { data: followersData } =
+            await userModel.getFollowersAndFollowings(data.id);
+
+          const { followers, followings } = followersData;
+
+          if (followers !== undefined && followings !== undefined) {
+            if (postdata) {
+              res.json({
+                ...data,
+                password: undefined,
+                posts: postdata,
+                followers,
+                followings,
+              });
+            } else {
+              res.json({
+                ...data,
+                password: undefined,
+                posts: [],
+                followers,
+                followings,
+              });
+            }
           }
         } else {
-          res.json(data)
+          res.json(data);
         }
       } else {
         res.json(error);
@@ -198,7 +214,7 @@ class UserController {
 
       const { data, error } = await userModel.signin(username);
 
-    console.log({data})
+      console.log({ data });
 
       if (data) {
         const user =
@@ -326,11 +342,9 @@ class UserController {
           return res.status(500).json(error);
         }
       } else {
-        return res
-          .status(401)
-          .json({
-            message: "You are not an expert, you can't do this operation",
-          });
+        return res.status(401).json({
+          message: "You are not an expert, you can't do this operation",
+        });
       }
     } else {
       return res.sendStatus(500);
@@ -377,39 +391,38 @@ class UserController {
   };
 
   static followUser = async (req, res) => {
-    const {
-      userId,
-      type
-    } = req.body
+    const { userId, type } = req.body;
 
-    const currentUser = req.user
+    const currentUser = req.user;
 
     if (userId) {
-      const userModel = new UserModel()
+      const userModel = new UserModel();
       let data;
       let error;
 
       if (type === "follow") {
-        const result = await userModel.followUser(currentUser.getId, userId)
+        const result = await userModel.followUser(currentUser.getId, userId);
 
-        data = result.data
-        error = result.error
+        data = result.data;
+        error = result.error;
       } else {
-        const result = await userModel.unFollowUser(currentUser.getId, userId)
+        const result = await userModel.unFollowUser(currentUser.getId, userId);
 
-        data = result.data
-        error = result.error
+        data = result.data;
+        error = result.error;
       }
 
       if (data) {
-        return res.status(201).json({ data })
+        return res.status(201).json({ data });
       }
 
-      return res.status(500).json({ error })
+      return res.status(500).json({ error });
     }
 
-    return res.status(400).json({ error: "Provide the id of the target user to follow" })
-  }
+    return res
+      .status(400)
+      .json({ error: "Provide the id of the target user to follow" });
+  };
 }
 
 export default UserController;

@@ -1,11 +1,11 @@
-import React, { useState, useReducer } from 'react';
-import { BrowserRouter } from 'react-router-dom'
-import './css/app.css';
-import Routes from './Routes'
-import currentUserContext from './dataManager/context/currentUserContent';
-import postsContext from './dataManager/context/postsContext';
-import proposedPostContext from './dataManager/context/proposedPostContext'
-import CategoryContext from './dataManager/context/categoryContext';
+import React, { useState, useReducer } from "react";
+import { BrowserRouter } from "react-router-dom";
+import "./css/app.css";
+import Routes from "./Routes";
+import currentUserContext from "./dataManager/context/currentUserContent";
+import postsContext from "./dataManager/context/postsContext";
+import proposedPostContext from "./dataManager/context/proposedPostContext";
+import CategoryContext from "./dataManager/context/categoryContext";
 import {
   login,
   logout,
@@ -14,8 +14,12 @@ import {
   createPost,
   updateProfil,
   updateUser,
-  likeUserPost
-} from './dataManager/data/currentUser/currentUserActions'
+  likeUserPost,
+  addFollower,
+  addFollowing,
+  deleteFollower,
+  deleteFollowing,
+} from "./dataManager/data/currentUser/currentUserActions";
 import {
   deletePost as postDelete,
   updatePost,
@@ -23,162 +27,181 @@ import {
   addPost,
   addComment,
   addComments,
-  likePost
-} from './dataManager/data/posts/postsActions'
+  likePost,
+} from "./dataManager/data/posts/postsActions";
 import {
   deleteProposedPost,
   updateProposedPost,
   addProposedPosts,
-  validateProposedPost
-} from './dataManager/data/proposedPost/proposedPostActions'
-import currentUserReducer from './dataManager/data/currentUser/currentUserReducer';
-import postsReducer from './dataManager/data/posts/postsReducer';
-import navigationContext from './dataManager/context/navigationContext';
-import Post from './entities/Post';
-import researchContext from './dataManager/context/researchContext';
-import proposedPostsReducer from './dataManager/data/proposedPost/proposedPostReducer';
-import {ToastProvider} from "react-simple-toastify"
+  validateProposedPost,
+} from "./dataManager/data/proposedPost/proposedPostActions";
+import currentUserReducer from "./dataManager/data/currentUser/currentUserReducer";
+import postsReducer from "./dataManager/data/posts/postsReducer";
+import navigationContext from "./dataManager/context/navigationContext";
+import Post from "./entities/Post";
+import researchContext from "./dataManager/context/researchContext";
+import proposedPostsReducer from "./dataManager/data/proposedPost/proposedPostReducer";
+import { ToastProvider } from "react-simple-toastify";
 
 function App() {
-  const [posts, dispatchPosts] = useReducer(postsReducer, [])
-  const [proposedPosts, dispatchProposedPosts] = useReducer(proposedPostsReducer, [])
-  const [currentUser, dispatchUser] = useReducer(currentUserReducer, null)
-  const [navigation, setNavigation] = useState("")
+  const [posts, dispatchPosts] = useReducer(postsReducer, []);
+  const [proposedPosts, dispatchProposedPosts] = useReducer(
+    proposedPostsReducer,
+    []
+  );
+  const [currentUser, dispatchUser] = useReducer(currentUserReducer, null);
+  const [navigation, setNavigation] = useState("");
   const [research, setReseach] = useState({
     postsResults: [],
-    query: ""
-  })
+    query: "",
+  });
   const [postsArgs, setPostsArgs] = useState({
     next: false,
-    skip: 0
-  })
+    skip: 0,
+  });
   const [proposedPostsArgs, setProposedPostsArgs] = useState({
     next: true,
-    skip: 0
-  })
-  const [categoryModalOpen, setCategoryModalOpen] = useState(false)
+    skip: 0,
+  });
+  const [categoryModalOpen, setCategoryModalOpen] = useState(false);
 
   // current User actions
   const userLogin = (data) => {
-    dispatchUser(login(data))
-  }
+    dispatchUser(login(data));
+  };
 
   const userLogout = () => {
-    dispatchUser(logout())
-  }
+    dispatchUser(logout());
+  };
 
   const userDeletePost = (idPost) => {
-    dispatchUser(deletePost(idPost))
-  }
+    dispatchUser(deletePost(idPost));
+  };
 
   const userEditPost = (idPost, data) => {
-    dispatchUser(editPost(idPost, data))
-  }
+    dispatchUser(editPost(idPost, data));
+  };
 
   const userCreatePost = (post) => {
-    dispatchUser(createPost(post))
-  }
+    dispatchUser(createPost(post));
+  };
 
   const userUpdateProfil = (profil) => {
-    dispatchUser(updateProfil(profil))
-  }
+    dispatchUser(updateProfil(profil));
+  };
 
   const userLikeUserPost = (idPost) => {
-    dispatchUser(likeUserPost(idPost))
-  }
+    dispatchUser(likeUserPost(idPost));
+  };
 
   const userUpdateUser = (data) => {
-    dispatchUser(updateUser(data))
-  }
+    dispatchUser(updateUser(data));
+  };
+
+  const userAddFollower = (user) => {
+    dispatchUser(addFollower(user));
+  };
+
+  const userAddFollowing = (user) => {
+    dispatchUser(addFollowing(user));
+  };
+
+  const userDeleteFollower = (userId) => {
+    dispatchUser(deleteFollower(userId));
+  };
+
+  const userDeleteFollowing = (userId) => {
+    dispatchUser(deleteFollowing(userId));
+  };
 
   // Posts actions
 
   const postsDeletePost = (idPost) => {
-    dispatchPosts(postDelete(idPost))
-  }
-  
+    dispatchPosts(postDelete(idPost));
+  };
+
   const postsUpdatePost = (idPost, data) => {
-    dispatchPosts(updatePost(idPost, data))
-  }
-  
+    dispatchPosts(updatePost(idPost, data));
+  };
+
   const postsAddPosts = (posts) => {
-    dispatchPosts(addPosts(posts))
-  }
-  
+    dispatchPosts(addPosts(posts));
+  };
+
   const postsAddPost = (post) => {
-    dispatchPosts(addPost(post))
-  }
-  
+    dispatchPosts(addPost(post));
+  };
+
   const postsAddComment = (idPost, comment, responseTo = null) => {
-    dispatchPosts(addComment(idPost, comment, responseTo))
-  }
-  
+    dispatchPosts(addComment(idPost, comment, responseTo));
+  };
+
   const postsAddComments = (idPost, comments) => {
-    dispatchPosts(addComments(idPost, comments))
-  }
+    dispatchPosts(addComments(idPost, comments));
+  };
 
   const postsLikePost = (idPost, idUser) => {
-    dispatchPosts(likePost(idPost, idUser))
-  }
+    dispatchPosts(likePost(idPost, idUser));
+  };
 
   const setMorePostArgs = (next, skip) => {
-    setPostsArgs(state => ({...state, next, skip}))
-  }
+    setPostsArgs((state) => ({ ...state, next, skip }));
+  };
 
   // Proposed Posts actions
 
   const proposedPostsDeletePost = (idPost) => {
-    dispatchProposedPosts(deleteProposedPost(idPost))
-  }
-  
+    dispatchProposedPosts(deleteProposedPost(idPost));
+  };
+
   const proposedPostsUpdatePost = (idPost, data) => {
-    dispatchProposedPosts(updateProposedPost(idPost, data))
-  }
-  
+    dispatchProposedPosts(updateProposedPost(idPost, data));
+  };
+
   const proposedPostsAddPosts = (posts) => {
-    dispatchProposedPosts(addProposedPosts(posts))
-  }
+    dispatchProposedPosts(addProposedPosts(posts));
+  };
 
   const proposedPostValidate = (idPost) => {
-    dispatchProposedPosts(validateProposedPost(idPost))
-  }
+    dispatchProposedPosts(validateProposedPost(idPost));
+  };
 
   const setMoreProposedPostsArgs = (next, skip) => {
-    setProposedPostsArgs(state => ({...state, next, skip}))
-  }
+    setProposedPostsArgs((state) => ({ ...state, next, skip }));
+  };
 
   // navigation action
   const navigateTo = (target) => {
-    setNavigation(target)
-  }
+    setNavigation(target);
+  };
 
   // research actions
   const addResults = (posts) => {
-    const researchClone = {...research}
-    const postsResults = posts.map(post => new Post(post))
+    const researchClone = { ...research };
+    const postsResults = posts.map((post) => new Post(post));
 
-    researchClone.postsResults = postsResults
+    researchClone.postsResults = postsResults;
 
-    setReseach(researchClone)
-  }
+    setReseach(researchClone);
+  };
 
   const changeQuery = (query) => {
-    const researchClone = {...research}
+    const researchClone = { ...research };
 
-    researchClone.query = query
+    researchClone.query = query;
 
-    setReseach(researchClone)
-  }
+    setReseach(researchClone);
+  };
 
   // Category Modal section
 
   const openModal = () => {
-    setCategoryModalOpen(true)
-  }
+    setCategoryModalOpen(true);
+  };
 
   const closeModal = () => {
-    setCategoryModalOpen(false)
-  }
+    setCategoryModalOpen(false);
+  };
 
   // data of current user context
   const currentUserContextValue = {
@@ -190,8 +213,12 @@ function App() {
     createPost: userCreatePost,
     updateProfil: userUpdateProfil,
     updateUser: userUpdateUser,
-    likeUserPost: userLikeUserPost
-  }
+    likeUserPost: userLikeUserPost,
+    addFollower: userAddFollower,
+    addFollowing: userAddFollowing,
+    deleteFollower: userDeleteFollower,
+    deleteFollowing: userDeleteFollowing,
+  };
 
   // data of posts context
   const postsContextValue = {
@@ -204,8 +231,8 @@ function App() {
     addComments: postsAddComments,
     addComment: postsAddComment,
     likePost: postsLikePost,
-    setMorePostArgs
-  }
+    setMorePostArgs,
+  };
 
   const proposedPostContextValue = {
     proposedPosts,
@@ -214,34 +241,34 @@ function App() {
     updatePost: proposedPostsUpdatePost,
     addPosts: proposedPostsAddPosts,
     setMoreProposedPostsArgs,
-    validatePost: proposedPostValidate
-  }
+    validatePost: proposedPostValidate,
+  };
 
   // data of navigation
   const navigationContextValue = {
     navigation,
-    navigateTo
-  }
+    navigateTo,
+  };
 
   // data of research
   const researchContextValue = {
     ...research,
     addResults,
-    changeQuery
-  }
+    changeQuery,
+  };
 
   // Data of category modal
   const categoryContextValue = {
     open: categoryModalOpen,
     openModal,
-    closeModal
-  }
+    closeModal,
+  };
 
   // toast config
   const toastOptions = {
     position: "bottom",
-    timeout: 5000
-  }
+    timeout: 5000,
+  };
 
   return (
     <currentUserContext.Provider value={currentUserContextValue}>
