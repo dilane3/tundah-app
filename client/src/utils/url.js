@@ -9,7 +9,7 @@ import axios from "axios";
 // })
 
 const instance = axios.create({
-  baseURL: "https://tundah-server.herokuapp.com//api",
+  baseURL: "https://tundah-server.herokuapp.com/api",
 });
 
 // const instance = axios.create({
