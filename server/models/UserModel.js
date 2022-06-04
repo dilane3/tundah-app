@@ -1,43 +1,40 @@
-import { config } from "dotenv"
-import { nanoid } from "nanoid"
-import dbConnect from "../utils/database.js"
-import InterfaceUserModel from "./interfaces/interfaceUserModel.js"
+import { config } from "dotenv";
+import { nanoid } from "nanoid";
+import dbConnect from "../utils/database.js";
+import InterfaceUserModel from "./interfaces/interfaceUserModel.js";
 
 // fetching data from .env file
-config()
+config();
 
-const {
-  SECRET_CODE_TOKEN
-} = process.env
-
+const { SECRET_CODE_TOKEN } = process.env;
 
 class UserModel extends InterfaceUserModel {
   /**
    * This function get a specific user based on his id
    * @param {string} username
    */
-   async getUser (username) {
-    const session = dbConnect()
+  async getUser(username) {
+    const session = dbConnect();
 
     try {
       const query = `
         MATCH (user:Subscriber{username: $username})
         RETURN user
-      `
+      `;
 
-      const result = await session.run(query, {username})
+      const result = await session.run(query, { username });
 
       if (result.records.length > 0) {
-        const userData = result.records[0].get('user').properties
+        const userData = result.records[0].get("user").properties;
 
-        return {data: userData}
+        return { data: userData };
       } else {
-        return {data: null}
+        return { data: null };
       }
-    } catch(err) {
-      return {error: "Error while getting an user"}
+    } catch (err) {
+      return { error: "Error while getting an user" };
     } finally {
-      await session.close()
+      await session.close();
     }
   }
 
@@ -54,83 +51,81 @@ class UserModel extends InterfaceUserModel {
 
       const result = await session.run(query);
 
-      if(result.records.length > 0) {
+      if (result.records.length > 0) {
+        const userData = result.records;
 
-        const userData = result.records
-
-        var dataArray = []
+        var dataArray = [];
 
         for (let i = 0; i < result.records.length; i++) {
-          dataArray.push({ ...userData[i].get("user").properties })
+          dataArray.push({ ...userData[i].get("user").properties });
         }
-        
-        return { data: dataArray }
+
+        return { data: dataArray };
       } else {
-        return { data: null }
+        return { data: null };
       }
     } catch (err) {
-      console.log(err)
-      return { error: "The searched user has not been found" }
+      console.log(err);
+      return { error: "The searched user has not been found" };
     } finally {
-      session.close()
+      session.close();
     }
   }
 
-  async getFollowersAndFollowings (userId) {
-    const session = dbConnect()
+  async getFollowersAndFollowings(userId) {
+    const session = dbConnect();
 
-    try { 
+    try {
       const query = `
         MATCH (user:Subscriber{ id: $userId })
         MATCH (user) -[:FOLLOW]-> (followings:Subscriber)
         RETURN followings
-      `
+      `;
 
       const query2 = `
         MATCH (user:Subscriber{ id: $userId })
         MATCH (user) <-[:FOLLOW]- (followers:Subscriber)
         RETURN followers
-      `
+      `;
 
-      const result = await session.run(query, { userId })
-      const result2 = await session.run(query2, { userId })
+      const result = await session.run(query, { userId });
+      const result2 = await session.run(query2, { userId });
 
-      const followers = []
-      const followings = []
+      const followers = [];
+      const followings = [];
 
       for (let res of result.records) {
         // followers.push({ ...res.get("followers").properties })
-        followings.push({ ...res.get("followings").properties })
+        followings.push({ ...res.get("followings").properties });
       }
 
       for (let res of result2.records) {
-        followers.push({ ...res.get("followers").properties })
+        followers.push({ ...res.get("followers").properties });
         // followings.push({ ...res.get("followings").properties })
       }
 
-      return { data: { followers, followings } }
+      return { data: { followers, followings } };
     } catch (err) {
-      console.log(err)
+      console.log(err);
 
-      return { error: "An error occured" }
+      return { error: "An error occured" };
     }
   }
-  
 
   /**
    * This method create a new subscriber
-   * @param {string} name 
-   * @param {string} username 
-   * @param {string} email 
-   * @param {string} password 
-   * @param {0|1} role 
+   * @param {string} name
+   * @param {string} username
+   * @param {string} email
+   * @param {string} password
+   * @param {0|1} role
    */
-  async signup({name, username, email, password, country, role}) {
-    const session = dbConnect()
+  async signup({ name, username, email, password, country, role }) {
+    const session = dbConnect();
 
     try {
       const query = `
-        CREATE (user:Subscriber${role ? ':Expert':''}{
+        CREATE (user:Subscriber${role ? ":Expert" : ""}{
           id: $id,
           name: $name, 
           username: $username, 
@@ -143,143 +138,150 @@ class UserModel extends InterfaceUserModel {
           profil: 'default.png'
         })
         RETURN user
-      `
+      `;
 
       const result = await session.run(query, {
         id: nanoid(20),
-        name, 
-        username, 
-        email, 
+        name,
+        username,
+        email,
         password,
         description: "",
         country,
         role,
-        date: Date.now()
-      })
+        date: Date.now(),
+      });
 
       if (result.records.length > 0) {
-        const userData = result.records[0].get('user').properties
+        const userData = result.records[0].get("user").properties;
 
-        return {data: userData}
+        return { data: userData };
       } else {
-        return {error: "Error while creating an user"}
+        return { error: "Error while creating an user" };
       }
-    } catch(err) {
-      return {error: "Error while creating an user"}
+    } catch (err) {
+      console.log(err);
+      return { error: "Error while creating an user" };
     } finally {
-      await session.close()
+      await session.close();
     }
   }
 
   /**
    * This method retrieve a specific user based on his usename and password
-   * @param {string} username 
+   * @param {string} username
    * @param {string} password
    */
   async signin(username) {
-    const session = dbConnect()
+    const session = dbConnect();
 
     try {
       const query = `
         MATCH (user:Subscriber{username: $username})
         RETURN user
         LIMIT 1
-      `
+      `;
 
-      console.log(username)
-      const result = await session.run(query, {username})
-      console.log(result)
+      console.log(username);
+      const result = await session.run(query, { username });
+      console.log(result);
 
       if (result.records.length > 0) {
-        const userData = result.records[0].get("user").properties
+        const userData = result.records[0].get("user").properties;
 
-        return {data: userData}
+        return { data: userData };
       } else {
-        return {error: "Error occurs while connecting the user"}
+        return { error: "Error occurs while connecting the user" };
       }
     } catch (err) {
-      console.log(err)
-      return {error: "Error occurs while connecting the user"}
+      console.log(err);
+      return { error: "Error occurs while connecting the user" };
     } finally {
-      await session.close()
+      await session.close();
     }
   }
 
-  async updateProfil (id, profil) {
-    const session = dbConnect()
+  async updateProfil(id, profil) {
+    const session = dbConnect();
 
-    console.log({id, profil})
+    console.log({ id, profil });
 
     try {
       const query = `
         MATCH (user:Subscriber{id: $id})
         SET user.profil = '${profil}'
         RETURN user
-      `
+      `;
 
-      console.log({id})
-      const result = await session.run(query, {id})
-      console.log(3)
+      console.log({ id });
+      const result = await session.run(query, { id });
+      console.log(3);
 
       if (result.records.length > 0) {
-        const userData = result.records[0].get("user").properties
+        const userData = result.records[0].get("user").properties;
 
-        return {data: userData}
+        return { data: userData };
       } else {
-        return {error: "Error occurs while changing the profil photo of an user"}
+        return {
+          error: "Error occurs while changing the profil photo of an user",
+        };
       }
     } catch (err) {
-      console.log({err})
-      return {error: "Error occurs while changing the profil photo of an user"}
+      console.log({ err });
+      return {
+        error: "Error occurs while changing the profil photo of an user",
+      };
     } finally {
-      await session.close()
+      await session.close();
     }
   }
 
-  async deleteProfil (id) {
-    const session = dbConnect()
+  async deleteProfil(id) {
+    const session = dbConnect();
 
     try {
       const query = `
         MATCH (user:Subscriber{id: $id})
         SET user.profil = 'default.png'
         RETURN user
-      `
+      `;
 
-      const result = await session.run(query, {id})
-      console.log("hello")
+      const result = await session.run(query, { id });
+      console.log("hello");
 
       if (result.records.length > 0) {
-        const user = result.records[0].get('user').properties
+        const user = result.records[0].get("user").properties;
 
         if (user.profil === "default.png") {
-          console.log(user)
-          return {data: user}
+          console.log(user);
+          return { data: user };
         } else {
-          return {error: "Something went wrong while deleting a profil photo"}
+          return {
+            error: "Something went wrong while deleting a profil photo",
+          };
         }
       } else {
-        return {error: "Something went wrong while deleting a profil photo"}
+        return { error: "Something went wrong while deleting a profil photo" };
       }
     } catch (err) {
-      return {error: "Something went wrong while deleting a profil photo"}
-    } finally{
-      await session.close()
+      return { error: "Something went wrong while deleting a profil photo" };
+    } finally {
+      await session.close();
     }
   }
 
   /**
    * This function update a user
-   * @param {string} id 
-   * @param {string} name 
-   * @param {string} username 
-   * @param {string} email 
-   * @param {string} password 
+   * @param {string} id
+   * @param {string} name
+   * @param {string} username
+   * @param {string} email
+   * @param {string} password
    *  @param {string} description
-   * @param {string} country 
+   * @param {string} country
    */
-  async updateUser (id, name, username, email, password, description, country) {
-    const session = dbConnect()
+  async updateUser(id, name, username, email, password, description, country) {
+    const session = dbConnect();
 
     try {
       const query = `
@@ -292,7 +294,7 @@ class UserModel extends InterfaceUserModel {
           user.description = $description,
           user.country = $country
         RETURN user
-      `
+      `;
 
       const result = await session.run(query, {
         id,
@@ -301,41 +303,41 @@ class UserModel extends InterfaceUserModel {
         email,
         password,
         description,
-        country
-      })
+        country,
+      });
 
       if (result.records.length > 0) {
-        const userData = result.records[0].get("user").properties
+        const userData = result.records[0].get("user").properties;
 
-        return {data: userData}
+        return { data: userData };
       } else {
-        return {data: null}
+        return { data: null };
       }
-    } catch(err) {
-      console.log(err)
-      return {error: "Error while updating a user"}
+    } catch (err) {
+      console.log(err);
+      return { error: "Error while updating a user" };
     } finally {
-      await session.close()
+      await session.close();
     }
   }
 
   /**
    * This function delete a user based on his id
-   * @param {string} id 
+   * @param {string} id
    */
-  async deleteUser (id) {
-    const session = dbConnect()
+  async deleteUser(id) {
+    const session = dbConnect();
 
     // to do
   }
 
   /**
    * This method allow a subscriber to become an expert
-   * @param {string} idSubscriber 
+   * @param {string} idSubscriber
    * @returns Object
    */
-  async addExpert (idSubscriber) {
-    const session = dbConnect()
+  async addExpert(idSubscriber) {
+    const session = dbConnect();
 
     try {
       const query = `
@@ -344,63 +346,63 @@ class UserModel extends InterfaceUserModel {
         SET user:Subscriber:Expert
         SET user.role = $role
         RETURN user
-      `
+      `;
 
-      const result = await session.run(query, {id: idSubscriber, role: 1.0})
+      const result = await session.run(query, { id: idSubscriber, role: 1.0 });
 
       if (result.records.length > 0) {
-        const userData = result.records[0].get("user").properties
+        const userData = result.records[0].get("user").properties;
 
-        return {data: userData}
+        return { data: userData };
       } else {
-        return {error: "Error occurs while adding an expert user"}
+        return { error: "Error occurs while adding an expert user" };
       }
     } catch (err) {
-      return {error: "Error occurs while adding an expert user"}
+      return { error: "Error occurs while adding an expert user" };
     } finally {
-      await session.close()
+      await session.close();
     }
   }
 
   async verifyUnicity(property, type) {
-    const session = dbConnect()
+    const session = dbConnect();
 
     try {
-      let query = ''
+      let query = "";
 
-      if (type === 'email') {
+      if (type === "email") {
         query = `
           MATCH (user:Subscriber{email: $property})
           RETURN user
-        `
+        `;
       } else {
         query = `
           MATCH (user:Subscriber{username: $property})
           RETURN user
-        `
+        `;
       }
 
-      const result = await session.run(query, {property})
+      const result = await session.run(query, { property });
 
       if (result.records.length > 0) {
-        return {data: true}
+        return { data: true };
       } else {
-        return {data: false}
+        return { data: false };
       }
     } catch (err) {
-      return {error: "Error occured while checking the unicity of the user"}
+      return { error: "Error occured while checking the unicity of the user" };
     } finally {
-      await session.close()
+      await session.close();
     }
   }
 
   /**
    * Follow a user
-   * @param {string} currentUserId 
-   * @param {string} userId 
-   */ 
-  async followUser (currentUserId, userId) {
-    const session = dbConnect()
+   * @param {string} currentUserId
+   * @param {string} userId
+   */
+  async followUser(currentUserId, userId) {
+    const session = dbConnect();
 
     try {
       const query = `
@@ -408,31 +410,31 @@ class UserModel extends InterfaceUserModel {
               (user:Subscriber{ id: $userId })
         CREATE (currentUser) -[follow:FOLLOW]-> (user)
         RETURN follow
-      `
+      `;
 
-      const result = await session.run(query, { currentUserId, userId })
+      const result = await session.run(query, { currentUserId, userId });
 
       if (result.records.length > 0) {
-        return { data: "You are now following a new user" }
+        return { data: "You are now following a new user" };
       }
 
-      return { error: "Error occured while follow a user" }
+      return { error: "Error occured while follow a user" };
     } catch (err) {
-      console.log(err)
+      console.log(err);
 
-      return { error: "Error occured while follow a user" }
+      return { error: "Error occured while follow a user" };
     } finally {
-      await session.close()
+      await session.close();
     }
   }
 
   /**
    * Follow a user
-   * @param {string} currentUserId 
-   * @param {string} userId 
-   */ 
-   async unFollowUser (currentUserId, userId) {
-    const session = dbConnect()
+   * @param {string} currentUserId
+   * @param {string} userId
+   */
+  async unFollowUser(currentUserId, userId) {
+    const session = dbConnect();
 
     try {
       const query = `
@@ -440,19 +442,19 @@ class UserModel extends InterfaceUserModel {
               (user:Subscriber{ id: $userId }),
               (currentUser) -[follow:FOLLOW]-> (user)
         DELETE follow
-      `
+      `;
 
-      await session.run(query, { currentUserId, userId })
+      await session.run(query, { currentUserId, userId });
 
-      return { data: "You are now unfollowing a new user" }
+      return { data: "You are now unfollowing a new user" };
     } catch (err) {
-      console.log(err)
+      console.log(err);
 
-      return { error: "Error occured while follow a user" }
+      return { error: "Error occured while follow a user" };
     } finally {
-      await session.close()
+      await session.close();
     }
   }
 }
 
-export default UserModel
+export default UserModel;
