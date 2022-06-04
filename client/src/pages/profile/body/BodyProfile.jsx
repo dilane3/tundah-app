@@ -7,14 +7,14 @@ import navigationContext from '../../../dataManager/context/navigationContext'
 
 
 const BodyProfile = () => {
-	const {currentUser} = useContext(currentUserContext)
-	const {navigateTo} = useContext(navigationContext)
+	const { currentUser } = useContext(currentUserContext)
+	const { navigateTo } = useContext(navigationContext)
 
 	useEffect(() => {
 		navigateTo("")
 	}, [navigateTo])
 
-	return(
+	return (
 		<div>
 			{
 				currentUser ? (
@@ -23,9 +23,9 @@ const BodyProfile = () => {
 							title={`${currentUser.name}(@${currentUser.username})`}
 							description="tundah est un réseau social qui met en avant la culture africaine pour la transmettre à la génération futur"
 						/>
-						<AppProfilPost/> 
+						<AppProfilPost />
 					</>
-				): <Redirect to="/wiki/feed" />
+				) : <Redirect to="/" />
 			}
 		</div>
 	)

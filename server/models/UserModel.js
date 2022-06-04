@@ -75,6 +75,46 @@ class UserModel extends InterfaceUserModel {
       session.close()
     }
   }
+
+  async getFollowersAndFollowings (userId) {
+    const session = dbConnect()
+
+    try { 
+      const query = `
+        MATCH (user:Subscriber{ id: $userId })
+        MATCH (user) -[:FOLLOW]-> (followings:Subscriber)
+        RETURN followings
+      `
+
+      const query2 = `
+        MATCH (user:Subscriber{ id: $userId })
+        MATCH (user) <-[:FOLLOW]- (followers:Subscriber)
+        RETURN followers
+      `
+
+      const result = await session.run(query, { userId })
+      const result2 = await session.run(query2, { userId })
+
+      const followers = []
+      const followings = []
+
+      for (let res of result.records) {
+        // followers.push({ ...res.get("followers").properties })
+        followings.push({ ...res.get("followings").properties })
+      }
+
+      for (let res of result2.records) {
+        followers.push({ ...res.get("followers").properties })
+        // followings.push({ ...res.get("followings").properties })
+      }
+
+      return { data: { followers, followings } }
+    } catch (err) {
+      console.log(err)
+
+      return { error: "An error occured" }
+    }
+  }
   
 
   /**
@@ -349,6 +389,66 @@ class UserModel extends InterfaceUserModel {
       }
     } catch (err) {
       return {error: "Error occured while checking the unicity of the user"}
+    } finally {
+      await session.close()
+    }
+  }
+
+  /**
+   * Follow a user
+   * @param {string} currentUserId 
+   * @param {string} userId 
+   */ 
+  async followUser (currentUserId, userId) {
+    const session = dbConnect()
+
+    try {
+      const query = `
+        MATCH (currentUser:Subscriber{ id: $currentUserId }),
+              (user:Subscriber{ id: $userId })
+        CREATE (currentUser) -[follow:FOLLOW]-> (user)
+        RETURN follow
+      `
+
+      const result = await session.run(query, { currentUserId, userId })
+
+      if (result.records.length > 0) {
+        return { data: "You are now following a new user" }
+      }
+
+      return { error: "Error occured while follow a user" }
+    } catch (err) {
+      console.log(err)
+
+      return { error: "Error occured while follow a user" }
+    } finally {
+      await session.close()
+    }
+  }
+
+  /**
+   * Follow a user
+   * @param {string} currentUserId 
+   * @param {string} userId 
+   */ 
+   async unFollowUser (currentUserId, userId) {
+    const session = dbConnect()
+
+    try {
+      const query = `
+        MATCH (currentUser:Subscriber{ id: $currentUserId }),
+              (user:Subscriber{ id: $userId }),
+              (currentUser) -[follow:FOLLOW]-> (user)
+        DELETE follow
+      `
+
+      await session.run(query, { currentUserId, userId })
+
+      return { data: "You are now unfollowing a new user" }
+    } catch (err) {
+      console.log(err)
+
+      return { error: "Error occured while follow a user" }
     } finally {
       await session.close()
     }

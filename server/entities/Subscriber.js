@@ -15,6 +15,8 @@ class Subscriber {
   country;
   dataManager;
   posts;
+  followers;
+  followings;
 
   constructor(data) {
     this.dataManager = new UserModel()
@@ -113,7 +115,9 @@ class Subscriber {
         role,
         profil,
         posts,
-        country
+        country,
+        followers,
+        followings
       } = data
     
       this.id = id
@@ -127,6 +131,22 @@ class Subscriber {
       this.profil = profil
       this.posts = posts
       this.country = country
+
+      if (followers !== undefined && followings !== undefined) {
+        const myFollowers = []
+        const myFollowings = []
+  
+        for (let follower of followers) {
+          myFollowers.push(new Subscriber(follower))
+        }
+  
+        for (let following of followings) {
+          myFollowings.push(new Subscriber(following))
+        }
+  
+        this.followers = myFollowers
+        this.followings = myFollowings
+      }
     }
   }
 

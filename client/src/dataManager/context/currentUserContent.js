@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const currentUserContext = React.createContext({
   currentUser: null,
@@ -9,7 +9,11 @@ const currentUserContext = React.createContext({
   createPost: (post) => {},
   updateProfil: (profil) => {},
   updateUser: (data) => {},
-  likeUserPost: (idPost) => {}
-})
+  likeUserPost: (idPost) => {},
+  addFollower: (user) => {},
+  addFollowing: (user) => {},
+  deteleFollower: (userId) => {},
+  deleteFollowing: (userId) => {},
+});
 
-export default currentUserContext
+export default currentUserContext;
