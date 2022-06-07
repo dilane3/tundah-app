@@ -137,8 +137,6 @@ class UserController {
   static signup = async (req, res) => {
     let { name, username, email, password, country, role } = req.body;
 
-    console.log({ req: req });
-
     if (
       name &&
       username &&
@@ -198,7 +196,7 @@ class UserController {
           .json({ message: "Your email adress is in the wrong format" });
       }
     } else {
-      return res.status(500).json({ message: "Provide all the required data" });
+      return res.status(400).json({ message: "Provide all the required data" });
     }
   };
 

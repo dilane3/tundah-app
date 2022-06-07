@@ -16,6 +16,7 @@ import { useParams } from 'react-router'
 import CategoryContext from '../../../../dataManager/context/categoryContext'
 import UserApi from '../../../../api/users'
 import { deleteFollowing } from '../../../../dataManager/data/currentUser/currentUserActions'
+import ModalContext from '../../../../dataManager/context/modalContext'
 
 const checkUsername = (username, currentUser) => {
 	return username === currentUser.username
@@ -38,6 +39,7 @@ const HeaderProfil = () => {
 	const { currentUser, updateProfil, likeUserPost, addFollowing, deleteFollowing } = useContext(currentUserContext)
 	const { likePost } = useContext(postsContext)
 	const { openModal } = useContext(CategoryContext)
+	const { openModal: handleOpenModal } = useContext(ModalContext)
 
 
 	// username passed inside the url
@@ -349,7 +351,7 @@ const HeaderProfil = () => {
 											<div> contact</div>
 										</div>
 
-										<div className="iconContact" onClick={openModal}>
+										<div className="iconContact" onClick={() => handleOpenModal("Categories", "SELECT_CATEGORIES")}>
 											<div className="MdContactMai">
 												<MdDashboard />
 											</div>
@@ -357,7 +359,7 @@ const HeaderProfil = () => {
 										</div>
 										{
 											checkUsername(username, currentUser) ? (
-												<div className="iconContact">
+												<div className="iconContact" onClick={() => handleOpenModal("Editer Profil", "PROFILE_UPDATE")}>
 													<div className="AiOutlineEdit"> <AiOutlineEdit /> </div>
 													<div> Editer profil</div>
 												</div>
@@ -365,7 +367,7 @@ const HeaderProfil = () => {
 										}
 									</div>
 
-									<section className='profilFollowerBottom'>
+									<section className='profilFollowerBottom' onClick={() => handleOpenModal("Abonnements & Abonnés", "USERS_INFO")}>
 										<div className='profileFollowerItem'>
 											<span>{user.getFollowers.length}</span>
 											<span>Abonnés</span>

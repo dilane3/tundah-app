@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import styles from '../../../css/aside.module.css'
+import baseStyles from '../../../css/base.module.css'
 import ImgCircle from '../../elements/imgCircle/ImgCircle'
 import { BsPlusCircleFill, BsJournals, BsPersonCheck, BsGear } from 'react-icons/bs'
 import { IoShareSocial } from 'react-icons/io5'
@@ -62,7 +63,7 @@ const Navigation = ({ onShowAddExpertSection }) => {
 	const { currentUser } = useContext(currentUserContext)
 	const { navigation, navigateTo } = useContext(navigationContext)
 
-	const user = new Subscriber(currentUser)
+	const user = currentUser && new Subscriber(currentUser)
 
 	return (
 		<>
@@ -103,6 +104,10 @@ const Navigation = ({ onShowAddExpertSection }) => {
 					<span>Reglage</span>
 				</div>
 			</section>
+
+			<div className={`${baseStyles.asideSectionExtended} ${baseStyles.asideSectionMobileExtended}`}>
+				Users to follow section
+			</div>
 		</>
 	)
 }

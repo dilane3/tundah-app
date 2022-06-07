@@ -1,13 +1,13 @@
 import React from 'react'
 import Body from './body/BodyProfile'
-import Base from '../Base'
+import ExtendedBase from '../ExtendedBase'
 
 const Profile = () => {
-	return(
+	return (
 		<div className="">
-			<Base>
+			<ExtendedBase>
 				<Body />
-			</Base>
+			</ExtendedBase>
 		</div>
 	)
 }

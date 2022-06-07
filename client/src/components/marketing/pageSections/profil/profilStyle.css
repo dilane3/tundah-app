@@ -4,14 +4,14 @@
   height: auto;
 }
 
-.profil-content{
+.profil-content {
   display: flex;
   flex-direction: column;
   height: auto;
   width: 100%;
 }
 
-.header-profil{
+.header-profil {
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -19,7 +19,7 @@
   margin-top: 5px;
 }
 
-div.profilInfo{
+div.profilInfo {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -29,9 +29,9 @@ div.profilInfo{
   margin-left: 6px;
 }
 
-.profilCardImage{
-  width:120px;
-  height:120px;
+.profilCardImage {
+  width: 120px;
+  height: 120px;
 }
 
 .profilImage {
@@ -94,17 +94,17 @@ div.profilInfo{
   font-size: 1.5rem;
 }
 
-.name{
+.name {
   font-weight: bold;
   font-size: 22px;
 }
 
-.town{
+.town {
   margin-left: 10px;
   font-size: 16px;
 }
 
-.username{
+.username {
   font-size: 18px;
   color: #575656;
 }
@@ -137,15 +137,15 @@ div.profilInfo{
   background-color: #b6e2c0;
 }
 
-.BsJournals{
+.BsJournals {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  margin-top:15px;
+  margin-top: 15px;
 }
 
-.iconContact{
+.iconContact {
   color: #2e2828;
   font-size: 16px;
   width: auto;
@@ -162,7 +162,8 @@ div.profilInfo{
   cursor: pointer;
 }
 
-.profilDescription,.profilFollower{
+.profilDescription,
+.profilFollower {
   font-size: 16px;
   color: #2e2828;
   height: auto;
@@ -170,13 +171,13 @@ div.profilInfo{
   margin-top: 10px;
 }
 
-.informationContent{
+.informationContent {
   display: flex;
   flex-direction: column;
   height: auto;
 }
 
-.profilFollower{
+.profilFollower {
   display: flex;
   flex-direction: column;
   width: calc(100% - 10px);
@@ -210,22 +211,24 @@ div.profilInfo{
 .profileFollowerItem span:first-child {
   color: #555;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .profileFollowerItem span:last-child {
   margin-left: 5px;
   color: #555;
+  cursor: pointer;
 }
 
-.iconEditerProfil{
-  margin-left:auto;
+.iconEditerProfil {
+  margin-left: auto;
   color: #2e2828;
   font-size: 14px;
   display: flex;
   justify-content: flex-end;
 }
 
-.secondFollower{
+.secondFollower {
   margin-left: 25px;
 }
 
@@ -237,8 +240,8 @@ div.profilInfo{
   transform: translate(calc(-50% - 100px), -50%);
 }
 
-.profilPost{
-  display:flex;
+.profilPost {
+  display: flex;
   flex-direction: row;
   margin-top: 15px;
   justify-content: flex-start;
@@ -262,7 +265,7 @@ div.profilInfo{
   font-size: 14px;
 }
 
-.active{
+.active {
   background-color: #3c6a46;
   color: white;
   font-weight: bold;
@@ -273,14 +276,14 @@ div.profilInfo{
   text-align: center;
 }
 
-.MdContactMai{
+.MdContactMai {
   color: #575656;
-  font-size:1.4rem;
+  font-size: 1.4rem;
   margin-right: 10px;
 }
-.AiOutlineEdit{
+.AiOutlineEdit {
   color: #575656;
-  font-size:1.4rem;
+  font-size: 1.4rem;
   margin-right: 10px;
 }
 
@@ -301,7 +304,7 @@ div.profilInfo{
 }
 
 @media screen and (max-width: 700px) {
-  .profil-content{
+  .profil-content {
     width: 100%;
     padding: 0 10px;
   }
@@ -319,17 +322,17 @@ div.profilInfo{
 }
 
 @media screen and (max-width: 425px) {
-  .profilPost div{
+  .profilPost div {
     font-size: 12px;
   }
 
-  .profilFollowSection {  
+  .profilFollowSection {
     flex-direction: column;
     justify-content: flex-end;
     align-items: flex-start;
   }
 
   .btn-follow {
-    margin-top: 10px
+    margin-top: 10px;
   }
 }
