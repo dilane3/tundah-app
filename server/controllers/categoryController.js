@@ -5,8 +5,6 @@ config();
 
 const { SECRET_CODE_TOKEN } = process.env;
 
-class CategoryController {
+class CategoryController {}
 
-}
-
-export default CategoryController
+export default CategoryController;

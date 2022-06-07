@@ -16,7 +16,7 @@ import ModalCoreContainer from '../components/utils/modals/modalCore'
 
 const logo = require("../medias/logo/Tundah-large.png")
 
-const Base = ({ children }) => {
+const ExtendedBase = ({ children }) => {
   // getting context value
   const { login, currentUser } = useContext(currentUserContext)
   const {
@@ -178,16 +178,21 @@ const Base = ({ children }) => {
     <Fragment>
       <Navbar className={styles.header} onShowMobileMenu={() => setShowMobileMenu(true)} />
 
-      <section className={styles.container}>
+      <section className={styles.containerExtended}>
+        <aside className={styles.usersToFollowSectionExtended}>
+          Users to follow section
+        </aside>
+
         {
           dataLoaded ? (
-            <section className={styles.mainSection}>
+            <section className={styles.mainSectionExtended}>
               {children}
             </section>
           ) : null
         }
 
-        <Aside className={styles.asideSection} onShowAddExpertSection={handleDisplayAddExpertModal} />
+
+        <Aside className={styles.asideSectionExtended} onShowAddExpertSection={handleDisplayAddExpertModal} />
       </section>
 
       <MobileMenu show={showMobileMenu} onShowAddExpertSection={handleDisplayAddExpertModal} />
@@ -241,4 +246,4 @@ const Base = ({ children }) => {
   )
 }
 
-export default Base
+export default ExtendedBase

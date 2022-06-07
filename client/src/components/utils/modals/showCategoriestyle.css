@@ -1,11 +1,11 @@
 h1{
-    font-size: 35px;
+    font-size: 25px;
     text-align: center;
     font-weight: bold;
 }
 .description{
-    margin-top: 25px;
-    margin-bottom: 20px;
+    margin-top: 15px;
+    margin-bottom: 10px;
     font-size: 16px;
     color: rgb(87, 85, 85);
 }
@@ -14,10 +14,10 @@ h1{
     border-radius: 15px;
     align-items: center;
     border: none;
-    padding: 20px;
+    padding: 10px;
     height: auto;
     width: auto;
-    margin-top: 40px;
+    margin-top: 10px;
 }
 .topItems{
     display: flex;

@@ -1,0 +1,52 @@
+/* Style for class modal content */
+
+.container {
+  max-height: 400px;
+  height: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+  padding-right: 5px;
+}
+
+.groupLabel {
+  font-family: "Nunito-Bold";
+}
+
+.groupContainer {
+  position: relative;
+  width: calc(100% - 20px);
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.specialityGroupContainer {
+  margin-bottom: 0;
+}
+
+.groupItem {
+  position: relative;
+  width: calc(100% - 20px);
+  height: auto;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.groupItemTitle {
+  font-size: 14px;
+  font-family: "Nunito-Bold";
+}
+
+.groupItem > div {
+  margin-bottom: 0;
+  margin-top: 10px;
+}
