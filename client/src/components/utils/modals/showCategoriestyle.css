@@ -1,0 +1,64 @@
+h1{
+    font-size: 25px;
+    text-align: center;
+    font-weight: bold;
+}
+.description{
+    margin-top: 15px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: rgb(87, 85, 85);
+}
+.contentCategorie{
+    background-color:#fff;
+    border-radius: 15px;
+    align-items: center;
+    border: none;
+    padding: 10px;
+    height: auto;
+    width: auto;
+    margin-top: 10px;
+}
+.topItems{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 40px;
+
+}
+.bottomItems{
+    display: flex;
+    flex-direction: row;
+    margin-top: 60px;
+}
+.firstEle{
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    height: 60px;
+    padding: 10px;
+    background-color: #ddd;
+    border-radius: 10px;
+}
+.topElement{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+.texte{
+    font-size: 16px;
+    font-weight: bold;
+}
+.cardImage{
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: -10px;
+    left: 10px;
+    margin-top: -20px;
+    border-radius:15px;
+}
+.checkCategorie:checked{
+background-color: green;
+}

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react'
 import axios from 'axios'
 import navigationContext from '../../../dataManager/context/navigationContext'
-import ListPosts from '../../../components/marketing/pageSections/wiki/ListPosts'
+import ListPosts from '../../../components/marketing/pageSections/social/ListPosts'
 
 const instance = axios.create({
 	baseURL: "http://localhost:5000/api",

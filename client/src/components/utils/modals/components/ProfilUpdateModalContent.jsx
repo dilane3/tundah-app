@@ -16,7 +16,7 @@ const ProfilUpdateModalContent = () => {
   return (
     <section>
       <Box className={styles.modalContent}>
-        Contenu du modal
+        {/* Contenu du modal */}
       </Box>
 
       <Box className={styles.controls}>

@@ -10,6 +10,7 @@ import postsContext from '../dataManager/context/postsContext'
 import AddExpertModal from '../components/utils/modals/AddExpertModal'
 import { ToastContext } from 'react-simple-toastify'
 import ShowCategories from '../components/utils/modals/showCategories'
+import FollowUserPage from '../components/marketing/aside/followUserPage'
 import CategoryContext from '../dataManager/context/categoryContext'
 import ModalContext from '../dataManager/context/modalContext'
 import ModalCoreContainer from '../components/utils/modals/modalCore'
@@ -180,7 +181,7 @@ const ExtendedBase = ({ children }) => {
 
       <section className={styles.containerExtended}>
         <aside className={styles.usersToFollowSectionExtended}>
-          Users to follow section
+          <FollowUserPage/>
         </aside>
 
         {
