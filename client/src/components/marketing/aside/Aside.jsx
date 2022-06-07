@@ -63,7 +63,7 @@ const Navigation = ({ onShowAddExpertSection }) => {
 	const { currentUser } = useContext(currentUserContext)
 	const { navigation, navigateTo } = useContext(navigationContext)
 
-	const user = new Subscriber(currentUser)
+	const user = currentUser && new Subscriber(currentUser)
 
 	return (
 		<>

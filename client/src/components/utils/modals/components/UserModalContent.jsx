@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react"
 import { Box } from "@mui/material"
 import styles from '../css/modalContent.module.css'
 import ModalContext from "../../../../dataManager/context/modalContext"
+import ShowCategories from "../showCategories"
 import Button from "../../../elements/buttons/Button"
 
 const UserModalContent = () => {
@@ -16,7 +17,7 @@ const UserModalContent = () => {
   return (
     <section>
       <Box className={styles.modalContent}>
-        hello
+       contenu du modal
       </Box>
 
       <Box className={styles.controls}>
