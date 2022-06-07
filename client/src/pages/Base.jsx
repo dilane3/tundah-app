@@ -11,6 +11,8 @@ import AddExpertModal from '../components/utils/modals/AddExpertModal'
 import { ToastContext } from 'react-simple-toastify'
 import ShowCategories from '../components/utils/modals/showCategories'
 import CategoryContext from '../dataManager/context/categoryContext'
+import ModalContext from '../dataManager/context/modalContext'
+import ModalCoreContainer from '../components/utils/modals/modalCore'
 
 const logo = require("../medias/logo/Tundah-large.png")
 
@@ -23,6 +25,7 @@ const Base = ({ children }) => {
   } = useContext(postsContext)
   const { displayToast } = useContext(ToastContext)
   const { open: modalOpened, openModal, closeModal } = useContext(CategoryContext)
+  const { isOpen: modalIsOpened, closeModal: modalCloser, currentModalName } = useContext(ModalContext)
 
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [maskBackground, setMaskBackground] = useState(true)
@@ -228,6 +231,12 @@ const Base = ({ children }) => {
           <ShowCategories onCloseModal={closeModal} />
         )
       }
+
+      <ModalCoreContainer
+        open={modalIsOpened}
+        title={currentModalName}
+        closeModal={modalCloser}
+      />
     </Fragment>
   )
 }

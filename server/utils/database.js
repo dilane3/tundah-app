@@ -14,6 +14,6 @@ export default function () {
     neo4j.auth.basic(USERNAME_DB, PASSWORD_DB)
   );
 
-  return driver.session();
-  // return driver.session({database: DATABASE_NAME})
+  // return driver.session();
+  return driver.session({ database: DATABASE_NAME });
 }
