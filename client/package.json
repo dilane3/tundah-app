@@ -7,6 +7,7 @@
     "@testing-library/jest-dom": "^5.16.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
+    "@trendyol-js/react-carousel": "^2.0.1",
     "axios": "^0.24.0",
     "dotenv": "^11.0.0",
     "react": "^17.0.2",
