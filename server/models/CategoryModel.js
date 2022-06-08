@@ -99,6 +99,36 @@ class CategoryModel extends InterfaceCategoryModel {
         }
     }
 
+    /**
+     * This function delete cathegory 
+     * @param {id} id 
+     * @returns cathegory | error
+     */
+    static deleteCathegory = async (id) => {
+        const session = dbConnect()
+
+        const query = `
+            MATCH(cathegory:Cathegory{ id: $id })
+            DETACH DELETE cathegory
+        `
+        try{
+            const result = await session.run(query, { id })
+
+            if (result.records.length > 0){
+                const cathegoryData = result.records[0].get("cathegory").properties
+
+                return { data: cathegoryData }
+            }
+            return { error: "Error while deleting a cathegory" };
+        }catch(err){
+            console.log(err)
+
+            return { error: "And occured while deleting the cathegory" }
+        }finally{
+            session.close()
+        }
+    }
+
 
 }
 
