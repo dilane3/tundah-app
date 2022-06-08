@@ -1,49 +1,58 @@
-
 .followcontent{
     display: flex;
     flex-direction: row;
+    align-items: center;
     width: 100%;
+    margin-bottom: 15px;
 }
-/* .followInformation{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-} */
-.flwUserinformation{
-    position: relative;
+.followInformation{
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding-left: 5px;
+    width: 100%;
+    font-size: 10px;
+    margin-left: 5px;
+}
+
+.followUserImg {
+
+}
+
+.followUserAction {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+.flwUserInformation{
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
     width: 100%;
     font-size: 12px;
   }
-  .flwUserinformation .flwUsername {
+  .flwUserInformation .flwUsername {
     color: black;
     font-weight: bold;
     font-size: 14px;
   }
-  .flwUserinformation .flwUserInscription{
+  .flwUserInformation .flwUserInscription{
     color: rgb(105, 101, 101);
     font-size: 12px;
     margin-top: 5px;
   }
   .btnSuivreFlw{
       /* background-color: #3c6a46; */
-      position: absolute;
-      top: 0;
-      left: 0;
-      color: #fff;
+      display: flex;
+      color: #3c6a46;
+      align-items: center;
       font-weight: bold;
       border: none;
       border-radius: 5px;
       text-align: center;
-      width: 10px;
+      width: 60px;
       height: 10px;
-      margin-top: 10px;
       font-size: 14px;
-      margin-left: 100px;
   }
   /* .flwprofilCardImage{
     width: 60px;
@@ -57,4 +66,13 @@
       width: 300px;
   }
   
-  
+.followUserSeeMoreAction {
+  color: #3c6a46;
+  font-weight: bold;
+  font-size: 14px;
+  margin-left: 5px;
+}
+
+.followUserSeeMoreAction:hover {
+  cursor: pointer;
+}

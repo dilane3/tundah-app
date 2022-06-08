@@ -7,6 +7,12 @@ const FollowUserPage = () => {
     return(
       <div className="App-contentFollow">
         <FollowUserItem/>
+        <FollowUserItem/>
+        <FollowUserItem/>
+        <FollowUserItem/>
+        <div className="followUserSeeMoreAction">
+          Voir plus...
+        </div>
       </div>
     )
 }
