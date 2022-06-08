@@ -129,7 +129,30 @@ class CategoryModel extends InterfaceCategoryModel {
         }
     }
 
+    static updateCathegory = async ({id, name}) => {
+        const session = dbConnect()
 
+        const query = `
+            MATCH(cathegory:Cathegory{ id: $id })
+            SET
+                cathegory.name = $name
+            RETURN cathegory
+        `
+        
+        try{
+            const result = await session.run(query, { id, name })
+            if (result.records.length > 0) {
+                const cathegoryData = result.records[0].get("cathegory").properties;
+        
+                return { data: cathegoryData };
+            } else {
+            return { data: null };
+            }
+        }catch(err){
+            console.log(err)
+            return { error: "Adnd error occured while updating the cathegory" }
+        }finally{ session.close }
+    }
 }
 
 export default CategoryModel
