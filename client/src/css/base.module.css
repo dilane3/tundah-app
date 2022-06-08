@@ -76,7 +76,9 @@ body {
   margin-top: 20px;
   background-color: #fff;
   padding: 10px;
+  border: 1px solid rgb(206, 206, 206);
   display: none;
+  border-radius: 5px;
 }
 
 .asideSectionExtended {
@@ -94,10 +96,14 @@ body {
   top: 90px;
   left: 100px;
   width: 290px;
-  max-height: 300px;
+  min-height: 200px;
+  max-height: 360px;
+  height: auto;
   z-index: 1;
   background-color: #fff;
+  border: 1px solid rgb(206, 206, 206);
   padding: 10px;
+  border-radius: 5px;
 }
 
 .backgroundBlack {
@@ -171,7 +177,7 @@ body {
   }
 
   .mainSectionExtended {
-    width: calc(100% - 500px);
+    width: calc(100% - 550px);
   }
 
   .asideSection {
@@ -195,7 +201,6 @@ body {
   .usersToFollowSectionExtended {
     top: 80px;
     left: 50px;
-    width: 250px;
   }
 
   .header {

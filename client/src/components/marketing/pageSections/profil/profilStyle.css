@@ -10,7 +10,8 @@
   height: auto;
   width: 100%;
   background-color: #fff;
-  padding:10px;
+  padding: 10px;
+  border: 1px solid rgb(206, 206, 206);
 }
 
 .header-profil {

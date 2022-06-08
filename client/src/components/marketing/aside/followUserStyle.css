@@ -1,20 +1,19 @@
-.followcontent{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 15px;
+.followcontent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 15px;
 }
-.followInformation{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    font-size: 10px;
-    margin-left: 5px;
+.followInformation {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  font-size: 10px;
+  margin-left: 5px;
 }
 
 .followUserImg {
-
 }
 
 .followUserAction {
@@ -24,48 +23,48 @@
   width: 100%;
 }
 
-.flwUserInformation{
-    display: flex;
-    flex-direction: column;
-    margin-left: 5px;
-    width: 100%;
-    font-size: 12px;
-  }
-  .flwUserInformation .flwUsername {
-    color: black;
-    font-weight: bold;
-    font-size: 14px;
-  }
-  .flwUserInformation .flwUserInscription{
-    color: rgb(105, 101, 101);
-    font-size: 12px;
-    margin-top: 5px;
-  }
-  .btnSuivreFlw{
-      /* background-color: #3c6a46; */
-      display: flex;
-      color: #3c6a46;
-      align-items: center;
-      font-weight: bold;
-      border: none;
-      border-radius: 5px;
-      text-align: center;
-      width: 60px;
-      height: 10px;
-      font-size: 14px;
-  }
-  /* .flwprofilCardImage{
+.flwUserInformation {
+  display: flex;
+  flex-direction: column;
+  margin-left: 5px;
+  width: 100%;
+  font-size: 12px;
+}
+.flwUserInformation .flwUsername {
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
+}
+.flwUserInformation .flwUserInscription {
+  color: rgb(105, 101, 101);
+  font-size: 12px;
+  margin-top: 5px;
+}
+.btnSuivreFlw {
+  /* background-color: #3c6a46; */
+  display: flex;
+  color: #3c6a46;
+  align-items: center;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  text-align: center;
+  width: 60px;
+  height: 10px;
+  font-size: 14px;
+}
+/* .flwprofilCardImage{
     width: 60px;
     height: 60px;
     flex-basis: auto;
   } */
-  .userDescriptionFlw{
-      margin-left: 60px;
-      margin-top: 12px;
-      font-size: 14px;
-      width: 300px;
-  }
-  
+.userDescriptionFlw {
+  margin-left: 60px;
+  margin-top: 12px;
+  font-size: 14px;
+  width: 300px;
+}
+
 .followUserSeeMoreAction {
   color: #3c6a46;
   font-weight: bold;

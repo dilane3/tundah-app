@@ -9,6 +9,7 @@ import currentUserContext from '../../../dataManager/context/currentUserContent'
 import Subscriber from '../../../entities/Subscriber'
 import navigationContext from '../../../dataManager/context/navigationContext'
 import { ressourcesUrl } from '../../../utils/url'
+import FollowUserPage from './followUserPage'
 
 const StatPostItem = ({ title, number }) => {
 	return (
@@ -106,7 +107,7 @@ const Navigation = ({ onShowAddExpertSection }) => {
 			</section>
 
 			<div className={`${baseStyles.asideSectionExtended} ${baseStyles.asideSectionMobileExtended}`}>
-				Users to follow section
+				<FollowUserPage />
 			</div>
 		</>
 	)
