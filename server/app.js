@@ -7,6 +7,7 @@ import docs from './docs/index.js'
 import userRouter from './routers/userRouter.js'
 import commentRouter from './routers/commentRouter.js'
 import postRouter from './routers/postRouter.js'
+import cathegoryRouter from './routers/cathegoryRouter.js'
 
 // fetching data from .env file
 config()
@@ -37,6 +38,7 @@ app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(docs))
 app.use("/api/users", userRouter)
 app.use("/api/comments", commentRouter)
 app.use("/api/posts", postRouter)
+app.use("/api/cathegories", cathegoryRouter)
 
 
 // app.set('view engine', 'ejs')
