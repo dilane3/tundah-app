@@ -43,6 +43,7 @@ import researchContext from "./dataManager/context/researchContext";
 import proposedPostsReducer from "./dataManager/data/proposedPost/proposedPostReducer";
 import { ToastProvider } from "react-simple-toastify";
 import ModalProvider from "./dataManager/providers/modalProvider";
+import FollowersSuggestionProvider from "./dataManager/providers/followersSuggestionProvider";
 
 function App() {
   const [posts, dispatchPosts] = useReducer(postsReducer, []);
@@ -280,9 +281,11 @@ function App() {
               <ToastProvider options={toastOptions}>
                 <CategoryContext.Provider value={categoryContextValue}>
                   <ModalProvider>
-                    <BrowserRouter>
-                      <Routes />
-                    </BrowserRouter>
+                    <FollowersSuggestionProvider>
+                      <BrowserRouter>
+                        <Routes />
+                      </BrowserRouter>
+                    </FollowersSuggestionProvider>
                   </ModalProvider>
                 </CategoryContext.Provider>
               </ToastProvider>
