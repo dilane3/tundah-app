@@ -229,27 +229,28 @@ const HeaderProfil = () => {
 		try {
 			const type = currentUser.alreadyFollowed(user.getId) ? "unfollow" : "follow"
 
+			// Handle follow action before sending the request
+			if (type === "follow") {
+				addFollowing(user)
+
+				const updatedUser = (new Subscriber({ ...user }))
+
+				updatedUser.addFollower(currentUser)
+
+				setUser(updatedUser)
+			} else {
+				deleteFollowing(user.getId)
+
+				const updatedUser = (new Subscriber({ ...user }))
+
+				updatedUser.deleteFollower(currentUser.getId)
+
+				setUser(updatedUser)
+			}
+
 			const { data, error } = await UserApi.follow({ type, userId: user.getId })
 
-			if (data) {
-				if (type === "follow") {
-					addFollowing(user)
-
-					const updatedUser = (new Subscriber({ ...user }))
-
-					updatedUser.addFollower(currentUser)
-
-					setUser(updatedUser)
-				} else {
-					deleteFollowing(user.getId)
-
-					const updatedUser = (new Subscriber({ ...user }))
-
-					updatedUser.deleteFollower(currentUser.getId)
-
-					setUser(updatedUser)
-				}
-			} else {
+			if (!data) {
 				console.log(error)
 			}
 		} catch (err) {

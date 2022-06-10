@@ -16,17 +16,12 @@ const BodyProfile = () => {
 
 	return (
 		<div>
-			{
-				currentUser ? (
-					<>
-						<Seo
-							title={`${currentUser.name}(@${currentUser.username})`}
-							description="tundah est un réseau social qui met en avant la culture africaine pour la transmettre à la génération futur"
-						/>
-						<AppProfilPost />
-					</>
-				) : <Redirect to="/" />
-			}
+			<Seo
+				title={`${currentUser.name}(@${currentUser.username})`}
+				description="tundah est un réseau social qui met en avant la culture africaine pour la transmettre à la génération futur"
+			/>
+
+			<AppProfilPost />
 		</div>
 	)
 }

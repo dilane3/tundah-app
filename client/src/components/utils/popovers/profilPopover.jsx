@@ -46,19 +46,20 @@ const ProfilPopover = ({ authorData }) => {
     try {
       const type = currentUser.alreadyFollowed(user.getId) ? "unfollow" : "follow"
 
+      // Handle follow action before sending the request
+      if (type === "follow") {
+        addFollowing(user)
+
+        setFollowers(prev => prev + 1)
+      } else {
+        deleteFollowing(user.getId)
+
+        setFollowers(prev => prev - 1)
+      }
+
       const { data, error } = await UserApi.follow({ type, userId: user.getId })
 
-      if (data) {
-        if (type === "follow") {
-          addFollowing(user)
-
-          setFollowers(prev => prev + 1)
-        } else {
-          deleteFollowing(user.getId)
-
-          setFollowers(prev => prev - 1)
-        }
-      } else {
+      if (!data) {
         console.log(error)
       }
     } catch (err) {

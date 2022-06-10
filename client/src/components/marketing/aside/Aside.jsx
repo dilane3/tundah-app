@@ -101,9 +101,13 @@ const Navigation = ({ onShowAddExpertSection }) => {
 				</div>
 			</section>
 
-			<div className={`${baseStyles.asideSectionExtended} ${baseStyles.asideSectionMobileExtended}`}>
-				<FollowUserPage />
-			</div>
+			{
+				user && (
+					<div className={`${baseStyles.asideSectionExtended} ${baseStyles.asideSectionMobileExtended}`}>
+						<FollowUserPage />
+					</div>
+				)
+			}
 		</>
 	)
 }
