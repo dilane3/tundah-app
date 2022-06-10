@@ -1,6 +1,6 @@
-.popoverContainer {
+section.popoverContainer {
   position: absolute;
-  width: 300px;
+  width: 300px !important;
   min-height: 100px;
   height: auto;
   padding: 10px;

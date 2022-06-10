@@ -1,6 +1,6 @@
 import UserModel from "../models/UserModel.js";
 import Post from "./Post.js";
-import Comment from './Comment.js'
+import Comment from "./Comment.js";
 
 class Subscriber {
   id;
@@ -19,88 +19,96 @@ class Subscriber {
   followings;
 
   constructor(data) {
-    this.dataManager = new UserModel()
+    this.dataManager = new UserModel();
 
-    this.initialization(data)
+    this.initialization(data);
   }
 
   get getId() {
-    return this.id
+    return this.id;
   }
 
   /**
    * @returns string
    */
   get getName() {
-    return this.name
+    return this.name;
   }
 
   /**
    * @returns string
    */
   get getUsername() {
-    return this.username
+    return this.username;
   }
 
   /**
    * @returns string
    */
   get getEmail() {
-    return this.email
+    return this.email;
   }
 
   /**
    * @returns string
    */
   get getPassword() {
-    return this.password
+    return this.password;
   }
   /**
    * @returns string
    */
-   get getDescription() {
-    return this.description
+  get getDescription() {
+    return this.description;
   }
 
   /**
    * @returns {0|1}
    */
   get getRole() {
-    return this.role
+    return this.role;
   }
 
   /**
    * @returns Number
    */
   get getDate() {
-    return this.date
+    return this.date;
   }
 
   /**
    * @returns string
    */
   get getProfil() {
-    return this.profil
+    return this.profil;
   }
 
   /**
    * @returns Array of Post
    */
   get getPosts() {
-    return this.posts
+    return this.posts;
   }
 
   /**
    * @returns string
    */
   get getCountry() {
-    return this.country
+    return this.country;
+  }
+
+  get getFollowers() {
+    return this.getFollowers;
+  }
+
+  get getFollowings() {
+    return this.followings;
   }
 
   /**
-   * 
+   *
    * @param {Object} data
-   * @returns void 
+   * @returns void
    */
   initialization(data) {
     if (data) {
@@ -117,81 +125,87 @@ class Subscriber {
         posts,
         country,
         followers,
-        followings
-      } = data
-    
-      this.id = id
-      this.name = name
-      this.username = username
-      this.email = email
-      this.password = password
-      this.description = description
-      this.date = date
-      this.role = role
-      this.profil = profil
-      this.posts = posts
-      this.country = country
+        followings,
+      } = data;
+
+      this.id = id;
+      this.name = name;
+      this.username = username;
+      this.email = email;
+      this.password = password;
+      this.description = description;
+      this.date = date;
+      this.role = role;
+      this.profil = profil;
+      this.posts = posts;
+      this.country = country;
 
       if (followers !== undefined && followings !== undefined) {
-        const myFollowers = []
-        const myFollowings = []
-  
+        const myFollowers = [];
+        const myFollowings = [];
+
         for (let follower of followers) {
-          myFollowers.push(new Subscriber(follower))
+          myFollowers.push(new Subscriber(follower));
         }
-  
+
         for (let following of followings) {
-          myFollowings.push(new Subscriber(following))
+          myFollowings.push(new Subscriber(following));
         }
-  
-        this.followers = myFollowers
-        this.followings = myFollowings
+
+        this.followers = myFollowers;
+        this.followings = myFollowings;
       }
     }
   }
 
   async setProfil(profil) {
-    const {data, error} = await this.dataManager.updateProfil(this.getId, profil)
+    const { data, error } = await this.dataManager.updateProfil(
+      this.getId,
+      profil
+    );
 
     if (data) {
-      this.profil = data.profil
+      this.profil = data.profil;
     }
 
-    return {data, error}
+    return { data, error };
   }
 
   /**
    * This method allow the subscriber to create a post
-   * @param {any} datas 
+   * @param {any} datas
    */
   async createPost(title, content, files_list, region, tribe) {
-    const post = new Post()
+    const post = new Post();
 
-    const {data, error} = await post.proposePost({title, content, files_list, region, tribe}, this.getId)
-    
-    return {data, error}
+    const { data, error } = await post.proposePost(
+      { title, content, files_list, region, tribe },
+      this.getId
+    );
+
+    return { data, error };
   }
 
   /**
    * This method allow a user to like a post
-   * @param {string} idPost 
+   * @param {string} idPost
    */
   async likePost(idPost) {
-    const post = new Post()
+    const post = new Post();
 
-    return (await post.likePost(idPost, this.getId))
+    return await post.likePost(idPost, this.getId);
   }
 
   /**
    * This method allow a user to write a comment
-   * @param {any} datas 
+   * @param {any} datas
    */
   async writeComment(datas) {
-    const {content, idUser, idPost, idComment} = datas
-    const comment = new Comment()
+    const { content, idUser, idPost, idComment } = datas;
+    const comment = new Comment();
 
-    return (await comment.writeComment({content, idUser, idPost, idComment}))
+    return await comment.writeComment({ content, idUser, idPost, idComment });
   }
 }
 
-export default Subscriber
+export default Subscriber;

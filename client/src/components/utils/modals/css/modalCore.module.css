@@ -27,3 +27,13 @@
     border-radius: 0;
   }
 }
+
+@media screen and (max-height: 450px) {
+  div.modalCoreContainer {
+    /* width: 100vw; */
+    height: 100vh;
+    max-height: inherit;
+    min-height: inherit;
+    border-radius: 0;
+  }
+}

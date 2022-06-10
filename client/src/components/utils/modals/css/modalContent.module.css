@@ -33,3 +33,11 @@ button.controlsBtn {
     height: calc(100vh - 150px);
   }
 }
+
+@media screen and (max-height: 450px) {
+  div.modalContent {
+    max-height: calc(100vh - 140px);
+    min-height: calc(100vh - 140px);
+    height: calc(100vh - 140px);
+  }
+}

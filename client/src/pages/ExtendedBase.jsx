@@ -158,7 +158,7 @@ const ExtendedBase = ({ children }) => {
   useEffect(() => {
     console.log(currentUser)
     if (!modalIsOpened && currentUser?.categories.length === 0) {
-      modalOpen("Categories", "SELECT_CATEGORIES")
+      // modalOpen("Categories", "SELECT_CATEGORIES")
     }
   }, [currentUser])
 
