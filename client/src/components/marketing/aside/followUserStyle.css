@@ -1,3 +1,7 @@
+.App-contentFollow {
+  width: 100%;
+}
+
 .followcontent {
   display: flex;
   flex-direction: row;
