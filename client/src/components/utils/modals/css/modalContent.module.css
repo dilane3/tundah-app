@@ -26,3 +26,10 @@ button.controlsBtn {
   max-height: 400px;
   width: 100%;
 }
+
+@media screen and (max-width: 576px) {
+  div.modalContent {
+    max-height: calc(100vh - 150px);
+    height: calc(100vh - 150px);
+  }
+}
