@@ -14,6 +14,8 @@ import FollowUserPage from '../components/marketing/aside/followUserPage'
 import CategoryContext from '../dataManager/context/categoryContext'
 import ModalContext from '../dataManager/context/modalContext'
 import ModalCoreContainer from '../components/utils/modals/modalCore'
+import UserApi from '../api/users'
+import FollowersSuggestionContext from '../dataManager/context/followersSuggestioinContext'
 
 const logo = require("../medias/logo/Tundah-large.png")
 
@@ -27,7 +29,9 @@ const ExtendedBase = ({ children }) => {
   const { displayToast } = useContext(ToastContext)
   const { open: modalOpened, closeModal } = useContext(CategoryContext)
   const { isOpen: modalIsOpened, closeModal: modalCloser, currentModalName, openModal: modalOpen } = useContext(ModalContext)
+  const { addSuggestions } = useContext(FollowersSuggestionContext)
 
+  // Set local state
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [maskBackground, setMaskBackground] = useState(true)
   const [showLoaderPage, setShowLoaderPage] = useState(!currentUser ? true : false)
@@ -161,6 +165,21 @@ const ExtendedBase = ({ children }) => {
       // modalOpen("Categories", "SELECT_CATEGORIES")
     }
   }, [currentUser])
+
+  // Get suggestion of followers
+  useEffect(() => {
+    handleGetFollowersSuggestion()
+  }, [])
+
+  const handleGetFollowersSuggestion = async () => {
+    const { data, error } = await UserApi.getFollowersSuggestion()
+
+    console.log(data)
+
+    if (data) {
+      addSuggestions(data.data)
+    }
+  }
 
   const handleDisplayAddExpertModal = (status) => {
     setShowAddExpertModal(true)
