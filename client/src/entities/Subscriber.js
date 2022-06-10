@@ -13,6 +13,7 @@ class Subscriber {
   posts;
   followers;
   followings;
+  categories;
 
   constructor(data) {
     this.initialization(data);
@@ -119,6 +120,7 @@ class Subscriber {
       this.posts = postData;
       this.country = country;
       this.description = description;
+      this.categories = [];
 
       if (followers && followings) {
         const myFollowers = [];

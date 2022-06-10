@@ -309,7 +309,6 @@ div.profilInfo {
 @media screen and (max-width: 700px) {
   .profil-content {
     width: 100%;
-    padding: 0 10px;
   }
 }
 

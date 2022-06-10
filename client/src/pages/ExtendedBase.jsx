@@ -25,8 +25,8 @@ const ExtendedBase = ({ children }) => {
     setMorePostArgs
   } = useContext(postsContext)
   const { displayToast } = useContext(ToastContext)
-  const { open: modalOpened, openModal, closeModal } = useContext(CategoryContext)
-  const { isOpen: modalIsOpened, closeModal: modalCloser, currentModalName } = useContext(ModalContext)
+  const { open: modalOpened, closeModal } = useContext(CategoryContext)
+  const { isOpen: modalIsOpened, closeModal: modalCloser, currentModalName, openModal: modalOpen } = useContext(ModalContext)
 
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [maskBackground, setMaskBackground] = useState(true)
@@ -154,6 +154,14 @@ const ExtendedBase = ({ children }) => {
     }
   }, [])
 
+  // Handle open modal for choosing categories if it has not been done
+  useEffect(() => {
+    console.log(currentUser)
+    if (!modalIsOpened && currentUser?.categories.length === 0) {
+      modalOpen("Categories", "SELECT_CATEGORIES")
+    }
+  }, [currentUser])
+
   const handleDisplayAddExpertModal = (status) => {
     setShowAddExpertModal(true)
     setShowMobileMenu(false)
@@ -181,7 +189,7 @@ const ExtendedBase = ({ children }) => {
 
       <section className={styles.containerExtended}>
         <aside className={styles.usersToFollowSectionExtended}>
-          <FollowUserPage/>
+          <FollowUserPage />
         </aside>
 
         {
