@@ -63,9 +63,9 @@ div.profilInfo {
   right: 5px;
   width: 30px;
   height: 30px;
-  background-color: #fff;
+  background-color: #f8f8f8;
   border-radius: 100%;
-  border: 2px solid #e4e4e4;
+  border: 2px solid #fff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -88,7 +88,7 @@ div.profilInfo {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 3px solid #e4e4e4;
+  border: 3px solid #fff;
   cursor: pointer;
 }
 

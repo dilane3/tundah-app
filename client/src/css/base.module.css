@@ -214,12 +214,12 @@ body {
   }
 
   .asideSection {
-    width: 250px;
+    width: 290px;
     right: 50px;
   }
 
   .mainSection {
-    width: calc(100% - 270px);
+    width: calc(100% - 310px);
     /* margin-right: 260px; */
   }
 

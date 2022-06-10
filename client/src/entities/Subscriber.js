@@ -156,16 +156,6 @@ class Subscriber {
     this.description = description;
   }
 
-  get getProposedPosts() {
-    const posts = [];
-
-    this.posts.forEach((post) => {
-      if (!post.getPublished) posts.push(post);
-    });
-
-    return posts;
-  }
-
   get getPublishedPosts() {
     const posts = [];
 
