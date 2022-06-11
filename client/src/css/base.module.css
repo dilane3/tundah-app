@@ -74,17 +74,11 @@ body {
 .asideSectionMobileExtended {
   top: 310px !important;
   margin-top: 20px;
-  background-color: #fff;
-  padding: 10px;
-  border: 1px solid rgb(206, 206, 206);
   display: none;
-  border-radius: 5px;
 }
 
 .asideSectionExtended {
-  /* position: -webkit-sticky; */
   position: sticky;
-  /* position: fixed; */
   top: 90px;
   right: 100px;
   width: 290px;
@@ -100,10 +94,6 @@ body {
   max-height: 360px;
   height: auto;
   z-index: 1;
-  background-color: #fff;
-  border: 1px solid rgb(206, 206, 206);
-  padding: 10px;
-  border-radius: 5px;
 }
 
 .backgroundBlack {
@@ -188,8 +178,6 @@ body {
   .asideSectionMobileExtended {
     top: 280px !important;
     margin-top: 20px;
-    background-color: #fff;
-    padding: 10px;
   }
 
   .asideSectionExtended {

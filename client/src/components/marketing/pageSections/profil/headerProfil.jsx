@@ -109,6 +109,10 @@ const HeaderProfil = () => {
 		}
 	}, [currentUser, isCurrentUser])
 
+	useEffect(() => {
+		console.log("New Following")
+	}, [currentUser.getFollowings.length])
+
 	const formatName = (name) => {
 		return name[0].toUpperCase() + name.substr(1)
 	}

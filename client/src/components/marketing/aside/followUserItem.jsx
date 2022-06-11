@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ImgCircle from '../../elements/imgCircle/ImgCircle'
 import { BiMinus, BiPlus } from 'react-icons/bi'
 import './followUserStyle.css'
@@ -8,11 +8,28 @@ import { getRelativeDate } from "../../../utils/dateOperations";
 import currentUserContext from "../../../dataManager/context/currentUserContent";
 import UserApi from "../../../api/users";
 import FollowersSuggestionContext from "../../../dataManager/context/followersSuggestioinContext";
+import { Link } from "react-router-dom";
 
 const FollowUserItem = ({ data }) => {
   // Get data from global state
   const { currentUser, addFollowing, deleteFollowing } = useContext(currentUserContext)
   const { removeSuggestion } = useContext(FollowersSuggestionContext)
+
+  useEffect(() => {
+    let timer
+
+    if (currentUser.alreadyFollowed(data.getId)) {
+      timer = setTimeout(() => {
+        removeSuggestion(data.getId)
+
+        clearTimeout(timer)
+      }, 3000)
+    }
+
+    return () => {
+      clearTimeout(timer)
+    }
+  }, [currentUser.getFollowings.length])
 
   // Follow and unFollow a user
   const handleFollowUser = async (e, user) => {
@@ -51,7 +68,9 @@ const FollowUserItem = ({ data }) => {
           <ImgCircle src={`${ressourcesUrl.profil}/${data.getProfil}`} alt="profil" classe="flwprofilCardImage" />
         </div>
         <div className="flwUserInformation">
-          <span className="flwUsername">{formatName(data.getName)}</span>
+          <Link to={`/profile/${data.getUsername}`}>
+            <span className="flwUsername">{formatName(data.getName)}</span>
+          </Link>
           <span className="flwUserInscription">{getRelativeDate(data.getDate)} </span>
         </div>
       </div>
