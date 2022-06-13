@@ -1,5 +1,6 @@
 import PostModel from "../models/PostModel.js";
 import InterfacePost from './interfaces/interfacePost.js'
+import PostEnum from "../models/enums/PostEnum.js";
 
 class Post extends InterfacePost {
   title;
@@ -7,9 +8,7 @@ class Post extends InterfacePost {
   creation_date;
   modification_date;
   files_list;
-  published;
-  region;
-  tribe;
+  post_type;
 
   constructor() {
     super()
@@ -55,41 +54,8 @@ class Post extends InterfacePost {
   /**
    * @returns boolean
    */
-  get getPublished() {
-    return this.published;
-  }
-
-  /**
-   * @returns string
-   */
-  get getRegion() {
-    return this.region;
-  }
-
-  /**
-   * @returns String
-   */
-  get getTribe() {
-    return this.tribe;
-  }
-
-  /**
-   * This method allow the subscriber to propose a post
-   * @param {any} datas
-   * @param {string} userId
-   */
-  async proposePost(datas, userId) {
-    const { data, error } = await this.dataManager.createPost(
-      datas.title,
-      datas.content,
-      datas.files_list,
-      false,
-      datas.region,
-      datas.tribe,
-      userId
-    );
-
-    return { data, error };
+  get getPostType() {
+    return this.post_type;
   }
 
   /**
@@ -112,15 +78,25 @@ class Post extends InterfacePost {
       datas.title,
       datas.content,
       datas.files_list,
-      true,
-      datas.region,
-      datas.tribe,
+      datas.post_type,
+      datas.categoryList,
       userId
     );
 
     console.log(datas)
 
     return { data, error };
+  }
+
+  /**
+   * This methods alows the expert only to transfer a post to the wiki section
+   * @param {Object} datas 
+   * @returns 
+   */
+  async transferPostToWiki(datas, userId) {
+    const { data, error } = await this.dataManager.transferSocialPostToWiki(datas, userId);
+
+    return { data, error }
   }
 
   /**

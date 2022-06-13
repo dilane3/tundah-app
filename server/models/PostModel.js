@@ -4,6 +4,7 @@ import dbConnect from "../utils/database.js";
 import jwt from "jsonwebtoken";
 import InterfacePostModel from "./interfaces/interfacePostModel.js";
 import { error, session } from "neo4j-driver";
+import PostEnum from "./enums/PostEnum.js"
 
 // fetching data from .env file
 config();
@@ -15,7 +16,7 @@ class PostModel extends InterfacePostModel {
    * This function get a specific user based on his id
    * @param {string} id
    */
-  async getPost(id) {
+   async getPost(id) {
     const session = dbConnect();
 
     try {
@@ -28,6 +29,8 @@ class PostModel extends InterfacePostModel {
 
       if (result.records.length > 0) {
         const postData = result.records[0].get("post").properties;
+
+        console.log("postData here",postData)
 
         if (postData.published) {
           const { commentsNumber } = await this.getCommentNumber(postData.id);
@@ -46,6 +49,42 @@ class PostModel extends InterfacePostModel {
       await session.close();
     }
   }
+  
+  // /**
+  //  * This function get posts based on their category
+  //  * @param {string} id
+  //  */
+  // async getPostsByCategory(id) {
+  //   const session = dbConnect();
+
+  //   try {
+  //     const query = `
+  //       MATCH (post:Post) - [:HAS_CATEGORY] -> (category:Category {id = $id}) 
+  //       RETURN post
+  //     `;
+  //     const result = await session.run(query, { id });
+  //     console.log({ id });
+
+  //     if (result.records.length > 0) {
+  //       const postData = result.records[0].get("post").properties;
+
+  //       if (postData.published) {
+  //         const { commentsNumber } = await this.getCommentNumber(postData.id);
+  //         const { likes } = await this.getLikes(postData.id);
+
+  //         return { data: { ...postData, comments: commentsNumber, likes } };
+  //       }
+
+  //       return { data: postData };
+  //     } else {
+  //       return { data: null };
+  //     }
+  //   } catch (err) {
+  //     return { error: "Error while getting a post" };
+  //   } finally {
+  //     await session.close();
+  //   }
+  // }
 
   /**
    * This function return the researched posts using it's title
@@ -59,7 +98,7 @@ class PostModel extends InterfacePostModel {
 
     try {
       const query = `
-        MATCH (post:Post{published: ${true}})
+        MATCH (post:Post{post_type: "social"})
         WHERE post.title =~ '(?i).*(${value.toLowerCase()}).*'
         RETURN post
         ORDER BY post.creation_date DESC
@@ -89,7 +128,7 @@ class PostModel extends InterfacePostModel {
   async getNumberPost(session, status) {
     try {
       const query = `
-        MATCH (posts:Post{published: ${status}})
+        MATCH (posts:Post{post_type: 'social'})
         RETURN posts
       `;
 
@@ -165,77 +204,23 @@ class PostModel extends InterfacePostModel {
     const session = dbConnect();
 
     try {
-      let editors = [];
       let author = null;
 
-      // query for retrieving the user who has proposed the post
+      // query for retrieving the user who has published the post
       const query1 = `
-        MATCH (:Post{id: $id}) -[proposed_by:PROPOSED_BY]-> (user:Subscriber)
-        RETURN proposed_by, user
+        MATCH (:Post{id: $id}) -[published_by:PUBLISHED_BY]-> (user:Subscriber)
+        RETURN published_by, user
         LIMIT 1
       `;
       const result1 = await session.run(query1, { id });
 
       if (result1.records.length > 0) {
-        // getting author who has proposed the post
+        // getting author who has published the post
         author = result1.records[0].get("user").properties;
 
-        // query for retrieving all the experts who have edited the post
-        const query3 = `
-          MATCH (post:Post{id: $id}) -[:EDITED_BY]-> (users:Expert)
-          RETURN users
-        `;
-        const result3 = await session.run(query3, { id });
 
-        if (result3.records.length > 0) {
-          // getting editors
-          for (let expert of result3.records) {
-            const editor = expert.get("users").properties;
-            editors.push(editor);
-          }
-        }
-
-        const query4 = `
-          MATCH (:Post{id: $id}) -[:PUBLISHED_BY]-> (user:Expert)
-          RETURN user
-          LIMIT 1
-        `;
-        const result4 = await session.run(query4, { id });
-
-        if (result4.records.length > 0) {
-          const editor = result4.records[0].get("user").properties;
-          editors.push(editor);
-        }
-      } else {
-        const query2 = `
-          MATCH (:Post{id: $id}) -[:PUBLISHED_BY]-> (user:Expert)
-          RETURN user
-          LIMIT 1
-        `;
-        const result2 = await session.run(query2, { id });
-
-        if (result2.records.length > 0) {
-          // getting author who has published the post
-          author = result2.records[0].get("user").properties;
-        }
-
-        // query for retrieving all the experts who have edited the post
-        const query4 = `
-          MATCH (:Post{id: $id}) -[:EDITED_BY]-> (users:Expert)
-          RETURN users
-        `;
-        const result4 = await session.run(query4, { id });
-
-        if (result4.records.length > 0) {
-          // getting editors
-          for (let expert of result4.records) {
-            const editor = expert.get("users").properties;
-            editors.push({ ...editor });
-          }
-        }
-      }
-
-      return { editors, author };
+      } 
+      return { author };
     } catch (err) {
       return { editors: [], author: null };
     } finally {
@@ -276,7 +261,51 @@ class PostModel extends InterfacePostModel {
 
       if (postNumber !== undefined) {
         const query = `
-          MATCH (posts:Post{published: ${status}})
+          MATCH (posts:Post{post_type: 'social'})
+          RETURN posts
+          ORDER BY posts.creation_date DESC
+          SKIP ${skip}
+          LIMIT ${limit}
+        `;
+
+        const result = await session.run(query);
+
+        const postData = await this.gettingMoreInfos(result, "posts");
+
+        if (postNumber > Number(skip) + Number(limit)) {
+          return {
+            data: {
+              data: postData,
+              next: true,
+              skip: Number(skip) + Number(limit),
+            },
+          };
+        } else {
+          return { data: { data: postData, next: false, skip: Number(skip) } };
+        }
+      } else {
+        return { error };
+      }
+    } catch (err) {
+      console.log(err);
+      return { error: "Error while getting the posts" };
+    } finally {
+      await session.close();
+    }
+  }
+
+  /**
+   * This method retrieves all the avalaible posts
+   */
+   async getAllWikiPosts(skip, limit) {
+    const session = dbConnect();
+
+    try {
+      const { postNumber, error } = await this.getNumberPost(session, status);
+
+      if (postNumber !== undefined) {
+        const query = `
+          MATCH (posts:Post{post_type: 'wiki'})
           RETURN posts
           ORDER BY posts.creation_date DESC
           SKIP ${skip}
@@ -319,28 +348,17 @@ class PostModel extends InterfacePostModel {
 
     try {
       const query1 = `
-        MATCH (publishedPost:Post) -[:PUBLISHED_BY]-> (user:Expert{id: $idUser})
+        MATCH (publishedPost:Post) -[:PUBLISHED_BY]-> (user:Subscriber{id: $idUser})
         RETURN publishedPost
       `;
-      const query2 = `
-        MATCH (proposedPost:Post) -[:PROPOSED_BY]-> (user:Subscriber{id: $idUser})
-        RETURN proposedPost
-      `;
       const result1 = await session.run(query1, { idUser });
-      const result2 = await session.run(query2, { idUser });
 
       const publishedPost = await this.gettingMoreInfos(
         result1,
         "publishedPost"
       );
 
-      let proposedPost = await this.gettingMoreInfos(result2, "proposedPost");
-
-      // let proposedPost = result2.records.map((record) => {
-      //   return record.get("proposedPost").properties;
-      // });
-
-      const postData = [...publishedPost, ...proposedPost];
+      const postData = [...publishedPost];
 
       return { data: postData };
     } catch (err) {
@@ -355,25 +373,36 @@ class PostModel extends InterfacePostModel {
    * @param {string} title
    * @param {string} content
    * @param {Array} files_list
-   * @param {boolean} published
-   * @param {string} region
-   * @param {string} tribe
+   * @param {String} post_type
+   * @param {Array} categoryList
    * @param {string} idUser
    */
   async createPost(
     title,
     content,
     files_list,
-    published,
-    region,
-    tribe,
+    post_type,
+    categoryList,
     idUser
   ) {
     const session = dbConnect();
 
+    // Categories find request part in the bd
+    var cat = ""
+    categoryList.map((category, index) => {
+      cat += ` MATCH (category${index}:Category{id: "${category}"})`
+    })
+
+    // Post merge with the above categories in the bd
+    var merges = ""
+    categoryList.map((category, index) => {
+      merges += ` CREATE (post) - [:HAS_CATEGORY] -> (category${index})`
+    })
+
     try {
       const query = `
-        MATCH (user${published ? ":Expert" : ":Subscriber"} {id: $idUser})
+        ${cat}
+        MATCH (user:Subscriber{id: $idUser})
         CREATE 
         (post:Post 
           { 
@@ -383,15 +412,14 @@ class PostModel extends InterfacePostModel {
             creation_date: $creation_date,
             modification_date: $modification_date, 
             files_list: $files_list, 
-            published: $published, 
-            region: $region,
-            tribe: $tribe
+            post_type: $post_type
           }
-        ) - [${published ? ":PUBLISHED_BY" : ":PROPOSED_BY"}] -> (user)
-        CREATE (user) - [${published ? ":PUBLISHED" : ":PROPOSED"}] -> (post)
+        ) - [:PUBLISHED_BY] -> (user)
+        CREATE (user) - [:PUBLISHED] -> (post)
+        ${merges}
         RETURN post
       `;
-
+      
       const result = await session.run(query, {
         id: nanoid(20),
         title: title.toLowerCase(),
@@ -399,9 +427,7 @@ class PostModel extends InterfacePostModel {
         creation_date: Date.now(),
         modification_date: Date.now(),
         files_list,
-        published,
-        region,
-        tribe,
+        post_type,
         idUser,
       });
 
@@ -429,20 +455,12 @@ class PostModel extends InterfacePostModel {
     const session = dbConnect();
 
     try {
-      let query = "";
-
-      if (role) {
-        query = `
-          MATCH (post:Post{id: $idPost}) -[:PUBLISHED_BY]-> (user:Expert{id: $idUser})
+      
+      const query = `
+          MATCH (post:Post{id: $idPost}) -[:PUBLISHED_BY]-> (user:Subscriber{id: $idUser})
           DETACH DELETE post
         `;
-      } else {
-        query = `
-          MATCH (post:Post{id: $idPost}) -[:PROPOSED_BY]-> (user:Subscriber{id: $idUser})
-          WHERE post.published = ${false}
-          DETACH DELETE post
-        `;
-      }
+      
 
       await session.run(query, { idPost, idUser });
 
@@ -461,28 +479,23 @@ class PostModel extends InterfacePostModel {
    * @param {string} title
    * @param {string} content
    * @param {Array} files_list
-   * @param {boolean} published
-   * @param {string} region
-   * @param {string} tribe
+   * @param {String} post_type
    * @param {string} idUser
    */
-  async updatePost(idPost, title, content, files_list, region, tribe, idUser) {
+  async updatePost(idPost, title, content, files_list, post_type, idUser) {
     const session = dbConnect();
 
     try {
       const query = `
       MATCH 
         (post:Post {id: $idPost}),
-        (user:Expert {id: $idUser})
+        (user:Subscriber {id: $idUser})
       SET
         post.title = $title,
         post.content = $content, 
         post.modification_date = $modification_date, 
         post.files_list = $files_list,
-        post.region = $region,
-        post.tribe = $tribe
-      MERGE (user) -[:EDITED]-> (post)
-      MERGE (post) -[:EDITED_BY]-> (user)
+        post.post_type = $post_type
       RETURN post
     `;
       const response = await session.run(query, {
@@ -492,8 +505,7 @@ class PostModel extends InterfacePostModel {
         content,
         modification_date: Date.now(),
         files_list,
-        region,
-        tribe,
+        post_type
       });
 
       if (response.records.length > 0) {
@@ -505,49 +517,6 @@ class PostModel extends InterfacePostModel {
       }
     } catch (err) {
       return { error: "The post has not been found" };
-    } finally {
-      await session.close();
-    }
-  }
-
-  /**
-   * This function updates a post based on it's id and the form data
-   * @param {string} idPost
-   * @param {string} idUser
-   * @param {boolean} published
-   */
-  async updatePostValidation(idPost, idUser, published) {
-    const session = dbConnect();
-
-    try {
-      const query = `
-      MATCH 
-        (post:Post {id: $idPost}),
-        (user:Expert {id: $idUser})
-      SET
-        post.published = $published,
-        post.modification_date = $modification_date
-      MERGE (post) -[:PUBLISHED_BY]-> (user)
-      MERGE (user) -[:PUBLISHED]-> (post)
-      RETURN post
-    `;
-      const response = await session.run(query, {
-        idPost,
-        idUser,
-        published,
-        modification_date: Date.now(),
-      });
-
-      if (response.records.length > 0) {
-        const postData = response.records[0].get("post").properties;
-
-        return { data: postData };
-      } else {
-        return { data: null };
-      }
-    } catch (err) {
-      console.log(err);
-      return { error: "The post doesn't exist anymore!!" };
     } finally {
       await session.close();
     }
@@ -619,6 +588,67 @@ class PostModel extends InterfacePostModel {
       session.close();
     }
   }
+
+  /**
+   * This method permits the Expert to publish a post in the wiki section from the social section
+   * 
+   * 
+   */
+  async transferSocialPostToWiki(
+    title,
+    content,
+    files_list,
+    post_type,
+    idUser
+  ) {
+    const session = dbConnect();
+
+    try {
+      const query = `
+        MATCH (user:Experty{id: $idUser})
+        CREATE 
+        (post:Post 
+          { 
+            id: $id,
+            title: $title,
+            content: $content, 
+            creation_date: $creation_date,
+            modification_date: $modification_date, 
+            files_list: $files_list, 
+            post_type: $post_type
+          }
+        ) - [:PUBLISHED_BY] -> (user)
+        CREATE (user) - [:PUBLISHED] -> (post)
+        RETURN post
+      `;
+
+      const result = await session.run(query, {
+        id: nanoid(20),
+        title: title.toLowerCase(),
+        content,
+        creation_date: Date.now(),
+        modification_date: Date.now(),
+        files_list,
+        post_type,
+        idUser,
+      });
+
+      if (result.records.length > 0) {
+        const postData = await this.gettingMoreInfos(result, "post");
+
+        return { data: postData[0] };
+      } else {
+        return { data: null };
+      }
+    } catch (err) {
+      console.log(err);
+      return { error: "Error while creating the post" };
+    } finally {
+      await session.close();
+    }
+  }
+
+
 }
 
 export default PostModel;
