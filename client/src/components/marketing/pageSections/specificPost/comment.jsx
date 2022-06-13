@@ -37,7 +37,7 @@ const Comment = ({ onResponse, data, isResponse, author, onDisplayResponses, res
                             <CommentDropdown
                                 dropElt={<BsThreeDots />}
                                 idComment={data.getId}
-                                idAuthor={author.id}
+                                idAuthor={data.author.id}
                             />
                         </div>
                     </div>
