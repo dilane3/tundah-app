@@ -71,6 +71,22 @@ class CategoryController {
             return { error }
         }
     }
+
+    static deleteCategory = async (req, res) => {
+        const { id } = req.params
+
+        if(!id) return res.status(400).json({ error: "provide all data to delete the category" })
+
+        try{
+            const { data, error } = await CategoryModel.deleteCategory(id)
+
+            if(data) return res.status(200).json({ data })
+            return res.status(500).json(error)
+        }catch(error){
+            console.log(error);
+            return res.status(500).json({ error })
+        }
+    }
 }
 
 export default CategoryController;

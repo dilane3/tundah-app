@@ -138,7 +138,7 @@ class CategoryModel extends InterfaceCategoryModel {
      * @param {id} id 
      * @returns category | error
      */
-    static deletecategory = async (id) => {
+    static deleteCategory = async (id) => {
         const session = dbConnect()
 
         const query = `
@@ -148,12 +148,8 @@ class CategoryModel extends InterfaceCategoryModel {
         try{
             const result = await session.run(query, { id })
 
-            if (result.records.length > 0){
-                const categoryData = result.records[0].get("category").properties
-
-                return { data: categoryData }
-            }
-            return { error: "Error while deleting a category" };
+            if(result) return { data: "Category deleted on sucessfully" }
+            return { error: "something wrong!!" } 
         }catch(err){
             console.log(err)
 

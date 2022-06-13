@@ -10,6 +10,6 @@ categoryRouter.get("/:id", CathegoryController.getCategory)
 categoryRouter.get("/categoryAlreadyExist", CathegoryController.categoryAlreadyExist)
 categoryRouter.post("/create", CathegoryController.createCategory)
 // categoryRouter.patch("/update", CathegoryController.updateCategory)
-// categoryRouter.delete("/delete", CathegoryController.deleteCategory)
+categoryRouter.delete("/delete/:id", CathegoryController.deleteCategory)
 
 export default categoryRouter
