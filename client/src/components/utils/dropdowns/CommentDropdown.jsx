@@ -3,8 +3,12 @@ import { AiOutlineEdit } from "react-icons/ai"
 import { Menu, Transition } from '@headlessui/react'
 import { AiOutlineDelete } from "react-icons/ai";
 import currentUserContext from '../../../dataManager/context/currentUserContent'
-// import { ToastContext } from 'react-simple-toastify'
+import { ToastContext } from 'react-simple-toastify'
 import Subscriber from '../../../entities/Subscriber'
+import postsContext from '../../../dataManager/context/postsContext';
+
+import { instance } from '../../../utils/url'
+import CommentApi from '../../../api/comment';
 
 const CommentDropdown = (props) => {
 
@@ -12,13 +16,44 @@ const CommentDropdown = (props) => {
     dropElt,
     idComment,
     idAuthor,
+    idPost
   } = props
 
   // Get data from global state
   const { currentUser } = useContext(currentUserContext)
-  // const { displayToast } = useContext(ToastContext)
+  const { deleteComment } = useContext(postsContext)
+  const { displayToast } = useContext(ToastContext)
 
   const user = new Subscriber(currentUser)
+
+  //handler
+  const handleDelete = async () => {
+      
+    //start loading
+    // onLoading(true)
+    console.log("comment id ", idComment)
+    console.log("post id ", idPost)
+
+    const { data, error } = await CommentApi.delete({idComment, idPost})
+
+    if (data) {
+      console.log(data)
+      // onLoading(false)
+      console.log("true")
+
+      // deletePostFeed(id);
+      if(user.getId === idAuthor){ //delete comment if it is the owner
+        deleteComment(idComment, idPost)
+      }
+
+      displayToast("Le commentaire a été supprimé avec succès")
+    }else {
+      console.log(error)
+      // onLoading(false)
+
+      displayToast("Une erreur est survenu lors de la suppression du commentaire")
+    }
+  }
 
   return (
     <Menu as="div" className="relative z-10 inline-block text-left font-primary">
@@ -55,7 +90,7 @@ const CommentDropdown = (props) => {
             idAuthor === user.getId ? (
               <div
                 className="px-1 py-1"
-              // onClick={() => handleDelete(idComment}
+                onClick={handleDelete}
               >
                 <Menu.Item>
                   {({ active }) => (

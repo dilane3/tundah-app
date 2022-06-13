@@ -157,7 +157,9 @@ class CommentController {
    */
   static deleteComment = async (req, res) => {
     const { id } = req.params;
-    const {idPost} = req.body
+    const {idPost} = req.query
+
+    console.log({ id, idPost })
 
     if(id && idPost){
       const commentModel = new CommentModel();

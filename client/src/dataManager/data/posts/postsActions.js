@@ -5,7 +5,8 @@ import {
   ADD_POST,
   ADD_COMMENT,
   ADD_COMMENTS,
-  LIKE_POST
+  LIKE_POST,
+  DELETE_COMMENT
 } from "./type"
 
 const deletePost = (idPost) => {
@@ -50,6 +51,16 @@ const addComment = (idPost, comment, responseTo = null) => {
   }
 }
 
+const deleteComment = (idComment, idPost) => {
+  return {
+    type: DELETE_COMMENT,
+    payload: {
+      idComment,
+      idPost
+    }
+  }
+}
+
 const addComments = (idPost, comments) => {
   return {
     type: ADD_COMMENTS,
@@ -77,5 +88,6 @@ export {
   addPost,
   addComment,
   addComments,
-  likePost
+  likePost,
+  deleteComment
 }

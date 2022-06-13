@@ -28,6 +28,7 @@ import {
   addComment,
   addComments,
   likePost,
+  deleteComment
 } from "./dataManager/data/posts/postsActions";
 import {
   deleteProposedPost,
@@ -142,6 +143,10 @@ function App() {
     dispatchPosts(addComments(idPost, comments));
   };
 
+  const postsDeleteComment = (idComment, idPost) => {
+    dispatchPosts(deleteComment(idComment, idPost))
+  }
+
   const postsLikePost = (idPost, idUser) => {
     dispatchPosts(likePost(idPost, idUser));
   };
@@ -232,6 +237,7 @@ function App() {
     addPost: postsAddPost,
     addComments: postsAddComments,
     addComment: postsAddComment,
+    deleteComment: postsDeleteComment,
     likePost: postsLikePost,
     setMorePostArgs,
   };
