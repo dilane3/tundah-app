@@ -6,24 +6,58 @@ import InterfaceCategoryModel from "./interfaces/interfaceCategoryModel.js";
 
 class CategoryModel extends InterfaceCategoryModel {
 
-    static getCathegories = async (skip, limit) => {
+    /**
+     * This function check if the category with the given name alrady exist in database
+     * @param {name} name 
+     * @returns true | false
+     */
+    static categoryAlredyExist = async (name) => {
 
         const session = dbConnect()
 
         const query = `
-            MATCH (cathegory:Cathegory)
-            return cathegory
-            ORDER BY cathegory.name
-            SKIP $skip
-            LIMIT $limit
+            MATCH(category:category{ name: $name })
+            RETURN category
         `
 
         try{
-            const result = await session.run(query, { skip, limit })
+            const result = await session.run(query, { name })
 
             if(result.records.length > 0){
-                const cathegoryData = result.records[0].get("cathegory").properties
-                return({ data: cathegoryData })
+                const category = result.records[0].get("category").properties
+
+                return category ? true : false
+            }
+
+            return null
+        }catch(err){
+            console.log(err)
+
+            return{ error : "And error occured while check the category" }
+        }
+    }
+
+    /**
+     * This function fetch all cathegories in database
+     * @param {skip} skip 
+     * @param {limit} limit 
+     * @returns cathegories | error
+     */
+    static getCathegories = async () => {
+
+        const session = dbConnect()
+
+        const query = `
+            MATCH (category:Category)
+            RETURN category
+        `
+
+        try{
+            const result = await session.run(query)
+
+            if(result.records.length > 0){
+                const categoryData = result.records[0].get("category").properties
+                return({ data: categoryData })
             }else{
                 return({ data: null })
             }
@@ -36,25 +70,25 @@ class CategoryModel extends InterfaceCategoryModel {
     }
 
     /**
-     * This function get cathegory with the given id
+     * This function get category with the given id
      * @param {id} id 
-     * @returns cathegory | error
+     * @returns category | error
      */
-    static getCathegory = async (id) => {
+    static getcategory = async (id) => {
         const session = dbConnect()
 
         const query = `
-            MATCH (cathegory:Cathegory{ id: $id })
-            return cathegory
+            MATCH (category:category{ id: $id })
+            return category
         `
 
         try{
             const result = await session.run(query, { id })
 
             if (result.records.length > 0){
-                const cathegoryData = result.records[0].get("cathegory").properties
+                const categoryData = result.records[0].get("category").properties
 
-                return { data: cathegoryData }
+                return { data: categoryData }
             }
             return { error: "Error while creating an user" };
         }catch(err){
@@ -66,29 +100,29 @@ class CategoryModel extends InterfaceCategoryModel {
     }
 
     /**
-     * This function create a cathegory
+     * This function create a category
      * @param {id} id 
      * @param {name} name 
      * @returns data | error
      */
-    static createCathegory = async ({ id, name }) => {
+    static createcategory = async ({ name }) => {
         const session = dbConnect()
 
         const query = `
-            CREATE(cathegory:Cathegory{
+            CREATE(category:Category{
                 id: $id,
                 name: $name
             })
-            RETURN cathegory
+            RETURN category
         `
 
         try{
-            const result = await session.run(query, { id, name })
+            const result = await session.run(query, { id: nanoid(20), name })
 
             if (result.records.length > 0){
-                const cathegoryData = result.records[0].get("cathegory").properties
+                const categoryData = result.records[0].get("category").properties
 
-                return { data: cathegoryData }
+                return { data: categoryData }
             }
             return { error: "Error while creating an user" };
         }catch(err){
@@ -100,57 +134,57 @@ class CategoryModel extends InterfaceCategoryModel {
     }
 
     /**
-     * This function delete cathegory 
+     * This function delete category 
      * @param {id} id 
-     * @returns cathegory | error
+     * @returns category | error
      */
-    static deleteCathegory = async (id) => {
+    static deletecategory = async (id) => {
         const session = dbConnect()
 
         const query = `
-            MATCH(cathegory:Cathegory{ id: $id })
-            DETACH DELETE cathegory
+            MATCH(category:category{ id: $id })
+            DETACH DELETE category
         `
         try{
             const result = await session.run(query, { id })
 
             if (result.records.length > 0){
-                const cathegoryData = result.records[0].get("cathegory").properties
+                const categoryData = result.records[0].get("category").properties
 
-                return { data: cathegoryData }
+                return { data: categoryData }
             }
-            return { error: "Error while deleting a cathegory" };
+            return { error: "Error while deleting a category" };
         }catch(err){
             console.log(err)
 
-            return { error: "And occured while deleting the cathegory" }
+            return { error: "And occured while deleting the category" }
         }finally{
             session.close()
         }
     }
 
-    static updateCathegory = async ({id, name}) => {
+    static updatecategory = async ({id, name}) => {
         const session = dbConnect()
 
         const query = `
-            MATCH(cathegory:Cathegory{ id: $id })
+            MATCH(category:category{ id: $id })
             SET
-                cathegory.name = $name
-            RETURN cathegory
+                category.name = $name
+            RETURN category
         `
         
         try{
             const result = await session.run(query, { id, name })
             if (result.records.length > 0) {
-                const cathegoryData = result.records[0].get("cathegory").properties;
+                const categoryData = result.records[0].get("category").properties;
         
-                return { data: cathegoryData };
+                return { data: categoryData };
             } else {
             return { data: null };
             }
         }catch(err){
             console.log(err)
-            return { error: "Adnd error occured while updating the cathegory" }
+            return { error: "Adnd error occured while updating the category" }
         }finally{ session.close }
     }
 }
