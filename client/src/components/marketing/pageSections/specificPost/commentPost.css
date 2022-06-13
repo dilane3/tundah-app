@@ -1,270 +1,269 @@
-.contentCommentPage{
-    position: relative;
-   display: flex;
-   flex-direction: column;
-   width: 100%;
-   background-color: white;
-   border: 1px solid rgb(206, 206, 206);
-   margin-bottom: 100px;
+.contentCommentPage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  background-color: white;
+  border: 1px solid rgb(206, 206, 206);
+  margin-bottom: 100px;
 }
 
-.contentCommentPage section{
-    width: 100%;
-    /* border: 1px solid rgb(206, 206, 206); */
+.contentCommentPage section {
+  width: 100%;
+  /* border: 1px solid rgb(206, 206, 206); */
 }
-.firstElement{
-    width: 100%;
-    overflow-y: hidden;
+.firstElement {
+  width: 100%;
 }
 
 .firstElement:not(:last-child) {
-    border-bottom: 1px solid rgb(206, 206, 206);
+  border-bottom: 1px solid rgb(206, 206, 206);
 }
 
-.secondElement{
-    width: calc(100% - 40px);
-    margin-left: auto;
-    padding-top: 10px;
-    height: auto;
-    transition: all .5s;
-    opacity: 1;
+.secondElement {
+  width: calc(100% - 40px);
+  margin-left: auto;
+  padding-top: 10px;
+  height: auto;
+  transition: all 0.5s;
+  opacity: 1;
 }
 
 .responsesSectionAnimation {
-    opacity: 0;
-    height: 0;
+  opacity: 0;
+  height: 0;
 }
 
 .WriteCommentContent,
-.WriteCommentResponseContent{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    width: 100%;
-    background-color: white;
-    font-size: 12px;
-    padding: 0 10px;
-    align-items: center;
-    border-bottom: 1px solid rgb(206, 206, 206);
+.WriteCommentResponseContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  background-color: white;
+  font-size: 12px;
+  padding: 0 10px;
+  align-items: center;
+  border-bottom: 1px solid rgb(206, 206, 206);
 }
-.FormComment{
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: 10px 0 10px 10px;
+.FormComment {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0 10px 10px;
 }
 
-.FormComment input{
-    width: calc(100% - 100px);
-    margin-left: 5px;
-    height: 40px;
-    padding: 15px 30px 15px 10px;
-    background-color:  #e2e2e2;
-    border-radius: 5px;
-    color: rgb(56, 56, 56);
-    font-size: 14px;
+.FormComment input {
+  width: calc(100% - 100px);
+  margin-left: 5px;
+  height: 40px;
+  padding: 15px 30px 15px 10px;
+  background-color: #e2e2e2;
+  border-radius: 5px;
+  color: rgb(56, 56, 56);
+  font-size: 14px;
 }
 
 .FormComment button.commentBtn {
-    width: 80px;
-    text-align: center;
-    padding: 10px 20px;
+  width: 80px;
+  text-align: center;
+  padding: 10px 20px;
 }
 
 .FormComment button {
-    padding: 10px;
-    background-color: #3c6a46;
-    color: #fff;
-    border-radius: 5px;
-    font-size: 14px;
+  padding: 10px;
+  background-color: #3c6a46;
+  color: #fff;
+  border-radius: 5px;
+  font-size: 14px;
 }
 
 .closeResponseInput {
-    position: absolute;
-    top: 50%;
-    right: 100px;
-    transform: translateY(-50%);
-    cursor: pointer;
+  position: absolute;
+  top: 50%;
+  right: 100px;
+  transform: translateY(-50%);
+  cursor: pointer;
 }
 
 .sendingCommentLoader {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(calc(-50% - 30px), -50%);
-    cursor: pointer;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(calc(-50% - 30px), -50%);
+  cursor: pointer;
 }
 
 .closeResponseInput svg {
-    font-weight: bold;
+  font-weight: bold;
 }
 
-.CommentContent{
-    display:flex;
-    flex-direction: column;
-    font-size: 14px;
-    width: 100%;
-    background-color: white;
-    padding:10px;
-    align-items: flex-start;
+.CommentContent {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  width: 100%;
+  background-color: white;
+  padding: 10px;
+  align-items: flex-start;
 }
 
-.Info-Comment{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    width: calc(100% - 30px);
-    font-size: 14px;
-    margin-left: auto;
+.Info-Comment {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: calc(100% - 30px);
+  font-size: 14px;
+  margin-left: auto;
 }
 
-.profilCardImag{
-    width: 60px;
-    height: 60px;
+.profilCardImag {
+  width: 60px;
+  height: 60px;
 }
-div.header-PostproposeInfo{
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
+div.header-PostproposeInfo {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
 div.header-PostproposeInfoImg {
-    width: 30px;
-    height: 30px;
+  width: 30px;
+  height: 30px;
 }
 
-.Info-User{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    font-size: 16px;
-    padding-left: 10px;
-    width: 100%;
+.Info-User {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 16px;
+  padding-left: 10px;
+  width: 100%;
 }
-.Username{
-    font-weight: bold;
-    width: calc(100% - 4px);
+.Username {
+  font-weight: bold;
+  width: calc(100% - 4px);
 }
 .isAuthor {
-    font-size: 12px;
-    background-color: #3c6a46;
-    color: #fff;
-    border-radius: 2px;
-    padding: 2px 5px;
-    margin-left: 2px;
+  font-size: 12px;
+  background-color: #3c6a46;
+  color: #fff;
+  border-radius: 2px;
+  padding: 2px 5px;
+  margin-left: 2px;
 }
-.BsThreeDotIcon{
+.BsThreeDotIcon {
   color: #575656;
   font-size: 1.8rem;
   width: 40px;
   display: flex;
   justify-content: flex-end;
 }
-.TextComment{
-    width: auto;
-    min-width: 100px;
-    min-height: 50px;
-    height: auto;
-    /* border: 1px solid rgb(170, 170, 170); */
-    background-color: rgb(245, 245, 245);
-    padding: 10px;
-    margin-left: 10px;
-    border-radius: 5px;
-    box-shadow: 0 1px 2px rgb(177, 177, 177);
-    word-break: break-all;
+.TextComment {
+  width: auto;
+  min-width: 100px;
+  min-height: 50px;
+  height: auto;
+  /* border: 1px solid rgb(170, 170, 170); */
+  background-color: rgb(245, 245, 245);
+  padding: 10px;
+  margin-left: 10px;
+  border-radius: 5px;
+  box-shadow: 0 1px 2px rgb(177, 177, 177);
+  word-break: break-all;
 }
-.IconComment{
-    display: flex;
-    flex-direction: row;
-    margin-left: auto;
-    margin-top: 5px;
-    width: calc(100% - 40px);
+.IconComment {
+  display: flex;
+  flex-direction: row;
+  margin-left: auto;
+  margin-top: 5px;
+  width: calc(100% - 40px);
 }
-.BiMessageRounded{
-    display: flex;
-    flex-direction: row;
+.BiMessageRounded {
+  display: flex;
+  flex-direction: row;
 }
 .Response,
 .Answer,
 .displayResponse {
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .Answer {
-    margin-left: 10px;
-    padding-left: 10px;
-    border-left: 1px solid rgb(170, 170, 170);
+  margin-left: 10px;
+  padding-left: 10px;
+  border-left: 1px solid rgb(170, 170, 170);
 }
 
 .displayResponse {
-    margin-left: 15px;
-    color: #3c6a46;
-    cursor: pointer;
+  margin-left: 15px;
+  color: #3c6a46;
+  cursor: pointer;
 }
 
-.DateComment{
-    margin-left: auto;
-    color: gray;
-    font-size: 12px;
+.DateComment {
+  margin-left: auto;
+  color: gray;
+  font-size: 12px;
 }
-.NumberL{
-    margin-left:5px;
+.NumberL {
+  margin-left: 5px;
 }
 
 .commentLoader {
-    position: absolute;
-    margin-top: 80px;
-    width: 100%;
-    height: auto;
-    padding-bottom: 100px;
-    z-index: 1;
+  position: absolute;
+  margin-top: 80px;
+  width: 100%;
+  height: auto;
+  padding-bottom: 100px;
+  z-index: 1;
 }
 
 .commentLoader > div {
-    position: absolute;
-    top: -30px;
-    z-index: 1;
+  position: absolute;
+  top: -30px;
+  z-index: 1;
 }
 
 @media screen and (max-width: 1200px) {
-    .DateComment{
-        margin-left: auto;    
-    }
+  .DateComment {
+    margin-left: auto;
+  }
 }
-  
+
 @media screen and (max-width: 950px) {
-    .DateComment{
-        display: block;
-        margin-left: auto;
-    }
+  .DateComment {
+    display: block;
+    margin-left: auto;
+  }
 }
 
 @media screen and (max-width: 700px) {
-    .WriteCommentContent{
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 80px;
-        border-top: 1px solid rgb(206, 206, 206);
-        z-index: 1;
-    }
+  .WriteCommentContent {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    border-top: 1px solid rgb(206, 206, 206);
+    z-index: 1;
+  }
 
-    .contentCommentPage{
-        margin-bottom: 80px;
-        /* min-height: calc(100vh - 160px); */
-    }
+  .contentCommentPage {
+    margin-bottom: 80px;
+    /* min-height: calc(100vh - 160px); */
+  }
 }
 
 @media screen and (max-width: 576px) {
-    .CommentContent{
-        padding: 5px;
-    }
+  .CommentContent {
+    padding: 5px;
+  }
 }
