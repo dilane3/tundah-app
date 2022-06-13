@@ -241,7 +241,6 @@ body {
   }
 
   .mainSection {
-    width: calc(100% - 270px);
     margin: 0 auto 0 0;
     /* margin-left: 10px; */
   }
@@ -257,6 +256,7 @@ body {
   .mainSectionExtended {
     width: 100%;
     margin: 0 auto;
+    padding: 0 10px;
   }
 
   .container {

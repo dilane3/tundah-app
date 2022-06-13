@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import styles from '../../../css/navbar.module.css'
 import Input from '../../elements/input/Input'
 import { BsChevronDown, BsSearch, BsJustify } from 'react-icons/bs'
@@ -8,19 +8,40 @@ import currentUserContext from '../../../dataManager/context/currentUserContent'
 import { Link } from 'react-router-dom'
 import Subscriber from '../../../entities/Subscriber'
 import { ressourcesUrl } from '../../../utils/url'
+import { useLocation } from 'react-router-dom'
+import researchContext from '../../../dataManager/context/researchContext'
 
 const logo = require("../../../medias/logo/Tundah-large.png")
 
 const Navbar = ({ className, onShowMobileMenu }) => {
+	// Get data from the global state
 	const { currentUser } = useContext(currentUserContext)
+	const { target, setTarget } = useContext(researchContext)
 
+	// Set local state
 	const [researchQuery, setResearchQuery] = useState("")
 
-	const handleChange = event => {
+	// Get data from URL
+	const location = useLocation()
 
+	const newTarget = useMemo(() => {
+		const pathnameSplitted = location.pathname.split("/")
+
+		console.log("Wiki wiki wiki wiki")
+		if (pathnameSplitted[pathnameSplitted.length - 1] === "social") {
+			return "social"
+		} else if (!pathnameSplitted[pathnameSplitted.length - 1]) {
+			return "wiki"
+		} else {
+			return target
+		}
+	}, [location])
+
+	const handleChange = event => {
 		event.preventDefault();
 
 		setResearchQuery(event.target.value);
+		setTarget(newTarget)
 	}
 
 	const user = new Subscriber(currentUser)
@@ -43,7 +64,7 @@ const Navbar = ({ className, onShowMobileMenu }) => {
 				<Link to={{
 					pathname: '/search',
 					state: {
-						researchQuery: researchQuery
+						researchQuery
 					}
 				}}>
 					<div className={styles.headerSearchEngineIcon}>

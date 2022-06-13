@@ -56,6 +56,7 @@ function App() {
   const [research, setReseach] = useState({
     postsResults: [],
     query: "",
+    target: "",
   });
   const [postsArgs, setPostsArgs] = useState({
     next: false,
@@ -195,6 +196,14 @@ function App() {
     setReseach(researchClone);
   };
 
+  const setTarget = (target) => {
+    const researchClone = { ...research };
+
+    researchClone.target = target;
+
+    setReseach(researchClone);
+  };
+
   // Category Modal section
 
   const openModal = () => {
@@ -257,6 +266,7 @@ function App() {
     ...research,
     addResults,
     changeQuery,
+    setTarget,
   };
 
   // Data of category modal
