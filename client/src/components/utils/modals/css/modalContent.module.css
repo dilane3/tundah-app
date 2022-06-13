@@ -27,6 +27,82 @@ button.controlsBtn {
   width: 100%;
 }
 
+.description {
+  font-size: 15px;
+  color: rgb(85, 82, 82);
+  margin-top: 10px;
+}
+.firstElementcat {
+  display: flex;
+  flex-direction: column;
+  margin-top: 55px;
+  width: 40%;
+  height: 80px;
+  padding: 10px;
+  background-color: #ddd;
+  border-radius: 10px;
+  margin-right: 30px;
+}
+.topElementcat {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+}
+.texteCat {
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 20px;
+}
+.cardImagecat {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  top: -10px;
+  left: 10px;
+  margin-top: -20px;
+  border-radius: 15px;
+}
+.itemCategories {
+  display: flex;
+  flex-direction: row;
+}
+.topElementcat input[type="checkbox"] + label {
+  margin: 0;
+  padding: 2px 0 0px 24px;
+  cursor: pointer;
+  background: green;
+}
+/* input[type='checkbox']{
+  margin: 0;
+  padding: 2px 0 0px 24px;
+  cursor: pointer;
+  background: green;
+  clip: rect(1px, 1px, 1px, 1px);
+  cursor: pointer;
+} */
+input:checked {
+  border: 1px solid;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+input[type="checkbox"]:checked {
+  box-shadow: 0 0 0 3px rgb(2, 77, 42);
+  background-color: rgb(2, 77, 42);
+}
+input:checked + label {
+  color: red;
+}
+.itemCategorie {
+  display: flex;
+  flex-direction: column;
+  margin-top: 30px;
+  margin-left: 20px;
+  flex-wrap: wrap;
+  height: 120px;
+}
+
 @media screen and (max-width: 576px) {
   div.modalContent {
     max-height: calc(100vh - 150px);
