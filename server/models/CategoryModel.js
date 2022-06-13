@@ -74,11 +74,11 @@ class CategoryModel extends InterfaceCategoryModel {
      * @param {id} id 
      * @returns category | error
      */
-    static getcategory = async (id) => {
+    static getCategory = async (id) => {
         const session = dbConnect()
 
         const query = `
-            MATCH (category:category{ id: $id })
+            MATCH (category:Category{ id: $id })
             return category
         `
 

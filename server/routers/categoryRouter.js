@@ -6,7 +6,7 @@ const categoryRouter = express.Router()
 
 
 categoryRouter.get("/", CathegoryController.getCathegories)
-// categoryRouter.get("/:id", CathegoryController.getCathegory)
+categoryRouter.get("/:id", CathegoryController.getCategory)
 categoryRouter.get("/categoryAlreadyExist", CathegoryController.categoryAlreadyExist)
 categoryRouter.post("/create", CathegoryController.createCategory)
 // categoryRouter.patch("/update", CathegoryController.updateCategory)
