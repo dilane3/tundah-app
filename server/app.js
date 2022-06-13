@@ -7,11 +7,7 @@ import docs from './docs/index.js'
 import userRouter from './routers/userRouter.js'
 import commentRouter from './routers/commentRouter.js'
 import postRouter from './routers/postRouter.js'
-<<<<<<< HEAD
 import categoryRouter from './routers/categoryRouter.js'
-=======
-import cathegoryRouter from "./routers/cathegoryRouter"
->>>>>>> 9f8eb5d35db55fb26707bb479b05abad52170fdb
 
 // fetching data from .env file
 config()

@@ -142,7 +142,7 @@ class CategoryModel extends InterfaceCategoryModel {
         const session = dbConnect()
 
         const query = `
-            MATCH(category:category{ id: $id })
+            MATCH(category:Category{ id: $id })
             DETACH DELETE category
         `
         try{
