@@ -164,10 +164,10 @@ class Subscriber {
    * This method allow the subscriber to create a post
    * @param {any} datas 
    */
-  async createPost(title, content, files_list, region, tribe) {
+  async createPost(title, content, files_list, post_type, categoryList) {
     const post = new Post()
 
-    const {data, error} = await post.proposePost({title, content, files_list, region, tribe}, this.getId)
+    const {data, error} = await post.publishPost({title, content, files_list, post_type, categoryList}, this.getId)
     
     return {data, error}
   }
