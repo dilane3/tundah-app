@@ -8,12 +8,21 @@ class InterfacePost {
     }
 
     /**
-     * This method implements the post proposal functionnality
-     * @param {Object} datas
+     * This method implements the post publishing functionnality
+     * @param {*} datas 
      * @param {string} idUser 
      */
-    proposePost(datas, idUser){
-        throw new Error("Error: You have to implement this function")
+     publishPost(datas, userId) {
+      throw new Error("Error you have to implement this function");
+    }    
+    
+    /**
+     * This method implements the post transfer to the wiki functionnality
+     * @param {*} datas 
+     * @param {string} idUser 
+     */
+     transferPost(datas, userId) {
+      throw new Error("Error you have to implement this function");
     }
 
     /**
@@ -24,16 +33,7 @@ class InterfacePost {
     likePost(idPost, idUser) {
         throw new Error("Error you have to implement this function");
     }
-  
-    /**
-     * This method implements the post publishing functionnality
-     * @param {*} datas 
-     * @param {string} idUser 
-     */
-    publishPost(datas, userId) {
-        throw new Error("Error you have to implement this function");
-    }
-
+    
     /**
      * This method implements the post validation functionnality
      * @param {string} idPost
