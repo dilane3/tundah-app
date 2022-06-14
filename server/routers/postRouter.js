@@ -2,7 +2,7 @@ import express from "express";
 import PostController from "../controllers/postController.js";
 import authenticationMiddleware from "../middlewares/authentication.js";
 import uploadImage from "../utils/uploadImage.js";
-import uploadVideo from '../utils/uploadVideo.js';
+import uploadVideo from "../utils/uploadVideo.js";
 
 const postRouter = express.Router();
 
@@ -15,7 +15,8 @@ const {
   likePost,
   deletePost,
   updatePost,
-  transfertPostToWiki
+  transfertPostToWiki,
+  sharePost,
 } = PostController;
 
 // Router for the the retrieval of all the posts
@@ -37,8 +38,8 @@ postRouter.get("/search/:value", getSearchedPosts);
 // Router for the creation of a post in the wiki section from the social post form and the user id
 // This can be performed only by connected users
 postRouter.post(
-  "/create/wiki/video", 
-  authenticationMiddleware, 
+  "/create/wiki/video",
+  authenticationMiddleware,
   uploadVideo.single("video"),
   transfertPostToWiki
 );
@@ -46,8 +47,8 @@ postRouter.post(
 // Router for the creation of a post in the wiki section from the social post form and the user id with images
 // This can be performed only by connected users
 postRouter.post(
-  "/create/wiki/images", 
-  authenticationMiddleware, 
+  "/create/wiki/images",
+  authenticationMiddleware,
   uploadImage.array("images", 10),
   transfertPostToWiki
 );
@@ -55,8 +56,8 @@ postRouter.post(
 // Router for the creation of a post using the post form info and the user id
 // This can be performed only by connected users
 postRouter.post(
-  "/create/video", 
-  authenticationMiddleware, 
+  "/create/video",
+  authenticationMiddleware,
   uploadVideo.single("video"),
   createPost
 );
@@ -64,11 +65,14 @@ postRouter.post(
 // Router for the creation of a post using the post form info and the user id with images
 // This can be performed only by connected users
 postRouter.post(
-  "/create/images", 
-  authenticationMiddleware, 
+  "/create/images",
+  authenticationMiddleware,
   uploadImage.array("images", 10),
   createPost
-)
+);
+
+// Router for sharing post in the social network
+postRouter.post("/share/simple", authenticationMiddleware, sharePost);
 
 // Router for the like of a post using the post id and user id
 // This can be performed only by connected users
@@ -80,10 +84,6 @@ postRouter.delete("/delete/:id", authenticationMiddleware, deletePost);
 
 // Router for the update of a post using the post id and user id
 // This can be performed only by connected expert users
-postRouter.patch(
-  "/update/:id",
-  authenticationMiddleware,
-  updatePost
-);
+postRouter.patch("/update/:id", authenticationMiddleware, updatePost);
 
 export default postRouter;

@@ -5,6 +5,7 @@ import PostModel from "../models/PostModel.js";
 import { response } from "express";
 import { error } from "neo4j-driver";
 import PostEnum from "../models/enums/PostEnum.js";
+import SharePostModel from "../models/SharePostModel.js";
 
 // fetching data from .env file
 config();
@@ -425,7 +426,6 @@ class PostController {
     }
 
     const user = req.user;
-    console.log(user);
 
     if (user.getRole === 1) {
       if (title && content) {
@@ -449,6 +449,35 @@ class PostController {
     } else {
       res.status(401).json({ error: "Not authorized" });
     }
+  };
+
+  /**
+   * Controller's method that shares post in the social network
+   */
+  static sharePost = async (req, res) => {
+    const user = req.user;
+
+    const { idPost } = req.body;
+
+    if (idPost) {
+      try {
+        const postModel = new SharePostModel();
+
+        const { data, error } = await postModel.sharePost(user.getId, idPost);
+
+        if (data) {
+          return res.status(201).json({ data });
+        }
+
+        return res.status(500).json({ error });
+      } catch (err) {
+        console.log(err);
+
+        return res.status(500).json({ error: "An error occured" });
+      }
+    }
+
+    return res.status(400).json({ error: "Provide the id of the post" });
   };
 }
 
