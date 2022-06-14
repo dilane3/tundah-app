@@ -5,6 +5,8 @@ import currentUserContext from '../../dataManager/context/currentUserContent'
 import WritePost from '../../components/marketing/pageSections/WritePost'
 import ExtendedBase from '../ExtendedBase'
 import { Redirect } from 'react-router-dom'
+import FollowUserPage from '../../components/marketing/aside/followUserPage'
+import { Box } from '@mui/system'
 
 
 const Social = ({ location }) => {
@@ -20,6 +22,18 @@ const Social = ({ location }) => {
 				currentUser ? (
 					<ExtendedBase>
 						<WritePost />
+
+						<Box
+							sx={{
+								mb: 3,
+								display: "none",
+								"@media screen and (max-width: 700px)": {
+									display: "block"
+								}
+							}}
+						>
+							<FollowUserPage />
+						</Box>
 
 						<Body />
 					</ExtendedBase>
