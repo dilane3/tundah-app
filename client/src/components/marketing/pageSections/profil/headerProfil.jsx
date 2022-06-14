@@ -394,7 +394,7 @@ const HeaderProfil = () => {
 										className={`active`}
 										onClick={() => setPostTypeToShow("published")}
 									>
-										<StatPostItem title="postes publiés" number={user.getPublishedPosts.length} />
+										<StatPostItem title="posts publiés" number={user.getPublishedPosts.length} />
 									</div>
 								</div>
 							</div>

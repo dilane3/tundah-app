@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import styles from '../../../css/aside.module.css'
 import baseStyles from '../../../css/base.module.css'
 import ImgCircle from '../../elements/imgCircle/ImgCircle'
-import { BsPlusCircleFill, BsJournals, BsPersonCheck, BsGear } from 'react-icons/bs'
+import { BsPlusCircleFill, BsPeople, BsGear } from 'react-icons/bs'
 import { IoShareSocial } from 'react-icons/io5'
 import { Link } from 'react-router-dom'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
@@ -82,7 +82,7 @@ const Navigation = ({ onShowAddExpertSection }) => {
 								onClick={() => { navigateTo("social") }}
 							>
 								<Link to="/social" style={{ width: "100%", display: "flex", flexDirection: "row" }}>
-									<IoShareSocial />
+									<BsPeople />
 									<span>Reseau social</span>
 								</Link>
 							</div>
