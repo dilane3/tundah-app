@@ -4,6 +4,7 @@ import "./css/app.css";
 import Routes from "./Routes";
 import currentUserContext from "./dataManager/context/currentUserContent";
 import postsContext from "./dataManager/context/postsContext";
+import postsWikiContext from "./dataManager/context/postWikiContext";
 import proposedPostContext from "./dataManager/context/proposedPostContext";
 import CategoryContext from "./dataManager/context/categoryContext";
 import {
@@ -36,6 +37,9 @@ import {
   addProposedPosts,
   validateProposedPost,
 } from "./dataManager/data/proposedPost/proposedPostActions";
+import {
+  addWikiPosts
+} from "./dataManager/data/postWiki/wikiPostAction";
 import currentUserReducer from "./dataManager/data/currentUser/currentUserReducer";
 import postsReducer from "./dataManager/data/posts/postsReducer";
 import navigationContext from "./dataManager/context/navigationContext";
