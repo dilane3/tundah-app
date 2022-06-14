@@ -123,6 +123,43 @@ class PostModel extends InterfacePostModel {
   }
 
   /**
+   * This function return the researched posts using it's title
+   * Independent of the substring position
+   * And is case insensitive
+   * @param {string} value
+   * @param {String} post_type
+   * @returns post(s)
+   */
+   async getSearchedWikiPosts(value, post_type) {
+    const session = dbConnect();
+
+    try {
+      const query = `
+        MATCH (post:Post{post_type: "${post_type}"})
+        WHERE post.title =~ '(?i).*(${value.toLowerCase()}).*'
+        RETURN post
+        ORDER BY post.creation_date DESC
+        `;
+
+      const result = await session.run(query);
+      console.log(result.records);
+
+      const moreInfosData = await this.gettingMoreWikiPostInfos(result, "post");
+
+      if (moreInfosData.length > 0) {
+        return { data: moreInfosData };
+      } else {
+        return { data: [] };
+      }
+    } catch (err) {
+      console.log(err);
+      return { error: "Sorry the post(s) has not been found" };
+    } finally {
+      session.close();
+    }
+  }
+
+  /**
    * This function returns the number of posts available in the database
    */
   async getNumberPost(session, status) {
@@ -244,6 +281,23 @@ class PostModel extends InterfacePostModel {
         comments: commentsNumber,
         author,
         subAuthors: editors,
+      });
+    }
+
+    return postData;
+  }
+
+  // Getting more infos about the searched post
+  async gettingMoreWikiPostInfos(result, field) {
+    let postData = [];
+
+    for (let record of result.records) {
+      const post = record.get(field).properties;
+      const { author } = await this.getAuthorOfPost(post.id);
+
+      postData.push({
+        ...post,
+        author
       });
     }
 
