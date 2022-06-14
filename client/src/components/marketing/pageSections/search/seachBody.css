@@ -1,95 +1,115 @@
-.header{
-    display:flex;
-    flex-direction:row;
-    width: 100%;
-    justify-content: space-between;
-    padding: 10px;
-    margin-bottom: 20px;
-    height: 40px;
-    background-color: #fff;
-    border-radius: 5px;
-    align-items: center;
+.header {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-around;
+  padding: 10px;
+  margin-bottom: 20px;
+  height: 40px;
+  background-color: #fff;
+  border-radius: 5px;
+  align-items: center;
 }
 
 .header > button {
-    transition: all .6s;
-    font-weight: bold;
-    border-bottom: 2px solid transparent;
+  transition: all 0.6s;
+  font-weight: bold;
+  border-bottom: 2px solid transparent;
 }
 
-.activeClass{
-    color:#3c6a46; 
-    /* font-weight: bold; */
-    border-bottom: 2px solid #3c6a46; 
-    /* font-size: 14px; */
-    width: auto;
-    cursor: pointer;
-    border: none;
+.activeClass {
+  color: #3c6a46;
+  /* font-weight: bold; */
+  border-bottom: 2px solid #3c6a46;
+  /* font-size: 14px; */
+  width: auto;
+  cursor: pointer;
+  border: none;
 }
 
 .activeClass:focus {
-    outline: none;
+  outline: none;
 }
-.Personheader{
-    display: flex;
-    flex-direction: column;
-    margin-top: 5px;
-    padding: 20px;
-    width: 100%;
-    border-radius: 5px;
-    height: auto;
-    background-color: #fff;
+.Personheader {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-top: 5px;
+  padding: 10px;
+  width: 100%;
+  border-radius: 5px;
+  height: auto;
+  background-color: #fff;
+}
+.content {
+  display: flex;
+  flex-direction: row;
+}
+.userinformation {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 10px;
+  width: calc(100% - 60px);
+  font-size: 14px;
+}
+.userinformation .username,
+.author-post-username {
+  color: black;
+  font-weight: bold;
+  font-size: 14px;
+}
+.userinformation .userInscription,
+.hour {
+  color: rgb(105, 101, 101);
+  font-size: 12px;
+  margin-top: 5px;
+}
+.btnSuivre {
+  position: absolute;
+  top: 0;
+  right: 10px;
+  background-color: #3c6a46;
+  color: #fff;
+  font-weight: bold;
+  border: none;
+  border-radius: 7px;
+  text-align: center;
+  width: 90px;
+  height: 30px;
+  margin-top: 10px;
+  font-size: 14px;
+}
+.profilCardImage {
+  width: 50px;
+  height: 50px;
+}
 
+.profilCardImage > img {
+  width: 100%;
+  height: 100%;
 }
-.content{
-    display: flex;
-    flex-direction: row;
+.userDescription {
+  margin-left: 60px;
+  margin-top: 12px;
+  font-size: 14px;
+  width: auto;
 }
-.userinformation{
+.PostPropose {
+  margin-top: 5px;
+  border: none;
+  border-radius: 7px;
+}
+
+@media screen and (max-width: 576px) {
+  .content-Postpropose {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    padding-left: 10px;
-    width: auto;
-    font-size: 14px;
   }
-  .userinformation .username,.author-post-username{
-    color: black;
-    font-weight: bold;
-    font-size: 14px;
+
+  .proposePost-img {
+    width: 100%;
+    padding-left: 0 !important;
   }
-  .userinformation .userInscription,.hour{
-    color: rgb(105, 101, 101);
-    font-size: 12px;
-    margin-top: 5px;
-  }
-  .btnSuivre{
-      background-color: #3c6a46;
-      color: #fff;
-      font-weight: bold;
-      border: none;
-      border-radius: 7px;
-      text-align: center;
-      width: 90px;
-      height: 30px;
-      margin-top: 10px;
-      font-size: 14px;
-      margin-left: 200px;
-  }
-  .profilCardImage{
-    width: 50px;
-    height: 50px;
-  }
-  .userDescription{
-      margin-left: 60px;
-      margin-top: 12px;
-      font-size: 14px;
-      width: 300px;
-  }
-  .PostPropose{
-      margin-top: 30px;
-      border: none;
-      border-radius: 7px;
-  }
-  
+}

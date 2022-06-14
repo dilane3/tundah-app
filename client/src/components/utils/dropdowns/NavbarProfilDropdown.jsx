@@ -7,20 +7,20 @@ import Subscriber from '../../../entities/Subscriber'
 
 
 const NavbarProfilDropdown = ({ dropElt }) => {
-  const {currentUser} = useContext(currentUserContext)
+  const { currentUser } = useContext(currentUserContext)
   const user = new Subscriber(currentUser)
 
   const logout = () => {
     localStorage.setItem("tundah-token", null)
 
-    window.location.href = "/wiki/feed"
+    window.location.href = "/"
   }
 
-	return(
-		<Menu as="div" className="relative inline-block text-left font-primary">
+  return (
+    <Menu as="div" className="relative inline-block text-left font-primary">
       <div>
         <Menu.Button>
-          { dropElt }
+          {dropElt}
         </Menu.Button>
       </div>
       <Transition
@@ -38,26 +38,24 @@ const NavbarProfilDropdown = ({ dropElt }) => {
               {({ active }) => (
                 <Link to={`/profile/${user.getUsername}`}>
                   <button
-                    className={`${
-                      active ? 'bg-gray-100 text-primary' : 'text-gray-900'
-                    } group flex items-center space-x-2 w-full px-2 py-2 text-sm`}
+                    className={`${active ? 'bg-gray-100 text-primary' : 'text-gray-900'
+                      } group flex items-center space-x-2 w-full px-2 py-2 text-sm`}
                   >
                     <BsPerson size="25" className="icon" />
-                    
+
                     <span>Profil</span>
                   </button>
-                  </Link>
+                </Link>
               )}
             </Menu.Item>
           </div>
-          <hr style={{width: "80%", margin: "0 auto"}} />
+          <hr style={{ width: "80%", margin: "0 auto" }} />
           <div className="px-1 py-1">
             <Menu.Item>
               {({ active }) => (
                 <button
-                  className={`${
-                    active ? 'bg-gray-100 text-primary' : 'text-gray-900'
-                  } group flex items-center space-x-2 w-full px-2 py-2 text-sm`}
+                  className={`${active ? 'bg-gray-100 text-primary' : 'text-gray-900'
+                    } group flex items-center space-x-2 w-full px-2 py-2 text-sm`}
                   onClick={logout}
                 >
                   <BsBoxArrowRight size="25" className="icon" />
@@ -71,7 +69,7 @@ const NavbarProfilDropdown = ({ dropElt }) => {
         </Menu.Items>
       </Transition>
     </Menu>
-	)
+  )
 }
 
 export default NavbarProfilDropdown

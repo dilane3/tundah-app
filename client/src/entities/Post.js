@@ -1,5 +1,5 @@
-import Comment from './Comment.js';
-import InterfacePost from './interfaces/interfacePost.js'
+import Comment from "./Comment.js";
+import InterfacePost from "./interfaces/interfacePost.js";
 
 class Post extends InterfacePost {
   id;
@@ -13,62 +13,59 @@ class Post extends InterfacePost {
   commentsData;
   likes;
   author;
-  subAuthors;
 
   constructor(data) {
-    super()
+    super();
 
-    this.initialization(data)
+    this.initialization(data);
   }
 
   /**
-   * 
+   *
    * @param {Object} data
-   * @returns void 
+   * @returns void
    */
-   initialization(data) {
+  initialization(data) {
     if (data) {
       const {
-        id, 
-        title, 
-        content, 
-        creation_date, 
-        modification_date, 
-        files_list, 
-        post_type, 
+        id,
+        title,
+        content,
+        creation_date,
+        modification_date,
+        files_list,
+        post_type,
         comments,
-        commentsData, 
+        commentsData,
         author,
-        subAuthors,
-        likes
-      } = data
-    
-      this.id = id
-      this.title = title ? title:"hello"
-      this.content = content
-      this.creation_date = Number(creation_date)
-      this.modification_date = Number(modification_date)
-      this.files_list = files_list
-      this.post_type = post_type
-      this.comments = comments
-      this.commentsData = commentsData ? commentsData:[];
-      this.author = author
-      this.subAuthors = subAuthors
-      this.likes = likes
+        likes,
+      } = data;
+
+      this.id = id;
+      this.title = title ? title : "hello";
+      this.content = content;
+      this.creation_date = Number(creation_date);
+      this.modification_date = Number(modification_date);
+      this.files_list = files_list;
+      this.post_type = post_type;
+      this.comments = comments;
+      this.commentsData = commentsData ? commentsData : [];
+      this.author = author;
+      this.likes = likes;
     }
   }
 
   /**
    * @returns string
    */
-   get getId() {
-    return this.id
+  get getId() {
+    return this.id;
   }
 
   /**
    * @returns string
    */
-   get getTitle() {
+  get getTitle() {
     return this.title;
   }
 
@@ -111,36 +108,29 @@ class Post extends InterfacePost {
    * @returns number
    */
   get getComments() {
-    return this.comments
+    return this.comments;
   }
 
   get getCommentsData() {
-    return this.commentsData
+    return this.commentsData;
   }
 
   /**
    * @returns User
    */
   get getAuthor() {
-    return this.author
-  }
-
-  /**
-   * @returns Array of User
-   */
-  get getSubAuthors() {
-    return this.subAuthors
+    return this.author;
   }
 
   /**
    * @returns Array of Userid
    */
   get getLikes() {
-    return this.likes
+    return this.likes;
   }
 
   get getData() {
-    return this
+    return this;
   }
 
   updatePost(data) {
@@ -159,35 +149,35 @@ class Post extends InterfacePost {
     this.subAuthors = subAuthors
   }
 
-  addComments (comments) {
-    this.commentsData = comments.map(comment => new Comment(comment))
+  addComments(comments) {
+    this.commentsData = comments.map((comment) => new Comment(comment));
 
-    return this
+    return this;
   }
 
-  addComment (comment) {
-    this.commentsData.push((new Comment(comment)))
+  addComment(comment) {
+    this.commentsData.push(new Comment(comment));
   }
 
-  incrementNumberComment () {
-    this.comments += 1
+  incrementNumberComment() {
+    this.comments += 1;
   }
 
-  getComment (idComment) {
-    const index = this.commentsData.findIndex(comment => comment.id === idComment)
-    console.log({comments: this.commentsData, idComment})
-    return index
+  getComment(idComment) {
+    const index = this.commentsData.findIndex(
+      (comment) => comment.id === idComment
+    );
+
+    return index;
   }
 
-  likePost (idUser) {
+  likePost(idUser) {
     if (!this.likes.includes(idUser)) {
-      return {...this, likes: [...this.likes, idUser]}
+      return { ...this, likes: [...this.likes, idUser] };
     } else {
-      const newLikes = this.getLikes.filter(like => like !== idUser)
-      // this.likes = newLikes
-      console.log({likes: this.likes, moi: this})
+      const newLikes = this.getLikes.filter((like) => like !== idUser);
 
-      return {...this, likes: [...newLikes]}
+      return { ...this, likes: [...newLikes] };
     }
   }
 }

@@ -4,7 +4,7 @@ import dbConnect from "../utils/database.js";
 import jwt from "jsonwebtoken";
 import InterfacePostModel from "./interfaces/interfacePostModel.js";
 import { error, session } from "neo4j-driver";
-import PostEnum from "./enums/PostEnum.js"
+import PostEnum from "./enums/PostEnum.js";
 
 // fetching data from .env file
 config();
@@ -16,7 +16,7 @@ class PostModel extends InterfacePostModel {
    * This function get a specific user based on his id
    * @param {string} id
    */
-   async getPost(id) {
+  async getPost(id) {
     const session = dbConnect();
 
     try {
@@ -30,7 +30,7 @@ class PostModel extends InterfacePostModel {
       if (result.records.length > 0) {
         const postData = result.records[0].get("post").properties;
 
-        console.log("postData here",postData)
+        console.log("postData here", postData);
 
         if (postData.published) {
           const { commentsNumber } = await this.getCommentNumber(postData.id);
@@ -49,7 +49,7 @@ class PostModel extends InterfacePostModel {
       await session.close();
     }
   }
-  
+
   // /**
   //  * This function get posts based on their category
   //  * @param {string} id
@@ -59,7 +59,7 @@ class PostModel extends InterfacePostModel {
 
   //   try {
   //     const query = `
-  //       MATCH (post:Post) - [:HAS_CATEGORY] -> (category:Category {id = $id}) 
+  //       MATCH (post:Post) - [:HAS_CATEGORY] -> (category:Category {id = $id})
   //       RETURN post
   //     `;
   //     const result = await session.run(query, { id });
@@ -254,9 +254,7 @@ class PostModel extends InterfacePostModel {
       if (result1.records.length > 0) {
         // getting author who has published the post
         author = result1.records[0].get("user").properties;
-
-
-      } 
+      }
       return { author };
     } catch (err) {
       return { editors: [], author: null };
@@ -351,7 +349,7 @@ class PostModel extends InterfacePostModel {
   /**
    * This method retrieves all the avalaible posts
    */
-   async getAllWikiPosts(skip, limit) {
+  async getAllWikiPosts(skip, limit) {
     const session = dbConnect();
 
     try {
@@ -442,16 +440,16 @@ class PostModel extends InterfacePostModel {
     const session = dbConnect();
 
     // Categories find request part in the bd
-    var cat = ""
+    var cat = "";
     categoryList.map((category, index) => {
-      cat += ` MATCH (category${index}:Category{id: "${category}"})`
-    })
+      cat += ` MATCH (category${index}:Category{id: "${category}"})`;
+    });
 
     // Post merge with the above categories in the bd
-    var merges = ""
+    var merges = "";
     categoryList.map((category, index) => {
-      merges += ` CREATE (post) - [:HAS_CATEGORY] -> (category${index})`
-    })
+      merges += ` CREATE (post) - [:HAS_CATEGORY] -> (category${index})`;
+    });
 
     try {
       const query = `
@@ -473,7 +471,7 @@ class PostModel extends InterfacePostModel {
         ${merges}
         RETURN post
       `;
-      
+
       const result = await session.run(query, {
         id: nanoid(20),
         title: title.toLowerCase(),
@@ -509,12 +507,10 @@ class PostModel extends InterfacePostModel {
     const session = dbConnect();
 
     try {
-      
       const query = `
           MATCH (post:Post{id: $idPost}) -[:PUBLISHED_BY]-> (user:Subscriber{id: $idUser})
           DETACH DELETE post
         `;
-      
 
       await session.run(query, { idPost, idUser });
 
@@ -559,7 +555,7 @@ class PostModel extends InterfacePostModel {
         content,
         modification_date: Date.now(),
         files_list,
-        post_type
+        post_type,
       });
 
       if (response.records.length > 0) {
@@ -645,8 +641,8 @@ class PostModel extends InterfacePostModel {
 
   /**
    * This method permits the Expert to publish a post in the wiki section from the social section
-   * 
-   * 
+   *
+   *
    */
   async transferSocialPostToWiki(
     title,
@@ -701,8 +697,6 @@ class PostModel extends InterfacePostModel {
       await session.close();
     }
   }
-
-
 }
 
 export default PostModel;

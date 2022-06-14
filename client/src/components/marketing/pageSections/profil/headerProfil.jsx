@@ -15,7 +15,6 @@ import postsContext from '../../../../dataManager/context/postsContext'
 import { useParams } from 'react-router'
 import CategoryContext from '../../../../dataManager/context/categoryContext'
 import UserApi from '../../../../api/users'
-import { deleteFollowing } from '../../../../dataManager/data/currentUser/currentUserActions'
 import ModalContext from '../../../../dataManager/context/modalContext'
 
 const checkUsername = (username, currentUser) => {
@@ -108,7 +107,7 @@ const HeaderProfil = () => {
 		if (isCurrentUser) {
 			setUser((new Subscriber(currentUser)))
 		}
-	}, [currentUser, isCurrentUser])
+	}, [currentUser, isCurrentUser, currentUser.getFollowings.length])
 
 	const formatName = (name) => {
 		return name[0].toUpperCase() + name.substr(1)
@@ -154,8 +153,18 @@ const HeaderProfil = () => {
 		instance.post("/users/change_profil", formData, uploadOption)
 			.then(res => {
 				setPercentageUploadProfil(0)
+
+				// Update profile photo of the currentuser in the global state
 				updateProfil(res.data.profil)
 
+				// Update the profile photo in the profile page
+				const prevUser = new Subscriber(user)
+
+				prevUser.setProfil(res.data.profil)
+
+				setUser(prevUser)
+
+				// Mask the modal
 				setDisplayProfilUpload(false)
 			})
 			.catch(err => {
@@ -220,27 +229,28 @@ const HeaderProfil = () => {
 		try {
 			const type = currentUser.alreadyFollowed(user.getId) ? "unfollow" : "follow"
 
+			// Handle follow action before sending the request
+			if (type === "follow") {
+				addFollowing(user)
+
+				const updatedUser = (new Subscriber({ ...user }))
+
+				updatedUser.addFollower(currentUser)
+
+				setUser(updatedUser)
+			} else {
+				deleteFollowing(user.getId)
+
+				const updatedUser = (new Subscriber({ ...user }))
+
+				updatedUser.deleteFollower(currentUser.getId)
+
+				setUser(updatedUser)
+			}
+
 			const { data, error } = await UserApi.follow({ type, userId: user.getId })
 
-			if (data) {
-				if (type === "follow") {
-					addFollowing(user)
-
-					const updatedUser = (new Subscriber({ ...user }))
-
-					updatedUser.addFollower(currentUser)
-
-					setUser(updatedUser)
-				} else {
-					deleteFollowing(user.getId)
-
-					const updatedUser = (new Subscriber({ ...user }))
-
-					updatedUser.deleteFollower(currentUser.getId)
-
-					setUser(updatedUser)
-				}
-			} else {
+			if (!data) {
 				console.log(error)
 			}
 		} catch (err) {
@@ -380,23 +390,11 @@ const HeaderProfil = () => {
 									</section>
 								</div>
 								<div className="profilPost">
-									{
-										!user.getRole ? (
-											checkUsername(username, currentUser) ? (
-												<div
-													className={`${postTypeToShow === "proposed" ? "active" : ""}`}
-													onClick={() => setPostTypeToShow("proposed")}
-												>
-													<StatPostItem title="postes proposés" number={user.getProposedPosts.length} />
-												</div>
-											) : null
-										) : null
-									}
 									<div
-										className={`${postTypeToShow === "published" ? "active" : ""}`}
+										className={`active`}
 										onClick={() => setPostTypeToShow("published")}
 									>
-										<StatPostItem title="postes publiés" number={user.getPublishedPosts.length} />
+										<StatPostItem title="posts publiés" number={user.getPublishedPosts.length} />
 									</div>
 								</div>
 							</div>
@@ -404,15 +402,9 @@ const HeaderProfil = () => {
 
 						<section className="postsList">
 							{
-								postTypeToShow === "published" ? (
-									sortPostByDate(user.getPublishedPosts).map(post => {
-										return <Post key={post.id} postData={post} onLikePost={handleLikePost} />
-									})
-								) : (
-									sortPostByDate(user.getProposedPosts).map(post => {
-										return <Post key={post.id} postData={post} onLikePost={handleLikePost} published={false} />
-									})
-								)
+								sortPostByDate(user.getPublishedPosts).map(post => {
+									return <Post key={post.id} postData={post} onLikePost={handleLikePost} />
+								})
 							}
 						</section>
 					</>

@@ -4,10 +4,11 @@ import ImgCircle from '../../../elements/imgCircle/ImgCircle'
 import Subscriber from '../../../../entities/Subscriber'
 import { getRelativeDate } from '../../../../utils/dateOperations'
 import './commentPost.css'
-import {ressourcesUrl} from "../../../../utils/url"
-import {Link} from 'react-router-dom'
+import { ressourcesUrl } from "../../../../utils/url"
+import { Link } from 'react-router-dom'
+import CommentDropdown from '../../../utils/dropdowns/CommentDropdown'
 
-const Comment = ({onResponse, data, isResponse, author, onDisplayResponses, responseDisplayed}) => {
+const Comment = ({ onResponse, data, isResponse, author, onDisplayResponses, responseDisplayed }) => {
     const subscriber = new Subscriber(data.author)
 
     const isAuthor = () => {
@@ -20,26 +21,30 @@ const Comment = ({onResponse, data, isResponse, author, onDisplayResponses, resp
         return null
     }
 
-    return(
+    return (
         <div className="CommentContent">
             <div className="header-PostproposeInfo">
                 <Link to={`/profile/${subscriber.getUsername}`}>
                     <ImgCircle src={`${ressourcesUrl.profil}/${subscriber.getProfil}`} alt="profil" size="small" classe="header-PostproposeInfoImg" />
                 </Link>
                 <div className="Info-Comment">
-                   <div className="Info-User">
+                    <div className="Info-User">
                         <Link to={`/profile/${subscriber.getUsername}`}>
                             <span className="Username">{subscriber.getName} {isAuthor()}</span>
                         </Link>
 
                         <div className="BsThreeDotIcon">
-                          <BsThreeDots/>
+                            <CommentDropdown
+                                dropElt={<BsThreeDots />}
+                                idComment={data.getId}
+                                idAuthor={data.author.id}
+                            />
                         </div>
                     </div>
                     <div className="TextComment">
                         {data.content}
                     </div>
-                </div>  
+                </div>
             </div>
             <div className="IconComment">
                 {
@@ -48,22 +53,22 @@ const Comment = ({onResponse, data, isResponse, author, onDisplayResponses, resp
                             <BsChat size="20" className="icon" />
                             <span className="NumberL">{data.responses.length}</span>
                         </div>
-                    ):null
+                    ) : null
                 }
 
-				<div className={`${isResponse ? "Response": "Answer"}`} onClick={onResponse}>
-					Répondre
-				</div>
+                <div className={`${isResponse ? "Response" : "Answer"}`} onClick={onResponse}>
+                    Répondre
+                </div>
 
                 {
                     data.responses ? (
                         data.responses.length > 0 ? (
-                            <span className="displayResponse" onClick={onDisplayResponses}>{responseDisplayed ? "Masquer":"Afficher"} reponses</span>
-                        ):null
-                    ):null
+                            <span className="displayResponse" onClick={onDisplayResponses}>{responseDisplayed ? "Masquer" : "Afficher"} reponses</span>
+                        ) : null
+                    ) : null
                 }
                 <span className="DateComment">{getRelativeDate(data.creation_date)} </span>
-			</div>
+            </div>
         </div>
     )
 }

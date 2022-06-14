@@ -13,6 +13,7 @@ class Subscriber {
   posts;
   followers;
   followings;
+  categories;
 
   constructor(data) {
     this.initialization(data);
@@ -119,6 +120,7 @@ class Subscriber {
       this.posts = postData;
       this.country = country;
       this.description = description;
+      this.categories = [];
 
       if (followers && followings) {
         const myFollowers = [];
@@ -156,21 +158,11 @@ class Subscriber {
     this.description = description;
   }
 
-  get getProposedPosts() {
-    const posts = [];
-
-    this.posts.forEach((post) => {
-      if (!post.getPublished) posts.push(post);
-    });
-
-    return posts;
-  }
-
   get getPublishedPosts() {
     const posts = [];
 
     this.posts.forEach((post) => {
-      if (post.getPublished) posts.push(post);
+      if (post.getPostType === "social") posts.push(post);
     });
 
     return posts;

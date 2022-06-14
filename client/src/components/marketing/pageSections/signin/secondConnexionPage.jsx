@@ -125,7 +125,7 @@ const SecondConnexionPage = () => {
 			</form>
 
 			{
-				redirect && <Redirect to="/" />
+				redirect && <Redirect to="/social" />
 			}
 		</div>
 	)

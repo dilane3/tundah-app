@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { validateEmail } from "../utils/validator.js";
 import PostModel from "../models/PostModel.js";
+import UserFollowersModel from "../models/UserFollowersModel.js";
 
 // fetching data from .env file
 config();
@@ -420,6 +421,26 @@ class UserController {
     return res
       .status(400)
       .json({ error: "Provide the id of the target user to follow" });
+  };
+
+  static getFollowersSuggestion = async (req, res) => {
+    const currentUser = req.user;
+
+    try {
+      const userModel = new UserFollowersModel();
+
+      const { data, error } = await userModel.getFollowersSuggestion(
+        currentUser
+      );
+
+      if (data) return res.json({ data });
+
+      return res.status(500).json({ error });
+    } catch (err) {
+      console.log(err);
+
+      return { error: "An error occured while getting followers suggestion" };
+    }
   };
 }
 

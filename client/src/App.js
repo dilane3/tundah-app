@@ -51,6 +51,7 @@ import researchContext from "./dataManager/context/researchContext";
 import proposedPostsReducer from "./dataManager/data/proposedPost/proposedPostReducer";
 import { ToastProvider } from "react-simple-toastify";
 import ModalProvider from "./dataManager/providers/modalProvider";
+import FollowersSuggestionProvider from "./dataManager/providers/followersSuggestionProvider";
 
 function App() {
   const [posts, dispatchPosts] = useReducer(postsReducer, []);
@@ -67,6 +68,7 @@ function App() {
   const [research, setReseach] = useState({
     postsResults: [],
     query: "",
+    target: "",
   });
   const [postsArgs, setPostsArgs] = useState({
     next: false,
@@ -232,6 +234,14 @@ function App() {
     setReseach(researchClone);
   };
 
+  const setTarget = (target) => {
+    const researchClone = { ...research };
+
+    researchClone.target = target;
+
+    setReseach(researchClone);
+  };
+
   // Category Modal section
 
   const openModal = () => {
@@ -306,6 +316,7 @@ function App() {
     ...research,
     addResults,
     changeQuery,
+    setTarget,
   };
 
   // Data of category modal

@@ -1,6 +1,5 @@
 import PostModel from "../models/PostModel.js";
-import InterfacePost from './interfaces/interfacePost.js'
-import PostEnum from "../models/enums/PostEnum.js";
+import InterfacePost from "./interfaces/interfacePost.js";
 
 class Post extends InterfacePost {
   title;
@@ -9,9 +8,10 @@ class Post extends InterfacePost {
   modification_date;
   files_list;
   post_type;
+  categories;
 
   constructor() {
-    super()
+    super();
 
     this.dataManager = new PostModel();
   }
@@ -19,7 +19,7 @@ class Post extends InterfacePost {
   /**
    * @returns string
    */
-   get getTitle() {
+  get getTitle() {
     return this.title;
   }
 
@@ -58,6 +58,10 @@ class Post extends InterfacePost {
     return this.post_type;
   }
 
+  get getCategories() {
+    return this.categories;
+  }
+
   /**
    * This method allow a user to like a post
    * @param {string} idPost
@@ -83,20 +87,23 @@ class Post extends InterfacePost {
       userId
     );
 
-    console.log(datas)
+    console.log(datas);
 
     return { data, error };
   }
 
   /**
    * This methods alows the expert only to transfer a post to the wiki section
-   * @param {Object} datas 
-   * @returns 
+   * @param {Object} datas
+   * @returns
    */
   async transferPostToWiki(datas, userId) {
-    const { data, error } = await this.dataManager.transferSocialPostToWiki(datas, userId);
+    const { data, error } = await this.dataManager.transferSocialPostToWiki(
+      datas,
+      userId
+    );
 
-    return { data, error }
+    return { data, error };
   }
 
   /**
@@ -104,7 +111,11 @@ class Post extends InterfacePost {
    * @param {string} idPost
    * */
   async validatePost(idPost, idUser) {
-    const { data, error } = await this.dataManager.updatePostValidation(idPost, idUser, true);
+    const { data, error } = await this.dataManager.updatePostValidation(
+      idPost,
+      idUser,
+      true
+    );
 
     return { data, error };
   }
