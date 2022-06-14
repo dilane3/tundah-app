@@ -3,6 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import "./css/app.css";
 import Routes from "./Routes";
 import currentUserContext from "./dataManager/context/currentUserContent";
+import wikiPostsContext from "./dataManager/context/wikiPostsContext";
 import postsContext from "./dataManager/context/postsContext";
 import proposedPostContext from "./dataManager/context/proposedPostContext";
 import CategoryContext from "./dataManager/context/categoryContext";
@@ -35,7 +36,14 @@ import {
   addProposedPosts,
   validateProposedPost,
 } from "./dataManager/data/proposedPost/proposedPostActions";
+import {
+  deletePost as wikiPostDelete,
+  updatePost as wikiPostUpdate,
+  addPost as addWikiPost,
+  addPosts as addWikiPosts,
+} from "./dataManager/data/wikiPosts/wikiPostsActions";
 import currentUserReducer from "./dataManager/data/currentUser/currentUserReducer";
+import wikiPostsReducer from './dataManager/data/wikiPosts/wikiPostsReducer';
 import postsReducer from "./dataManager/data/posts/postsReducer";
 import navigationContext from "./dataManager/context/navigationContext";
 import Post from "./entities/Post";
@@ -50,6 +58,10 @@ function App() {
     proposedPostsReducer,
     []
   );
+  const [wikiPosts, dispatchWikiPosts] = useReducer(
+    wikiPostsReducer,
+    []
+  );
   const [currentUser, dispatchUser] = useReducer(currentUserReducer, null);
   const [navigation, setNavigation] = useState("");
   const [research, setReseach] = useState({
@@ -61,6 +73,10 @@ function App() {
     skip: 0,
   });
   const [proposedPostsArgs, setProposedPostsArgs] = useState({
+    next: true,
+    skip: 0,
+  });
+  const [wikiPostsArgs, setWikiPostsArgs] = useState({
     next: true,
     skip: 0,
   });
@@ -147,6 +163,28 @@ function App() {
 
   const setMorePostArgs = (next, skip) => {
     setPostsArgs((state) => ({ ...state, next, skip }));
+  };
+
+  // WikiPosts actions
+
+  const postsDeleteWikiPost = (idPost) => {
+    dispatchWikiPosts(wikiPostDelete(idPost));
+  };
+
+  const postsUpdateWikiPost = (idPost, data) => {
+    dispatchWikiPosts(wikiPostUpdate(idPost, data));
+  };
+
+  const postsAddWikiPosts = (posts) => {
+    dispatchWikiPosts(addWikiPosts(posts));
+  };
+
+  const postsAddWikiPost = (post) => {
+    dispatchWikiPosts(addWikiPost(post));
+  };
+
+  const setMoreWikiPostsArgs = (next, skip) => {
+    setWikiPostsArgs((state) => ({ ...state, next, skip }));
   };
 
   // Proposed Posts actions
@@ -245,6 +283,18 @@ function App() {
     validatePost: proposedPostValidate,
   };
 
+  const wikiPostContextValue = {
+    wikiPosts,
+    ...wikiPostsArgs,
+    deleteWikiPost: postsDeleteWikiPost,
+    updateWikiPost: postsUpdateWikiPost,
+    addWikiPosts: postsAddWikiPosts,
+    addWikiPost: postsAddWikiPost,
+    setMoreWikiPostsArgs
+  };
+
+//  setMoreWikiPostArgs
+
   // data of navigation
   const navigationContextValue = {
     navigation,
@@ -273,23 +323,25 @@ function App() {
 
   return (
     <currentUserContext.Provider value={currentUserContextValue}>
-      <postsContext.Provider value={postsContextValue}>
-        <proposedPostContext.Provider value={proposedPostContextValue}>
-          <navigationContext.Provider value={navigationContextValue}>
-            <researchContext.Provider value={researchContextValue}>
-              <ToastProvider options={toastOptions}>
-                <CategoryContext.Provider value={categoryContextValue}>
-                  <ModalProvider>
-                    <BrowserRouter>
-                      <Routes />
-                    </BrowserRouter>
-                  </ModalProvider>
-                </CategoryContext.Provider>
-              </ToastProvider>
-            </researchContext.Provider>
-          </navigationContext.Provider>
-        </proposedPostContext.Provider>
-      </postsContext.Provider>
+      <wikiPostsContext.Provider value={wikiPostContextValue} >
+        <postsContext.Provider value={postsContextValue}>
+          <proposedPostContext.Provider value={proposedPostContextValue}>
+            <navigationContext.Provider value={navigationContextValue}>
+              <researchContext.Provider value={researchContextValue}>
+                <ToastProvider options={toastOptions}>
+                  <CategoryContext.Provider value={categoryContextValue}>
+                    <ModalProvider>
+                      <BrowserRouter>
+                        <Routes />
+                      </BrowserRouter>
+                    </ModalProvider>
+                  </CategoryContext.Provider>
+                </ToastProvider>
+              </researchContext.Provider>
+            </navigationContext.Provider>
+          </proposedPostContext.Provider>
+        </postsContext.Provider>
+      </wikiPostsContext.Provider>
     </currentUserContext.Provider>
   );
 }
