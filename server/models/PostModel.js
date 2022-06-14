@@ -168,6 +168,30 @@ class PostModel extends InterfacePostModel {
     }
   }
 
+  async getSharedTimes(id) {
+    const session = dbConnect();
+
+    try {
+      const query = `
+        MATCH (:Post{id: $id}) <-[sharedTimes:SHARED]- (:Subscriber)
+        RETURN sharedTimes
+      `;
+
+      const result = await session.run(query, { id });
+
+      return { sharedTimes: result.records.length };
+    } catch (err) {
+      console.log(err);
+
+      return {
+        error:
+          "Error occured while getting number of times the post has been shared",
+      };
+    } finally {
+      await session.close();
+    }
+  }
+
   /**
    * This function return the number of comment linked to a specific post
    * @param {Session} session
@@ -233,13 +257,15 @@ class PostModel extends InterfacePostModel {
       const post = record.get(field).properties;
 
       const { commentsNumber } = await this.getCommentNumber(post.id);
+      const { sharedTimes } = await this.getSharedTimes(post.id);
       const { likes } = await this.getLikes(post.id);
       const { editors, author } = await this.getAuthorOfPost(post.id);
 
       postData.push({
         ...post,
         likes,
-        comments: commentsNumber,
+        comments: commentsNumber || 0,
+        sharedTimes: sharedTimes || 0,
         author,
         subAuthors: editors,
       });

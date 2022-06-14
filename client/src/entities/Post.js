@@ -10,6 +10,7 @@ class Post extends InterfacePost {
   files_list;
   post_type;
   comments;
+  sharedTimes;
   commentsData;
   likes;
   author;
@@ -36,6 +37,7 @@ class Post extends InterfacePost {
         files_list,
         post_type,
         comments,
+        sharedTimes,
         commentsData,
         author,
         likes,
@@ -49,6 +51,7 @@ class Post extends InterfacePost {
       this.files_list = files_list;
       this.post_type = post_type;
       this.comments = comments;
+      this.sharedTimes = sharedTimes;
       this.commentsData = commentsData ? commentsData : [];
       this.author = author;
       this.likes = likes;
@@ -109,6 +112,13 @@ class Post extends InterfacePost {
    */
   get getComments() {
     return this.comments;
+  }
+
+  /**
+   * @returns number
+   */
+  get getSharedTimes() {
+    return this.sharedTimes;
   }
 
   get getCommentsData() {

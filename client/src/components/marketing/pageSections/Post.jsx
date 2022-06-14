@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState, useRef, useMemo } from 'react'
 //packages
-import { BsHeartFill, BsHeart, BsThreeDotsVertical, BsChat } from "react-icons/bs"
+import { BsHeartFill, BsHeart, BsThreeDotsVertical, BsChat, BsReplyFill, BsReply } from "react-icons/bs"
+import { TiArrowForwardOutline, TiArrowForward } from 'react-icons/ti'
 //composans
 import SocialPostDropdown from '../../utils/dropdowns/SocialPostDropdown'
 import PostImg from '../../elements/imgCircle/ImgCircle'
@@ -90,6 +91,16 @@ const PostComponent = ({ postData, onLikePost, type }) => {
 		const extension = tabSplit[tabSplit.length - 1]
 
 		return imagesExtensions.includes(extension)
+	}
+
+	const postIsShared = (post) => {
+		const exist = currentUser.getPublishedPosts.some(myPost => myPost.id === post.id)
+
+		if (currentUser.getId !== post.getAuthor.id) {
+			return exist
+		}
+
+		return false
 	}
 
 	return (
@@ -206,6 +217,17 @@ const PostComponent = ({ postData, onLikePost, type }) => {
 								<BsChat size="20" className="icon" />
 							</Link>
 							<span className="text-xs md:text-sm">{formatLikesOrComment(post.getComments)}</span>
+						</div>
+
+						<div className="flex items-center space-x-1" onClick={() => onLikePost(post.getId)}>
+							{
+								postIsShared(post) ? (
+									<BsReplyFill size="25" className="icon" color="green" />
+								) : (
+									<BsReply size="25" className="icon" />
+								)
+							}
+							<span className="text-xs md:text-sm">{post.getSharedTimes}</span>
 						</div>
 					</footer>
 				) : null
