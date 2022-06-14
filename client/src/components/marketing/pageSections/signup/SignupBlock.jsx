@@ -344,9 +344,9 @@ const SignupBlock = (props) => {
 						</Paragraphe>
 					</div>
 
-					{/* redirection to wiki page */}
+					{/* redirection to social page */}
 					{
-						redirect ? <Redirect to="/" /> : null
+						redirect ? <Redirect to="/social" /> : null
 					}
 
 					{
