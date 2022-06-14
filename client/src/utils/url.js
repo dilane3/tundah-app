@@ -23,9 +23,9 @@ const instance = axios.create({
 // }
 
 // const ressourcesUrl = {
-//   profil: "https://tundah-server.herokuapp.com//static/images/profil",
-//   postImages: "https://tundah-server.herokuapp.com//static/images/post",
-//   postVideos: "https://tundah-server.herokuapp.com//static/videos",
+//   profil: "https://tundah-server.herokuapp.com/static/images/profil",
+//   postImages: "https://tundah-server.herokuapp.com/static/images/post",
+//   postVideos: "https://tundah-server.herokuapp.com/static/videos",
 // };
 
 // const ressourcesUrl = {
