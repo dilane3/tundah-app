@@ -2,13 +2,14 @@ import React, { useContext } from 'react'
 import styles from '../../../css/aside.module.css'
 import baseStyles from '../../../css/base.module.css'
 import ImgCircle from '../../elements/imgCircle/ImgCircle'
-import { BsPlusCircleFill, BsJournals, BsPersonCheck, BsGear } from 'react-icons/bs'
+import { BsPlusCircleFill, BsPeople, BsGear } from 'react-icons/bs'
 import { IoShareSocial } from 'react-icons/io5'
 import { Link } from 'react-router-dom'
 import currentUserContext from '../../../dataManager/context/currentUserContent'
 import Subscriber from '../../../entities/Subscriber'
 import navigationContext from '../../../dataManager/context/navigationContext'
 import { ressourcesUrl } from '../../../utils/url'
+import FollowUserPage from './followUserPage'
 
 const StatPostItem = ({ title, number }) => {
 	return (
@@ -48,11 +49,6 @@ const ProfilCard = () => {
 				</span>
 			</div>
 			<div className={styles.profilCardBottom}>
-				{
-					!user.getRole ? (
-						<StatPostItem title="postes proposés" number={user.getProposedPosts.length} />
-					) : null
-				}
 				<StatPostItem title="postes publiés" number={user.getPublishedPosts.length} />
 			</div>
 		</article>
@@ -86,7 +82,7 @@ const Navigation = ({ onShowAddExpertSection }) => {
 								onClick={() => { navigateTo("social") }}
 							>
 								<Link to="/social" style={{ width: "100%", display: "flex", flexDirection: "row" }}>
-									<IoShareSocial />
+									<BsPeople />
 									<span>Reseau social</span>
 								</Link>
 							</div>
@@ -105,9 +101,13 @@ const Navigation = ({ onShowAddExpertSection }) => {
 				</div>
 			</section>
 
-			<div className={`${baseStyles.asideSectionExtended} ${baseStyles.asideSectionMobileExtended}`}>
-				Users to follow section
-			</div>
+			{
+				user && (
+					<div className={`${baseStyles.asideSectionExtended} ${baseStyles.asideSectionMobileExtended}`}>
+						<FollowUserPage />
+					</div>
+				)
+			}
 		</>
 	)
 }

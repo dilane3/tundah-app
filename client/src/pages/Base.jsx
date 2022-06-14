@@ -24,7 +24,7 @@ const Base = ({ children }) => {
     setMorePostArgs
   } = useContext(postsContext)
   const { displayToast } = useContext(ToastContext)
-  const { open: modalOpened, openModal, closeModal } = useContext(CategoryContext)
+  const { open: modalOpened, closeModal } = useContext(CategoryContext)
   const { isOpen: modalIsOpened, closeModal: modalCloser, currentModalName } = useContext(ModalContext)
 
   const [showMobileMenu, setShowMobileMenu] = useState(false)

@@ -54,7 +54,7 @@ const ModalCoreContainer = ({ open, title, closeModal }) => {
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
         open={open}
-        onClose={closeModal}
+        // onClose={closeModal}
         closeAfterTransition
         BackdropComponent={Backdrop}
         BackdropProps={{
@@ -62,7 +62,7 @@ const ModalCoreContainer = ({ open, title, closeModal }) => {
         }}
       >
         <Fade in={open}>
-          <Box sx={style}>
+          <Box sx={style} className={styles.modalCoreContainer}>
             <header className={styles.modalCoreHeader}>
               <span className={styles.modalCoreHeaderText}>{title.toUpperCase()}</span>
             </header>

@@ -1,5 +1,4 @@
 import React, { useEffect, useContext } from 'react'
-import ListPosts from '../../../components/marketing/pageSections/wiki/ListPosts'
 import navigationContext from '../../../dataManager/context/navigationContext'
 
 const BodyWiki = () => {

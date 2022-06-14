@@ -5,8 +5,8 @@ import axios from "axios";
 // });
 
 // const instance = axios.create({
-// 	baseURL: "http://192.168.43.81:5000/api",
-// })
+//   baseURL: "http://192.168.43.81:5000/api",
+// });
 
 const instance = axios.create({
   baseURL: "https://tundah-server.herokuapp.com/api",
@@ -29,10 +29,10 @@ const ressourcesUrl = {
 };
 
 // const ressourcesUrl = {
-// 	profil: "http://192.168.43.81:5000/static/images/profil",
-// 	postImages: "http://192.168.43.81:5000/static/images/post",
-// 	postVideos: "http://192.168.43.81:5000/static/videos"
-// }
+//   profil: "http://192.168.43.81:5000/static/images/profil",
+//   postImages: "http://192.168.43.81:5000/static/images/post",
+//   postVideos: "http://192.168.43.81:5000/static/videos",
+// };
 
 // const ressourcesUrl = {
 //   profil: "http://localhost:5000/static/images/profil",

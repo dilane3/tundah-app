@@ -159,7 +159,7 @@ class CommentModel extends InterfaceCommentModel {
         });
       }
 
-      return { data: commentData };
+      return { data: commentData }
     } catch (err) {
       
       console.log(err)

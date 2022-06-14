@@ -74,15 +74,11 @@ body {
 .asideSectionMobileExtended {
   top: 310px !important;
   margin-top: 20px;
-  background-color: #fff;
-  padding: 10px;
   display: none;
 }
 
 .asideSectionExtended {
-  /* position: -webkit-sticky; */
   position: sticky;
-  /* position: fixed; */
   top: 90px;
   right: 100px;
   width: 290px;
@@ -94,10 +90,10 @@ body {
   top: 90px;
   left: 100px;
   width: 290px;
-  max-height: 300px;
+  min-height: 200px;
+  max-height: 360px;
+  height: auto;
   z-index: 1;
-  background-color: #fff;
-  padding: 10px;
 }
 
 .backgroundBlack {
@@ -171,7 +167,7 @@ body {
   }
 
   .mainSectionExtended {
-    width: calc(100% - 500px);
+    width: calc(100% - 550px);
   }
 
   .asideSection {
@@ -182,8 +178,6 @@ body {
   .asideSectionMobileExtended {
     top: 280px !important;
     margin-top: 20px;
-    background-color: #fff;
-    padding: 10px;
   }
 
   .asideSectionExtended {
@@ -195,7 +189,6 @@ body {
   .usersToFollowSectionExtended {
     top: 80px;
     left: 50px;
-    width: 250px;
   }
 
   .header {
@@ -209,12 +202,12 @@ body {
   }
 
   .asideSection {
-    width: 250px;
+    width: 290px;
     right: 50px;
   }
 
   .mainSection {
-    width: calc(100% - 270px);
+    width: calc(100% - 310px);
     /* margin-right: 260px; */
   }
 
@@ -248,7 +241,6 @@ body {
   }
 
   .mainSection {
-    width: calc(100% - 270px);
     margin: 0 auto 0 0;
     /* margin-left: 10px; */
   }
@@ -264,9 +256,17 @@ body {
   .mainSectionExtended {
     width: 100%;
     margin: 0 auto;
+    padding: 0;
   }
 
   .container {
+    padding: 0;
+  }
+}
+
+@media screen and (max-width: 576px) {
+  .container,
+  .containerExtended {
     padding: 0;
   }
 }

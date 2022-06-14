@@ -44,6 +44,24 @@ class UserApi {
       return { error: "An error occured" };
     }
   }
+
+  static async getFollowersSuggestion() {
+    try {
+      const instance = insertToken(axiosInstance);
+
+      const { data, error } = await instance.get("/users/followers/suggestion");
+
+      if (data) {
+        return { data };
+      }
+
+      return { error };
+    } catch (err) {
+      console.log(err);
+
+      return { error: "An error occured" };
+    }
+  }
 }
 
 export default UserApi;
