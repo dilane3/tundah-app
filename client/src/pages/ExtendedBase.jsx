@@ -161,7 +161,7 @@ const ExtendedBase = ({ children }) => {
   // Handle open modal for choosing categories if it has not been done
   useEffect(() => {
     if (!modalIsOpened && currentUser?.categories.length === 0) {
-      modalOpen("Categories", "SELECT_CATEGORIES")
+      // modalOpen("Categories", "SELECT_CATEGORIES")
     }
   }, [currentUser])
 

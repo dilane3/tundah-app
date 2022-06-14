@@ -3,42 +3,42 @@ import Subscriber from "./Subscriber.js";
 
 class Expert extends Subscriber {
   constructor(data) {
-    super(data)
+    super(data);
   }
 
-  /**
-   * This method allow an user expert to create a post
-   * @param {any} datas 
-   */
-  async createPost(title, content, files_list, region, tribe) {
-    const post = new Post()
+  // /**
+  //  * This method allow an user expert to create a post
+  //  * @param {any} datas
+  //  */
+  // async createPost(title, content, files_list, region, tribe) {
+  //   const post = new Post()
 
-    return (await post.publishPost({title, content, files_list, region, tribe}, this.getId))
-  }
+  //   return (await post.publishPost({title, content, files_list, region, tribe}, this.getId))
+  // }
 
   /**
    * This method allow an user expert to add user
-   * @param {string} idSubscriber 
+   * @param {string} idSubscriber
    */
   async addExpert(idSubscriber) {
     if (idSubscriber) {
-      const {data, error} = await this.dataManager.addExpert(idSubscriber)
+      const { data, error } = await this.dataManager.addExpert(idSubscriber);
 
-      return {data, error}
+      return { data, error };
     } else {
-      return {error: "Error occurs while adding an expert user"}
+      return { error: "Error occurs while adding an expert user" };
     }
   }
 
   /**
    * This method allow an use expert to validate a post
-   * @param {string} idPost 
+   * @param {string} idPost
    */
   async validatePost(idPost) {
-    const post = new Post()
+    const post = new Post();
 
-    return (await post.validatePost(idPost, this.getId))
+    return await post.validatePost(idPost, this.getId);
   }
 }
 
-export default Expert
+export default Expert;

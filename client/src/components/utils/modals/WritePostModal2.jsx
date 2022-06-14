@@ -13,6 +13,9 @@ import { instance, ressourcesUrl } from "../../../utils/url"
 import LoaderCircle from "../loaders/Loader"
 import postsContext from '../../../dataManager/context/postsContext'
 import "../../../css/app.css"
+import { formatName } from '../../../utils/format'
+import { Autocomplete, TextField } from '@mui/material'
+import CategoryItem from '../../marketing/pageSections/social/categoryItem'
 
 const WritePostModal2 = (props) => {
 
@@ -21,22 +24,16 @@ const WritePostModal2 = (props) => {
 
   const {
     // show, 
-    onCloseModal,
-    showPreMessage,
-    setShowPreMessage
+    onCloseModal
   } = props
 
   //constant
   const initialPostState = {
     title: "",
-    region: "",
-    tribu: "",
+    categories: [],
     images: [],
     video: null
   }
-
-
-  const regionPost = ["Nord", "Sud", "ouest", "Est", "centre", "Littorale", "Extreme-nord", "sud-ouest", "Nord-ouest"]
 
   //context
   const { currentUser } = useContext(currentUserContext)
@@ -49,24 +46,48 @@ const WritePostModal2 = (props) => {
 
   //state variable
   const [postData, setPostData] = useState(initialPostState)
-  const [tribus, setTribus] = useState([])
   const [indexImage, setIndexImage] = useState(0)
   // const [displayEditPost, setDisplayEditPost] = useState(false)
   const [displayImage, setDisplayImage] = useState(false)
   const [isLoading, setLoading] = useState(false)
-
-  //useEffect
-  useEffect(() => {
-    selectTribu(postData.region)
-  }, [postData])
-
+  const [selectedCategory, setSelectedCategory] = useState(null)
 
   //handler
+
   const handleChange = (event) => {
     setPostData({ ...postData, [event.target.id]: event.target.value })
+  }
 
-    if (event.target.id === "region") {
-      setPostData(state => ({ ...state, tribu: tribus[0] }))
+  /**
+   * Add a category
+   */
+  const handleAddCategories = () => {
+    if (selectedCategory) {
+      const postDataClone = { ...postData }
+
+      if (!postDataClone.categories.some(cat => cat.value === selectedCategory.value)) {
+        postDataClone.categories.push(selectedCategory)
+
+        setPostData(postDataClone)
+      }
+
+      setSelectedCategory(null)
+    }
+  }
+
+  /**
+   * Delete a category basing on its id
+   * @param {string} id 
+   */
+  const handleDeleteCategory = (id) => {
+    const postDataClone = { ...postData }
+
+    const index = postDataClone.categories.findIndex(cat => cat.value === id)
+
+    if (index > -1) {
+      postDataClone.categories.splice(index, 1)
+
+      setPostData(postDataClone)
     }
   }
 
@@ -74,38 +95,32 @@ const WritePostModal2 = (props) => {
   const handleSubmit = (event) => {
     event.preventDefault()
 
-    const { title, region, tribu } = postData
     const contentPost = contentRef.current.innerHTML
 
-    if (title !== "" && contentPost !== "" && !showPreMessage && region !== "" && tribu !== "") {
+    if (verificationForm()) {
 
-      console.log(contentPost)
       const fileType = postData.video ? "video" : "image"
       const {
         title,
-        region,
-        tribu,
         images,
-        video
+        video,
+        // categories
       } = postData
-
-      console.log(postData)
 
       //send a FormData when post data content files
       const dataToSend = new FormData()
 
       dataToSend.append("title", title)
       dataToSend.append("content", contentPost)
-      dataToSend.append("region", region)
-      dataToSend.append("tribe", tribu)
       dataToSend.append("fileType", fileType)
+      dataToSend.append("categoryList", categories)
 
       if (video) {
         dataToSend.append("video", inputVideoRef.current.files[0])
       }
 
       if (images.length) {
-        images.forEach((img, index) => {
+        images.forEach((_, index) => {
           dataToSend.append("images", inputImagesRef.current.files[index])
         })
       }
@@ -121,7 +136,7 @@ const WritePostModal2 = (props) => {
           setLoading(false)
           onCloseModal()
 
-          // we add the post inside the wiki page
+          // we add the post inside the social page
           addPost(res.data.data)
 
           // we add the post inside the profile of the current user
@@ -133,9 +148,8 @@ const WritePostModal2 = (props) => {
           setLoading(false)
         })
     } else {
-      console.log("terminer la redactioin de post")
+      console.log("terminer la redaction de post")
     }
-
   }
 
   const handleSelectImages = () => {
@@ -177,46 +191,29 @@ const WritePostModal2 = (props) => {
   const resetPostData = () => {
     setPostData({ ...initialPostState })
     contentRef.current.innerHTML = ""
-    setShowPreMessage(true)
     setLoading(false)
     onCloseModal()
-  }
-
-  //function
-  function selectTribu(region) {
-    let someTribu = []
-    switch (region.toLowerCase()) {
-      case "nord":
-        someTribu = ["Toupouri", "Moundan", "Massah", "Arabe choa"]
-        setTribus(someTribu)
-        break
-      case "ouest":
-        someTribu = ["Dschang", "Mbouda", "Bagante", "Bamoun", "Bafousam", "Bafang", "Baham", "Bandjoun"]
-        setTribus(someTribu)
-        break
-      case "centre":
-        someTribu = ["Eton", "Ewondo", "Bassa", "Boulou"]
-        setTribus(someTribu)
-        break
-      case "littoral":
-        someTribu = ["Douala", "Mboo", "Bassa"]
-        setTribus(someTribu)
-        break
-      default:
-        someTribu = [`${region} tribu 1`, `${region} tribu 2`, `${region} tribu 3`, `${region} tribu 4`]
-        setTribus(someTribu)
-        break
-    }
   }
 
   const {
     title,
     content,
-    region,
-    tribu,
+    categories
     // images,
     // video
   } = postData
+
+  const verificationForm = () => {
+    const {
+      title,
+      // categories
+    } = postData
+    const contentPost = contentRef?.current?.innerHTML
+
+    if (title && contentPost) return true
+
+    return false
+  }
 
 
   return (
@@ -226,14 +223,57 @@ const WritePostModal2 = (props) => {
           <div className="flex items-center justify-start space-x-2">
             <ImgCircle
               src={ressourcesUrl.profil + "/" + user.getProfil}
-              alt="image du curent iser"
+              size="medium"
+              alt="image du current user"
             />
 
             <div>
-              <span className="block font-bold text-md font-primary">{user.getName}</span>
+              <span className="block font-bold text-md font-primary">{formatName(user.getName)}</span>
               <span className="block text-sm font-primary">@{user.getUsername}</span>
             </div>
           </div>
+
+          {/* Category section */}
+
+          <section className={styles.postCategoryContainer}>
+            <div className={styles.postCategoryTop}>
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={[
+                  { label: "Mariage", value: "1" },
+                  { label: "Cuisine", value: "2" },
+                  { label: "Dote", value: "3" },
+                  { label: "Sport", value: "4" },
+                  { label: "Deuil", value: "5" },
+                  { label: "Langue", value: "6" },
+                  { label: "Art", value: "7" }
+                ]}
+                fullWidth
+                onChange={(_, category) => setSelectedCategory(category)}
+                isOptionEqualToValue={(option, value) => option.value === value.value}
+                value={selectedCategory}
+                renderInput={(params) => <TextField {...params} variant="standard" label="Categories" />}
+              />
+
+              <Button action={handleAddCategories}>Ajouter</Button>
+            </div>
+
+            <div className={styles.postCategoryBottom}>
+              {
+                categories.map(categorie => (
+                  <CategoryItem
+                    key={categorie.value}
+                    value={categorie.label}
+                    id={categorie.value}
+                    onDelete={handleDeleteCategory}
+                  />
+                ))
+              }
+            </div>
+          </section>
+
+          {/* Title section */}
 
           <input
             type="text"
@@ -245,48 +285,7 @@ const WritePostModal2 = (props) => {
             className={`${styles.postTitle} block w-full py-0.5 mx-0 w-full mt-8 bg-white focus:outline-none`}
           />
 
-          <div className={`${styles.postOptions} flex items-center justify-between mt-8`}>
-            <select
-              name="region"
-              id="region"
-              value={region}
-              onChange={handleChange}
-              className={`${styles.writePostSelect} bg-gray-200 p-2 rounded text-xm font-primary`}
-            >
-              <option value="">
-                Région conserné
-              </option>
-              {
-                regionPost.map((region, index) => (
-                  <option value={region} key={index}>
-                    {region}
-                  </option>
-                ))
-              }
-            </select>
-
-            <select
-              name="tribu"
-              id="tribu"
-              value={tribu}
-              onChange={handleChange}
-              className={`${styles.writePostSelect} bg-gray-200 p-2 rounded text-xm font-primary`}
-            >
-              {
-                !region && (
-                  <option value="">Tribu conserné</option>
-                )
-              }
-
-              {
-                tribus.map((region, index) => (
-                  <option value={region} key={index}>
-                    {region}
-                  </option>
-                ))
-              }
-            </select>
-          </div>
+          {/* Content section */}
 
           <div
             ref={contentRef}
@@ -294,14 +293,8 @@ const WritePostModal2 = (props) => {
             contentEditable="true"
             className={`${styles.postEditor} block focus:border-0 border-none w-full my-14 w-full text-gray-800`}
             value={content}
-            placeholder="développer votre idée yo"
-            onClick={() => setShowPreMessage(false)}
+            placeholder="développer votre idée"
           >
-            {
-              showPreMessage || (contentRef.current && contentRef.current.innerHTML) === "" ? (
-                <span className="md:text-lg text-gray-400" id="preMessage">Développez votre idée</span>
-              ) : null
-            }
           </div>
 
           {
@@ -380,8 +373,9 @@ const WritePostModal2 = (props) => {
 
             <input
               onClick={(event) => handleSubmit(event)}
+              disabled={!verificationForm()}
               type="submit"
-              value={user.getRole === 0 ? "proposer" : "publier"}
+              value={"publier"}
               className={`${styles.writePostButtonControl} px-3 bg-primary text-white text-xs rounded hover:bg-primary-hover`}
             />
           </div>

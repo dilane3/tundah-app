@@ -27,7 +27,6 @@ const Navbar = ({ className, onShowMobileMenu }) => {
 	const newTarget = useMemo(() => {
 		const pathnameSplitted = location.pathname.split("/")
 
-		console.log("Wiki wiki wiki wiki")
 		if (pathnameSplitted[pathnameSplitted.length - 1] === "social") {
 			return "social"
 		} else if (!pathnameSplitted[pathnameSplitted.length - 1]) {
@@ -35,7 +34,7 @@ const Navbar = ({ className, onShowMobileMenu }) => {
 		} else {
 			return target
 		}
-	}, [location])
+	}, [location.pathname])
 
 	const handleChange = event => {
 		event.preventDefault();
