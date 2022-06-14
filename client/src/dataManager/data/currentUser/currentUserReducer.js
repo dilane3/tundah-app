@@ -12,6 +12,7 @@ import {
   ADD_FOLLOWING,
   DELETE_FOLLOWING,
   DELETE_FOLLOWER,
+  SIMPLE_SHARE_POST,
 } from "./type";
 
 const currentUserReducer = (state, action) => {
@@ -66,6 +67,28 @@ const currentUserReducer = (state, action) => {
         const user = new Subscriber(state);
 
         user.createPost(action.payload);
+
+        return user.getUserData;
+      }
+
+      return state;
+    }
+
+    case SIMPLE_SHARE_POST: {
+      const { post, status } = action.payload;
+
+      console.log({ post, status });
+
+      if (post && status !== undefined) {
+        const user = new Subscriber(state);
+
+        console.log({ status });
+
+        if (status) {
+          user.simpleSharePost(post);
+        } else {
+          user.simpleUnSharePost(post);
+        }
 
         return user.getUserData;
       }

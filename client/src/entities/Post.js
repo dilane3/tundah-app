@@ -194,6 +194,12 @@ class Post extends InterfacePost {
       return { ...this, likes: [...newLikes] };
     }
   }
+
+  increaseShareTimes(action) {
+    const val = action === "share" ? 1 : -1;
+
+    this.sharedTimes += val;
+  }
 }
 
 export default Post;

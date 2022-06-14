@@ -223,7 +223,7 @@ class PostController {
   static createPost = async (req, res) => {
     const { title, content, fileType, categoryList: categories } = req.body;
     console.log(categories);
-    const categoryList = ["FMOGSLKz6tUMIevoE7iC"];
+    const categoryList = [];
     let files_list;
 
     if (fileType === "image") {

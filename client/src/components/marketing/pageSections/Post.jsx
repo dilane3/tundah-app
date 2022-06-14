@@ -18,6 +18,8 @@ import { ressourcesUrl } from "../../../utils/url"
 import { getRelativeDate } from '../../../utils/dateOperations'
 import ProfilPopover from '../../utils/popovers/profilPopover'
 import { Box, Typography } from '@mui/material'
+import PostApi from '../../../api/posts'
+import postsContext from '../../../dataManager/context/postsContext'
 
 const imagesExtensions = ["jpeg", "png", "gif", "bmp", "jpg"]
 const checkCurrentUser = (author, currentUser) => {
@@ -29,7 +31,8 @@ const PostComponent = ({ postData, onLikePost, type }) => {
 	const target = useMemo(() => type ? type : "social", [type])
 
 	// getting data from the global state
-	const { currentUser } = useContext(currentUserContext)
+	const { currentUser, simpleSharePost } = useContext(currentUserContext)
+	const { sharePost } = useContext(postsContext)
 
 	// Set local state
 	const [isHover, setIsHover] = useState(false)
@@ -71,6 +74,18 @@ const PostComponent = ({ postData, onLikePost, type }) => {
 		setIndexFile(index)
 
 		setShowDisplayPhotoModal(true)
+	}
+
+	const handleSharePost = async (postId) => {
+		const { data } = await PostApi.simpleSharePost({ idPost: postId })
+
+		if (data) {
+			const newPost = { ...post, sharedTimes: data.data.status ? post.getSharedTimes + 1 : post.getSharedTimes - 1 }
+
+			console.log({ status: data.data.status })
+			simpleSharePost(newPost, data.data.status)
+			sharePost(newPost)
+		}
 	}
 
 
@@ -219,7 +234,7 @@ const PostComponent = ({ postData, onLikePost, type }) => {
 							<span className="text-xs md:text-sm">{formatLikesOrComment(post.getComments)}</span>
 						</div>
 
-						<div className="flex items-center space-x-1" onClick={() => onLikePost(post.getId)}>
+						<div className="flex items-center space-x-1" onClick={() => handleSharePost(post.getId)}>
 							{
 								postIsShared(post) ? (
 									<BsReplyFill size="25" className="icon" color="green" />

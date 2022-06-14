@@ -192,6 +192,29 @@ class Subscriber {
     this.posts.push(post);
   }
 
+  simpleSharePost(post) {
+    const newPost = new Post(post);
+
+    const index = this.posts.findIndex((p) => p.id === post.id);
+
+    if (index > -1) {
+      // Delete post
+      this.posts.splice(index, 1);
+    }
+
+    // Add new post
+    this.posts.push(newPost);
+  }
+
+  simpleUnSharePost(post) {
+    const index = this.posts.findIndex((p) => p.id === post.id);
+
+    if (index > -1) {
+      // Delete post
+      this.posts.splice(index, 1);
+    }
+  }
+
   likePost(idPost) {
     const posts = [...this.posts];
 

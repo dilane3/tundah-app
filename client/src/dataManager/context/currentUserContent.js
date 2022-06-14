@@ -7,6 +7,7 @@ const currentUserContext = React.createContext({
   deletePost: (idPost) => {},
   editPost: (idPost, data) => {},
   createPost: (post) => {},
+  simpleSharePost: (post, status) => {},
   updateProfil: (profil) => {},
   updateUser: (data) => {},
   likeUserPost: (idPost) => {},

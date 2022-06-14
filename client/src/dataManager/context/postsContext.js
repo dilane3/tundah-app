@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 const postsContext = React.createContext({
   posts: [],
@@ -8,10 +8,11 @@ const postsContext = React.createContext({
   updatePost: (idPost, data) => {},
   addPosts: (posts) => {},
   addPost: (post) => {},
+  sharePost: (post) => {},
   addComments: (idPost, comments) => {},
   addComment: (idPost, idComment, comment) => {},
   likePost: (idPost, idUser) => {},
-  setMorePostArgs: (next, skip) => {}
-})
+  setMorePostArgs: (next, skip) => {},
+});
 
-export default postsContext
+export default postsContext;

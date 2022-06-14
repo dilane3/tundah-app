@@ -5,39 +5,47 @@ import {
   ADD_POST,
   ADD_COMMENT,
   ADD_COMMENTS,
-  LIKE_POST
-} from "./type"
+  LIKE_POST,
+  SHARE_POST,
+} from "./type";
 
 const deletePost = (idPost) => {
   return {
     type: DELETE_POST,
-    payload: idPost
-  }
-}
+    payload: idPost,
+  };
+};
 
 const updatePost = (idPost, data) => {
   return {
     type: UPDATE_POST,
     payload: {
       idPost,
-      data
-    }
-  }
-}
+      data,
+    },
+  };
+};
 
 const addPosts = (posts) => {
   return {
     type: ADD_POSTS,
-    payload: posts
-  }
-}
+    payload: posts,
+  };
+};
 
 const addPost = (post) => {
   return {
     type: ADD_POST,
-    payload: post
-  }
-}
+    payload: post,
+  };
+};
+
+const sharePost = (post) => {
+  return {
+    type: SHARE_POST,
+    payload: post,
+  };
+};
 
 const addComment = (idPost, comment, responseTo = null) => {
   return {
@@ -45,37 +53,38 @@ const addComment = (idPost, comment, responseTo = null) => {
     payload: {
       idPost,
       comment,
-      responseTo
-    }
-  }
-}
+      responseTo,
+    },
+  };
+};
 
 const addComments = (idPost, comments) => {
   return {
     type: ADD_COMMENTS,
     payload: {
       idPost,
-      comments
-    }
-  }
-}
+      comments,
+    },
+  };
+};
 
 const likePost = (idPost, idUser) => {
   return {
     type: LIKE_POST,
     payload: {
       idPost,
-      idUser
-    }
-  }
-}
+      idUser,
+    },
+  };
+};
 
 export {
   deletePost,
   updatePost,
   addPosts,
   addPost,
+  sharePost,
   addComment,
   addComments,
-  likePost
-}
+  likePost,
+};

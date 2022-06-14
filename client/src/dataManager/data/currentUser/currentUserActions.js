@@ -11,6 +11,7 @@ import {
   ADD_FOLLOWING,
   DELETE_FOLLOWER,
   DELETE_FOLLOWING,
+  SIMPLE_SHARE_POST,
 } from "./type";
 
 /**
@@ -53,6 +54,16 @@ const createPost = (post) => {
   return {
     type: CREATE_POST,
     payload: post,
+  };
+};
+
+const simpleSharePost = (post, status) => {
+  return {
+    type: SIMPLE_SHARE_POST,
+    payload: {
+      post,
+      status,
+    },
   };
 };
 
@@ -111,6 +122,7 @@ export {
   deletePost,
   editPost,
   createPost,
+  simpleSharePost,
   updateProfil,
   updateUser,
   likeUserPost,

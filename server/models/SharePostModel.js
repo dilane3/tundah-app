@@ -11,28 +11,26 @@ class SharePostModel extends PostModel {
         postId
       );
       let query;
-      let message;
+      let res;
 
       if (!error && alreadyShared) {
         query = `
           MATCH (:Subscriber{id: $userId}) -[share:SHARED]-> (:Post{id: $postId})
           DELETE share
         `;
-        message = "Post unshared successfully";
+        res = { message: "Post unshared successfully", status: false };
       } else {
         query = `
           MATCH (user:Subscriber{id: $userId}), 
                 (post:Post{id: $postId})
           CREATE (user) -[:SHARED]-> (post)
         `;
-        message = "Post shared successfully";
+        res = { message: "Post shared successfully", status: true };
       }
-
-      console.log({ alreadyShared, message });
 
       await session.run(query, { userId, postId });
 
-      return { data: message };
+      return { data: res };
     } catch (err) {
       console.log(err);
 

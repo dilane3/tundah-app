@@ -18,14 +18,18 @@ const FollowUserPage = () => {
         }}>Vous connaissez surement...</Typography>
       </Box>
       {
-        suggestions.map(user => (
+        suggestions.slice(0, 3).map(user => (
           <FollowUserItem data={user} />
         ))
       }
 
-      <div className="followUserSeeMoreAction">
-        Voir plus...
-      </div>
+      {
+        suggestions.length > 3 && (
+          <div className="followUserSeeMoreAction">
+            Voir plus...
+          </div>
+        )
+      }
     </div>
   )
 }

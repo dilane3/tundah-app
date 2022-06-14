@@ -4,7 +4,6 @@ import "./css/app.css";
 import Routes from "./Routes";
 import currentUserContext from "./dataManager/context/currentUserContent";
 import postsContext from "./dataManager/context/postsContext";
-import proposedPostContext from "./dataManager/context/proposedPostContext";
 import CategoryContext from "./dataManager/context/categoryContext";
 import {
   login,
@@ -12,6 +11,7 @@ import {
   deletePost,
   editPost,
   createPost,
+  simpleSharePost,
   updateProfil,
   updateUser,
   likeUserPost,
@@ -28,13 +28,8 @@ import {
   addComment,
   addComments,
   likePost,
+  sharePost,
 } from "./dataManager/data/posts/postsActions";
-import {
-  deleteProposedPost,
-  updateProposedPost,
-  addProposedPosts,
-  validateProposedPost,
-} from "./dataManager/data/proposedPost/proposedPostActions";
 import currentUserReducer from "./dataManager/data/currentUser/currentUserReducer";
 import postsReducer from "./dataManager/data/posts/postsReducer";
 import navigationContext from "./dataManager/context/navigationContext";
@@ -97,6 +92,10 @@ function App() {
     dispatchUser(likeUserPost(idPost));
   };
 
+  const userSimpleSharePost = (post, status) => {
+    dispatchUser(simpleSharePost(post, status));
+  };
+
   const userUpdateUser = (data) => {
     dispatchUser(updateUser(data));
   };
@@ -135,6 +134,10 @@ function App() {
     dispatchPosts(addPost(post));
   };
 
+  const postsSharePost = (post) => {
+    dispatchPosts(sharePost(post));
+  };
+
   const postsAddComment = (idPost, comment, responseTo = null) => {
     dispatchPosts(addComment(idPost, comment, responseTo));
   };
@@ -149,28 +152,6 @@ function App() {
 
   const setMorePostArgs = (next, skip) => {
     setPostsArgs((state) => ({ ...state, next, skip }));
-  };
-
-  // Proposed Posts actions
-
-  const proposedPostsDeletePost = (idPost) => {
-    dispatchProposedPosts(deleteProposedPost(idPost));
-  };
-
-  const proposedPostsUpdatePost = (idPost, data) => {
-    dispatchProposedPosts(updateProposedPost(idPost, data));
-  };
-
-  const proposedPostsAddPosts = (posts) => {
-    dispatchProposedPosts(addProposedPosts(posts));
-  };
-
-  const proposedPostValidate = (idPost) => {
-    dispatchProposedPosts(validateProposedPost(idPost));
-  };
-
-  const setMoreProposedPostsArgs = (next, skip) => {
-    setProposedPostsArgs((state) => ({ ...state, next, skip }));
   };
 
   // navigation action
@@ -224,6 +205,7 @@ function App() {
     createPost: userCreatePost,
     updateProfil: userUpdateProfil,
     updateUser: userUpdateUser,
+    simpleSharePost: userSimpleSharePost,
     likeUserPost: userLikeUserPost,
     addFollower: userAddFollower,
     addFollowing: userAddFollowing,
@@ -243,16 +225,7 @@ function App() {
     addComment: postsAddComment,
     likePost: postsLikePost,
     setMorePostArgs,
-  };
-
-  const proposedPostContextValue = {
-    proposedPosts,
-    ...proposedPostsArgs,
-    deletePost: proposedPostsDeletePost,
-    updatePost: proposedPostsUpdatePost,
-    addPosts: proposedPostsAddPosts,
-    setMoreProposedPostsArgs,
-    validatePost: proposedPostValidate,
+    sharePost: postsSharePost,
   };
 
   // data of navigation
@@ -285,23 +258,21 @@ function App() {
   return (
     <currentUserContext.Provider value={currentUserContextValue}>
       <postsContext.Provider value={postsContextValue}>
-        <proposedPostContext.Provider value={proposedPostContextValue}>
-          <navigationContext.Provider value={navigationContextValue}>
-            <researchContext.Provider value={researchContextValue}>
-              <ToastProvider options={toastOptions}>
-                <CategoryContext.Provider value={categoryContextValue}>
-                  <ModalProvider>
-                    <FollowersSuggestionProvider>
-                      <BrowserRouter>
-                        <Routes />
-                      </BrowserRouter>
-                    </FollowersSuggestionProvider>
-                  </ModalProvider>
-                </CategoryContext.Provider>
-              </ToastProvider>
-            </researchContext.Provider>
-          </navigationContext.Provider>
-        </proposedPostContext.Provider>
+        <navigationContext.Provider value={navigationContextValue}>
+          <researchContext.Provider value={researchContextValue}>
+            <ToastProvider options={toastOptions}>
+              <CategoryContext.Provider value={categoryContextValue}>
+                <ModalProvider>
+                  <FollowersSuggestionProvider>
+                    <BrowserRouter>
+                      <Routes />
+                    </BrowserRouter>
+                  </FollowersSuggestionProvider>
+                </ModalProvider>
+              </CategoryContext.Provider>
+            </ToastProvider>
+          </researchContext.Provider>
+        </navigationContext.Provider>
       </postsContext.Provider>
     </currentUserContext.Provider>
   );
