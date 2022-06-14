@@ -28,26 +28,30 @@ class UserController {
           const { data: followersData } =
             await userModel.getFollowersAndFollowings(data.id);
 
-          const { followers, followings } = followersData;
+          if (followersData) {
+            const { followers, followings } = followersData;
 
-          if (followers !== undefined && followings !== undefined) {
-            if (postdata) {
-              res.json({
-                ...data,
-                password: undefined,
-                posts: postdata,
-                followers,
-                followings,
-              });
-            } else {
-              res.json({
-                ...data,
-                password: undefined,
-                posts: [],
-                followers,
-                followings,
-              });
+            if (followers !== undefined && followings !== undefined) {
+              if (postdata) {
+                res.json({
+                  ...data,
+                  password: undefined,
+                  posts: postdata,
+                  followers,
+                  followings,
+                });
+              } else {
+                res.json({
+                  ...data,
+                  password: undefined,
+                  posts: [],
+                  followers,
+                  followings,
+                });
+              }
             }
+          } else {
+            res.json(data);
           }
         } else {
           res.json(data);

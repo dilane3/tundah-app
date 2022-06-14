@@ -234,16 +234,20 @@ const PostComponent = ({ postData, onLikePost, type }) => {
 							<span className="text-xs md:text-sm">{formatLikesOrComment(post.getComments)}</span>
 						</div>
 
-						<div className="flex items-center space-x-1" onClick={() => handleSharePost(post.getId)}>
-							{
-								postIsShared(post) ? (
-									<BsReplyFill size="25" className="icon" color="green" />
-								) : (
-									<BsReply size="25" className="icon" />
-								)
-							}
-							<span className="text-xs md:text-sm">{post.getSharedTimes}</span>
-						</div>
+						{
+							post.getAuthor.id !== currentUser.id && (
+								<div className="flex items-center space-x-1" onClick={() => handleSharePost(post.getId)}>
+									{
+										postIsShared(post) ? (
+											<BsReplyFill size="25" className="icon" color="green" />
+										) : (
+											<BsReply size="25" className="icon" />
+										)
+									}
+									<span className="text-xs md:text-sm">{post.getSharedTimes}</span>
+								</div>
+							)
+						}
 					</footer>
 				) : null
 			}

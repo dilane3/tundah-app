@@ -15,7 +15,11 @@ const FollowUserPage = () => {
           fontSize: "18px",
           fontWeight: "bold",
           ml: 1
-        }}>Vous connaissez surement...</Typography>
+        }}>
+          {
+            suggestions.length > 0 ? "Vous connaissez surement.." : "Aucune suggestion d'utilisateurs pour le moment"
+          }
+        </Typography>
       </Box>
       {
         suggestions.slice(0, 3).map(user => (
