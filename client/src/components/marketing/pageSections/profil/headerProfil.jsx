@@ -109,6 +109,13 @@ const HeaderProfil = () => {
 		}
 	}, [currentUser, isCurrentUser, currentUser.getFollowings.length])
 
+	// Update the current user local state after having liked a post
+	useEffect(() => {
+		if (checkUsername(username, currentUser)) {
+			setUser((new Subscriber(currentUser)))
+		}
+	}, [currentUser])
+
 	const formatName = (name) => {
 		return name[0].toUpperCase() + name.substr(1)
 	}

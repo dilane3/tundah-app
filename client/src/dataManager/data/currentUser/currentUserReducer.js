@@ -108,7 +108,7 @@ const currentUserReducer = (state, action) => {
         user.likePost(idPost);
         console.log(user.getPosts);
 
-        return user.getUserData;
+        return new Subscriber(user.getUserData);
       }
 
       return state;

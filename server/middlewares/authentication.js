@@ -32,8 +32,11 @@ const authenticationMiddleware = (req, res, next) => {
 
       if (data) {
         const postdata = (await postModel.getMyPosts(data.id)).data;
-        const { data: usersData, error } =
-          await userModel.getFollowersAndFollowings(data.id);
+        const { data: usersData } = await userModel.getFollowersAndFollowings(
+          data.id
+        );
+
+        console.log({ postdata });
 
         if (usersData) {
           const { followers, followings } = usersData;

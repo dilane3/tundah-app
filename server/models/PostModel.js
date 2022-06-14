@@ -345,18 +345,28 @@ class PostModel extends InterfacePostModel {
     const session = dbConnect();
 
     try {
+      // Declare queries
       const query1 = `
         MATCH (publishedPost:Post) -[:PUBLISHED_BY]-> (user:Subscriber{id: $idUser})
         RETURN publishedPost
       `;
-      const result1 = await session.run(query1, { idUser });
+      const query2 = `
+        MATCH (sharedPost:Post) <-[:SHARED]- (:Subscriber{id: $idUser})
+        RETURN sharedPost
+      `;
 
+      // Execute queries by passing data
+      const result1 = await session.run(query1, { idUser });
+      const result2 = await session.run(query2, { idUser });
+
+      // Getting more informations of posts
       const publishedPost = await this.gettingMoreInfos(
         result1,
         "publishedPost"
       );
+      const sharedPost = await this.gettingMoreInfos(result2, "sharedPost");
 
-      const postData = [...publishedPost];
+      const postData = [...publishedPost, ...sharedPost];
 
       return { data: postData };
     } catch (err) {
