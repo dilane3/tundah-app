@@ -8,9 +8,7 @@ class Post extends InterfacePost {
   creation_date;
   modification_date;
   files_list;
-  published;
-  region;
-  tribe;
+  post_type;
   comments;
   commentsData;
   likes;
@@ -37,9 +35,7 @@ class Post extends InterfacePost {
         creation_date, 
         modification_date, 
         files_list, 
-        published, 
-        region, 
-        tribe, 
+        post_type, 
         comments,
         commentsData, 
         author,
@@ -53,9 +49,7 @@ class Post extends InterfacePost {
       this.creation_date = Number(creation_date)
       this.modification_date = Number(modification_date)
       this.files_list = files_list
-      this.published = published
-      this.region = region
-      this.tribe = tribe
+      this.post_type = post_type
       this.comments = comments
       this.commentsData = commentsData ? commentsData:[];
       this.author = author
@@ -109,22 +103,8 @@ class Post extends InterfacePost {
   /**
    * @returns boolean
    */
-  get getPublished() {
-    return this.published;
-  }
-
-  /**
-   * @returns string
-   */
-  get getRegion() {
-    return this.region;
-  }
-
-  /**
-   * @returns String
-   */
-  get getTribe() {
-    return this.tribe;
+  get getPostType() {
+    return this.post_type;
   }
 
   /**
@@ -169,8 +149,6 @@ class Post extends InterfacePost {
       content,
       modification_date,
       files_list,
-      region,
-      tribe,
       subAuthors
     } = data
 
@@ -178,8 +156,6 @@ class Post extends InterfacePost {
     this.content = content
     this.modification_date = modification_date
     this.files_list = files_list
-    this.region = region
-    this.tribe = tribe
     this.subAuthors = subAuthors
   }
 
