@@ -24,6 +24,12 @@ categoryRouter.post(
   authenticationMiddleware,
   CathegoryController.createCategory
 );
+
+categoryRouter.get(
+  "/myCategories/:value",
+  // authenticationMiddleware,
+  CathegoryController.getUserFollowedCategories
+);
 // categoryRouter.patch("/update", authenticationMiddleware, CathegoryController.updateCategory)
 // categoryRouter.delete("/delete", authenticationMiddleware, CathegoryController.deleteCategory)
 
