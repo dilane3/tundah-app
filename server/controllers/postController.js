@@ -5,6 +5,7 @@ import PostModel from "../models/PostModel.js";
 import { response } from "express";
 import { error } from "neo4j-driver";
 import PostEnum from "../models/enums/PostEnum.js";
+import CategoryController from "./categoryController.js";
 
 // fetching data from .env file
 config();
@@ -127,6 +128,131 @@ class PostController {
     });
   };
 
+   // Algorithm
+  /**
+   * we first retrieve the value of the posts searched in the request
+   * we verify if that value exist
+   *  * if true we create a postModel Object
+   *   * we create dataArray and errorArray which will contain our results and errors respectively
+   *   * we split the research Query
+   *   * if the search array length is equal to one
+   *    * we execute the corresponding operations
+   *   * else
+   *    * we first execute the operations
+   *    * then we map over the search array from the second element to the end
+   *    * we retrieve the data and error and affect the data to the newly created newDataArray
+   *    * then we map true the newDataArray and verify if the post exist already in the dataArray
+   *    * if false
+   *     * we push the data inside the dataArray
+   *    * else
+   *     * we push the error insde the errorArray
+   *    * if the length of the data array is different of 0
+   *     * we return the data array
+   *    * else we return an empty array
+   * @param {*} req
+   * @param {*} res
+   */
+   static getPostsByCategories = async (req, res) => {
+    let value = req.params
+    let categories = [];
+    
+    try {
+      if(value) {
+        const { data, error } = await CategoryController.getUserFollowedCategories({ id: value })
+        data.forEach(category => {
+          categories.push(category.id)
+        })
+      } else {
+        return res.status(400).json({ message: "The user identifier is needed" })
+      }
+    } catch(error) {
+      console.log(error)
+    }
+
+    // Getting the value typed
+
+    console.log("categories", categories)
+
+    if (categories.length > 0) {
+      const postModel = new PostModel();
+
+      var dataArray = [];
+      var errorArray = [];
+
+      var postCategoryArray = categories;
+      // categories.split(" ");
+      console.log(postCategoryArray);
+
+      if (postCategoryArray.length > 0 && postCategoryArray.length < 2) {
+        const { data, error } = await postModel.getOtherUsersPostsByCategories(value, postCategoryArray[0], "social");
+
+        console.log("Here is data", { data });
+        
+        if (data) {
+          dataArray.push(...data);
+        } else {
+          errorArray.push({ ...error });
+        }
+      } else {
+        const { data, error } = await postModel.getOtherUsersPostsByCategories(value, postCategoryArray[0], "social");
+
+        // console.log("Here is data", { data });
+
+        // fetching the post with author.id different from the current user
+        // data.forEach((item) => {
+        //   if(data.author && data.author.id !== value) {
+        //     dataArray.push(item);
+        //   }
+        // })
+
+        // errorArray.push({ ...error });
+        // for (let i = 1; i < postCategoryArray.length; i++) {
+        //   const { data, error } = await postModel.getOtherUsersPostsByCategories(value, postCategoryArray[i], "social");
+          
+        //   let newDataArray = [];
+        //   data.forEach((item) => {
+        //     if(data.author && data.author.id !== value) {
+        //       newDataArray.push(item);
+        //     }
+        //   })
+
+        dataArray.push(...data);
+        errorArray.push({ ...error });
+        for (let i = 1; i < postCategoryArray.length; i++) {
+          const { data, error } = await postModel.getOtherUsersPostsByCategories(value, postCategoryArray[i], "social");
+          const newDataArray = [...data];
+
+          newDataArray.forEach((result) => {
+            if (!this.verifyPostExistence(dataArray, result)) {
+              dataArray.push(result);
+            } else {
+              errorArray.push({ ...error });
+            }
+          });
+        }
+      }
+
+      console.log("Next to this is the data array");
+      console.log(dataArray);
+
+      console.log("Next to this is the data array length");
+      console.log(dataArray.length);
+
+      if (dataArray.length !== 0) {
+        console.log("passed again");
+        res.status(200).json(dataArray);
+      } else {
+        res.status(404).json(errorArray);
+      }
+    } else {
+      res.status(400).json({
+        message:
+          "You need to provide a value for the search operation to take on",
+      });
+    }
+  };
+
+
   // Algorithm
   /**
    * we first retrieve the value of the posts searched in the request
@@ -154,6 +280,8 @@ class PostController {
   static getSearchedPosts = async (req, res) => {
     // Getting the value typed
     const { value } = req.params;
+
+    console.log("value", value)
 
     if (value) {
       const postModel = new PostModel();
