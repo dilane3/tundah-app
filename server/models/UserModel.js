@@ -427,6 +427,78 @@ class UserModel extends InterfaceUserModel {
   }
 
   /**
+   * This function allow user to follow a specific category
+   * @param {string} currentUserId 
+   * @param {string} categoryId 
+   * @returns 
+   */
+  static followCategory = async (userId, categoryId) => {
+    const session = dbConnect();
+
+    console.log({ userId, categoryId });
+
+    const query = `
+      MATCH(user:Subscriber{id: $userId}),
+            (category:Category{id: $categoryId} )
+      CREATE(user) - [follow:FollowCategory] -> (category)
+      RETURN follow
+    `
+
+    try{
+      const result = await session.run(query, { userId, categoryId })
+
+      console.log(result)
+
+      if (result.records.length > 0) {
+        return { data: "You are now following this category" };
+      }
+
+      return { error: "An error occured while follow category" }
+    }catch(err){
+      console.log(err)
+      return{ error: "An error occured while follow category" }
+    }finally{
+      session.close()
+    }
+  }
+
+  /**
+   * This function allow user to unfollow a  category
+   * @param {string} userId 
+   * @param {string} categoryId 
+   * @returns data | error
+   */
+  static unfollowCategory = async (userId, categoryId) => {
+    const session = dbConnect();
+
+    console.log({ userId, categoryId });
+
+    const query = `
+      MATCH(user:Subscriber{id: $userId}),
+            (category:Category{id: $categoryId}),
+            (user) - [follow:FollowCategory] -> (category)
+      DELETE follow
+    `
+
+    try{
+      const result = await session.run(query, { userId, categoryId })
+
+      console.log(result)
+
+      if (result.records.length > 0) {
+        return { data: "you unfollow this category" };
+      }
+
+      return { error: "An error occured while unfollowing the category" }
+    }catch(err){
+      console.log(err)
+      return{ error: "An error occured while unfollowing the category" }
+    }finally{
+      session.close()
+    }
+  }
+
+  /**
    * Follow a user
    * @param {string} currentUserId
    * @param {string} userId
