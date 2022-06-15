@@ -24,7 +24,11 @@ categoryRouter.post(
   authenticationMiddleware,
   CathegoryController.createCategory
 );
-// categoryRouter.patch("/update", authenticationMiddleware, CathegoryController.updateCategory)
-// categoryRouter.delete("/delete", authenticationMiddleware, CathegoryController.deleteCategory)
+// categoryRouter.patch("/update", CathegoryController.updateCategory)
+categoryRouter.delete(
+  "/delete/:id",
+  authenticationMiddleware,
+  CathegoryController.deleteCategory
+);
 
 export default categoryRouter;

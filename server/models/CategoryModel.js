@@ -32,31 +32,39 @@ class CategoryModel extends InterfaceCategoryModel {
       console.log(err);
 
       return { error: "And error occured while check the category" };
+    } finally {
+      await session.close();
     }
   };
 
   /**
    * This function fetch all cathegories in database
-   * @param {skip} skip
-   * @param {limit} limit
    * @returns cathegories | error
    */
   static getCathegories = async () => {
     const session = dbConnect();
 
     const query = `
-            MATCH (category:Category)
-            RETURN category
-        `;
-
+          MATCH (categories:Category)
+          RETURN categories
+      `;
     try {
       const result = await session.run(query);
 
+      console.log(result.records[0]);
+
       if (result.records.length > 0) {
-        const categoryData = result.records[0].get("category").properties;
-        return { data: categoryData };
+        const categories = [];
+
+        for (let record of result.records) {
+          const category = record.get("categories").properties;
+          categories.push(category);
+        }
+        return { data: categories };
       } else {
-        return { data: null };
+        return {
+          data: "there is no category available, please create new one",
+        };
       }
     } catch (err) {
       console.log(err);
