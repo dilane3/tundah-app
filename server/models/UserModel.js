@@ -429,6 +429,38 @@ class UserModel extends InterfaceUserModel {
   }
 
   /**
+   * This function allow user to follow a specific category
+   * @param {string} currentUserId 
+   * @param {string} categoryId 
+   * @returns 
+   */
+  async followCategory(currentUserId, categoryId){
+    const session = dbConnect()
+
+    const query = `
+      MATCH(user:Subscriber{id: $currentUserId}),
+            (category:Category{id: $categoryId} )
+      CREATE(user) - [follow:FollowCategory] -> (category)
+      RETURN follow
+    `
+
+    try{
+      const result = session.run(query, { currentUserId, categoryId })
+
+      if (result.records.length > 0) {
+        return { data: "You are now following this category" };
+      }
+
+      return { error: "An error occurd while follow category" }
+    }catch(err){
+      console.log(err)
+      return{ err: "An error occurd while follow category" }
+    }finally{
+      session.close()
+    }
+  }
+
+  /**
    * Follow a user
    * @param {string} currentUserId
    * @param {string} userId
