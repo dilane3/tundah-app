@@ -1,6 +1,6 @@
 import React from "react";
 import SearchPerson from "./searchPerson";
-import  './seachBody.css'
+import  './searchBody.css'
 
 const SearchPersonApp = () => {
 
