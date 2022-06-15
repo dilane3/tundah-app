@@ -12,6 +12,7 @@ const {
   getAllWikiPosts,
   getSearchedPosts,
   getSearchedWikiPosts,
+  getPostsByCategories,
   createPost,
   likePost,
   deletePost,
@@ -38,6 +39,10 @@ postRouter.get("/search/:value", getSearchedPosts);
 // Router for the retrieval of all the wiki posts
 // This can be performed by all the users
 postRouter.get("/wiki/search/:value", getSearchedWikiPosts);
+
+// Router for the retrieval of all the wiki posts
+// This can be performed by all the users
+postRouter.get("/categories/posts/:value", getPostsByCategories);
 
 // Router for the creation of a post in the wiki section from the social post form and the user id
 // This can be performed only by connected users
