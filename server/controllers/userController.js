@@ -421,6 +421,19 @@ class UserController {
       .status(400)
       .json({ error: "Provide the id of the target user to follow" });
   };
+
+  static followCategory = async (req, res) => {
+
+    const { userId, categoryId } = req.body
+
+    if(!userId || !categoryId) return res.status(400).json({ error: "Provide user id and category id" })
+
+    const { data, error } = await UserModel.followCategory(userId, categoryId)
+
+    if(data) return res.status(201).json({data})
+
+    return res.status(500).json({error})
+  }
 }
 
 export default UserController;

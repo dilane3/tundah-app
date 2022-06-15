@@ -18,7 +18,8 @@ const {
   addExpert,
   uniqueEmail,
   uniqueUsername,
-  followUser
+  followUser,
+  followCategory
 } = UserController
 
 userRouter.get("/current", authenticationMiddleware, getCurrentUser)
@@ -34,5 +35,6 @@ userRouter.post("/add_expert", authenticationMiddleware, addExpert)
 userRouter.post("/check_email", uniqueEmail)
 userRouter.post("/check_username", uniqueUsername)
 userRouter.post("/follow", authenticationMiddleware, followUser)
+userRouter.post("/follow_category", followCategory)
 
 export default userRouter

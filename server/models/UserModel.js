@@ -434,18 +434,22 @@ class UserModel extends InterfaceUserModel {
    * @param {string} categoryId 
    * @returns 
    */
-  async followCategory(currentUserId, categoryId){
-    const session = dbConnect()
+  static followCategory = async (userId, categoryId) => {
+    const session = dbConnect();
+
+    console.log({ userId, categoryId });
 
     const query = `
-      MATCH(user:Subscriber{id: $currentUserId}),
+      MATCH(user:Subscriber{id: $userId}),
             (category:Category{id: $categoryId} )
       CREATE(user) - [follow:FollowCategory] -> (category)
       RETURN follow
     `
 
     try{
-      const result = session.run(query, { currentUserId, categoryId })
+      const result = await session.run(query, { userId: Number(userId), categoryId })
+
+      console.log(result)
 
       if (result.records.length > 0) {
         return { data: "You are now following this category" };
