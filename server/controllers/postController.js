@@ -221,9 +221,9 @@ class PostController {
    * we create a new postModel Object
    * */
   static createPost = async (req, res) => {
-    const { title, content, fileType, categoryList: categories } = req.body;
-    console.log(categories);
-    const categoryList = [];
+    const { title, content, fileType, categoryList } = req.body;
+    console.log({ categoryList });
+    // const categoryList = [];
     let files_list;
 
     if (fileType === "image") {
@@ -252,7 +252,7 @@ class PostController {
         content,
         files_list,
         PostEnum.Social.type,
-        categoryList
+        categoryList.slice(1)
       );
 
       if (data !== undefined) {

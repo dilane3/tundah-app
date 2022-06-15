@@ -16,12 +16,10 @@ import "../../../css/app.css"
 import { formatName } from '../../../utils/format'
 import { Autocomplete, TextField } from '@mui/material'
 import CategoryItem from '../../marketing/pageSections/social/categoryItem'
+import CategoryApi from '../../../api/categories'
+import Category from '../../../entities/Category'
 
 const WritePostModal2 = (props) => {
-
-  const { addPost } = useContext(postsContext)
-  const { createPost } = useContext(currentUserContext)
-
   const {
     // show, 
     onCloseModal
@@ -36,7 +34,10 @@ const WritePostModal2 = (props) => {
   }
 
   //context
+  const { addPost } = useContext(postsContext)
+  const { createPost } = useContext(currentUserContext)
   const { currentUser } = useContext(currentUserContext)
+
   const user = new Subscriber(currentUser)
 
   //ref
@@ -51,8 +52,31 @@ const WritePostModal2 = (props) => {
   const [displayImage, setDisplayImage] = useState(false)
   const [isLoading, setLoading] = useState(false)
   const [selectedCategory, setSelectedCategory] = useState(null)
+  const [allCategories, setAllCategories] = useState([])
+
+
+  // UseEffect section
+  useEffect(() => {
+    handleGetAllCategories()
+  }, [])
 
   //handler
+  const handleGetAllCategories = async () => {
+    const { data, error } = await CategoryApi.getAll()
+
+    if (data) {
+      console.log(data)
+      const categories = []
+
+      for (let res of data) {
+        categories.push(new Category(res))
+      }
+
+      setAllCategories(categories)
+    } else {
+      console.log(error)
+    }
+  }
 
   const handleChange = (event) => {
     setPostData({ ...postData, [event.target.id]: event.target.value })
@@ -65,8 +89,11 @@ const WritePostModal2 = (props) => {
     if (selectedCategory) {
       const postDataClone = { ...postData }
 
-      if (!postDataClone.categories.some(cat => cat.value === selectedCategory.value)) {
-        postDataClone.categories.push(selectedCategory)
+      if (!postDataClone.categories.some(cat => cat.name === selectedCategory.value)) {
+        postDataClone.categories.push(new Category({
+          id: selectedCategory.value,
+          name: selectedCategory.label
+        }))
 
         setPostData(postDataClone)
       }
@@ -82,7 +109,7 @@ const WritePostModal2 = (props) => {
   const handleDeleteCategory = (id) => {
     const postDataClone = { ...postData }
 
-    const index = postDataClone.categories.findIndex(cat => cat.value === id)
+    const index = postDataClone.categories.findIndex(cat => cat.id === id)
 
     if (index > -1) {
       postDataClone.categories.splice(index, 1)
@@ -104,16 +131,23 @@ const WritePostModal2 = (props) => {
         title,
         images,
         video,
-        // categories
+        categories
       } = postData
 
       //send a FormData when post data content files
       const dataToSend = new FormData()
 
+      const categoriesToSend = categories.map(cat => cat.getId)
+
       dataToSend.append("title", title)
       dataToSend.append("content", contentPost)
       dataToSend.append("fileType", fileType)
-      dataToSend.append("categoryList", categories)
+
+      dataToSend.append("categoryList", "")
+
+      categoriesToSend.forEach(cat => {
+        dataToSend.append("categoryList", cat)
+      })
 
       if (video) {
         dataToSend.append("video", inputVideoRef.current.files[0])
@@ -206,11 +240,11 @@ const WritePostModal2 = (props) => {
   const verificationForm = () => {
     const {
       title,
-      // categories
+      categories
     } = postData
     const contentPost = contentRef?.current?.innerHTML
 
-    if (title && contentPost) return true
+    if (title && contentPost && categories.length > 0) return true
 
     return false
   }
@@ -240,15 +274,12 @@ const WritePostModal2 = (props) => {
               <Autocomplete
                 disablePortal
                 id="combo-box-demo"
-                options={[
-                  { label: "Mariage", value: "1" },
-                  { label: "Cuisine", value: "2" },
-                  { label: "Dote", value: "3" },
-                  { label: "Sport", value: "4" },
-                  { label: "Deuil", value: "5" },
-                  { label: "Langue", value: "6" },
-                  { label: "Art", value: "7" }
-                ]}
+                options={
+                  allCategories.map(category => ({
+                    label: category.getName,
+                    value: category.getId
+                  }))
+                }
                 fullWidth
                 onChange={(_, category) => setSelectedCategory(category)}
                 isOptionEqualToValue={(option, value) => option.value === value.value}
@@ -263,9 +294,9 @@ const WritePostModal2 = (props) => {
               {
                 categories.map(categorie => (
                   <CategoryItem
-                    key={categorie.value}
-                    value={categorie.label}
-                    id={categorie.value}
+                    key={categorie.getId}
+                    value={categorie.getName}
+                    id={categorie.getId}
                     onDelete={handleDeleteCategory}
                   />
                 ))

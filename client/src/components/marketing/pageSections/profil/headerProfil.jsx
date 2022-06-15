@@ -107,7 +107,7 @@ const HeaderProfil = () => {
 		if (isCurrentUser) {
 			setUser((new Subscriber(currentUser)))
 		}
-	}, [currentUser, isCurrentUser, currentUser.getFollowings.length])
+	}, [currentUser, isCurrentUser, currentUser.getFollowings?.length])
 
 	// Update the current user local state after having liked a post
 	useEffect(() => {

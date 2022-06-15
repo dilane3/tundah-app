@@ -63,7 +63,7 @@ class CategoryModel extends InterfaceCategoryModel {
         return { data: categories };
       } else {
         return {
-          data: "there is no category available, please create new one",
+          data: [],
         };
       }
     } catch (err) {

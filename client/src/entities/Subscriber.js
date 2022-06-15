@@ -136,6 +136,9 @@ class Subscriber {
 
         this.followers = myFollowers;
         this.followings = myFollowings;
+      } else {
+        this.followers = [];
+        this.followings = [];
       }
     }
   }
