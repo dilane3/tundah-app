@@ -3,11 +3,11 @@ import { Tab } from '@headlessui/react'
 import SearchPerson from "./searchPerson";
 import SearchPost from "./searchPost";
 import SearchArticle from "./searchArticle";
-import './seachBody.css'
+import './searchBody.css'
 import researchContext from "../../../../dataManager/context/researchContext";
 
 function SearchNavbar() {
-  const { postsResults, target } = useContext(researchContext)
+  const { postsResults, usersResults, target } = useContext(researchContext)
 
   return (
     <Tab.Group manual >
@@ -19,9 +19,9 @@ function SearchNavbar() {
             </Tab>
           ) : (
             <>
-              <Tab className={({ selected }) => selected ? 'activeClass' : 'bg-white text-black'}>
+              {/* <Tab className={({ selected }) => selected ? 'activeClass' : 'bg-white text-black'}>
                 Articles Wiki
-              </Tab>
+              </Tab> */}
               <Tab className={({ selected }) => selected ? 'activeClass' : 'bg-white text-black'}>
                 Personne
               </Tab>
@@ -35,11 +35,31 @@ function SearchNavbar() {
       </Tab.List>
 
       <Tab.Panels>
+        {target === "wiki" ? 
+          <Tab.Panel>
+            {
+              postsResults.map(post => {
+                return(
+                  <SearchArticle
+                    key={post.id}
+                    data={post}
+                  />
+                )
+              })
+            }
+          </Tab.Panel> : null
+        }
         <Tab.Panel>
-          <SearchArticle />
-        </Tab.Panel>
-        <Tab.Panel>
-          <SearchPerson />
+          {
+            usersResults.map(user => {
+              return (
+                <SearchPerson
+                  key={user.id}
+                  data={user}
+                />  
+              )
+            })
+          }
         </Tab.Panel>
         <Tab.Panel>
           {

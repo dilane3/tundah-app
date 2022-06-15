@@ -1,6 +1,6 @@
 import Subscriber from "../../entities/Subscriber";
 import { useState } from "react";
-import FollowersSuggestionContext from "../context/followersSuggestioinContext";
+import FollowersSuggestionContext from "../context/followersSuggestionContext";
 
 const FollowersSuggestionProvider = ({ children }) => {
   const [suggestions, setSuggestions] = useState([]);

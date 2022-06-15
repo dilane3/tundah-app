@@ -1,7 +1,7 @@
 import { Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useContext } from "react";
-import FollowersSuggestionContext from "../../../dataManager/context/followersSuggestioinContext";
+import FollowersSuggestionContext from "../../../dataManager/context/followersSuggestionContext";
 import FollowUserItem from "./followUserItem";
 import './followUserStyle.css'
 

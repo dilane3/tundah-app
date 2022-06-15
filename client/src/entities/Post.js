@@ -149,18 +149,14 @@ class Post extends InterfacePost {
       content,
       modification_date,
       files_list,
-      region,
-      tribe,
-      subAuthors,
-    } = data;
+      subAuthors
+    } = data
 
-    this.title = title;
-    this.content = content;
-    this.modification_date = modification_date;
-    this.files_list = files_list;
-    this.region = region;
-    this.tribe = tribe;
-    this.subAuthors = subAuthors;
+    this.title = title
+    this.content = content
+    this.modification_date = modification_date
+    this.files_list = files_list
+    this.subAuthors = subAuthors
   }
 
   addComments(comments) {

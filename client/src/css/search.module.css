@@ -11,7 +11,7 @@
   width: 100%;
   height: auto;
   display: flex;
-  justify-content: flex-start;
+  justify-content: space-between;
   border: 1px solid rgb(206, 206, 206);
   padding: 20px;
   margin-bottom: 20px;

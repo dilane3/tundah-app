@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useRef } from "react";
 import ImgCircle from '../../../elements/imgCircle/ImgCircle'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { Image } from 'react-image-progressive-loading'
-import './seachBody.css'
+import './searchBody.css'
 import Post from "../../../../entities/Post";
 import { formatName } from '../../../../utils/format'
 import { getRelativeDate } from "../../../../utils/dateOperations";

@@ -3,6 +3,7 @@ import { BrowserRouter } from "react-router-dom";
 import "./css/app.css";
 import Routes from "./Routes";
 import currentUserContext from "./dataManager/context/currentUserContent";
+import wikiPostsContext from "./dataManager/context/wikiPostsContext";
 import postsContext from "./dataManager/context/postsContext";
 import CategoryContext from "./dataManager/context/categoryContext";
 import {
@@ -30,10 +31,24 @@ import {
   likePost,
   sharePost,
 } from "./dataManager/data/posts/postsActions";
+import {
+  deleteProposedPost,
+  updateProposedPost,
+  addProposedPosts,
+  validateProposedPost,
+} from "./dataManager/data/proposedPost/proposedPostActions";
+import {
+  deletePost as wikiPostDelete,
+  updatePost as wikiPostUpdate,
+  addPost as addWikiPost,
+  addPosts as addWikiPosts,
+} from "./dataManager/data/wikiPosts/wikiPostsActions";
 import currentUserReducer from "./dataManager/data/currentUser/currentUserReducer";
+import wikiPostsReducer from "./dataManager/data/wikiPosts/wikiPostsReducer";
 import postsReducer from "./dataManager/data/posts/postsReducer";
 import navigationContext from "./dataManager/context/navigationContext";
 import Post from "./entities/Post";
+import Subscriber from "./entities/Subscriber";
 import researchContext from "./dataManager/context/researchContext";
 import proposedPostsReducer from "./dataManager/data/proposedPost/proposedPostReducer";
 import { ToastProvider } from "react-simple-toastify";
@@ -46,10 +61,12 @@ function App() {
     proposedPostsReducer,
     []
   );
+  const [wikiPosts, dispatchWikiPosts] = useReducer(wikiPostsReducer, []);
   const [currentUser, dispatchUser] = useReducer(currentUserReducer, null);
   const [navigation, setNavigation] = useState("");
   const [research, setReseach] = useState({
     postsResults: [],
+    usersResults: [],
     query: "",
     target: "",
   });
@@ -58,6 +75,10 @@ function App() {
     skip: 0,
   });
   const [proposedPostsArgs, setProposedPostsArgs] = useState({
+    next: true,
+    skip: 0,
+  });
+  const [wikiPostsArgs, setWikiPostsArgs] = useState({
     next: true,
     skip: 0,
   });
@@ -169,6 +190,15 @@ function App() {
     setReseach(researchClone);
   };
 
+  const addUserResults = (users) => {
+    const researchClone = { ...research };
+    const usersResults = users.map((user) => new Subscriber(user));
+
+    researchClone.usersResults = usersResults;
+
+    setReseach(researchClone);
+  };
+
   const changeQuery = (query) => {
     const researchClone = { ...research };
 
@@ -228,6 +258,18 @@ function App() {
     sharePost: postsSharePost,
   };
 
+  const wikiPostContextValue = {
+    wikiPosts,
+    ...wikiPostsArgs,
+    deleteWikiPost: postsDeleteWikiPost,
+    updateWikiPost: postsUpdateWikiPost,
+    addWikiPosts: postsAddWikiPosts,
+    addWikiPost: postsAddWikiPost,
+    setMoreWikiPostsArgs,
+  };
+
+  //  setMoreWikiPostArgs
+
   // data of navigation
   const navigationContextValue = {
     navigation,
@@ -238,6 +280,7 @@ function App() {
   const researchContextValue = {
     ...research,
     addResults,
+    addUserResults,
     changeQuery,
     setTarget,
   };

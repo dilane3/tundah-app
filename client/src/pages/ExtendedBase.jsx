@@ -15,7 +15,7 @@ import CategoryContext from '../dataManager/context/categoryContext'
 import ModalContext from '../dataManager/context/modalContext'
 import ModalCoreContainer from '../components/utils/modals/modalCore'
 import UserApi from '../api/users'
-import FollowersSuggestionContext from '../dataManager/context/followersSuggestioinContext'
+import FollowersSuggestionContext from '../dataManager/context/followersSuggestionContext'
 
 const logo = require("../medias/logo/Tundah-large.png")
 

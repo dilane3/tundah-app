@@ -7,7 +7,7 @@ import { ressourcesUrl } from "../../../utils/url";
 import { getRelativeDate } from "../../../utils/dateOperations";
 import currentUserContext from "../../../dataManager/context/currentUserContent";
 import UserApi from "../../../api/users";
-import FollowersSuggestionContext from "../../../dataManager/context/followersSuggestioinContext";
+import FollowersSuggestionContext from "../../../dataManager/context/followersSuggestionContext";
 import { Link } from "react-router-dom";
 
 const FollowUserItem = ({ data }) => {
