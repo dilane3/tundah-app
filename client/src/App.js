@@ -47,6 +47,7 @@ import wikiPostsReducer from './dataManager/data/wikiPosts/wikiPostsReducer';
 import postsReducer from "./dataManager/data/posts/postsReducer";
 import navigationContext from "./dataManager/context/navigationContext";
 import Post from "./entities/Post";
+import Subscriber from "./entities/Subscriber"
 import researchContext from "./dataManager/context/researchContext";
 import proposedPostsReducer from "./dataManager/data/proposedPost/proposedPostReducer";
 import { ToastProvider } from "react-simple-toastify";
@@ -67,6 +68,7 @@ function App() {
   const [navigation, setNavigation] = useState("");
   const [research, setReseach] = useState({
     postsResults: [],
+    usersResults: [],
     query: "",
     target: "",
   });
@@ -226,6 +228,15 @@ function App() {
     setReseach(researchClone);
   };
 
+  const addUserResults = (users) => {
+    const researchClone = { ...research };
+    const usersResults = users.map((user) => new Subscriber(user));
+
+    researchClone.usersResults = usersResults;
+
+    setReseach(researchClone);
+  };
+
   const changeQuery = (query) => {
     const researchClone = { ...research };
 
@@ -315,6 +326,7 @@ function App() {
   const researchContextValue = {
     ...research,
     addResults,
+    addUserResults,
     changeQuery,
     setTarget,
   };
