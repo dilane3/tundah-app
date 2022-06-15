@@ -4,11 +4,11 @@ import { useLocation } from 'react-router-dom'
 import PostPropose from '../../../components/marketing/pageSections/proposalPost/PostPropose'
 import styles from "../../../css/search.module.css"
 import researchContext from '../../../dataManager/context/researchContext'
-import SearchNavbar from '../../../components/marketing/pageSections/search/seachNavbar'
+import SearchNavbar from '../../../components/marketing/pageSections/search/searchNavbar'
 
 const ResearchResultBar = () => {
 
-  const { postsResults, query, addResults, changeQuery } = useContext(researchContext)
+  const { postsResults, usersResults, query, addResults, addUserResults, changeQuery, target } = useContext(researchContext)
 
   const location = useLocation()
 
@@ -18,9 +18,10 @@ const ResearchResultBar = () => {
   const methodsCb = useCallback(() => {
     return {
       addResults,
+      addUserResults,
       changeQuery
     }
-  }, [addResults, changeQuery])
+  }, [addResults, addUserResults, changeQuery])
 
   const dataMemo = useMemo(() => {
     return researchQuery
@@ -40,16 +41,36 @@ const ResearchResultBar = () => {
   }, [dataMemo])
 
   useEffect(() => {
-    const { addResults } = methodsRef.current()
+    const { addResults, addUserResults } = methodsRef.current()
 
+    console.log(postsResults.length)
+    console.log(usersResults.length)
     if (dataRef.current.length > 0) {
-      instance.get(`/posts/search/${dataRef.current}`)
+      if(target === "wiki") {
+        instance.get(`/posts/wiki/search/${dataRef.current}`)
+          .then(res => {
+            addResults([...res.data])
+          }).catch((err) => {
+            console.log(err)
+            addResults([])
+          })
+      } else {
+        instance.get(`/posts/search/${dataRef.current}`)
         .then(res => {
           addResults([...res.data])
         }).catch((err) => {
           console.log(err)
           addResults([])
         })
+
+        instance.get(`/users/search/${dataRef.current}`)
+        .then(res => {
+          addUserResults([...res.data])
+        }).catch((err) => {
+          console.log(err)
+          addUserResults([])
+        })
+      }
     }
 
   }, [researchQuery])
@@ -58,11 +79,31 @@ const ResearchResultBar = () => {
     const { changeQuery } = methodsRef.current()
 
     changeQuery(dataRef.current)
-  }, [postsResults])
+  }, [postsResults, usersResults])
+
+  console.log(query)
 
   return (
     <div className={styles.researchResultBar}>
-      {postsResults.length === 0 ? "0" : postsResults.length} {postsResults.length < 2 ? "Resultat" : "Resultats"} pour <b>"{query}"</b>
+      {target === "wiki" ? 
+        null : 
+        <div className={styles.resultsUsers}>
+          <span>Personnes:</span>
+          <div>
+            {usersResults && usersResults.length === 0 ? "0" : usersResults.length} {usersResults.length < 2 ? "Resultat" : "Resultats"} pour <b>"{query}"</b>
+          </div>
+        </div>
+      }
+      
+      <div className={styles.resultsPosts}>
+        {target === "wiki" ? 
+          null :
+          <span>Posts reseau:</span>  
+        }
+        <div>
+          {postsResults && postsResults.length === 0 ? "0" : postsResults.length} {postsResults.length < 2 ? "Resultat" : "Resultats"} pour <b>"{query}"</b>
+        </div>
+      </div>
     </div>
   )
 }
