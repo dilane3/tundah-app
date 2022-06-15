@@ -187,6 +187,45 @@ class CategoryModel extends InterfaceCategoryModel {
             return { error: "Adnd error occured while updating the category" }
         }finally{ session.close }
     }
+
+     /**
+     * This function get categories followed by a given user
+     * @param {String} idUser 
+     * @returns category | error
+     */
+      static getUserCategoriesFollowed = async (idUser) => {
+        const session = dbConnect()
+
+        const query = `
+            MATCH (user:Subscriber{id: $idUser}) - [:FOLLOWS_CATEGORY] -> (category:Category)
+            return category
+        `
+        try{
+            const result = await session.run(query, { idUser })
+
+            let categories = []
+            console.log(result.records)
+
+            for(let record of result.records) {
+                const category = record.get("category").properties
+
+                categories.push({
+                    ...category
+                })
+            }
+
+            if(categories.length > 0) {
+                return { data: categories }
+            } else {
+                return { data: []}
+            }
+        }catch(err){
+            console.log(err)
+            return{ error: "And error occured while geting the cathégory" }
+        }finally{
+            session.close()
+        }
+    }
 }
 
 export default CategoryModel
