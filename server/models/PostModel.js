@@ -52,23 +52,23 @@ class PostModel extends InterfacePostModel {
 
   // /**
   //  * This function get posts based on their category
-  //  * @param {string} id
+  //  * @param {string} category_id
   //  */
-  // async getPostsByCategory(id) {
+  // async getPostsByCategory(category_id) {
   //   const session = dbConnect();
 
   //   try {
   //     const query = `
-  //       MATCH (post:Post) - [:HAS_CATEGORY] -> (category:Category {id = $id})
+  //       MATCH (post:Post) - [:HAS_CATEGORY] -> (category:Category {id = $category_id})
   //       RETURN post
   //     `;
-  //     const result = await session.run(query, { id });
-  //     console.log({ id });
+  //     const result = await session.run(query, { category_id });
+  //     console.log({ category_id });
 
   //     if (result.records.length > 0) {
   //       const postData = result.records[0].get("post").properties;
 
-  //       if (postData.published) {
+  //       if (postData.post_type === "social") {
   //         const { commentsNumber } = await this.getCommentNumber(postData.id);
   //         const { likes } = await this.getLikes(postData.id);
 
@@ -145,6 +145,45 @@ class PostModel extends InterfacePostModel {
       console.log(result.records);
 
       const moreInfosData = await this.gettingMoreWikiPostInfos(result, "post");
+
+      if (moreInfosData.length > 0) {
+        return { data: moreInfosData };
+      } else {
+        return { data: [] };
+      }
+    } catch (err) {
+      console.log(err);
+      return { error: "Sorry the post(s) has not been found" };
+    } finally {
+      session.close();
+    }
+  }
+
+  /**
+   * This function return the posts of the other users matching the given gategories
+   * Independent of the substring position
+   * And is case insensitive
+   * @param {string} idUser
+   * @param {string} idCategory
+   * @param {String} post_type
+   * @returns post(s)
+   */
+   async getOtherUsersPostsByCategories(idUser ,idCategory, post_type) {
+    const session = dbConnect();
+
+    try {
+      const query = `
+        MATCH (post:Post{post_type: "${post_type}"}) - [:PUBLISHED_BY] -> (user:Subscriber{id: $idUser}) WITH COLLECT(post) as published
+        MATCH (post2:Post{post_type: "${post_type}"}) - [:HAS_CATEGORY] -> (category:Category{id: $idCategory}) 
+        WHERE NOT post2 IN published
+        RETURN post2
+        ORDER BY post2.creation_date DESC
+        `;
+
+      const result = await session.run(query, {idUser, idCategory});
+      console.log(result.records);
+
+      const moreInfosData = await this.gettingMoreInfos(result, "post2");
 
       if (moreInfosData.length > 0) {
         return { data: moreInfosData };
