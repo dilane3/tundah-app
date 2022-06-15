@@ -1,26 +1,30 @@
-import React from "react";
+import React, { useMemo } from "react";
 import ImgCircle from '../../../elements/imgCircle/ImgCircle'
-import './seachBody.css'
+import './searchBody.css'
+import Subscriber from "../../../../entities/Subscriber";
+import { getRelativeDate } from "../../../../utils/dateOperations";
+import { ressourcesUrl } from "../../../../utils/url";
 
 const imageMariage = require("../../../../medias/img/chinoise.jpg")
 
-const SearchPerson = () => {
+const SearchPerson = ({ data }) => {
+
+    const user = useMemo(() => new Subscriber(data), [data])
 
     return (
         <div className="Personheader">
             <div className="content">
-                <ImgCircle src={imageMariage} alt="profil" classe="profilCardImage" />
+                <ImgCircle src={`${ressourcesUrl.profil}/${user.getProfil}`} alt="profil" classe="profilCardImage" />
                 <div className="userinformation">
-                    <span className="username"> Kombou Dilane</span>
-                    <span className="userInscription"> inscrit depuis le 10 janvier 2018</span>
+                    <span className="username">{user.getUsername}</span>
+                    <span className="userInscription">{"inscrit depuis le " + getRelativeDate(user.getDate)}</span>
                 </div>
                 <button className="btnSuivre">
                     Suivre
                 </button>
             </div>
             <div className="userDescription">
-                FullStack javascript Developper using React js for frontend and
-                Node js(Express) for Backend
+                {user.getDescription}
             </div>
         </div>
     )
