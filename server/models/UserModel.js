@@ -43,8 +43,9 @@ class UserModel extends InterfaceUserModel {
 
     try {
       const query = `
-        MATCH (user: Subscriber)
-        WHERE NOT user:Expert AND user.username =~ '(?i).*(${value.toLowerCase()}).*'
+        MATCH (user:Subscriber)
+        WHERE user.username =~ '(?i).*(${value.toLowerCase()}).*'
+        OR user.name =~ '(?i).*(${value.toLowerCase()}).*'
         RETURN user
         ORDER BY user.username ASC
       `;
@@ -428,9 +429,9 @@ class UserModel extends InterfaceUserModel {
 
   /**
    * This function allow user to follow a specific category
-   * @param {string} currentUserId 
-   * @param {string} categoryId 
-   * @returns 
+   * @param {string} currentUserId
+   * @param {string} categoryId
+   * @returns
    */
   static followCategory = async (userId, categoryId) => {
     const session = dbConnect();
@@ -442,30 +443,30 @@ class UserModel extends InterfaceUserModel {
             (category:Category{id: $categoryId} )
       CREATE(user) - [follow:FollowCategory] -> (category)
       RETURN follow
-    `
+    `;
 
-    try{
-      const result = await session.run(query, { userId, categoryId })
+    try {
+      const result = await session.run(query, { userId, categoryId });
 
-      console.log(result)
+      console.log(result);
 
       if (result.records.length > 0) {
         return { data: "You are now following this category" };
       }
 
-      return { error: "An error occured while follow category" }
-    }catch(err){
-      console.log(err)
-      return{ error: "An error occured while follow category" }
-    }finally{
-      session.close()
+      return { error: "An error occured while follow category" };
+    } catch (err) {
+      console.log(err);
+      return { error: "An error occured while follow category" };
+    } finally {
+      session.close();
     }
-  }
+  };
 
   /**
    * This function allow user to unfollow a  category
-   * @param {string} userId 
-   * @param {string} categoryId 
+   * @param {string} userId
+   * @param {string} categoryId
    * @returns data | error
    */
   static unfollowCategory = async (userId, categoryId) => {
@@ -478,25 +479,25 @@ class UserModel extends InterfaceUserModel {
             (category:Category{id: $categoryId}),
             (user) - [follow:FollowCategory] -> (category)
       DELETE follow
-    `
+    `;
 
-    try{
-      const result = await session.run(query, { userId, categoryId })
+    try {
+      const result = await session.run(query, { userId, categoryId });
 
-      console.log(result)
+      console.log(result);
 
       if (result.records.length > 0) {
         return { data: "you unfollow this category" };
       }
 
-      return { error: "An error occured while unfollowing the category" }
-    }catch(err){
-      console.log(err)
-      return{ error: "An error occured while unfollowing the category" }
-    }finally{
-      session.close()
+      return { error: "An error occured while unfollowing the category" };
+    } catch (err) {
+      console.log(err);
+      return { error: "An error occured while unfollowing the category" };
+    } finally {
+      session.close();
     }
-  }
+  };
 
   /**
    * Follow a user

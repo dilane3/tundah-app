@@ -9,7 +9,6 @@ import { getRelativeDate } from "../../../../utils/dateOperations";
 import { ressourcesUrl } from "../../../../utils/url";
 import { Link } from "react-router-dom";
 
-const imageMariage = require("../../../../medias/img/mariage.jpg")
 const SearchPost = ({ data }) => {
     const post = useMemo(() => new Post(data), [data])
 
@@ -17,7 +16,7 @@ const SearchPost = ({ data }) => {
     const postContentRef = useRef()
 
     useEffect(() => {
-        postContentRef.current.innerHTML = post.getContent.substring(0, 230) + "..."
+        postContentRef.current.innerHTML = post.getContent.substring(0, 150) + "..."
     }, [])
 
     return (
@@ -45,11 +44,12 @@ const SearchPost = ({ data }) => {
                 <div className="Info-content">
                     <span className="title">{post.getTitle}</span>
 
-
-                    <div
-                        ref={postContentRef}
-                        className="description"
-                    ></div>
+                    <Link to={`/posts/${post.getId}`}>
+                        <div
+                            ref={postContentRef}
+                            className="description"
+                        ></div>
+                    </Link>
                 </div>
 
                 {

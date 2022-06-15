@@ -3,7 +3,6 @@ import { BrowserRouter } from "react-router-dom";
 import "./css/app.css";
 import Routes from "./Routes";
 import currentUserContext from "./dataManager/context/currentUserContent";
-import wikiPostsContext from "./dataManager/context/wikiPostsContext";
 import postsContext from "./dataManager/context/postsContext";
 import CategoryContext from "./dataManager/context/categoryContext";
 import {
@@ -31,18 +30,6 @@ import {
   likePost,
   sharePost,
 } from "./dataManager/data/posts/postsActions";
-import {
-  deleteProposedPost,
-  updateProposedPost,
-  addProposedPosts,
-  validateProposedPost,
-} from "./dataManager/data/proposedPost/proposedPostActions";
-import {
-  deletePost as wikiPostDelete,
-  updatePost as wikiPostUpdate,
-  addPost as addWikiPost,
-  addPosts as addWikiPosts,
-} from "./dataManager/data/wikiPosts/wikiPostsActions";
 import currentUserReducer from "./dataManager/data/currentUser/currentUserReducer";
 import wikiPostsReducer from "./dataManager/data/wikiPosts/wikiPostsReducer";
 import postsReducer from "./dataManager/data/posts/postsReducer";
@@ -258,15 +245,15 @@ function App() {
     sharePost: postsSharePost,
   };
 
-  const wikiPostContextValue = {
-    wikiPosts,
-    ...wikiPostsArgs,
-    deleteWikiPost: postsDeleteWikiPost,
-    updateWikiPost: postsUpdateWikiPost,
-    addWikiPosts: postsAddWikiPosts,
-    addWikiPost: postsAddWikiPost,
-    setMoreWikiPostsArgs,
-  };
+  // const wikiPostContextValue = {
+  //   wikiPosts,
+  //   ...wikiPostsArgs,
+  //   deleteWikiPost: postsDeleteWikiPost,
+  //   updateWikiPost: postsUpdateWikiPost,
+  //   addWikiPosts: postsAddWikiPosts,
+  //   addWikiPost: postsAddWikiPost,
+  //   setMoreWikiPostsArgs,
+  // };
 
   //  setMoreWikiPostArgs
 

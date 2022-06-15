@@ -97,10 +97,13 @@ class UserController {
       if (search.length > 0 && search.length < 2) {
         const { data, error } = await userModel.getSearchedUsers(search[0]);
 
-        console.log({ data });
+        if (data) {
+          console.log({ data });
 
-        userArray.push(...data);
-        errorArray.push({ ...error });
+          userArray.push(...data);
+        } else {
+          errorArray.push({ ...error });
+        }
       } else {
         const { data, error } = await userModel.getSearchedUsers(search[0]);
 

@@ -46,7 +46,7 @@ const ResearchResultBar = () => {
     console.log(postsResults.length)
     console.log(usersResults.length)
     if (dataRef.current.length > 0) {
-      if(target === "wiki") {
+      if (target === "wiki") {
         instance.get(`/posts/wiki/search/${dataRef.current}`)
           .then(res => {
             addResults([...res.data])
@@ -56,20 +56,20 @@ const ResearchResultBar = () => {
           })
       } else {
         instance.get(`/posts/search/${dataRef.current}`)
-        .then(res => {
-          addResults([...res.data])
-        }).catch((err) => {
-          console.log(err)
-          addResults([])
-        })
+          .then(res => {
+            addResults([...res.data])
+          }).catch((err) => {
+            console.log(err)
+            addResults([])
+          })
 
         instance.get(`/users/search/${dataRef.current}`)
-        .then(res => {
-          addUserResults([...res.data])
-        }).catch((err) => {
-          console.log(err)
-          addUserResults([])
-        })
+          .then(res => {
+            addUserResults([...res.data])
+          }).catch((err) => {
+            console.log(err)
+            addUserResults([])
+          })
       }
     }
 
@@ -85,8 +85,8 @@ const ResearchResultBar = () => {
 
   return (
     <div className={styles.researchResultBar}>
-      {target === "wiki" ? 
-        null : 
+      {target === "wiki" ?
+        null :
         <div className={styles.resultsUsers}>
           <span>Personnes:</span>
           <div>
@@ -94,11 +94,11 @@ const ResearchResultBar = () => {
           </div>
         </div>
       }
-      
+
       <div className={styles.resultsPosts}>
-        {target === "wiki" ? 
+        {target === "wiki" ?
           null :
-          <span>Posts reseau:</span>  
+          <span>Posts reseau:</span>
         }
         <div>
           {postsResults && postsResults.length === 0 ? "0" : postsResults.length} {postsResults.length < 2 ? "Resultat" : "Resultats"} pour <b>"{query}"</b>
