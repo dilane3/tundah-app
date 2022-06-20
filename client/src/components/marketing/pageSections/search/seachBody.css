@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  justify-content: space-between;
+  justify-content: space-around;
   padding: 10px;
   margin-bottom: 20px;
   height: 40px;
@@ -31,10 +31,11 @@
   outline: none;
 }
 .Personheader {
+  position: relative;
   display: flex;
   flex-direction: column;
   margin-top: 5px;
-  padding: 20px;
+  padding: 10px;
   width: 100%;
   border-radius: 5px;
   height: auto;
@@ -50,7 +51,7 @@
   justify-content: center;
   align-items: flex-start;
   padding-left: 10px;
-  width: auto;
+  width: calc(100% - 60px);
   font-size: 14px;
 }
 .userinformation .username,
@@ -66,6 +67,9 @@
   margin-top: 5px;
 }
 .btnSuivre {
+  position: absolute;
+  top: 0;
+  right: 10px;
   background-color: #3c6a46;
   color: #fff;
   font-weight: bold;
@@ -76,20 +80,36 @@
   height: 30px;
   margin-top: 10px;
   font-size: 14px;
-  margin-left: 200px;
 }
 .profilCardImage {
   width: 50px;
   height: 50px;
 }
+
+.profilCardImage > img {
+  width: 100%;
+  height: 100%;
+}
 .userDescription {
   margin-left: 60px;
   margin-top: 12px;
   font-size: 14px;
-  width: 300px;
+  width: auto;
 }
 .PostPropose {
   margin-top: 5px;
   border: none;
   border-radius: 7px;
+}
+
+@media screen and (max-width: 576px) {
+  .content-Postpropose {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .proposePost-img {
+    width: 100%;
+    padding-left: 0 !important;
+  }
 }

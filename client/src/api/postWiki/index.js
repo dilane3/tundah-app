@@ -1,11 +1,12 @@
 import { insertToken } from "..";
 import { instance as axiosInstance } from "../../utils/url";
+import postsWikiContext from "../../dataManager/context/postWikiContext";
 
 // API Callfor post wiki
 class PostWikiApi {
   
-  static async getAll() {
-      
+  static async getAll(skip) {
+  
     try {
       const instance = insertToken(axiosInstance);
 

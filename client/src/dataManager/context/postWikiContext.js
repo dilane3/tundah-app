@@ -9,7 +9,7 @@ const postsWikiContext = React.createContext({
 //   deletePost: (idPost) => {},
 //   updatePost: (idPost, data) => {},
 //   addPost: (post) => {},
-  setMorePostArgs: (next, skip) => {}
+  setMoreWikiPostArgs: (next, skip) => {}
 })
 
 export default postsWikiContext

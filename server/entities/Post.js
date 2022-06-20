@@ -1,5 +1,5 @@
 import PostModel from "../models/PostModel.js";
-import InterfacePost from './interfaces/interfacePost.js'
+import InterfacePost from "./interfaces/interfacePost.js";
 
 class Post extends InterfacePost {
   title;
@@ -7,12 +7,11 @@ class Post extends InterfacePost {
   creation_date;
   modification_date;
   files_list;
-  published;
-  region;
-  tribe;
+  post_type;
+  categories;
 
   constructor() {
-    super()
+    super();
 
     this.dataManager = new PostModel();
   }
@@ -20,7 +19,7 @@ class Post extends InterfacePost {
   /**
    * @returns string
    */
-   get getTitle() {
+  get getTitle() {
     return this.title;
   }
 
@@ -55,41 +54,12 @@ class Post extends InterfacePost {
   /**
    * @returns boolean
    */
-  get getPublished() {
-    return this.published;
+  get getPostType() {
+    return this.post_type;
   }
 
-  /**
-   * @returns string
-   */
-  get getRegion() {
-    return this.region;
-  }
-
-  /**
-   * @returns String
-   */
-  get getTribe() {
-    return this.tribe;
-  }
-
-  /**
-   * This method allow the subscriber to propose a post
-   * @param {any} datas
-   * @param {string} userId
-   */
-  async proposePost(datas, userId) {
-    const { data, error } = await this.dataManager.createPost(
-      datas.title,
-      datas.content,
-      datas.files_list,
-      false,
-      datas.region,
-      datas.tribe,
-      userId
-    );
-
-    return { data, error };
+  get getCategories() {
+    return this.categories;
   }
 
   /**
@@ -112,13 +82,26 @@ class Post extends InterfacePost {
       datas.title,
       datas.content,
       datas.files_list,
-      true,
-      datas.region,
-      datas.tribe,
+      datas.post_type,
+      datas.categoryList,
       userId
     );
 
-    console.log(datas)
+    console.log(datas);
+
+    return { data, error };
+  }
+
+  /**
+   * This methods alows the expert only to transfer a post to the wiki section
+   * @param {Object} datas
+   * @returns
+   */
+  async transferPostToWiki(datas, userId) {
+    const { data, error } = await this.dataManager.transferSocialPostToWiki(
+      datas,
+      userId
+    );
 
     return { data, error };
   }
@@ -128,7 +111,11 @@ class Post extends InterfacePost {
    * @param {string} idPost
    * */
   async validatePost(idPost, idUser) {
-    const { data, error } = await this.dataManager.updatePostValidation(idPost, idUser, true);
+    const { data, error } = await this.dataManager.updatePostValidation(
+      idPost,
+      idUser,
+      true
+    );
 
     return { data, error };
   }

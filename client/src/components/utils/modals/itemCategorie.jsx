@@ -17,7 +17,7 @@ const ItemCategorie= () => {
             </div>
             <div className="firstEle">
               <div className="topElement">
-                <input type="checkbox"/>
+                <input type="checkbox" className="checkCategorie"/>
                 <Image image={imageMariage} className="cardImage" />
               </div>
               <span className="texte"> La tradition </span>

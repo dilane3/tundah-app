@@ -1,6 +1,6 @@
 import React from "react";
 import Slider from "react-slick"
-import {Image} from 'react-image-progressive-loading'
+import { Image } from 'react-image-progressive-loading'
 import { ressourcesUrl } from "../../../utils/url";
 
 const nextArrowStyle = {
@@ -57,17 +57,17 @@ const PostCarousel = (props) => {
     onDisplayPhoto,
     edited
   } = props
-  
+
   return (
-    <div className="mt-8">
+    <div className="mt-2">
       <Slider {...settings}>
         {
           files.map((file, index) => {
             return (
               <div className="postImgBlock w-full" key={index} onClick={() => onDisplayPhoto(index)}>
-                <Image 
+                <Image
                   // image={`${ressourcesUrl.postImages}/${file}`}
-                  image={`${edited ? ressourcesUrl.postImages + '/': ""}${file}`}
+                  image={`${edited ? ressourcesUrl.postImages + '/' : ""}${file}`}
                   alt={"image du post de leDoyen"}
                   className="postImg"
                   blur={true}

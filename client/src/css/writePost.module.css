@@ -29,28 +29,62 @@
   margin-right: 0px;
 }
 
-.postTitle {
-  border-bottom: 2px solid #777777;
-  width: calc(100% - 20px);
-  margin: 20px auto;
+.postCategoryContainer {
+  margin: 20px 0;
+  padding: 20px;
+  padding-top: 10px;
+  border-radius: 5px;
+  background-color: #eee;
 }
 
-.postOptions {
-  width: calc(100% - 20px);
-  margin: 10px auto;
+.postCategoryTop {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.postCategoryBottom {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.postCategoryTop > a {
+  height: 35px;
+  margin-top: 15px;
+  margin-left: 20px;
+}
+
+.postTitle {
+  border-bottom: 2px solid #777777;
+  width: calc(100%);
+  margin: 20px 0;
 }
 
 .postEditor {
   min-height: 100px;
   max-height: 200px;
   height: auto;
-  margin: 20px auto;
+  margin: 20px 0;
   padding-right: 5px;
   word-break: break-all;
   overflow-y: scroll;
   scrollbar-width: thin;
   width: calc(100% - 20px);
   caret-color: #3c6a46;
+}
+
+.postEditor[placeholder]:empty::before {
+  content: attr(placeholder);
+  color: #828282;
+  font-size: 16px;
+}
+
+.postEditor[placeholder]:empty:focus:before {
+  content: "";
 }
 
 .postEditor:focus {
@@ -79,7 +113,7 @@
   right: 0;
   bottom: 0;
   background-color: black;
-  opacity: .3;
+  opacity: 0.3;
   z-index: 20;
 }
 
@@ -116,9 +150,15 @@
   .postEditorControl {
     position: fixed;
   }
+
+  .postCategoryContainer {
+    margin: 20px 0;
+    padding: 10px;
+    padding-top: 0px;
+  }
 }
 
-@media screen and (max-height: 500px ) {
+@media screen and (max-height: 500px) {
   .writePostModalSection {
     height: 100vh;
     max-height: 100vh;

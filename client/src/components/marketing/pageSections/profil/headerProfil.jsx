@@ -107,11 +107,7 @@ const HeaderProfil = () => {
 		if (isCurrentUser) {
 			setUser((new Subscriber(currentUser)))
 		}
-	}, [currentUser, isCurrentUser])
-
-	useEffect(() => {
-		console.log("New Following")
-	}, [currentUser.getFollowings.length])
+	}, [currentUser, isCurrentUser, currentUser.getFollowings.length])
 
 	const formatName = (name) => {
 		return name[0].toUpperCase() + name.substr(1)
@@ -398,7 +394,7 @@ const HeaderProfil = () => {
 										className={`active`}
 										onClick={() => setPostTypeToShow("published")}
 									>
-										<StatPostItem title="postes publiés" number={user.getPublishedPosts.length} />
+										<StatPostItem title="posts publiés" number={user.getPublishedPosts.length} />
 									</div>
 								</div>
 							</div>

@@ -4,6 +4,7 @@ import Expert from "../entities/Expert.js";
 import PostModel from "../models/PostModel.js";
 import { response } from "express";
 import { error } from "neo4j-driver";
+import PostEnum from "../models/enums/PostEnum.js";
 
 // fetching data from .env file
 config();
@@ -57,7 +58,7 @@ class PostController {
     const postModel = new PostModel();
     const { skip, limit } = req.query;
 
-    console.log({skip, limit})
+    console.log({ skip, limit });
 
     if (skip !== undefined && limit !== undefined) {
       const { data, error } = await postModel.getAllPosts(skip, limit, true);
@@ -74,14 +75,26 @@ class PostController {
     }
   };
 
-  static getAllProposedPost = async (req, res) => {
+  // Algorithm
+  /**
+   * we create a new postModel object
+   * then we use it retrieve all the posts with the getAllPosts method
+   * we use retrieve this in data and error
+   * if data is not undefined
+   * * we return the data
+   * else
+   * * we return the error
+   * @param {*} req
+   * @param {*} res
+   * */
+  static getAllWikiPosts = async (req, res) => {
     const postModel = new PostModel();
     const { skip, limit } = req.query;
 
-    console.log({skip, limit})
+    console.log({ skip, limit });
 
     if (skip !== undefined && limit !== undefined) {
-      const { data, error } = await postModel.getAllPosts(skip, limit, false);
+      const { data, error } = await postModel.getAllWikiPosts(skip, limit, true);
 
       if (data !== undefined) {
         res.status(200).json(data);
@@ -93,7 +106,7 @@ class PostController {
         .status(400)
         .json({ message: "Provide both skip and limit integer values" });
     }
-  }
+  };
 
   // Algorithm
   /**
@@ -128,7 +141,7 @@ class PostController {
    *    * then we map over the search array from the second element to the end
    *    * we retrieve the data and error and affect the data to the newly created newDataArray
    *    * then we map true the newDataArray and verify if the post exist already in the dataArray
-   *    * if false 
+   *    * if false
    *     * we push the data inside the dataArray
    *    * else
    *     * we push the error insde the errorArray
@@ -154,14 +167,13 @@ class PostController {
       if (search.length > 0 && search.length < 2) {
         const { data, error } = await postModel.getSearchedPosts(search[0]);
 
-        console.log({data})
+        console.log({ data });
 
         if (data) {
           dataArray.push(...data);
         } else {
           errorArray.push({ ...error });
         }
-
       } else {
         const { data, error } = await postModel.getSearchedPosts(search[0]);
 
@@ -208,7 +220,9 @@ class PostController {
    * we create a new postModel Object
    * */
   static createPost = async (req, res) => {
-    const { title, content, region, tribe, fileType } = req.body;
+    const { title, content, fileType, categoryList: categories } = req.body;
+    console.log(categories);
+    const categoryList = ["FMOGSLKz6tUMIevoE7iC"];
     let files_list;
 
     if (fileType === "image") {
@@ -230,15 +244,14 @@ class PostController {
     }
 
     const user = req.user;
-    console.log(user);
 
-    if (title && content && region && tribe) {
+    if (title && content) {
       const { data, error } = await user.createPost(
         title,
         content,
         files_list,
-        region,
-        tribe
+        PostEnum.Social.type,
+        categoryList
       );
 
       if (data !== undefined) {
@@ -310,81 +323,38 @@ class PostController {
    */
   static updatePost = async (req, res) => {
     const { id } = req.params;
-    const { title, content, files_list, region, tribe } = req.body;
+    const { title, content, files_list } = req.body;
 
-    if (id && title && content && region && tribe) {
+    if (id && title && content) {
       const user = req.user;
 
       const postModel = new PostModel();
 
-      if (user.getRole === 1) {
-        const { data, error } = await postModel.updatePost(
-          id,
-          title,
-          content,
-          files_list,
-          region,
-          tribe,
-          user.getId
-        );
+      console.log("id", id);
+      // if (user.getRole === 0) {
+      const { data, error } = await postModel.updatePost(
+        id,
+        title,
+        content,
+        files_list,
+        PostEnum.Social.type,
+        user.getId
+      );
 
-        if (data) {
-          res
-            .status(200)
-            .json({ message: "The post has successfully been updated" });
-        } else {
-          if (data === undefined) res.status(500).json(error);
-          else if (data === null)
-            res.status(500).json({ message: "Provide a good post id" });
-        }
+      if (data) {
+        res
+          .status(200)
+          .json({ message: "The post has successfully been updated" });
       } else {
-        res.status(401).json({ message: "Not authorized" });
+        if (data === undefined) res.status(500).json(error);
+        else if (data === null)
+          res.status(500).json({ message: "Provide a good post id" });
       }
+      // } else {
+      //   res.status(401).json({ message: "Not authorized" });
+      // }
     } else {
       res.status(500).json({ message: "Error during the post update" });
-    }
-  };
-
-  // Algorithm
-  /**
-   * We first retrieve the post id from the api link
-   * we then verify if the id exist
-   * if it exist
-   * * we retrieve the current user from the api req.user
-   * * we also create a new postModel object
-   * * we then verify if the user is connected and it's role to see if he is an expert
-   * * if he is an expert
-   *  * we the perform the operation and send the success response
-   *  * else we send a not authorized operation response
-   *
-   * @param {*} req
-   * @param {*} res
-   */
-  static updatePostValidation = async (req, res) => {
-    const { id } = req.params;
-
-    if (id) {
-      const user = req.user;
-
-      if (user.getRole === 1) {
-        const { data, error } = await user.validatePost(id);
-
-        if (data !== undefined) {
-          res
-            .status(200)
-            .json({ messsage: "The post has successfully been approved!!" });
-        } else {
-          res.status(404).json(error);
-        }
-      } else {
-        res.status(401).json({
-          message: "You are not an expert, you cannot validate a post!",
-        });
-      }
-    } else {
-      res
-        .status(500)
-        .json({ message: "An error occured during the operation" });
     }
   };
 
@@ -417,6 +387,67 @@ class PostController {
       res
         .status(500)
         .json({ message: "An error occured during the process!!" });
+    }
+  };
+
+  // Algorithm
+  /**
+   * we first delete the id send by the form
+   * then we retrieve the infos from the form body
+   * we verify if the user is an expert
+   * * if true
+   *   - we create a new postModel Object
+   * * else
+   *   - we do send an unauthized error message
+   * @param {*} req This are the objects sent in the request
+   * @param {*} res This is the object used to respnd to the request sent
+   * */
+  static transfertPostToWiki = async (req, res) => {
+    const { title, content, fileType } = req.body;
+    let files_list;
+
+    if (fileType === "image") {
+      const files = req.files;
+
+      if (files !== undefined) {
+        files_list = req.files.map((file) => file.filename);
+      } else {
+        files_list = [];
+      }
+    } else {
+      const file = req.file;
+
+      if (file) {
+        files_list = [file.filename];
+      } else {
+        files_list = [];
+      }
+    }
+
+    const user = req.user;
+    console.log(user);
+
+    if (user.getRole === 1) {
+      if (title && content) {
+        const { data, error } = await user.createPost(
+          title,
+          content,
+          files_list,
+          PostEnum.Wiki.type
+        );
+
+        if (data !== undefined) {
+          res
+            .status(201)
+            .json({ message: "New post successfully created", data });
+        } else {
+          res.status(404).json({ error });
+        }
+      } else {
+        res.status(500).json({ error: "Please specify the post content" });
+      }
+    } else {
+      res.status(401).json({ error: "Not authorized" });
     }
   };
 }

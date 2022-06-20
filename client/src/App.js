@@ -37,11 +37,14 @@ import {
   addProposedPosts,
   validateProposedPost,
 } from "./dataManager/data/proposedPost/proposedPostActions";
+
 import {
   addWikiPosts
 } from "./dataManager/data/postWiki/wikiPostAction";
+
 import currentUserReducer from "./dataManager/data/currentUser/currentUserReducer";
 import postsReducer from "./dataManager/data/posts/postsReducer";
+import wikiPostsReducer from "./dataManager/data/postWiki/wikiPostReducer";
 import navigationContext from "./dataManager/context/navigationContext";
 import Post from "./entities/Post";
 import researchContext from "./dataManager/context/researchContext";
@@ -52,6 +55,7 @@ import FollowersSuggestionProvider from "./dataManager/providers/followersSugges
 
 function App() {
   const [posts, dispatchPosts] = useReducer(postsReducer, []);
+  const [wikiPosts, dispatchWikiPosts] = useReducer(wikiPostsReducer, []);
   const [proposedPosts, dispatchProposedPosts] = useReducer(
     proposedPostsReducer,
     []
@@ -68,6 +72,10 @@ function App() {
   });
   const [proposedPostsArgs, setProposedPostsArgs] = useState({
     next: true,
+    skip: 0,
+  });
+  const [wikiPostsArgs, setWikiPostsArgs] = useState({
+    next: false,
     skip: 0,
   });
   const [categoryModalOpen, setCategoryModalOpen] = useState(false);
@@ -181,6 +189,15 @@ function App() {
     setProposedPostsArgs((state) => ({ ...state, next, skip }));
   };
 
+  // posts wiki actions
+  const postsAddWikiPosts = (posts) => {
+    dispatchWikiPosts(addWikiPosts(posts));
+  };
+
+  const setMoreWikiPostArgs = (next, skip) => {
+    setWikiPostsArgs((state) => ({ ...state, next, skip }));
+  };
+
   // navigation action
   const navigateTo = (target) => {
     setNavigation(target);
@@ -256,6 +273,13 @@ function App() {
     validatePost: proposedPostValidate,
   };
 
+  const WikiPostContextValue = {
+    wikiPosts,
+    ...wikiPostsArgs,
+    addWikiPosts: postsAddWikiPosts,
+    setMoreWikiPostArgs
+  };
+
   // data of navigation
   const navigationContextValue = {
     navigation,
@@ -284,25 +308,27 @@ function App() {
 
   return (
     <currentUserContext.Provider value={currentUserContextValue}>
-      <postsContext.Provider value={postsContextValue}>
-        <proposedPostContext.Provider value={proposedPostContextValue}>
-          <navigationContext.Provider value={navigationContextValue}>
-            <researchContext.Provider value={researchContextValue}>
-              <ToastProvider options={toastOptions}>
-                <CategoryContext.Provider value={categoryContextValue}>
-                  <ModalProvider>
-                    <FollowersSuggestionProvider>
-                      <BrowserRouter>
-                        <Routes />
-                      </BrowserRouter>
-                    </FollowersSuggestionProvider>
-                  </ModalProvider>
-                </CategoryContext.Provider>
-              </ToastProvider>
-            </researchContext.Provider>
-          </navigationContext.Provider>
-        </proposedPostContext.Provider>
-      </postsContext.Provider>
+      <postsWikiContext.Provider value={WikiPostContextValue}>
+        <postsContext.Provider value={postsContextValue}>
+          <proposedPostContext.Provider value={proposedPostContextValue}>
+            <navigationContext.Provider value={navigationContextValue}>
+              <researchContext.Provider value={researchContextValue}>
+                <ToastProvider options={toastOptions}>
+                  <CategoryContext.Provider value={categoryContextValue}>
+                    <ModalProvider>
+                      <FollowersSuggestionProvider>
+                        <BrowserRouter>
+                          <Routes />
+                        </BrowserRouter>
+                      </FollowersSuggestionProvider>
+                    </ModalProvider>
+                  </CategoryContext.Provider>
+                </ToastProvider>
+              </researchContext.Provider>
+            </navigationContext.Provider>
+          </proposedPostContext.Provider>
+        </postsContext.Provider>
+      </postsWikiContext.Provider>
     </currentUserContext.Provider>
   );
 }

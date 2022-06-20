@@ -24,8 +24,8 @@ const Base = ({ children }) => {
     setMorePostArgs
   } = useContext(postsContext)
   const { displayToast } = useContext(ToastContext)
-  const { open: modalOpened, openModal, closeModal } = useContext(CategoryContext)
-  const { isOpen: modalIsOpened, closeModal: modalCloser, currentModalName, openModal: modalOpen } = useContext(ModalContext)
+  const { open: modalOpened, closeModal } = useContext(CategoryContext)
+  const { isOpen: modalIsOpened, closeModal: modalCloser, currentModalName } = useContext(ModalContext)
 
   const [showMobileMenu, setShowMobileMenu] = useState(false)
   const [maskBackground, setMaskBackground] = useState(true)
@@ -152,14 +152,6 @@ const Base = ({ children }) => {
         })
     }
   }, [])
-
-  // Handle open modal for choosing categories if it has not been done
-  useEffect(() => {
-    console.log(currentUser)
-    if (!modalIsOpened && currentUser?.categories.length === 0) {
-      // modalOpen("Categories", "SELECT_CATEGORIES")
-    }
-  }, [currentUser])
 
   const handleDisplayAddExpertModal = (status) => {
     setShowAddExpertModal(true)

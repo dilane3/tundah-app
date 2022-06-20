@@ -162,7 +162,7 @@ class Subscriber {
     const posts = [];
 
     this.posts.forEach((post) => {
-      if (post.getPublished) posts.push(post);
+      if (post.getPostType === "social") posts.push(post);
     });
 
     return posts;
