@@ -1,15 +1,14 @@
-import React, { useContext } from 'react'
-import Body from './body/BodyWiki'
+import React from 'react'
+import Body from './body/BodySpecificWikiPost'
 import Seo from '../../components/utils/seo/Seo'
 import Base from '../Base'
-// import WritePost from '../../components/marketing/pageSections/WritePost'
 
 
-const Wiki = () => {
+const SpecificWikiPost = () => {
 	return (
 		<div className="">
 			<Seo
-				title="wiki | tundah"
+				title="(10) Fil d'actualites|tundah"
 				description="tundah est un réseau social qui met en avant la culture africaine pour la transmettre à la génération futur"
 			/>
 			<Base>
@@ -19,4 +18,4 @@ const Wiki = () => {
 	)
 }
 
-export default Wiki
+export default SpecificWikiPost

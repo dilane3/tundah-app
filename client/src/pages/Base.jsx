@@ -13,6 +13,7 @@ import ShowCategories from '../components/utils/modals/showCategories'
 import CategoryContext from '../dataManager/context/categoryContext'
 import ModalContext from '../dataManager/context/modalContext'
 import ModalCoreContainer from '../components/utils/modals/modalCore'
+import useGetWikiPost from '../hooks/useGetWikiPost'
 
 const logo = require("../medias/logo/Tundah-large.png")
 
@@ -98,7 +99,6 @@ const Base = ({ children }) => {
     if (!currentUserRef.current) {
       instance.get("/users/current")
         .then(res => {
-          console.log({ data: res.data })
           // adding the current user in the global state
           login({ ...res.data, token: undefined })
 
@@ -110,48 +110,21 @@ const Base = ({ children }) => {
           displayToast("Vous n'êtes pas connecté")
         })
         .then(() => {
+          // hidden the loading page
+          setLoaderClassActive(true)
+          setDataLoaded(true)
 
-          instance.get("/posts?skip=0&limit=5")
-            .then(res => {
-              const postData = res.data.data
-              let nextValue = res.data.next
-              let skipValue = res.data.skip
+          let timer = setTimeout(() => {
+            setShowLoaderPage(false)
 
-              console.log({ nextValue, skipValue })
-              console.log(res.data)
-
-              // adding posts
-              addPosts(postData)
-
-              // setting posts arguments
-              setMorePostArgs(nextValue, skipValue)
-
-              // stopping the loader for loading posts
-              setDataLoaded(true)
-
-              // hidden the loading page
-              setLoaderClassActive(true)
-
-            })
-            .catch(err => {
-              console.log(err)
-
-              displayToast("Une erreur est survenu lors du chargement des posts, veuillez recharger la page s'il vous plait")
-            })
-            .then(() => {
-              // to remove
-              // setDataLoaded(true)
-
-
-              let timer = setTimeout(() => {
-                setShowLoaderPage(false)
-
-                clearTimeout(timer)
-              }, 1000)
-            })
+            clearTimeout(timer)
+          }, 1000)
         })
     }
   }, [])
+
+  // Load wiki post
+  useGetWikiPost()
 
   const handleDisplayAddExpertModal = (status) => {
     setShowAddExpertModal(true)

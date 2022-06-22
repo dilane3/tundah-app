@@ -130,7 +130,7 @@ class PostModel extends InterfacePostModel {
    * @param {String} post_type
    * @returns post(s)
    */
-   async getSearchedWikiPosts(value, post_type) {
+  async getSearchedWikiPosts(value, post_type) {
     const session = dbConnect();
 
     try {
@@ -168,7 +168,7 @@ class PostModel extends InterfacePostModel {
    * @param {String} post_type
    * @returns post(s)
    */
-   async getOtherUsersPostsByCategories(idUser ,idCategory, post_type) {
+  async getOtherUsersPostsByCategories(idUser, idCategory, post_type) {
     const session = dbConnect();
 
     try {
@@ -180,7 +180,7 @@ class PostModel extends InterfacePostModel {
         ORDER BY post2.creation_date DESC
         `;
 
-      const result = await session.run(query, {idUser, idCategory});
+      const result = await session.run(query, { idUser, idCategory });
       console.log(result.records);
 
       const moreInfosData = await this.gettingMoreInfos(result, "post2");
@@ -201,15 +201,15 @@ class PostModel extends InterfacePostModel {
   /**
    * This function returns the number of posts available in the database
    */
-  async getNumberPost(session, status) {
+  async getNumberPost(session, type = "social") {
     try {
       const query = `
-        MATCH (posts:Post{post_type: 'social'})
+        MATCH (posts:Post{post_type: $type})
         RETURN posts
       `;
 
-      const result = await session.run(query);
-      console.log("number of wiki_post", result.records.length )
+      const result = await session.run(query, { type });
+      console.log("number of wiki_post", result.records.length);
       return { postNumber: result.records.length };
     } catch (err) {
       console.log(err);
@@ -354,13 +354,15 @@ class PostModel extends InterfacePostModel {
   async gettingMoreWikiPostInfos(result, field) {
     let postData = [];
 
+    console.log(result.records.length);
+
     for (let record of result.records) {
       const post = record.get(field).properties;
       const { author } = await this.getAuthorOfPost(post.id);
 
       postData.push({
         ...post,
-        author
+        author,
       });
     }
 
@@ -374,7 +376,7 @@ class PostModel extends InterfacePostModel {
     const session = dbConnect();
 
     try {
-      const { postNumber, error } = await this.getNumberPost(session, status);
+      const { postNumber, error } = await this.getNumberPost(session);
 
       if (postNumber !== undefined) {
         const query = `
@@ -418,8 +420,8 @@ class PostModel extends InterfacePostModel {
     const session = dbConnect();
 
     try {
-      const { postNumber, error } = await this.getNumberPost(session, status);
-      console.log("number of wiki_post",postNumber)
+      const { postNumber, error } = await this.getNumberPost(session, "wiki");
+      console.log("number of wiki_post", postNumber);
 
       if (postNumber !== undefined) {
         const query = `
@@ -432,7 +434,7 @@ class PostModel extends InterfacePostModel {
 
         const result = await session.run(query);
 
-        const postData = await this.gettingMoreInfos(result, "posts");
+        const postData = await this.gettingMoreWikiPostInfos(result, "posts");
 
         if (postNumber > Number(skip) + Number(limit)) {
           return {

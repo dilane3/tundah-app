@@ -38,23 +38,17 @@ import { addWikiPosts } from "./dataManager/data/postWiki/wikiPostAction";
 import currentUserReducer from "./dataManager/data/currentUser/currentUserReducer";
 import wikiPostsReducer from "./dataManager/data/wikiPosts/wikiPostsReducer";
 import postsReducer from "./dataManager/data/posts/postsReducer";
-import wikiPostsReducer from "./dataManager/data/postWiki/wikiPostReducer";
 import navigationContext from "./dataManager/context/navigationContext";
 import Post from "./entities/Post";
 import Subscriber from "./entities/Subscriber";
 import researchContext from "./dataManager/context/researchContext";
-import proposedPostsReducer from "./dataManager/data/proposedPost/proposedPostReducer";
 import { ToastProvider } from "react-simple-toastify";
 import ModalProvider from "./dataManager/providers/modalProvider";
 import FollowersSuggestionProvider from "./dataManager/providers/followersSuggestionProvider";
+import PostWikiProvider from "./dataManager/providers/postWikiProvider";
 
 function App() {
   const [posts, dispatchPosts] = useReducer(postsReducer, []);
-  const [wikiPosts, dispatchWikiPosts] = useReducer(wikiPostsReducer, []);
-  const [proposedPosts, dispatchProposedPosts] = useReducer(
-    proposedPostsReducer,
-    []
-  );
   const [currentUser, dispatchUser] = useReducer(currentUserReducer, null);
   const [navigation, setNavigation] = useState("");
   const [research, setReseach] = useState({
@@ -63,10 +57,6 @@ function App() {
     query: "",
   });
   const [postsArgs, setPostsArgs] = useState({
-    next: false,
-    skip: 0,
-  });
-  const [wikiPostsArgs, setWikiPostsArgs] = useState({
     next: false,
     skip: 0,
   });
@@ -167,15 +157,6 @@ function App() {
     setPostsArgs((state) => ({ ...state, next, skip }));
   };
 
-  // posts wiki actions
-  const postsAddWikiPosts = (posts) => {
-    dispatchWikiPosts(addWikiPosts(posts));
-  };
-
-  const setMoreWikiPostArgs = (next, skip) => {
-    setWikiPostsArgs((state) => ({ ...state, next, skip }));
-  };
-
   // navigation action
   const navigateTo = (target) => {
     setNavigation(target);
@@ -262,15 +243,6 @@ function App() {
   //   setMoreWikiPostsArgs,
   // };
 
-  //  setMoreWikiPostArgs
-
-  const WikiPostContextValue = {
-    wikiPosts,
-    ...wikiPostsArgs,
-    addWikiPosts: postsAddWikiPosts,
-    setMoreWikiPostArgs,
-  };
-
   // data of navigation
   const navigationContextValue = {
     navigation,
@@ -300,27 +272,25 @@ function App() {
 
   return (
     <currentUserContext.Provider value={currentUserContextValue}>
-      <postsWikiContext.Provider value={WikiPostContextValue}>
+      <PostWikiProvider>
         <postsContext.Provider value={postsContextValue}>
-          <proposedPostContext.Provider value={proposedPostContextValue}>
-            <navigationContext.Provider value={navigationContextValue}>
-              <researchContext.Provider value={researchContextValue}>
-                <ToastProvider options={toastOptions}>
-                  <CategoryContext.Provider value={categoryContextValue}>
-                    <ModalProvider>
-                      <FollowersSuggestionProvider>
-                        <BrowserRouter>
-                          <Routes />
-                        </BrowserRouter>
-                      </FollowersSuggestionProvider>
-                    </ModalProvider>
-                  </CategoryContext.Provider>
-                </ToastProvider>
-              </researchContext.Provider>
-            </navigationContext.Provider>
-          </proposedPostContext.Provider>
+          <navigationContext.Provider value={navigationContextValue}>
+            <researchContext.Provider value={researchContextValue}>
+              <ToastProvider options={toastOptions}>
+                <CategoryContext.Provider value={categoryContextValue}>
+                  <ModalProvider>
+                    <FollowersSuggestionProvider>
+                      <BrowserRouter>
+                        <Routes />
+                      </BrowserRouter>
+                    </FollowersSuggestionProvider>
+                  </ModalProvider>
+                </CategoryContext.Provider>
+              </ToastProvider>
+            </researchContext.Provider>
+          </navigationContext.Provider>
         </postsContext.Provider>
-      </postsWikiContext.Provider>
+      </PostWikiProvider>
     </currentUserContext.Provider>
   );
 }

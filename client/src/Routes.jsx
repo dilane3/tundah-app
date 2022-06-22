@@ -14,6 +14,7 @@ import SpecificPost from './pages/specificPost/SpecificPost'
 import Error404 from './pages/error404/Error404'
 import ProposalPost from './pages/proposalPost/ProposalPost'
 import Search from './pages/search/Search';
+import SpecificWikiPost from './pages/specificWikiPost/SpecificWikiPost';
 
 const Routes = () => {
 
@@ -29,6 +30,7 @@ const Routes = () => {
       {/* <Route  path="/about" component={About} /> */}
       {/* <Route  path="/termsuses" component={TermsUses} /> */}
       <Route path="/posts/:id" component={SpecificPost} />
+      <Route path="/wiki/:id" component={SpecificWikiPost} />
       <Route path="/proposal_posts" component={ProposalPost} />
       <Route path="/search" component={Search} />
       <Route component={Error404} />

@@ -6,3 +6,4 @@ export const DELETE_COMMENT = "DELETE_COMMENT";
 export const ADD_COMMENTS = "ADD_COMMENTS";
 export const ADD_COMMENT = "ADD_COMMENT";
 export const LIKE_POST = "LIKE_POST";
+export const SHARE_POST = "SHARE_POST";

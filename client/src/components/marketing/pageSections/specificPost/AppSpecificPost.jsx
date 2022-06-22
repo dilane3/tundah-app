@@ -8,6 +8,7 @@ import { Redirect, useParams } from 'react-router-dom';
 import currentUserContext from '../../../../dataManager/context/currentUserContent';
 import { instance } from '../../../../utils/url';
 import LoaderCircle from '../../../utils/loaders/Loader';
+import postsWikiContext from '../../../../dataManager/context/postWikiContext';
 
 const sortCommentByDate = (comments, order) => {
   order = order === undefined ? true : order
@@ -97,6 +98,7 @@ const CommentBlock = ({ comment, post, idUser, onChangeToResponseInput, isRespon
 const AppSpecifificPost = () => {
   // getting value from the global state
   const { posts, likePost, addComments } = useContext(postsContext)
+  const { wikiPosts } = useContext(postsWikiContext)
   const { likeUserPost, currentUser } = useContext(currentUserContext)
 
   // defining of the local state
@@ -168,7 +170,9 @@ const AppSpecifificPost = () => {
   }
 
   const getPost = (id) => {
-    let post = posts.find(p => p.id === id)
+    const postsData = [...posts, ...wikiPosts]
+
+    let post = postsData.find(p => p.id === id)
 
     if (!post && currentUser) {
       post = currentUser.posts.find(p => p.id === id)
@@ -186,12 +190,12 @@ const AppSpecifificPost = () => {
     <section ref={commentPageRef} className="contentCommentPage">
       {
         !getPost(id) ? (
-          <Redirect to="/wiki/feed" />
-        ) : <Post postData={getPost(id)} onLikePost={handleLikePost} />
+          <Redirect to="/" />
+        ) : <Post postData={getPost(id)} onLikePost={handleLikePost} target={getPost(id).post_type} />
       }
 
       {
-        currentUser ? (
+        currentUser && getPost(id).post_type === "social" ? (
           <>
             <WriteComment
               idUser={currentUser.id}

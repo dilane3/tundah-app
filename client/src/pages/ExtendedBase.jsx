@@ -100,6 +100,8 @@ const ExtendedBase = ({ children }) => {
       setMorePostArgs
     } = methodsRef.current
 
+    console.log(currentUserRef.current)
+
     if (!currentUserRef.current) {
       instance.get("/users/current")
         .then(res => {
@@ -115,46 +117,10 @@ const ExtendedBase = ({ children }) => {
           displayToast("Vous n'êtes pas connecté")
         })
         .then(() => {
-
-          instance.get("/posts?skip=0&limit=5")
-            .then(res => {
-              const postData = res.data.data
-              let nextValue = res.data.next
-              let skipValue = res.data.skip
-
-              console.log({ nextValue, skipValue })
-              console.log(res.data)
-
-              // adding posts
-              addPosts(postData)
-
-              // setting posts arguments
-              setMorePostArgs(nextValue, skipValue)
-
-              // stopping the loader for loading posts
-              setDataLoaded(true)
-
-              // hidden the loading page
-              setLoaderClassActive(true)
-
-            })
-            .catch(err => {
-              console.log(err)
-
-              displayToast("Une erreur est survenu lors du chargement des posts, veuillez recharger la page s'il vous plait")
-            })
-            .then(() => {
-              // to remove
-              // setDataLoaded(true)
-
-
-              let timer = setTimeout(() => {
-                setShowLoaderPage(false)
-
-                clearTimeout(timer)
-              }, 1000)
-            })
+          handleGetPosts(instance)
         })
+    } else {
+      handleGetPosts(instance)
     }
   }, [])
 
@@ -169,6 +135,47 @@ const ExtendedBase = ({ children }) => {
   useEffect(() => {
     handleGetFollowersSuggestion()
   }, [])
+
+  const handleGetPosts = (instance) => {
+    instance.get("/posts?skip=0&limit=5")
+      .then(res => {
+        const postData = res.data.data
+        let nextValue = res.data.next
+        let skipValue = res.data.skip
+
+        console.log({ nextValue, skipValue })
+        console.log(res.data)
+
+        // adding posts
+        addPosts(postData)
+
+        // setting posts arguments
+        setMorePostArgs(nextValue, skipValue)
+
+        // stopping the loader for loading posts
+        setDataLoaded(true)
+
+        // hidden the loading page
+        setLoaderClassActive(true)
+
+      })
+      .catch(err => {
+        console.log(err)
+
+        displayToast("Une erreur est survenu lors du chargement des posts, veuillez recharger la page s'il vous plait")
+      })
+      .then(() => {
+        // to remove
+        // setDataLoaded(true)
+
+
+        let timer = setTimeout(() => {
+          setShowLoaderPage(false)
+
+          clearTimeout(timer)
+        }, 1000)
+      })
+  }
 
   const handleGetFollowersSuggestion = async () => {
     const { data, error } = await UserApi.getFollowersSuggestion()

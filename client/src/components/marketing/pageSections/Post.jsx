@@ -188,7 +188,7 @@ const PostComponent = ({ postData, onLikePost, type }) => {
 				<div className="post-title font-bold text-base">
 					{post.getTitle[0].toUpperCase() + post.getTitle.substr(1).toLowerCase()}
 				</div>
-				<Link to={`/posts/${post.getId}`}>
+				<Link to={`/${target === "social" ? "posts" : "wiki"}/${post.getId}`}>
 					<div ref={postContentRef} className="px-2 pb-4"></div>
 				</Link>
 
@@ -214,7 +214,7 @@ const PostComponent = ({ postData, onLikePost, type }) => {
 			</main>
 
 			{
-				currentUser && target === 'social' ? (
+				currentUser && target === 'social' && post.post_type === "social" ? (
 					<footer className="post-footer mt-3 pb-2 px-2 md:mt-3 flex items-center space-x-6">
 						<div className="flex items-center space-x-1" onClick={() => onLikePost(post.getId)}>
 							{

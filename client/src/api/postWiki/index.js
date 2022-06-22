@@ -1,19 +1,18 @@
 import { insertToken } from "..";
 import { instance as axiosInstance } from "../../utils/url";
-import postsWikiContext from "../../dataManager/context/postWikiContext";
 
 // API Callfor post wiki
 class PostWikiApi {
-  
   static async getAll(skip) {
-  
     try {
       const instance = insertToken(axiosInstance);
 
-      const { data, error } = await instance.get(`/posts?skip=${skip}&limit=${2}`)
+      const { data, error } = await instance.get(
+        `/posts/wiki?skip=${skip}&limit=${2}`
+      );
 
       if (data) {
-        return { data};
+        return { data };
       }
 
       return { error };
