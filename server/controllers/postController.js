@@ -96,7 +96,7 @@ class PostController {
     console.log({ skip, limit });
 
     if (skip !== undefined && limit !== undefined) {
-      const { data, error } = await postModel.getAllWikiPosts(skip, limit);
+      const { data, error } = await postModel.getAllWikiPosts(skip, limit, true);
 
       if (data !== undefined) {
         res.status(200).json(data);

@@ -9,6 +9,7 @@ const postsContext = React.createContext({
   addPosts: (posts) => {},
   addPost: (post) => {},
   sharePost: (post) => {},
+  deleteComment: (idComment) => {},
   addComments: (idPost, comments) => {},
   addComment: (idPost, idComment, comment) => {},
   likePost: (idPost, idUser) => {},

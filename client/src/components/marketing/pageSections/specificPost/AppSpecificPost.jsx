@@ -63,6 +63,7 @@ const CommentBlock = ({ comment, post, idUser, onChangeToResponseInput, isRespon
         author={post.author}
         responseDisplayed={responseDisplayed}
         onDisplayResponses={handleDisplayResponses}
+        idPost={post.id}
       />
 
       <div className={`secondElement ${!responseDisplayed ? "responsesSectionAnimation" : ""}`}>
@@ -74,6 +75,7 @@ const CommentBlock = ({ comment, post, idUser, onChangeToResponseInput, isRespon
                 data={response}
                 onResponse={handleActivateResponse}
                 isResponse={true}
+                idPost={post.id}
                 author={post.author}
               />
             )

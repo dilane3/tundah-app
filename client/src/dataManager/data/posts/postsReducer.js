@@ -6,6 +6,7 @@ import {
   ADD_COMMENTS,
   LIKE_POST,
   SHARE_POST,
+  DELETE_COMMENT,
 } from "./type";
 import Post from "../../../entities/Post";
 
@@ -128,6 +129,34 @@ const postsReducer = (state = [], action) => {
 
           console.log(post);
           posts[index] = post.getData;
+        }
+      }
+
+      return posts;
+    }
+
+    case DELETE_COMMENT: {
+      const posts = [...state];
+
+      const { idComment, idPost } = action.payload;
+
+      console.log(action.payload);
+
+      if (idComment && idPost) {
+        const index = posts.findIndex((post) => post.getId === idPost);
+
+        console.log({ index });
+        if (index > -1) {
+          console.log(posts[index]);
+          const indexComment = posts[index].commentsData.findIndex(
+            (comment) => comment.id === idComment
+          );
+
+          console.log({ indexComment });
+          if (indexComment > -1) {
+            posts[index].commentsData.splice(indexComment, 1);
+            posts[index].comments -= 1;
+          }
         }
       }
 

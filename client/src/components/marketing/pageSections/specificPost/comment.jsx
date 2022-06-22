@@ -8,7 +8,7 @@ import { ressourcesUrl } from "../../../../utils/url"
 import { Link } from 'react-router-dom'
 import CommentDropdown from '../../../utils/dropdowns/CommentDropdown'
 
-const Comment = ({ onResponse, data, isResponse, author, onDisplayResponses, responseDisplayed }) => {
+const Comment = ({ onResponse, data, isResponse, author, idPost, onDisplayResponses, responseDisplayed }) => {
     const subscriber = new Subscriber(data.author)
 
     const isAuthor = () => {
@@ -37,7 +37,8 @@ const Comment = ({ onResponse, data, isResponse, author, onDisplayResponses, res
                             <CommentDropdown
                                 dropElt={<BsThreeDots />}
                                 idComment={data.getId}
-                                idAuthor={data.author.id}
+                                idAuthor={author.id}
+                                idPost={idPost}
                             />
                         </div>
                     </div>

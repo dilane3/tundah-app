@@ -7,6 +7,7 @@ import {
   ADD_COMMENTS,
   LIKE_POST,
   SHARE_POST,
+  DELETE_COMMENT,
 } from "./type";
 
 const deletePost = (idPost) => {
@@ -58,6 +59,16 @@ const addComment = (idPost, comment, responseTo = null) => {
   };
 };
 
+const deleteComment = (idComment, idPost) => {
+  return {
+    type: DELETE_COMMENT,
+    payload: {
+      idComment,
+      idPost,
+    },
+  };
+};
+
 const addComments = (idPost, comments) => {
   return {
     type: ADD_COMMENTS,
@@ -87,4 +98,5 @@ export {
   addComment,
   addComments,
   likePost,
+  deleteComment,
 };

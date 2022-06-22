@@ -209,7 +209,7 @@ class PostModel extends InterfacePostModel {
       `;
 
       const result = await session.run(query);
-
+      console.log("number of wiki_post", result.records.length )
       return { postNumber: result.records.length };
     } catch (err) {
       console.log(err);
@@ -414,11 +414,12 @@ class PostModel extends InterfacePostModel {
   /**
    * This method retrieves all the avalaible posts
    */
-  async getAllWikiPosts(skip, limit) {
+  async getAllWikiPosts(skip, limit, status) {
     const session = dbConnect();
 
     try {
       const { postNumber, error } = await this.getNumberPost(session, status);
+      console.log("number of wiki_post",postNumber)
 
       if (postNumber !== undefined) {
         const query = `
