@@ -14,9 +14,9 @@ class CategoryModel extends InterfaceCategoryModel {
     const session = dbConnect();
 
     const query = `
-            MATCH(category:category{ name: $name })
-            RETURN category
-        `;
+        MATCH(category:Category{ name: $name })
+        RETURN category
+    `;
 
     try {
       const result = await session.run(query, { name });
@@ -172,7 +172,7 @@ class CategoryModel extends InterfaceCategoryModel {
     const session = dbConnect();
 
     const query = `
-            MATCH(category:category{ id: $id })
+            MATCH(category:Category{ id: $id })
             SET
                 category.name = $name
             RETURN category

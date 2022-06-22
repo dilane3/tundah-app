@@ -62,6 +62,27 @@ class UserApi {
       return { error: "An error occured" };
     }
   }
+
+  static async followCategory(userId, categories) {
+    try {
+      const instance = insertToken(axiosInstance);
+
+      const { data, error } = await instance.post("/users/follow_category", {
+        userId,
+        categories,
+      });
+
+      if (data) {
+        return { data };
+      }
+
+      return { error };
+    } catch (err) {
+      console.log(err);
+
+      return { error: "An error occured" };
+    }
+  }
 }
 
 export default UserApi;

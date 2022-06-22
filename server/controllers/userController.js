@@ -450,12 +450,12 @@ class UserController {
     }
   };
   static followCategory = async (req, res) => {
-    const { userId, categoryId } = req.body;
+    const { userId, categories } = req.body;
 
-    if (!userId || !categoryId)
+    if (!userId || !categories.length > 0)
       return res.status(400).json({ error: "Provide user id and category id" });
 
-    const { data, error } = await UserModel.followCategory(userId, categoryId);
+    const { data, error } = await UserModel.followCategory(userId, categories);
 
     if (data) return res.status(201).json({ data });
 

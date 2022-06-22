@@ -46,6 +46,6 @@ userRouter.post("/add_expert", authenticationMiddleware, addExpert);
 userRouter.post("/check_email", uniqueEmail);
 userRouter.post("/check_username", uniqueUsername);
 userRouter.post("/follow", authenticationMiddleware, followUser);
-userRouter.post("/follow_category", followCategory);
+userRouter.post("/follow_category", authenticationMiddleware, followCategory);
 
 export default userRouter;
