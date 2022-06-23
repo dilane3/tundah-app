@@ -8,9 +8,7 @@ const useGetWikiPost = () => {
   const { addPosts, setMoreWikiPostArgs } = useContext(postsWikiContext)
 
   useEffect(() => {
-    if (currentUser) {
-      handleGetWikiPost()
-    }
+    handleGetWikiPost()
   }, [currentUser])
 
   // Some handlers

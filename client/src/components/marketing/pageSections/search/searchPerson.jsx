@@ -4,6 +4,8 @@ import './searchBody.css'
 import Subscriber from "../../../../entities/Subscriber";
 import { getRelativeDate } from "../../../../utils/dateOperations";
 import { ressourcesUrl } from "../../../../utils/url";
+import { Link } from "react-router-dom";
+import { formatName } from "../../../../utils/format";
 
 const imageMariage = require("../../../../medias/img/chinoise.jpg")
 
@@ -16,12 +18,14 @@ const SearchPerson = ({ data }) => {
             <div className="content">
                 <ImgCircle src={`${ressourcesUrl.profil}/${user.getProfil}`} alt="profil" classe="profilCardImage" />
                 <div className="userinformation">
-                    <span className="username">{user.getUsername}</span>
+                    <Link to={`/profile/${user.getUsername}`}>
+                        <span className="username">{formatName(user.getName)}</span>
+                    </Link>
                     <span className="userInscription">{"inscrit depuis le " + getRelativeDate(user.getDate)}</span>
                 </div>
-                <button className="btnSuivre">
+                {/* <button className="btnSuivre">
                     Suivre
-                </button>
+                </button> */}
             </div>
             <div className="userDescription">
                 {user.getDescription}

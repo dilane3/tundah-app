@@ -361,12 +361,12 @@ const HeaderProfil = () => {
 								</div>
 								<div className="profilFollower">
 									<div className='profilFollowerTop'>
-										<div className="iconContact">
+										{/* <div className="iconContact">
 											<div className="MdContactMai" >
 												<MdContactMail />
 											</div>
 											<div> contact</div>
-										</div>
+										</div> */}
 
 										<div className="iconContact" onClick={() => handleOpenModal("Categories", "SELECT_CATEGORIES")}>
 											<div className="MdContactMai">
@@ -374,14 +374,14 @@ const HeaderProfil = () => {
 											</div>
 											<span>Categories</span>
 										</div>
-										{
+										{/* {
 											checkUsername(username, currentUser) ? (
 												<div className="iconContact" onClick={() => handleOpenModal("Editer Profil", "PROFILE_UPDATE")}>
 													<div className="AiOutlineEdit"> <AiOutlineEdit /> </div>
 													<div> Editer profil</div>
 												</div>
 											) : null
-										}
+										} */}
 									</div>
 
 									<section className='profilFollowerBottom' onClick={() => handleOpenModal("Abonnements & Abonnés", "USERS_INFO")}>
