@@ -114,12 +114,12 @@ class CategoryModel extends InterfaceCategoryModel {
     const session = dbConnect();
 
     const query = `
-            CREATE(category:Category{
-                id: $id,
-                name: $name
-            })
-            RETURN category
-        `;
+        CREATE(category:Category{
+            id: $id,
+            name: $name
+        })
+        RETURN category
+    `;
 
     try {
       const result = await session.run(query, { id: nanoid(20), name });
